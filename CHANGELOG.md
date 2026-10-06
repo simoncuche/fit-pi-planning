@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.5.1 – 06.10.2026
+- Tracking is on: games report to the shared Firebase database (branch `pi`), the tracker page shows live data.
+
 ## 2.5.0 – 06.10.2026
 - Boarding asks for your own name: a required name field next to the chosen character; the name shows up in the game and in the tracker.
 - Tracker page like the Wiehnachtsreisli: `tracker.html` lists every device with progress, PI plan of all teams, stats, achievements, events, workshops and records, with leaderboards and finished games. Games send their state to a Firebase Realtime Database (URL in `tracking.json` or repo variable `TRACK_DB`; empty = off). Players can switch "Share progress" off in the options.
