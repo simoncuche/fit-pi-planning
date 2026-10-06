@@ -193,6 +193,9 @@ async function checkUpdate() {
     const j = await r.json();
     if (!j.v || j.v === APP_VERSION) return;
     if (checkUpdate.seen === j.v) return; checkUpdate.seen = j.v;
+    /* Homescreen-App noch auf dem Titel: still neu laden (einmal pro Version, sonst Endlosschleife, wenn das CDN noch die alte Seite liefert) */
+    const asked = new URLSearchParams(location.search).get('v');
+    if (asked !== j.v && G.mode === 'title') { location.replace(location.pathname + '?v=' + encodeURIComponent(j.v)); return; }
     const el = UI.toast(_t`Neue Version ${j.v} verfügbar – hier tippen zum Neuladen.`, 'ach');
     /* Neu laden mit Versionsnummer in der URL, damit weder Browser- noch CDN-Cache die alte index.html liefern */
     if (el) { el.addEventListener('pointerdown', () => { location.href = location.pathname + '?v=' + encodeURIComponent(j.v); }, { once: true }); setTimeout(() => el.classList.remove('out'), 400); }
