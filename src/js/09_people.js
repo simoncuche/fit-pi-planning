@@ -1,29 +1,30 @@
 /* ============ Die Leute: Reisegruppe, Colba, Backoffice ============ */
 const PEOPLE = {
-  simon: { name: _t('Simon'), role: _t('Organisator · PO Indurain'), team: 'indurain', bg: '#2a4a3a', from: _t('Zürich'), intro: _t('Hat die Agenda, die Hotelbuchung und das Restaurant für den Donnerstag im Kopf.') },
-  luigi: { name: _t('Luigi'), role: _t('PO Meeseeks · Autofan'), team: 'meeseeks', bg: '#5a2a24', from: _t('Zürich'), intro: _t('Redet über PS, wenn andere über Story Points reden. Kartbahn ist Pflicht.') },
-  dominique: { name: _t('Dominique'), role: _t('PO Rocket'), team: 'rocket', bg: '#3a3a4a', from: _t('Zürich'), intro: _t('Alle 45 Minuten auf den Balkon. Dort entstehen die besten Ideen.') },
-  robin: { name: _t('Robin'), role: _t('Geschäftsführer · zum ersten Mal dabei'), team: 'indurain', bg: '#2a2a3a', from: _t('Zürich'), intro: _t('Hält am Dienstag den Business Context – und hat noch nie eine valencianische Klingel gedrückt.') },
-  lukas: { name: _t('Lukas'), role: _t('Battery-Pass-Spezialist'), team: 'rocket', bg: '#6a2a2a', from: _t('Bern'), intro: _t('Kennt die EU-Batterieverordnung auswendig. Jede Zelle bekommt einen Pass.') },
-  pascal: { name: _t('Pascal'), role: _t('iOS-Entwickler aus Leipzig'), team: 'meeseeks', bg: '#2a3a5a', from: _t('Leipzig'), intro: _t('Reist allein aus Leipzig an. SwiftUI im Blut, Club Mate im Rucksack.') },
-  chris: { name: _t('Chris'), role: _t('Product Manager aus Fuerteventura · Surfer'), team: 'meeseeks', bg: '#2a5a6a', from: _t('Fuerteventura'), intro: _t('Kommt mit Surf-Wax und Roadmap aus Fuerteventura. Morgens Wellen, tagsüber Features.') },
-  danny: { name: _t('Danny'), role: _t('Teamleiter Indurain'), team: 'indurain', bg: '#3a2a2a' },
-  fran: { name: _t('Fran'), role: _t('Hardware-Entwickler · CANopen-Experte'), team: 'indurain', bg: '#2a2a2a' },
-  estella: { name: _t('Estella'), role: _t('Software-Entwicklerin · Indurain'), team: 'indurain', bg: '#5a4a2a' },
-  bea: { name: _t('Bea'), role: _t('Backend-Entwicklerin'), team: 'indurain', bg: '#2a3a4a' },
-  vicente: { name: _t('Vicente'), role: _t('DevOps-Engineer'), team: 'indurain', bg: '#2a4a4a' },
-  juanjo: { name: _t('Juanjo'), role: _t('Inhaber von Colba · Android'), team: 'meeseeks', bg: '#4a3a2a' },
-  oscar: { name: _t('Oscar'), role: _t('Android-Entwickler'), team: 'meeseeks', bg: '#3a3a3a' },
-  pablo: { name: _t('Pablo'), role: _t('iOS-Entwickler'), team: 'meeseeks', bg: '#5a3a2a' },
-  guillem: { name: _t('Guillem'), role: _t('iOS-Entwickler'), team: 'meeseeks', bg: '#4a2a5a' },
-  elena: { name: _t('Elena'), role: _t('UX- und UI-Designerin'), team: 'meeseeks', bg: '#5a2a4a' },
-  carlos: { name: _t('Carlos'), role: _t('Software-Architekt · Bassist'), team: 'rocket', bg: '#3a3a2a' },
-  salva: { name: _t('Salva'), role: _t('Software-Entwickler · Rocket'), team: 'rocket', bg: '#2a3a5a' },
-  aitor: { name: _t('Aitor'), role: _t('Software-Entwickler · Radfahrer'), team: 'rocket', bg: '#5a4a1a' },
-  isabell: { name: _t('Isabell'), role: _t('Backoffice · Organisation'), team: null, bg: '#2a5a5a' },
+  simon: { name: _t('Simon'), role: _t('Organisator · PO Indurain'), tag: _t('Hat für alles eine Liste. Auch für die Listen.'), team: 'indurain', bg: '#2a4a3a', from: _t('Zürich'), intro: _t('Hat die Agenda, die Hotelbuchung und das Restaurant für den Donnerstag im Kopf.') },
+  luigi: { name: _t('Luigi'), role: _t('PO Meeseeks · Autofan'), tag: _t('Schätzt Story Points in PS.'), team: 'meeseeks', bg: '#5a2a24', from: _t('Zürich'), intro: _t('Redet über PS, wenn andere über Story Points reden. Kartbahn ist Pflicht.') },
+  dominique: { name: _t('Dominique'), role: _t('PO Rocket'), tag: _t('Die besten Ideen kommen auf dem Balkon.'), team: 'rocket', bg: '#3a3a4a', from: _t('Zürich'), intro: _t('Alle 45 Minuten auf den Balkon. Dort entstehen die besten Ideen.') },
+  robin: { name: _t('Robin'), role: _t('Geschäftsführer · zum ersten Mal dabei'), tag: _t('Erstes PI Planning. 24 Folien. Noch nie geklingelt.'), team: 'indurain', bg: '#2a2a3a', from: _t('Zürich'), intro: _t('Hält am Dienstag den Business Context – und hat noch nie eine valencianische Klingel gedrückt.') },
+  lukas: { name: _t('Lukas'), role: _t('Battery-Pass-Spezialist'), tag: _t('Kann die Batterieverordnung auswendig. Freiwillig.'), team: 'rocket', bg: '#6a2a2a', from: _t('Bern'), intro: _t('Kennt die EU-Batterieverordnung auswendig. Jede Zelle bekommt einen Pass.') },
+  pascal: { name: _t('Pascal'), role: _t('iOS-Entwickler aus Leipzig'), tag: _t('Club Mate im Rucksack, SwiftUI im Herzen.'), team: 'meeseeks', bg: '#2a3a5a', from: _t('Leipzig'), intro: _t('Reist allein aus Leipzig an. SwiftUI im Blut, Club Mate im Rucksack.') },
+  chris: { name: _t('Chris'), role: _t('Product Manager aus Fuerteventura · Surfer'), tag: _t('Morgens Wellen, nachmittags Roadmap.'), team: 'meeseeks', bg: '#2a5a6a', from: _t('Fuerteventura'), intro: _t('Kommt mit Surf-Wax und Roadmap aus Fuerteventura. Morgens Wellen, tagsüber Features.') },
+  danny: { name: _t('Danny'), role: _t('Teamleiter Indurain'), tag: _t('Grillt besser, als er deployt. Und er deployt gut.'), team: 'indurain', bg: '#3a2a2a' },
+  fran: { name: _t('Fran'), role: _t('Hardware-Entwickler · CANopen-Experte'), tag: _t('Kennt 2000 CANopen-Indexe. Mindestens.'), team: 'indurain', bg: '#2a2a2a' },
+  estella: { name: _t('Estella'), role: _t('Software-Entwicklerin · Indurain'), tag: _t('Hat schon eine Idee, bevor du ausgeredet hast.'), team: 'indurain', bg: '#5a4a2a' },
+  bea: { name: _t('Bea'), role: _t('Backend-Entwicklerin'), tag: _t('Sagt wenig. Ihr Code sagt alles.'), team: 'indurain', bg: '#2a3a4a' },
+  vicente: { name: _t('Vicente'), role: _t('DevOps-Engineer'), tag: _t('Pipeline grün, Tortilla weg.'), team: 'indurain', bg: '#2a4a4a' },
+  juanjo: { name: _t('Juanjo'), role: _t('Inhaber von Colba · Android'), tag: _t('Hat Colba gegründet. Und die Klingel nie angeschrieben.'), team: 'meeseeks', bg: '#4a3a2a' },
+  oscar: { name: _t('Oscar'), role: _t('Android-Entwickler'), tag: _t('Testet dreimal. Dann noch einmal.'), team: 'meeseeks', bg: '#3a3a3a' },
+  pablo: { name: _t('Pablo'), role: _t('iOS-Entwickler'), tag: _t('Baut, was Elena zeichnet. Meistens.'), team: 'meeseeks', bg: '#5a3a2a' },
+  guillem: { name: _t('Guillem'), role: _t('iOS-Entwickler'), tag: _t('Drei Apps im Store, zwei davon gut.'), team: 'meeseeks', bg: '#4a2a5a' },
+  elena: { name: _t('Elena'), role: _t('UX- und UI-Designerin'), tag: _t('Hat immer recht. Vor allem bei Buttons.'), team: 'meeseeks', bg: '#5a2a4a' },
+  carlos: { name: _t('Carlos'), role: _t('Software-Architekt · Bassist'), tag: _t('Refactort alles. Auch Bass-Riffs.'), team: 'rocket', bg: '#3a3a2a' },
+  salva: { name: _t('Salva'), role: _t('Software-Entwickler · Rocket'), tag: _t('Hat das SAFe-Buch gelesen. Das ganze.'), team: 'rocket', bg: '#2a3a5a' },
+  aitor: { name: _t('Aitor'), role: _t('Software-Entwickler · Radfahrer'), tag: _t('60 Kilometer vor der Arbeit. Mit dem Velo.'), team: 'rocket', bg: '#5a4a1a' },
+  isabell: { name: _t('Isabel'), role: _t('Backoffice · Organisation'), tag: _t('Organisiert alles. Ausser die Klingel.'), team: null, bg: '#2a5a5a' },
+  daniel: { name: _t('Daniel'), role: _t('Tester · Dokumentation'), tag: _t('Findet den Bug. Und dokumentiert ihn. Mit Screenshot.'), team: 'rocket', bg: '#3a4a3a' },
 };
 const TRAVELLERS = ['simon', 'luigi', 'dominique', 'robin', 'lukas', 'pascal', 'chris'];
-const COLBA = ['danny', 'fran', 'estella', 'bea', 'vicente', 'juanjo', 'oscar', 'pablo', 'guillem', 'elena', 'carlos', 'salva', 'aitor'];
+const COLBA = ['danny', 'fran', 'estella', 'bea', 'vicente', 'juanjo', 'oscar', 'pablo', 'guillem', 'elena', 'carlos', 'salva', 'aitor', 'daniel'];
 const SWISS = ['simon', 'luigi', 'dominique', 'robin', 'lukas'];
 /* Alle Figuren sind spielbar: Reisende landen am Flughafen, Colba-Leute holen die Gäste dort ab */
 const CREW = Object.keys(PEOPLE).map((id) => Object.assign({ id }, PEOPLE[id]));
@@ -49,6 +50,7 @@ const PEOPLE_LOOKS = {
   carlos: { fem: 0, skin: 3, build: 0, height: 2, head: 3, hair: 2, hairCol: 2, beard: 0, beardCol: 2, eyes: 3, eyeCol: 0, glasses: 0, top: 0, topCol: 17, print: 0, pants: 1, pantsCol: 2, shoes: 1, shoesCol: 1, hat: 0, acc: 0, mark: 0, jewel: 0 },
   salva: { fem: 0, skin: 4, build: 1, height: 0, head: 1, hair: 2, hairCol: 2, beard: 0, beardCol: 2, eyes: 1, eyeCol: 0, glasses: 1, top: 0, topCol: 10, print: 4, pants: 0, pantsCol: 0, shoes: 0, shoesCol: 5, hat: 0, acc: 1, mark: 0, jewel: 0 },
   aitor: { fem: 0, skin: 4, build: 2, height: 1, head: 2, hair: 2, hairCol: 1, beard: 1, beardCol: 1, eyes: 0, eyeCol: 0, glasses: 0, top: 0, topCol: 2, print: 0, pants: 0, pantsCol: 0, shoes: 5, shoesCol: 1, hat: 0, acc: 3, mark: 0, jewel: 0, nose: 2 },
+  daniel: { fem: 0, skin: 3, build: 1, height: 1, head: 0, hair: 2, hairCol: 0, beard: 1, beardCol: 0, eyes: 0, eyeCol: 1, glasses: 0, top: 1, topCol: 15, print: 0, pants: 0, pantsCol: 0, shoes: 0, shoesCol: 1, hat: 0, acc: 6, mark: 0, jewel: 0 },
   isabell: { fem: 1, skin: 2, build: 1, height: 1, head: 0, hair: 14, hairCol: 2, beard: 0, eyes: 0, eyeCol: 4, glasses: 0, top: 11, topCol: 8, print: 0, pants: 5, pantsCol: 2, shoes: 3, shoesCol: 1, hat: 0, acc: 3, mark: 0, jewel: 1 },
 };
 function personLook(id) {

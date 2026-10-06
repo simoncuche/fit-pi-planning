@@ -99,6 +99,18 @@ with sync_playwright() as p:
         time.sleep(0.5)
     assert pg.evaluate("() => window.__bdd === 1"), "Board nicht beendet"
     shot("07_planning")
+    # Workshops im Aufenthaltsraum: UX (Di 16), Architektur (Mi 11), Roadmap (Do 11), Retro (Fr 11) – Antworten automatisch
+    pg.evaluate("""() => { window.__wi = 0; window.__ws = setInterval(() => { const a = document.querySelector('.pcard[data-a]'); if (a) { a.click(); return; } const r = document.querySelector('.roam-grid button'); if (r) { r.click(); return; } const f = document.querySelector('.pcard[data-f]'); if (f) { f.click(); const cols = document.querySelectorAll('.col'); cols[window.__wi++ % cols.length].click(); return; } const ok = document.querySelector('#wsOk:not([disabled])'); if (ok) ok.click(); }, 60); }""")
+    for d, hh in ((1, 16), (2, 11), (3, 11), (4, 11)):
+        run(f"G.S.time = {d} * 1440 + {hh} * 60 + 5; enterMap('colba', 'lounge'); window.__wsd = 0; G.busy++; Story.loungeScreen().then(() => {{ G.busy--; window.__wsd = 1; }});", 0.5)
+        for _ in range(40):
+            if pg.evaluate("() => window.__wsd === 1"): break
+            time.sleep(0.5)
+        assert pg.evaluate(f"() => window.__wsd === 1 && !!G.S.flags['ws_' + Story.WORKSHOPS[{d}].id]"), f"Workshop Tag {d} fehlt"
+        if d == 3: shot("07c_roadmap")
+    pg.evaluate("() => clearInterval(window.__ws)")
+    assert pg.evaluate("() => G.S.ach.ux && G.S.ach.arch && G.S.ach.roadmap && G.S.ach.retro && G.npcs.length >= 0"), "Workshop-Erfolge fehlen"
+    run("G.S.time = 1440 + 12 * 60 + 30; enterMap('colba', 'room_indurain');", 0.5)
     print("Plan nach Dienstag:", state())
     # E-Bike-Raum neben der Lounge: Diagnose-PC (Telemetrie lesen)
     run("enterMap('colba', 'lab'); G.busy++; await Story.bikeComputer(0); G.busy--;", 1.5, q=[0])

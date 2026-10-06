@@ -377,3 +377,7 @@ body.ov #toasts { top: auto; bottom: calc(env(safe-area-inset-bottom, 0px) + 16p
 .langs .lang { font-family: var(--f-sign); font-size: 13px; letter-spacing: .04em; padding: 5px 10px; border-radius: 999px; border: 1px solid var(--paper-line); background: #fff; color: var(--ink-dim); cursor: pointer; }
 .langs .lang.on { background: var(--sun); border-color: var(--sun); color: #fff; }
 .opt-row .langs .lang { padding: 4px 8px; font-size: 12px; }
+/* Workshops: Chips in den Spalten (Roadmap, Architektur) */
+.col { min-width: 0; overflow: hidden; }
+.col .chip { display: block; margin-top: 3px; padding: 2px 3px; border-radius: 4px; background: var(--sun); color: #fff; font-family: var(--f-sign); font-size: 10px; line-height: 1.15; overflow-wrap: anywhere; cursor: pointer; }
+.col.over .chip { background: var(--red, #c8352d); }

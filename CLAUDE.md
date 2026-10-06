@@ -1,4 +1,4 @@
-# PI Planning Valencia – Hinweise für Claude Code
+# Fit PI Planning – The Game – Hinweise für Claude Code
 
 Browser-Rollenspiel (Pixel-Art, Top-down) über das PI Planning der E-Bike-Teams bei Colba in Valencia.
 Läuft komplett im Browser ohne Server, ohne Bibliotheken, ohne Build-Tools ausser Python.
@@ -32,10 +32,11 @@ zugreifen – sonst TDZ-Fehler bei `const`. Darum heisst die Ereignis-Datei `09_
 | `06_maps_rooms.js` | `airport`, `hotel_lobby`, `hotel_floor`, `hotel_room`, `colba_entry`, `colba` (drei Teamräume, Lounge, E-Bike-Raum `lab` direkt unter der Lounge mit `objBikeRig`, Balkon, Backoffice unten links, WC), `bar`, `jamon`, `bodega`, `disco`, `museum`, `mercado`, `danny_house` (Dannys Garten im Vorort: Grill, Gartentisch, Verstärker, Pool, Hängematte, Gartentor); Helfer `doorBottom`, `placePerson` |
 | `07_engine.js` | `GMap` (mit `room()`), Akteure, Kollision, Kamera (`resizeView` DPR-bewusst), Licht/Nacht, Rendern, Interaktion, Zeitfluss, E-Bike (`a.bike`, `drawBikeUnder`), `tempActor`/`walk`/`dropActor` |
 | `08_ui.js` | HUD (Badge, Post-it mit Ziel, PI-Plan-Balken), Dialoge (`UI.say/ask`), Läden `UI.shop`, Overlays, Ankündigung `UI.announce`, Handy `Phone` (Sprint, Team, Karte, Tasche, Fotos, Status, Optionen), Schnappschüsse `Snap`, Postkarten `drawSightCard` |
-| `09_people.js` | `PEOPLE` (7 Reisende, 13 Colba-Leute, Isabell), `PEOPLE_LOOKS`, `TRAVELLERS`, `SWISS`, `COLBA`, `personLook`, `buildFriends`, `myTeam`, `isPO`, `teamLead`, Abhängigkeiten `DEPS` |
+| `09_people.js` | `PEOPLE` (7 Reisende, 14 Colba-Leute inkl. Daniel, Isabel; `tag` = lustige Kurzbeschreibung), `PEOPLE_LOOKS`, `TRAVELLERS`, `SWISS`, `COLBA`, `personLook`, `buildFriends`, `myTeam`, `isPO`, `teamLead`, Abhängigkeiten `DEPS` |
 | `09_story.js` | Stufen `STAGES` (`koffer → sammeln → taxi → hotel → checkin → zimmer → bar → free`), Öffnungszeiten `OPEN`, Läden `SHOPS`, Mittagsplan `LUNCH`, `Story.*` (Ziele, Zeitplan `schedule`/`whereIs`/`populate`, Flughafen, Hotel, Klingel, Kickoff, Planning-Aktivitäten, Ausfahrt, Final, Aktivitäten in der Stadt, Gespräche `lines`, Körper, Heimflug), `Ending` |
 | `09_zevents.js` | Ereignisse: Mascletà (14:00, Mo–Do), Cremà (Do 22:00), Robin verirrt sich, Gota fría, Falleras-Umzug, Horchata, Möwe, Orange, Peloton, CF-Fans, Tourist |
 | `10_planning.js` | `Mini.run` (Rahmen) und Planning-Minispiele: `poker`, `canopen`, `roam`, `board`, `deps`, `confidence` |
+| `10_workshops.js` | Workshops als Minispiele (`Mini.ux`, `Mini.arch`, `Mini.roadmap`, `Mini.retro`) mit den Rahmen `quizCards`, `sortCards`, `placeBoard`; Zeitplan in `Story.WORKSHOPS` |
 | `11_minigames.js` | Freizeit: `suitcase`, `bell`, `kart`, `sail`, `paella`, `wine`, `soccer`, `dance`, `padel`, `ride` |
 | `11_scenes.js` | `Scene.play(kind, opts)`: 240×144-Szenen (`plane`, `taxi`, `door`, `lift`, `stairs`, `roomdoor`, `sleep`, `shower`, `ride`, `boat`, `mascleta`, `crema`, `flight`), Fassaden `FACADES`, `transitionFor` |
 | `12_main.js` | Titel (Bordkarte), Start, Eingabe (Tastatur + Touch-Joystick), Hauptschleife |

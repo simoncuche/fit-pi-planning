@@ -1,8 +1,8 @@
-# PI Planning Valencia
+# Fit PI Planning – The Game
 
 **Online spielen:** https://simoncuche.github.io/fit-pi-planning/ – der Workflow `.github/workflows/pages.yml` baut bei jedem Push und veröffentlicht `dist/` auf dem Branch `gh-pages`.
 
-**Spielfiguren:** Alle 21 Figuren sind spielbar. Die Reisegruppe landet am Flughafen, Colba-Leute (und Isabell) holen die Gäste dort ab und wohnen für die PI-Woche ebenfalls im Hotel Kramer.
+**Spielfiguren:** Alle 22 Figuren sind spielbar (inklusive Daniel, dem Tester). Die Reisegruppe landet am Flughafen, Colba-Leute (und Isabel) holen die Gäste dort ab und wohnen für die PI-Woche ebenfalls im Hotel Kramer.
 
 **Sprachen:** Das Spiel läuft standardmässig auf Englisch; Deutsch und Spanisch sind auf dem Titelbildschirm und im Handy unter Optionen wählbar. Die Übersetzungen liegen in `i18n/en.json` und `i18n/es.json` (deutscher Text = Schlüssel).
 
@@ -24,9 +24,10 @@ Kein Server, keine Installation. Funktioniert am Handy und am Computer.
   Hotel Kramer finden, einchecken, Zimmer 412, abends alle in der Bar Pepita mit Agua de Valencia.
 - **Colba:** Hochhaus im Osten mit zwölf angeschriebenen Klingeln – auf keiner steht Colba. Eingangshalle mit Lift links und rechts und Treppe in der Mitte.
   Erster Stock: drei Teamräume (**Indurain**: Danny, Fran, Estella, Bea, Vicente · **Meeseeks**: Juanjo, Oscar, Pablo, Guillem, Elena, Pascal ·
-  **Rocket**: Carlos, Salva, Aitor, Lukas), Aufenthaltsraum mit grossem Bildschirm, Küche und Balkon, Backoffice mit Isabell beim Lift, E-Bike-Raum neben dem Aufenthaltsraum mit Diagnose-PCs am CAN-Kabel, Prüfstand und Test-Bikes.
+  **Rocket**: Carlos, Salva, Aitor, Lukas), Aufenthaltsraum mit grossem Bildschirm, Küche und Balkon, Backoffice mit Isabel beim Lift, E-Bike-Raum neben dem Aufenthaltsraum mit Diagnose-PCs am CAN-Kabel, Prüfstand und Test-Bikes.
 - **Planning (Di–Fr):** Kickoff mit Robins Business Context, dann pro Tag Planning Poker, CANopen-Index-Quiz mit Fran, ROAM-Risiken, Programm-Board
   und Abhängigkeiten mit den anderen Teams verhandeln. Freitag 15:00: Final-Präsentation und Confidence Vote.
+- **Workshops im Aufenthaltsraum:** Di 16:00 UX mit Elena, Mi 11:00 Softwarearchitektur mit Carlos, Do 11:00 Roadmap mit Chris (Meilensteine und Releases auf sechs Sprints), Fr 11:00 PI-Retrospektive – alles als Minispiele am grossen Bildschirm.
 - **Mittagessen im Aufenthaltsraum:** Dienstag Paella, Mittwoch Smash Burger, Donnerstag Bocadillos, Freitag Healthy Breakfast.
 - **E-Bikes:** Test-Bikes bei Colba oder Miete bei Bici Rent, Akku-Anzeige, Radweg im Turia-Park. Donnerstag Team-Ausfahrt mit Aitor bis zum Strand.
 - **Valencia:** Plaza de la Virgen mit Micalet und Turia-Brunnen, Mercado Central, Lonja, Torres de Serranos, Plaza del Ayuntamiento mit Falla,

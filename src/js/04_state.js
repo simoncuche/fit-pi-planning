@@ -147,12 +147,17 @@ const ACH = {
   battery: [_t('Battery Pass'), _t('Lukas’ Vortrag über den Batteriepass gehört')],
   leipzig: [_t('Sachse'), _t('Pascals Anreise aus Leipzig angehört')],
   fuerte: [_t('Fuerte-Vibes'), _t('Chris’ Surfbericht aus Fuerteventura angehört')],
-  isabell: [_t('Backoffice'), _t('Isabell bei der Organisation geholfen')],
+  isabell: [_t('Backoffice'), _t('Isabel bei der Organisation geholfen')],
   asado: [_t('Asado bei Danny'), _t('Am Mittwochabend in Dannys Garten gegrillt')],
   bass: [_t('Hardrock'), _t('Carlos’ Bass-Solo im Garten gehört')],
   cuba: [_t('Havanna-Vibes'), _t('Mit Danny und Bea über Kuba geredet und einen echten Mojito getrunken')],
   grillmeister: [_t('Grillmeister'), _t('Am Grill nichts verbrannt')],
   telemetrie: [_t('Telemetrie'), _t('Live-Daten eines E-Bikes am Diagnose-PC gelesen')],
+  ux: [_t('UX-Auge'), _t('Elenas UX-Workshop mitgemacht')],
+  arch: [_t('Schichtenmodell'), _t('Carlos’ Architektur-Workshop mitgemacht')],
+  roadmap: [_t('Roadmap'), _t('Mit Chris Meilensteine und Releases auf die Sprints gelegt')],
+  retro: [_t('Retro'), _t('Die PI-Retrospektive mitgemacht')],
+  tester: [_t('Reproduzierbar'), _t('Mit Daniel über Testen und Dokumentation geredet')],
   kotzen: [_t('Ups…'), _t('Sich übergeben müssen')],
   filmriss: [_t('Filmriss'), _t('Komplett abgestürzt')],
   kater: [_t('Kater besiegt'), _t('Einen Kater kuriert')],
@@ -168,7 +173,7 @@ const ACH = {
 const TEAMS = {
   indurain: { n: _t('Team Indurain'), col: '#e2554a', po: 'simon', members: ['danny', 'fran', 'estella', 'bea', 'vicente'], room: _t('Raum 1 · Indurain') },
   meeseeks: { n: _t('Team Meeseeks'), col: '#2fa0d8', po: 'luigi', members: ['juanjo', 'oscar', 'pablo', 'guillem', 'elena', 'pascal'], room: _t('Raum 2 · Meeseeks') },
-  rocket: { n: _t('Team Rocket'), col: '#f0a23a', po: 'dominique', members: ['carlos', 'salva', 'aitor'], room: _t('Raum 3 · Rocket') },
+  rocket: { n: _t('Team Rocket'), col: '#f0a23a', po: 'dominique', members: ['carlos', 'salva', 'aitor', 'daniel'], room: _t('Raum 3 · Rocket') },
 };
 
 function newState(look, name) {

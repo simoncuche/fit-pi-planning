@@ -50,7 +50,7 @@ const Editor = {
               const b = document.createElement('button');
               b.className = 'crew-btn' + (pid === id ? ' sel' : '');
               const look = personLook(id);
-              b.innerHTML = `<canvas width="96" height="96" aria-hidden="true"></canvas><span>${c.name}</span>`;
+              b.innerHTML = `<canvas width="96" height="96" aria-hidden="true"></canvas><span>${c.name}</span><small>${c.tag || ''}</small>`;
               b.querySelector('canvas').getContext('2d').drawImage(portraitCanvas(look, c.bg || '#2a3a52'), 0, 0);
               b.onclick = () => {
                 pid = id;

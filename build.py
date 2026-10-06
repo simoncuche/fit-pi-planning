@@ -61,7 +61,7 @@ full = f"""<!doctype html>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="PI Valencia">
+<meta name="apple-mobile-web-app-title" content="Fit PI">
 {head_links}
 </head>
 <body>
@@ -116,7 +116,7 @@ def icon_png(size):
 for name, size in (("icon-192.png", 192), ("icon-512.png", 512), ("apple-touch-icon.png", 180)):
     (DIST / name).write_bytes(icon_png(size))
 (DIST / "manifest.webmanifest").write_text(json.dumps({
-    "name": "PI Planning Valencia", "short_name": "PI Valencia", "start_url": "./", "scope": "./", "display": "standalone",
+    "name": "Fit PI Planning – The Game", "short_name": "Fit PI", "start_url": "./", "scope": "./", "display": "standalone",
     "orientation": "any", "background_color": "#1f7fb8", "theme_color": "#ff8c1a",
     "icons": [{"src": "icon-192.png", "sizes": "192x192", "type": "image/png"}, {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable"}],
 }, ensure_ascii=False), encoding="utf-8")

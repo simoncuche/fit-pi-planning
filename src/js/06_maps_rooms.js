@@ -175,8 +175,8 @@ MAP_BUILDERS.colba = () => {
   m.add(objTestBench(53, 26)); m.trig(53, 26, 2, 1, { label: _t('CANopen-Prüfstand'), act: () => Story.testBench() });
   m.add(objEbike(48, 28, '#f0a23a')); m.add(objEbike(54, 28, '#2a9aa0', true));
   m.spawn('lab', 50, 25, 0);
-  /* Backoffice Isabell (unten links beim Lift) */
-  m.add(objDesk(9, 23, 3, { coffee: true })); m.trig(9, 23, 3, 1, { label: _t('Backoffice: Isabell'), act: () => Story.isabellDesk() });
+  /* Backoffice Isabel (unten links beim Lift) */
+  m.add(objDesk(9, 23, 3, { coffee: true })); m.trig(9, 23, 3, 1, { label: _t('Backoffice: Isabel'), act: () => Story.isabellDesk() });
   m.add(objOfficeChair(10, 24)); m.decal((c) => { DECAL.logo(c, 8 * TS, 21 * TS + 8, 'BACKOFFICE', '#2a9aa0'); DECAL.shelf(c, 12 * TS + 6, 21 * TS + 4, 40); });
   m.add(objPlant(13, 23)); m.add(objPlant(5, 23));
   /* WC */
