@@ -20,6 +20,6 @@ function _t(s, ...vals) {
   if (LANG !== 'de') I18N_MISSING.add(s);
   return s;
 }
-function setLang(l) { if (!LANGS[l] || l === LANG) return; try { localStorage.setItem(LANG_KEY, l); } catch (e) {} location.reload(); }
+function setLang(l) { if (!LANGS[l] || l === LANG) return; try { localStorage.setItem(LANG_KEY, l); sessionStorage.setItem('pi-skip-intro', '1'); } catch (e) {} location.reload(); }
 /* Zahlen: 12,50 € (de/es) bzw. 12.50 € (en) */
 const numSep = () => (LANG === 'en' ? '.' : ',');

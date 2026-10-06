@@ -294,6 +294,8 @@ body.stick-on #stickHint { opacity: .2; }
 .cl-entry ul { margin: 0; padding-left: 18px; font-size: 13px; line-height: 1.45; color: var(--ink); }
 
 /* ---------- Ereignis-Ankündigung ---------- */
+#intro { position: fixed; inset: 0; z-index: 60; background: #141a2e; cursor: pointer; touch-action: none; }
+#intro canvas { display: block; }
 #cine { position: absolute; inset: 0; pointer-events: none; z-index: 34; overflow: hidden; }
 #cine .cbar { position: absolute; left: 0; right: 0; height: 18%; background: #0b1a2a; transform: translateY(-101%); transition: transform .45s cubic-bezier(.2,.8,.2,1); }
 #cine .cbar.bot { top: auto; bottom: 0; transform: translateY(101%); }

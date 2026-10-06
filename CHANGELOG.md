@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.4.0 – 06.10.2026
+- New start screen: a fast-cut comic-style trailer plays before the boarding pass – close-ups of the Colba crew with their one-liners, the Monday chaos, the PI plan bars, the highlights of the week, the hunger gag and finally "FIT PI PLANNING – THE GAME" with the key numbers (22 characters, 5 days, 20 minigames). Works in portrait on the phone and in landscape; tap or press a key to skip to the ending, tap again to start. A language switch skips it.
+
 ## 2.3.5 – 06.10.2026
 - The lift in the Colba office is now a proper cabin against the back wall with its doors facing the corridor (no more floating lift door); the stairs got a railing.
 - The ground-floor entrance hall of the Edificio Turia is smaller (16×9 instead of 20×12).
