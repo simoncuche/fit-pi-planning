@@ -152,6 +152,7 @@ const ACH = {
   bass: ['Hardrock', 'Carlos’ Bass-Solo im Garten gehört'],
   cuba: ['Havanna-Vibes', 'Mit Danny und Bea über Kuba geredet und einen echten Mojito getrunken'],
   grillmeister: ['Grillmeister', 'Am Grill nichts verbrannt'],
+  telemetrie: ['Telemetrie', 'Live-Daten eines E-Bikes am Diagnose-PC gelesen'],
   kotzen: ['Ups…', 'Sich übergeben müssen'],
   filmriss: ['Filmriss', 'Komplett abgestürzt'],
   kater: ['Kater besiegt', 'Einen Kater kuriert'],

@@ -80,7 +80,7 @@ const Story = {
         if (d === 4 && h >= 14.5 && !f.final) return 'Freitag 15:00: Final-Präsentation im Aufenthaltsraum (grosser Bildschirm)';
         if (f.final) return 'Planning abgeschlossen! Geniess Valencia – Samstag 10:00 Heimflug ab Flughafen';
         if (wd && h >= 13 && h < 14.5 && !f['lunch' + d]) return `Mittagessen im Aufenthaltsraum: ${LUNCH[d][1]}`;
-        if (d === 3 && h >= 15.5 && h < 18.5 && !f.teamRide) return 'Donnerstag: Team-Ausfahrt mit dem E-Bike – Aitor in der E-Bike-Ecke (Office)';
+        if (d === 3 && h >= 15.5 && h < 18.5 && !f.teamRide) return 'Donnerstag: Team-Ausfahrt mit dem E-Bike – Aitor im E-Bike-Raum neben der Lounge (Office)';
         if (wd && h >= 9 && h < 18) { const p = Math.round(G.S.plan[myTeam()]); return `${TEAMS[myTeam()].room}: PI-Plan weiterbringen (${p} %) – Poker, CANopen, ROAM, Board, Abhängigkeiten`; }
         const tips = [];
         if (G.S.money.eur < 15) tips.push('Fast pleite – Bankomat an der Calle Colón');
@@ -161,7 +161,7 @@ const Story = {
   },
   LOC: {
     airport: ['in der Ankunftshalle', 'airport'], hotel: ['im Hotel Kramer', 'city', 13, 30], breakfast: ['beim Frühstück im Hotel Kramer', 'hotel_lobby'], bar: ['in der Bar Pepita', 'bar', 24, 17], jamon: ['in der Jamonería Ramón', 'jamon', 26, 49], bodega: ['in der Bodega La Tinaja', 'bodega', 33, 49], disco: ['im Marina Beach Club', 'disco', 75, 62],
-    home: ['zuhause (kommt morgen mit Mofa oder Metro)', null], travel: ['noch unterwegs nach Valencia', null], commute: ['auf dem Weg ins Office (Mofa, Metro, Velo)', 'city', 76, 29], room: ['im Teamraum bei Colba', 'colba'], lounge: ['im Aufenthaltsraum bei Colba', 'colba'], balcony: ['auf dem Balkon (raucht)', 'colba'], backoffice: ['am Backoffice-Pult', 'colba'], lab: ['in der E-Bike-Ecke', 'colba'], lost: ['irgendwo im Office – sucht den Weg', 'colba'],
+    home: ['zuhause (kommt morgen mit Mofa oder Metro)', null], travel: ['noch unterwegs nach Valencia', null], commute: ['auf dem Weg ins Office (Mofa, Metro, Velo)', 'city', 76, 29], room: ['im Teamraum bei Colba', 'colba'], lounge: ['im Aufenthaltsraum bei Colba', 'colba'], balcony: ['auf dem Balkon (raucht)', 'colba'], backoffice: ['am Backoffice-Pult', 'colba'], lab: ['im E-Bike-Raum neben der Lounge', 'colba'], lost: ['irgendwo im Office – sucht den Weg', 'colba'],
     bbq: ['beim Asado in Dannys Garten', 'danny_house'],
     beach: ['am Strand der Malvarrosa', 'city', 90, 36], turia: ['mit dem Velo im Turia-Park', 'city', 46, 5], kart: ['auf der Kartbahn', 'city', 10, 63], crema: ['bei der Cremà auf der Plaza del Ayuntamiento', 'city', 34, 38],
   },
@@ -230,8 +230,8 @@ const Story = {
       const lseats = [[48, 8, 0], [51, 8, 0], [54, 8, 0], [48, 12, 3], [51, 12, 3], [54, 12, 3], [49, 15, 0], [50, 15, 0], [55, 15, 0], [56, 15, 0], [50, 6, 0], [52, 6, 0], [54, 6, 0], [56, 6, 0], [49, 18, 0], [52, 18, 0], [55, 18, 0]];
       (byLoc.lounge || []).forEach((id, i) => { const s = free(lseats, i); const sit = i < 6; put(id, s[0], s[1], s[2], { pose: sit ? 'sit' : 'stand', drinkIdle: !sit, sitIdle: sit, sortAdd: sit && s[2] === 0 ? 0 : 3, wander: sit ? null : { x: 47, y: 5, w: 11, h: 15 } }); });
       (byLoc.balcony || []).forEach((id) => put(id, 57, 23, 3, { smokeIdle: true }));
-      (byLoc.backoffice || []).forEach((id) => put(id, 49, 24, 0, { pose: 'sit', sitIdle: true, sortAdd: 2 }));
-      (byLoc.lab || []).forEach((id, i) => put(id, 7 + i * 2, 27, 3, { bubble: 'bike', bubbleT: 1e9 }));
+      (byLoc.backoffice || []).forEach((id) => put(id, 10, 24, 0, { pose: 'sit', sitIdle: true, sortAdd: 2 }));
+      (byLoc.lab || []).forEach((id, i) => put(id, 47 + (i % 4) * 2, 25 + Math.floor(i / 4) * 3, 0, { bubble: 'bike', bubbleT: 1e9 }));
       (byLoc.lost || []).forEach((id) => put(id, 30 + rint(0, 12), 23, rint(0, 3), { wander: { x: 24, y: 22, w: 20, h: 5 }, bubble: '?', bubbleT: 1e9 }));
       return;
     }
@@ -479,11 +479,39 @@ const Story = {
     if (this.isHere('fran', 'colba')) { await this.canopenQuiz(); return; }
     await this.say(null, 'Fran ist nicht da. Ohne ihn fasst man den Prüfstand besser nicht an – letztes Mal hat Guillem den Motor rückwärts laufen lassen.');
   },
+  async bikeComputer(n) {
+    const f = G.S.flags, d = today();
+    const bike = n === 0 ? 'Bike 1 (rot, Werkstatt-Firmware 2.4)' : 'Bike 2 (blau, OTA-Kandidat)';
+    const fran = this.isHere('fran', 'colba');
+    const o = await this.ask(null, `Diagnose-PC, per CAN-Kabel am ${bike} angeschlossen. Auf dem Bildschirm laufen die CANopen-Objekte durch.`, ['Telemetrie lesen', 'Firmware flashen (OTA)', 'Fehlerspeicher löschen', 'Lassen']);
+    if (o === 3) return;
+    passTime(5);
+    if (o === 0) {
+      const soc = 35 + Math.floor(Math.random() * 60), temp = 24 + Math.floor(Math.random() * 20);
+      await this.say(null, `0x6060 SOC ${soc} % · 0x6061 Spannung ${(36 + soc * 0.13).toFixed(1)} V · 0x6064 Motortemperatur ${temp} °C · 0x1001 Error-Register 0x00. Alles grün.`);
+      if (!f.telemetry) { f.telemetry = 1; achieve('telemetrie'); }
+      if (fran) await this.say('fran', pick(['Index 0x6060, Subindex 0. Merk dir das – kommt im Quiz.', 'Der Ladezustand kommt alle 100 Millisekunden per PDO. Wer das pollt, hat CANopen nicht verstanden.']));
+      return;
+    }
+    if (o === 1) {
+      if (!fran) {
+        if (Math.random() < 0.35) { mood(-3); f['brick' + d] = 1; await this.say(null, 'Blocktransfer … 41 % … Verbindung weg. Das Bike blinkt rot. Bootloader-Modus. Fran wird das morgen reparieren – mit einem Blick, den du nicht vergessen wirst.'); return; }
+        await this.say(null, 'SDO-Blocktransfer, 180 Sekunden, Neustart. Firmware 2.5 läuft. Glück gehabt – Fran hätte dich das nie allein machen lassen.'); mood(3); return;
+      }
+      await this.say('fran', 'OTA über CANopen: SDO-Blocktransfer, 1 Kilobyte pro Block, Checksumme am Ende. Schau zu.');
+      await this.say(null, 'Drei Minuten Fortschrittsbalken. Fran redet derweil über Index-Tabellen. Neustart – Firmware 2.5 läuft. Das ist der Prototyp für die OTA-Story von Rocket.');
+      if (!f['flash' + d]) { f['flash' + d] = 1; planAdd(teamOf('fran') === myTeam() ? myTeam() : 'indurain', 2); mood(3); }
+      return;
+    }
+    await this.say(null, 'Fehlerspeicher: 3 Einträge (Unterspannung, CAN-Timeout, Drehmomentsensor). Gelöscht.');
+    if (fran) await this.say('fran', 'Gelöscht?! Die wollte ich zuerst lesen. Der CAN-Timeout war mein Beweis gegen den Lieferanten.'); else await this.say(null, 'Fran wäre nicht begeistert – er liest Fehlerspeicher wie andere Leute Zeitungen.');
+    mood(-1);
+  },
   async officeBikes() {
     const d = today(), h = hourOf(G.S.time);
     if (d === 3 && h >= 15.5 && h < 18.5 && !G.S.flags.teamRide) { await this.teamRide(); return; }
     const o = await this.ask(null, 'Die Test-E-Bikes von Colba. Akku voll, Display an.', ['E-Bike ausleihen (Stadt)', 'Lassen']);
-    if (o === 0) { G.S.flags.battery = 100; G.S.flags.bikeFrom = 'colba'; await this.say(null, 'Du schiebst ein Test-Bike in den Lift. Unten geht die Fahrt los – im Office ist Fahren verboten (Isabell).'); G.S.flags.bikePending = 1; }
+    if (o === 0) { G.S.flags.battery = 100; G.S.flags.bikeFrom = 'colba'; await this.say(null, 'Du ziehst das CAN-Kabel ab und schiebst ein Test-Bike durch die Lounge zum Lift. Unten geht die Fahrt los – im Office ist Fahren verboten (Isabell).'); G.S.flags.bikePending = 1; }
   },
   async bikeRental(kind) {
     if (G.player.bike) { await this.say(null, 'Du sitzt schon auf einem E-Bike.'); return; }
@@ -868,7 +896,7 @@ const Story = {
       elena: { hello: ['Hola. Das Design-System ist fast fertig.', 'Kannst du das UI anschauen?', 'Farben, Abstände, Typografie. Der Rest ist Code.'], topics: [planTopic, { t: 'Design-System', f: async () => this.say('elena', pick(['Komponenten für alle Apps: Buttons, Karten, der Akku-Ring. Indurain nutzt sie für die Werkstatt-App.', 'Ich hab die Teamfarben gewählt: Rot für Indurain, Blau für Meeseeks, Orange für Rocket. Post-its passend.'])) }] },
       carlos: { hello: ['Das muss refactort werden.', 'Architektur zuerst.', 'Wer hat diesen Parser geschrieben? Ah. Ich. 2019.', 'Samstag Konzert. Hardrock. Ich bin am Bass.'], topics: [planTopic, { t: 'Refactoring', f: async () => this.say('carlos', pick(['Der CAN-Parser hat 4000 Zeilen in einer Datei. Nach dem Refactoring: 40 Dateien mit 100 Zeilen. Besser? Ja. Schneller? Wir werden sehen.', 'Ein Sprint Refactoring spart drei Sprints Bugs. Das sage ich jedem PO. Dominique hört zu.'])) }, { t: 'Deine Band', f: async () => { await this.say('carlos', pick(['„Stack Overflow“ – vier Entwickler, ein Proberaum in Benimaclet, Hardrock. Ich spiele Bass, weil der Bass die Architektur ist: Man hört ihn nicht, aber ohne ihn fällt alles zusammen.', 'Ein Riff ist auch nur eine Funktion: klein, wiederverwendbar, laut. Unser Drummer refactort nie. Darum spielen wir alles in E.', 'Mittwoch bei Danny bringe ich den Bass und den kleinen Verstärker mit. Nach dem Essen gibt es ein Solo. Die Nachbarn kennen es schon.'])); if (!f.bandTalk) { f.bandTalk = 1; mood(2); } } }] },
       salva: { hello: ['Kann ich dabei sein?', 'Ich hab das Buch über SAFe gelesen. Ganz.', 'Erklär mir das nochmal?'], topics: [planTopic, { t: 'Etwas erklären', f: async () => { await this.say('salva', pick(['Ein PI ist ein halbes Jahr? – Fünf Sprints plus einer für Innovation. Okay. Und das Board? – Alles klar, ich schreib es auf.', 'Lukas hat mir den Batteriepass erklärt. Zweimal. Ich glaube, ich kann ihn jetzt bauen.'])); planAdd('rocket', 0.5); mood(2); } }] },
-      aitor: { hello: ['Heute 60 Kilometer vor der Arbeit.', 'Es gibt immer eine Lösung.', 'Donnerstag Ausfahrt!'], topics: [planTopic, { t: 'Ausfahrt', f: async () => { if (d === 3 && h >= 15.5 && h < 18.5 && !f.teamRide && G.map.id === 'colba') await this.teamRide(); else await this.say('aitor', d === 3 ? 'Nachmittag ab halb vier, E-Bike-Ecke im Office. Turia-Park bis zum Strand.' : 'Donnerstagnachmittag fahren wir mit dem ganzen Team. Bis dahin: Turia-Park, jeden Morgen, allein.'); } }, { t: 'Lösungsorientiert?', f: async () => this.say('aitor', pick(['Jedes Problem ist ein Anstieg. Oben wartet die Abfahrt.', 'Rocket hat drei Leute und zehn Features. Lösung: fünf Features. Fertig.'])) }] },
+      aitor: { hello: ['Heute 60 Kilometer vor der Arbeit.', 'Es gibt immer eine Lösung.', 'Donnerstag Ausfahrt!'], topics: [planTopic, { t: 'Ausfahrt', f: async () => { if (d === 3 && h >= 15.5 && h < 18.5 && !f.teamRide && G.map.id === 'colba') await this.teamRide(); else await this.say('aitor', d === 3 ? 'Nachmittag ab halb vier, E-Bike-Raum neben der Lounge. Turia-Park bis zum Strand.' : 'Donnerstagnachmittag fahren wir mit dem ganzen Team. Bis dahin: Turia-Park, jeden Morgen, allein.'); } }, { t: 'Lösungsorientiert?', f: async () => this.say('aitor', pick(['Jedes Problem ist ein Anstieg. Oben wartet die Abfahrt.', 'Rocket hat drei Leute und zehn Features. Lösung: fünf Features. Fertig.'])) }] },
       isabell: { hello: ['Habt ihr die Klingel gefunden?', 'Mittagessen ist bestellt.', 'Ich organisiere, ihr plant.'], topics: [{ t: 'Hilfe anbieten', f: async () => { if (f['isa' + d]) { await this.say('isabell', 'Heute ist alles organisiert. Danke!'); return; } f['isa' + d] = 1; passTime(15); mood(3); const n = (f.isaHelp = (f.isaHelp || 0) + 1); await this.say('isabell', pick(['Kannst du die Stühle in den Aufenthaltsraum tragen? Danke! Du bist der Erste, der fragt.', 'Die Paella-Bestellung: 22 Portionen, zwei Vegetarier, ein Chris, der alles isst. Erledigt.', 'Hilf mir mit den Namensschildern – Robin hat seines im Hotel gelassen.'])); if (n >= 2) achieve('isabell'); } }, { t: 'Die Klingel', f: async () => this.say('isabell', 'Sie steht nicht dran. „C.B. Soluciones, 1º B“. Juanjo findet das lustig. Ich nicht. Aber ich lasse es so.') }, { t: 'Spesen', f: async () => this.say('isabell', 'Quittungen sammeln, Foto schicken, fertig. Nicht wie Luigi, der die Kart-Rechnung als „Teambuilding“ einreicht.') }] },
     };
     const L = P[id] || base;

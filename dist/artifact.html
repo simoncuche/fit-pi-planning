@@ -417,10 +417,10 @@ body:not(.touch) #actLabel { bottom: calc(env(safe-area-inset-bottom, 0px) + 18p
 </div>
 <script>
 /* ---- Version (aus CHANGELOG.md) ---- */
-const APP_VERSION = "1.1.0";
+const APP_VERSION = "1.2.0";
 const BUILD_VARIANT = "";
 const APP_VERSION_DATE = "06.10.2026";
-const CHANGELOG = [{"v": "1.1.0", "date": "06.10.2026", "items": ["Danny und Bea stammen aus Kuba: neue Gesprächsthemen, Ropa Vieja und Mojito cubano, Erfolg „Kuba“.", "Carlos spielt Bass in der Hardrock-Band „Stack Overflow“: Verstärker im Rocket-Raum, Bass-Solo mit eigenem Rock-Loop, Erfolg „Bass“.", "Neue Karte „Dannys Haus“ im Vorort: Garten mit Pool, Hängematte, Orangenbäumen und BBQ-Grill. Mittwochabend lädt Danny zum Asado ein (Taxi-Option „Zu Danny“); Grillen (Chorizo, Pollo, Maiskolben), Erfolge „Asado“ und „Grillmeister“."]}, {"v": "1.0.0", "date": "06.10.2026", "items": ["Erste Version: PI Planning in Valencia – Anreise per Flieger, Hotel Kramer, Colba-Hochhaus mit Klingel-Rätsel, drei Teams (Indurain, Meeseeks, Rocket), fünf Planning-Tage, Mittagessen im Aufenthaltsraum, Valencia-Freizeit (Segeln, Kart, Paella, Wein, Museum, Strandfussball, Disco, Padel, Fischmarkt), E-Bike-Ausfahrten und Fallas-Ereignisse."]}];
+const CHANGELOG = [{"v": "1.2.0", "date": "06.10.2026", "items": ["Alle Figuren nach Beschreibung überarbeitet: Fran (langer Bart, kräftig), Danny (kurze schwarze Haare, Stoppeln), Vicente (dünn, gross, grosses Lachen), Bea (lange schwarze Haare, rotes Oberteil), Estella (rote lange Haare), Juanjo (Brille, blaues T-Shirt), Luigi (schwarzes Polo), Oscar (spitze Nase, dunklerer Teint), Pablo (Bart), Pascal (lange hellbraune Haare, grünes T-Shirt), Chris (lange braune Locken, Surfershorts), Dominique (Polo, schwarze Hose), Simon (weisses Shirt), Salva (dezente Brille), Aitor (muskulös, grosse Nase), Carlos (schlank, gross, schwarz gekleidet), Isabell (lange braune Haare), Elena (leicht geschminkt, schwarze Haare).", "Neuer E-Bike-Raum direkt neben dem Aufenthaltsraum (durch dessen Tür erreichbar): zwei Diagnose-PCs, per CAN-Kabel an E-Bikes auf Montageständern angeschlossen, CANopen-Prüfstand und Test-Bikes. Am PC: Telemetrie lesen (Erfolg „Telemetrie“), Firmware per OTA flashen (mit Fran sicher, allein riskant), Fehlerspeicher löschen.", "Backoffice von Isabell liegt jetzt unten links beim Lift."]}, {"v": "1.1.0", "date": "06.10.2026", "items": ["Danny und Bea stammen aus Kuba: neue Gesprächsthemen, Ropa Vieja und Mojito cubano, Erfolg „Kuba“.", "Carlos spielt Bass in der Hardrock-Band „Stack Overflow“: Verstärker im Rocket-Raum, Bass-Solo mit eigenem Rock-Loop, Erfolg „Bass“.", "Neue Karte „Dannys Haus“ im Vorort: Garten mit Pool, Hängematte, Orangenbäumen und BBQ-Grill. Mittwochabend lädt Danny zum Asado ein (Taxi-Option „Zu Danny“); Grillen (Chorizo, Pollo, Maiskolben), Erfolge „Asado“ und „Grillmeister“."]}, {"v": "1.0.0", "date": "06.10.2026", "items": ["Erste Version: PI Planning in Valencia – Anreise per Flieger, Hotel Kramer, Colba-Hochhaus mit Klingel-Rätsel, drei Teams (Indurain, Meeseeks, Rocket), fünf Planning-Tage, Mittagessen im Aufenthaltsraum, Valencia-Freizeit (Segeln, Kart, Paella, Wein, Museum, Strandfussball, Disco, Padel, Fischmarkt), E-Bike-Ausfahrten und Fallas-Ereignisse."]}];
 /* ---- 00_util.js ---- */
 'use strict';
 /* ============ Grundwerkzeuge ============
@@ -1861,6 +1861,7 @@ const ACH = {
   bass: ['Hardrock', 'Carlos’ Bass-Solo im Garten gehört'],
   cuba: ['Havanna-Vibes', 'Mit Danny und Bea über Kuba geredet und einen echten Mojito getrunken'],
   grillmeister: ['Grillmeister', 'Am Grill nichts verbrannt'],
+  telemetrie: ['Telemetrie', 'Live-Daten eines E-Bikes am Diagnose-PC gelesen'],
   kotzen: ['Ups…', 'Sich übergeben müssen'],
   filmriss: ['Filmriss', 'Komplett abgestürzt'],
   kater: ['Kater besiegt', 'Einen Kater kuriert'],
@@ -2679,6 +2680,27 @@ function objPainting(x, y, kind) {
   }, { solid: false });
 }
 function objBikeStand(x, y, n = 3) { return mkObj(x, y, 2, 1, 14, (c, W, H) => { R(c, 0, H - 4, W, 4, '#8a8e94'); for (let k = 0; k < n; k++) { const bx = 4 + k * 14; ring(c, bx + 2, H - 8, 4, '#1e1e22'); ring(c, bx + 10, H - 8, 4, '#1e1e22'); line(c, bx + 2, H - 8, bx + 5, H - 16, ['#2a9aa0', '#e2554a', '#f0a23a'][k % 3]); line(c, bx + 5, H - 16, bx + 10, H - 8, ['#2a9aa0', '#e2554a', '#f0a23a'][k % 3]); R(c, bx + 3, H - 17, 4, 1, '#2a2a2e'); } }, { solid: true }); }
+/* Diagnose-Arbeitsplatz: Pult mit PC links, Kabel zum E-Bike auf dem Montageständer rechts */
+function objBikeRig(x, y, col = '#2a9aa0', o = {}) {
+  return mkObj(x, y, 3, 1, 22, (c, W, H) => {
+    /* Pult */
+    R(c, 0, 10, 44, H - 16, '#e8e4dc'); R(c, 0, 10, 44, 2, '#f8f4ec'); R(c, 1, H - 6, 3, 6, '#8a8e94'); R(c, 40, H - 6, 3, 6, '#8a8e94');
+    /* Monitor mit CAN-Trace */
+    R(c, 6, 0, 24, 18, '#3a3a40'); R(c, 7, 1, 22, 14, '#0a1a12'); for (let k = 0; k < 10; k++) R(c, 8 + k * 2, 3 + ((k * 7) % 9), 1, 1, '#3af07a'); line(c, 8, 12, 28, 12, '#1f6f4a'); R(c, 8, 4, 10, 1, '#7ad0f0'); R(c, 16, 15, 4, 3, '#5a5e64');
+    /* Tastatur, Tower */
+    R(c, 8, 20, 18, 3, '#c6ccd2'); R(c, 32, 4, 9, 20, '#2a2a2e'); P(c, 34, 6, '#3af07a'); P(c, 37, 6, '#ff9a3a');
+    /* CAN-Kabel zum Bike */
+    line(c, 41, 14, 50, 12, '#e8c23a'); line(c, 50, 12, 56, 18, '#e8c23a'); R(c, 49, 10, 3, 3, '#2a2a2e');
+    /* Montageständer */
+    R(c, 58, H - 2, 12, 2, '#5a5e64'); R(c, 63, H - 14, 2, 12, '#5a5e64');
+    /* E-Bike */
+    const cx = 60, by = H - 4;
+    ring(c, cx - 7, by - 4, 5, '#1e1e22'); ring(c, cx + 7, by - 4, 5, '#1e1e22'); P(c, cx - 7, by - 4, '#8a8e94'); P(c, cx + 7, by - 4, '#8a8e94');
+    line(c, cx - 7, by - 4, cx - 2, by - 12, col); line(c, cx - 2, by - 12, cx + 6, by - 12, col); line(c, cx + 6, by - 12, cx + 7, by - 4, col); line(c, cx - 7, by - 4, cx + 2, by - 4, col); line(c, cx + 2, by - 4, cx - 2, by - 12, shade(col, -0.3));
+    R(c, cx - 3, by - 11, 7, 3, '#2a2a2e'); R(c, cx + 4, by - 16, 2, 5, '#2a2a2e'); R(c, cx + 2, by - 17, 6, 1, '#2a2a2e'); R(c, cx - 4, by - 14, 4, 2, '#5a5e64'); P(c, cx + 8, by - 15, '#f4f0a0');
+    if (o.err) { P(c, cx + 5, by - 13, '#ff3a3a'); } else P(c, cx + 5, by - 13, '#3af07a');
+  }, { solid: true, emit: (c) => { R(c, 7, 1, 22, 14, 'rgba(60,240,120,0.3)'); } });
+}
 function objTestBench(x, y) { return mkObj(x, y, 2, 1, 18, (c, W, H) => { R(c, 0, 4, W, H - 8, '#5a5e64'); R(c, 0, 4, W, 2, '#8a8e94'); R(c, 4, 6, 18, 10, '#1a1a1e'); R(c, 5, 7, 16, 8, '#0a2a1a'); for (let k = 0; k < 6; k++) R(c, 6, 8 + k, 4 + (k * 5) % 10, 1, '#3af07a'); R(c, 26, 8, 8, 6, '#2a2a2e'); for (let k = 0; k < 4; k++) P(c, 27 + k * 2, 10, k % 2 ? '#ff3a3a' : '#3af07a'); R(c, 36, 6, 10, 10, '#2a9aa0'); R(c, 37, 7, 8, 3, '#f4f0e6'); line(c, 22, 12, 26, 11, '#e8c23a'); line(c, 34, 11, 36, 10, '#e8c23a'); R(c, 2, H - 4, 3, 4, '#3a3c40'); R(c, W - 5, H - 4, 3, 4, '#3a3c40'); }, { solid: true, emit: (c) => R(c, 5, 7, 16, 8, 'rgba(60,240,120,0.35)') }); }
 function objAshtray(x, y) { return mkObj(x, y, 1, 1, 18, (c, W, H) => { R(c, 8, 6, 8, H - 8, '#8a9096'); R(c, 8, 6, 2, H - 8, '#b0b6bc'); R(c, 7, 4, 10, 3, '#5a6066'); R(c, 8, 4, 8, 1, '#c8ccd0'); P(c, 10, 5, '#ff8a3a'); }, { solid: true }); }
 function objOrangeCart(x, y) { return mkObj(x, y, 2, 1, 20, (c, W, H) => { R(c, 2, 8, W - 4, 10, '#8a5e3a'); R(c, 2, 8, W - 4, 2, '#a87a50'); for (let k = 0; k < 10; k++) E(c, 6 + (k % 5) * 8, 6 + Math.floor(k / 5) * 4, 2.5, 2.5, '#ff8c1a'); ring(c, 8, H - 4, 4, '#2a2a2e'); ring(c, W - 8, H - 4, 4, '#2a2a2e'); R(c, W / 2 - 14, 0, 28, 6, '#3f8e4b'); pxText(c, 'ZUMO', W / 2 - 7, 1, '#ffffff'); }, { solid: true }); }
@@ -3133,14 +3155,26 @@ MAP_BUILDERS.colba = () => {
   m.decal((c) => { R(c, 56 * TS, 21 * TS, 2 * TS, 4 * TS, '#c8b8a0'); for (let k = 0; k < 2 * TS; k += 4) R(c, 56 * TS + k, 21 * TS, 2, 6, '#5a5048'); R(c, 56 * TS, 21 * TS + 6, 2 * TS, 1, '#5a5048'); });
   m.add(objAshtray(56, 22)); m.trig(56, 22, 1, 1, { label: 'Balkon: Eine rauchen', act: () => Story.balcony() });
   m.add(objPlanter(57, 24, '#e8402e'));
-  /* Backoffice Isabell (unten rechts im grossen Raum), E-Bike-Ecke, WC */
-  m.add(objDesk(48, 23, 3, { coffee: true })); m.trig(48, 23, 3, 1, { label: 'Backoffice: Isabell', act: () => Story.isabellDesk() });
-  m.add(objOfficeChair(49, 24)); m.decal((c) => DECAL.logo(c, 47 * TS, 21 * TS + 8, 'BACKOFFICE', '#2a9aa0'));
-  m.add(objPlant(53, 23));
-  m.add(objTestBench(2, 24)); m.trig(2, 24, 2, 1, { label: 'CANopen-Prüfstand', act: () => Story.testBench() });
-  m.add(objBikeStand(5, 24, 3)); m.trig(5, 24, 2, 1, { label: 'Test-E-Bikes', act: () => Story.officeBikes() });
-  m.add(objEbike(8, 25, '#e2554a')); m.add(objEbike(10, 25, '#2fa0d8', true));
-  m.decal((c) => { DECAL.logo(c, 2 * TS, 21 * TS + 8, 'LAB', '#e2554a'); DECAL.poster(c, 12 * TS, 21 * TS + 4, '#2a9aa0', 'CAN'); DECAL.poster(c, 14 * TS, 21 * TS + 4, '#e2554a', 'OTA'); });
+  /* E-Bike-Raum (direkt unter dem Aufenthaltsraum, durch dessen Tür erreichbar): Diagnose-PCs am Kabel, Prüfstand, Test-Bikes */
+  roomBox(46, 20, 10, 10, 2, T.TILE, 0);
+  for (const yy of [20, 21, 22]) { m.set(52, yy, T.TILE, 1); m.set(53, yy, T.TILE, 1); }
+  m.set(46, 26, T.TILE, 1); m.set(46, 27, T.TILE, 1); m.set(55, 27, T.TILE, 1);
+  m.decal((c) => {
+    R(c, 52 * TS, 20 * TS, 2 * TS, 3 * TS, '#e4e8ec'); R(c, 52 * TS + 2, 20 * TS, 2 * TS - 4, 3 * TS, '#8a9098'); R(c, 52 * TS + 4, 20 * TS, 2 * TS - 8, 3 * TS, '#b4bcc4');
+    DECAL.logo(c, 47 * TS, 21 * TS + 8, 'BIKE LAB', '#e2554a'); DECAL.poster(c, 51 * TS + 4, 21 * TS + 4, '#2a9aa0', 'CAN'); DECAL.poster(c, 54 * TS + 4, 21 * TS + 4, '#e2554a', 'OTA');
+    R(c, 46 * TS, 26 * TS, TS, 2 * TS, '#e4e8ec'); R(c, 46 * TS + 2, 26 * TS + 2, TS - 4, 2 * TS - 4, '#8a9098');
+  });
+  m.add(objBikeRig(47, 23, '#e2554a')); m.trig(47, 23, 3, 1, { label: 'Diagnose-PC · Bike 1', act: () => Story.bikeComputer(0) });
+  m.add(objBikeRig(51, 23, '#2fa0d8')); m.trig(51, 23, 3, 1, { label: 'Diagnose-PC · Bike 2', act: () => Story.bikeComputer(1) });
+  m.add(objBikeStand(49, 26, 3)); m.trig(49, 26, 2, 1, { label: 'Test-E-Bikes', act: () => Story.officeBikes() });
+  m.add(objTestBench(53, 26)); m.trig(53, 26, 2, 1, { label: 'CANopen-Prüfstand', act: () => Story.testBench() });
+  m.add(objEbike(48, 28, '#f0a23a')); m.add(objEbike(54, 28, '#2a9aa0', true));
+  m.spawn('lab', 50, 25, 0);
+  /* Backoffice Isabell (unten links beim Lift) */
+  m.add(objDesk(9, 23, 3, { coffee: true })); m.trig(9, 23, 3, 1, { label: 'Backoffice: Isabell', act: () => Story.isabellDesk() });
+  m.add(objOfficeChair(10, 24)); m.decal((c) => { DECAL.logo(c, 8 * TS, 21 * TS + 8, 'BACKOFFICE', '#2a9aa0'); DECAL.shelf(c, 12 * TS + 6, 21 * TS + 4, 40); });
+  m.add(objPlant(13, 23)); m.add(objPlant(5, 23));
+  /* WC */
   m.fill(16, 21, 6, 1, T.WALL); m.fill(21, 21, 1, 5, T.WALL); m.fill(16, 25, 6, 1, T.WALL); m.fill(17, 22, 4, 3, T.TILE, 0); m.set(18, 25, T.TILE, 1);
   m.decal((c) => { R(c, 18 * TS, 25 * TS, TS, TS, '#e4e8ec'); R(c, 18 * TS + 2, 25 * TS + 2, TS - 4, 10, '#8a9098'); pxText(c, 'WC', 18 * TS + 6, 22 * TS - 6, '#2a2a30'); });
   m.add(mkObj(19, 22, 1, 1, 6, (c, W, H) => { R(c, 4, 0, 14, 8, '#f4f6f8'); E(c, 11, 15, 6, 6, '#f4f6f8'); E(c, 11, 15, 4, 4, '#c9dce6'); }, { solid: true }));
@@ -4431,27 +4465,27 @@ const SWISS = ['simon', 'luigi', 'dominique', 'robin', 'lukas'];
 const CREW = TRAVELLERS.map((id) => Object.assign({ id }, PEOPLE[id]));
 /* Vordefiniertes Aussehen (Indizes siehe LOOK_OPTS in 02_look.js) */
 const PEOPLE_LOOKS = {
-  simon: { fem: 0, skin: 1, build: 1, height: 1, head: 0, hair: 3, hairCol: 3, beard: 1, beardCol: 3, eyes: 0, eyeCol: 4, glasses: 0, top: 2, topCol: 7, print: 0, pants: 1, pantsCol: 5, shoes: 0, shoesCol: 0, acc: 6, hat: 0, mark: 0, jewel: 0 },
-  luigi: { fem: 0, skin: 3, build: 2, height: 1, head: 2, hair: 2, hairCol: 0, beard: 4, beardCol: 0, eyes: 0, eyeCol: 1, glasses: 0, top: 9, topCol: 0, print: 0, pants: 0, pantsCol: 2, shoes: 0, shoesCol: 4, hat: 1, hatCol: 0, acc: 0, mark: 0, jewel: 0 },
-  dominique: { fem: 0, skin: 1, build: 1, height: 1, head: 3, hair: 1, hairCol: 1, beard: 1, beardCol: 1, eyes: 3, eyeCol: 6, glasses: 0, top: 3, topCol: 16, print: 0, pants: 2, pantsCol: 7, shoes: 1, shoesCol: 1, hat: 0, acc: 7, mark: 6, jewel: 0 },
+  simon: { fem: 0, skin: 1, build: 1, height: 1, head: 0, hair: 2, hairCol: 2, beard: 0, beardCol: 2, eyes: 0, eyeCol: 4, glasses: 0, top: 0, topCol: 14, print: 0, pants: 0, pantsCol: 0, shoes: 0, shoesCol: 0, acc: 6, hat: 0, mark: 0, jewel: 0 },
+  luigi: { fem: 0, skin: 2, build: 2, height: 1, head: 2, hair: 2, hairCol: 4, beard: 1, beardCol: 4, eyes: 0, eyeCol: 1, glasses: 0, top: 2, topCol: 17, print: 0, pants: 0, pantsCol: 0, shoes: 0, shoesCol: 1, hat: 0, acc: 0, mark: 0, jewel: 0 },
+  dominique: { fem: 0, skin: 1, build: 1, height: 1, head: 3, hair: 2, hairCol: 2, beard: 1, beardCol: 2, eyes: 3, eyeCol: 6, glasses: 0, top: 2, topCol: 11, print: 0, pants: 1, pantsCol: 2, shoes: 1, shoesCol: 1, hat: 0, acc: 7, mark: 6, jewel: 0 },
   robin: { fem: 0, skin: 1, build: 2, height: 2, head: 2, hair: 2, hairCol: 9, beard: 0, beardCol: 8, eyes: 0, eyeCol: 4, glasses: 2, top: 7, topCol: 11, print: 0, pants: 5, pantsCol: 3, shoes: 3, shoesCol: 2, hat: 0, acc: 3, mark: 0, jewel: 0 },
   lukas: { fem: 0, skin: 2, build: 1, height: 1, head: 1, hair: 6, hairCol: 4, beard: 1, beardCol: 4, eyes: 4, eyeCol: 3, glasses: 0, top: 0, topCol: 0, print: 2, pants: 0, pantsCol: 0, shoes: 2, shoesCol: 2, hat: 0, acc: 1, mark: 1, jewel: 0 },
-  pascal: { fem: 0, skin: 1, build: 0, height: 2, head: 3, hair: 4, hairCol: 0, beard: 4, beardCol: 0, eyes: 0, eyeCol: 6, glasses: 1, top: 0, topCol: 17, print: 0, pants: 2, pantsCol: 2, shoes: 0, shoesCol: 0, hat: 3, hatCol: 0, acc: 6, mark: 0, jewel: 2 },
-  chris: { fem: 0, skin: 5, build: 2, height: 2, head: 0, hair: 9, hairCol: 5, beard: 1, beardCol: 5, eyes: 0, eyeCol: 4, glasses: 3, top: 0, topCol: 8, print: 6, pants: 6, pantsCol: 12, shoes: 6, shoesCol: 1, hat: 0, acc: 2, mark: 0, jewel: 0 },
-  danny: { fem: 0, skin: 7, build: 3, height: 1, head: 5, hair: 10, hairCol: 2, beard: 4, beardCol: 2, eyes: 0, eyeCol: 1, glasses: 2, top: 1, topCol: 9, print: 0, pants: 1, pantsCol: 8, shoes: 3, shoesCol: 2, hat: 0, acc: 0, mark: 0, jewel: 0 },
-  fran: { fem: 0, skin: 4, build: 1, height: 1, head: 0, hair: 9, hairCol: 1, beard: 5, beardCol: 1, eyes: 0, eyeCol: 1, glasses: 0, top: 0, topCol: 17, print: 0, pants: 0, pantsCol: 2, shoes: 1, shoesCol: 1, hat: 0, acc: 5, mark: 7, jewel: 0 },
-  estella: { fem: 1, skin: 4, build: 0, height: 0, head: 4, hair: 12, hairCol: 0, beard: 0, eyes: 1, eyeCol: 1, glasses: 0, top: 0, topCol: 4, print: 0, pants: 0, pantsCol: 1, shoes: 0, shoesCol: 0, hat: 0, acc: 1, mark: 0, jewel: 3 },
-  bea: { fem: 1, skin: 6, build: 1, height: 1, head: 0, hair: 13, hairCol: 1, beard: 0, eyes: 0, eyeCol: 0, glasses: 1, top: 4, topCol: 7, print: 0, pants: 1, pantsCol: 2, shoes: 0, shoesCol: 1, hat: 0, acc: 0, mark: 0, jewel: 1 },
-  vicente: { fem: 0, skin: 5, build: 1, height: 1, head: 1, hair: 2, hairCol: 0, beard: 6, beardCol: 0, eyes: 0, eyeCol: 1, glasses: 0, top: 3, topCol: 11, print: 4, pants: 4, pantsCol: 3, shoes: 5, shoesCol: 9, hat: 2, hatCol: 0, acc: 0, mark: 0, jewel: 0 },
-  juanjo: { fem: 0, skin: 4, build: 2, height: 1, head: 2, hair: 2, hairCol: 9, beard: 1, beardCol: 8, eyes: 0, eyeCol: 0, glasses: 0, top: 2, topCol: 14, print: 0, pants: 1, pantsCol: 5, shoes: 3, shoesCol: 2, hat: 0, acc: 3, mark: 0, jewel: 0 },
-  oscar: { fem: 0, skin: 3, build: 1, height: 1, head: 3, hair: 1, hairCol: 0, beard: 0, beardCol: 0, eyes: 2, eyeCol: 1, glasses: 2, top: 1, topCol: 15, print: 0, pants: 0, pantsCol: 8, shoes: 3, shoesCol: 1, hat: 0, acc: 0, mark: 0, jewel: 0 },
-  pablo: { fem: 0, skin: 5, build: 2, height: 1, head: 0, hair: 5, hairCol: 1, beard: 3, beardCol: 1, eyes: 0, eyeCol: 1, glasses: 0, top: 0, topCol: 14, print: 0, pants: 3, pantsCol: 5, shoes: 4, shoesCol: 2, hat: 0, acc: 2, mark: 0, jewel: 0 },
+  pascal: { fem: 0, skin: 1, build: 0, height: 2, head: 3, hair: 14, hairCol: 3, beard: 0, beardCol: 3, eyes: 0, eyeCol: 6, glasses: 0, top: 0, topCol: 6, print: 0, pants: 2, pantsCol: 2, shoes: 0, shoesCol: 0, hat: 0, acc: 6, mark: 0, jewel: 2 },
+  chris: { fem: 0, skin: 5, build: 2, height: 2, head: 0, hair: 6, hairCol: 2, beard: 0, beardCol: 2, eyes: 0, eyeCol: 4, glasses: 0, top: 0, topCol: 8, print: 6, pants: 6, pantsCol: 12, shoes: 6, shoesCol: 1, hat: 0, acc: 2, mark: 0, jewel: 0 },
+  danny: { fem: 0, skin: 5, build: 1, height: 1, head: 2, hair: 2, hairCol: 0, beard: 1, beardCol: 0, eyes: 0, eyeCol: 1, glasses: 0, top: 1, topCol: 9, print: 0, pants: 1, pantsCol: 8, shoes: 3, shoesCol: 2, hat: 0, acc: 0, mark: 0, jewel: 0 },
+  fran: { fem: 0, skin: 3, build: 3, height: 1, head: 1, hair: 2, hairCol: 2, beard: 5, beardCol: 2, eyes: 0, eyeCol: 0, glasses: 0, top: 0, topCol: 16, print: 0, pants: 0, pantsCol: 0, shoes: 1, shoesCol: 1, hat: 0, acc: 5, mark: 7, jewel: 0, mouth: 0 },
+  estella: { fem: 1, skin: 2, build: 0, height: 0, head: 4, hair: 14, hairCol: 7, beard: 0, eyes: 1, eyeCol: 3, glasses: 0, top: 0, topCol: 4, print: 0, pants: 0, pantsCol: 1, shoes: 0, shoesCol: 0, hat: 0, acc: 1, mark: 1, jewel: 3 },
+  bea: { fem: 1, skin: 6, build: 1, height: 1, head: 0, hair: 14, hairCol: 0, beard: 0, eyes: 0, eyeCol: 1, glasses: 0, top: 0, topCol: 0, print: 0, pants: 1, pantsCol: 2, shoes: 0, shoesCol: 1, hat: 0, acc: 0, mark: 0, jewel: 1 },
+  vicente: { fem: 0, skin: 4, build: 0, height: 2, head: 3, hair: 1, hairCol: 0, beard: 0, beardCol: 0, eyes: 0, eyeCol: 1, glasses: 0, top: 0, topCol: 14, print: 4, pants: 0, pantsCol: 0, shoes: 0, shoesCol: 0, hat: 0, acc: 0, mark: 0, jewel: 0, mouth: 2 },
+  juanjo: { fem: 0, skin: 4, build: 1, height: 1, head: 2, hair: 3, hairCol: 0, beard: 0, beardCol: 0, eyes: 0, eyeCol: 0, glasses: 2, top: 0, topCol: 10, print: 0, pants: 0, pantsCol: 0, shoes: 0, shoesCol: 0, hat: 0, acc: 3, mark: 0, jewel: 0 },
+  oscar: { fem: 0, skin: 6, build: 1, height: 1, head: 3, hair: 2, hairCol: 0, beard: 0, beardCol: 0, eyes: 2, eyeCol: 1, glasses: 0, top: 1, topCol: 15, print: 0, pants: 0, pantsCol: 8, shoes: 3, shoesCol: 1, hat: 0, acc: 0, mark: 0, jewel: 0, nose: 3 },
+  pablo: { fem: 0, skin: 4, build: 2, height: 1, head: 0, hair: 2, hairCol: 0, beard: 4, beardCol: 0, eyes: 0, eyeCol: 1, glasses: 0, top: 0, topCol: 14, print: 0, pants: 3, pantsCol: 5, shoes: 4, shoesCol: 2, hat: 0, acc: 2, mark: 0, jewel: 0 },
   guillem: { fem: 0, skin: 3, build: 0, height: 1, head: 1, hair: 11, hairCol: 0, beard: 0, beardCol: 0, eyes: 4, eyeCol: 1, glasses: 0, top: 3, topCol: 12, print: 0, pants: 0, pantsCol: 1, shoes: 0, shoesCol: 4, hat: 0, acc: 0, mark: 0, jewel: 0 },
-  elena: { fem: 1, skin: 4, build: 1, height: 1, head: 4, hair: 14, hairCol: 1, beard: 0, eyes: 1, eyeCol: 1, glasses: 5, top: 11, topCol: 14, print: 0, pants: 8, pantsCol: 2, shoes: 3, shoesCol: 1, hat: 0, acc: 6, mark: 3, jewel: 1 },
-  carlos: { fem: 0, skin: 3, build: 1, height: 2, head: 3, hair: 9, hairCol: 9, beard: 6, beardCol: 8, eyes: 3, eyeCol: 0, glasses: 2, top: 0, topCol: 17, print: 0, pants: 1, pantsCol: 9, shoes: 3, shoesCol: 2, hat: 0, acc: 0, mark: 0, jewel: 0 },
-  salva: { fem: 0, skin: 4, build: 1, height: 0, head: 1, hair: 2, hairCol: 1, beard: 1, beardCol: 1, eyes: 1, eyeCol: 0, glasses: 0, top: 0, topCol: 10, print: 4, pants: 0, pantsCol: 0, shoes: 0, shoesCol: 5, hat: 0, acc: 1, mark: 0, jewel: 0 },
-  aitor: { fem: 0, skin: 4, build: 0, height: 1, head: 0, hair: 1, hairCol: 1, beard: 1, beardCol: 1, eyes: 0, eyeCol: 0, glasses: 4, top: 10, topCol: 2, print: 0, pants: 7, pantsCol: 2, shoes: 7, shoesCol: 1, hat: 5, hatCol: 8, acc: 0, mark: 0, jewel: 0 },
-  isabell: { fem: 1, skin: 2, build: 1, height: 1, head: 0, hair: 12, hairCol: 5, beard: 0, eyes: 0, eyeCol: 4, glasses: 0, top: 11, topCol: 8, print: 0, pants: 5, pantsCol: 2, shoes: 3, shoesCol: 1, hat: 0, acc: 3, mark: 0, jewel: 1 },
+  elena: { fem: 1, skin: 3, build: 1, height: 1, head: 4, hair: 14, hairCol: 0, beard: 0, eyes: 1, eyeCol: 1, glasses: 0, top: 11, topCol: 13, print: 0, pants: 8, pantsCol: 2, shoes: 3, shoesCol: 1, hat: 0, acc: 6, mark: 4, jewel: 1, mouth: 4 },
+  carlos: { fem: 0, skin: 3, build: 0, height: 2, head: 3, hair: 2, hairCol: 2, beard: 0, beardCol: 2, eyes: 3, eyeCol: 0, glasses: 0, top: 0, topCol: 17, print: 0, pants: 1, pantsCol: 2, shoes: 1, shoesCol: 1, hat: 0, acc: 0, mark: 0, jewel: 0 },
+  salva: { fem: 0, skin: 4, build: 1, height: 0, head: 1, hair: 2, hairCol: 2, beard: 0, beardCol: 2, eyes: 1, eyeCol: 0, glasses: 1, top: 0, topCol: 10, print: 4, pants: 0, pantsCol: 0, shoes: 0, shoesCol: 5, hat: 0, acc: 1, mark: 0, jewel: 0 },
+  aitor: { fem: 0, skin: 4, build: 2, height: 1, head: 2, hair: 2, hairCol: 1, beard: 1, beardCol: 1, eyes: 0, eyeCol: 0, glasses: 0, top: 0, topCol: 2, print: 0, pants: 0, pantsCol: 0, shoes: 5, shoesCol: 1, hat: 0, acc: 3, mark: 0, jewel: 0, nose: 2 },
+  isabell: { fem: 1, skin: 2, build: 1, height: 1, head: 0, hair: 14, hairCol: 2, beard: 0, eyes: 0, eyeCol: 4, glasses: 0, top: 11, topCol: 8, print: 0, pants: 5, pantsCol: 2, shoes: 3, shoesCol: 1, hat: 0, acc: 3, mark: 0, jewel: 1 },
 };
 function personLook(id) {
   const p = PEOPLE[id];
@@ -4569,7 +4603,7 @@ const Story = {
         if (d === 4 && h >= 14.5 && !f.final) return 'Freitag 15:00: Final-Präsentation im Aufenthaltsraum (grosser Bildschirm)';
         if (f.final) return 'Planning abgeschlossen! Geniess Valencia – Samstag 10:00 Heimflug ab Flughafen';
         if (wd && h >= 13 && h < 14.5 && !f['lunch' + d]) return `Mittagessen im Aufenthaltsraum: ${LUNCH[d][1]}`;
-        if (d === 3 && h >= 15.5 && h < 18.5 && !f.teamRide) return 'Donnerstag: Team-Ausfahrt mit dem E-Bike – Aitor in der E-Bike-Ecke (Office)';
+        if (d === 3 && h >= 15.5 && h < 18.5 && !f.teamRide) return 'Donnerstag: Team-Ausfahrt mit dem E-Bike – Aitor im E-Bike-Raum neben der Lounge (Office)';
         if (wd && h >= 9 && h < 18) { const p = Math.round(G.S.plan[myTeam()]); return `${TEAMS[myTeam()].room}: PI-Plan weiterbringen (${p} %) – Poker, CANopen, ROAM, Board, Abhängigkeiten`; }
         const tips = [];
         if (G.S.money.eur < 15) tips.push('Fast pleite – Bankomat an der Calle Colón');
@@ -4650,7 +4684,7 @@ const Story = {
   },
   LOC: {
     airport: ['in der Ankunftshalle', 'airport'], hotel: ['im Hotel Kramer', 'city', 13, 30], breakfast: ['beim Frühstück im Hotel Kramer', 'hotel_lobby'], bar: ['in der Bar Pepita', 'bar', 24, 17], jamon: ['in der Jamonería Ramón', 'jamon', 26, 49], bodega: ['in der Bodega La Tinaja', 'bodega', 33, 49], disco: ['im Marina Beach Club', 'disco', 75, 62],
-    home: ['zuhause (kommt morgen mit Mofa oder Metro)', null], travel: ['noch unterwegs nach Valencia', null], commute: ['auf dem Weg ins Office (Mofa, Metro, Velo)', 'city', 76, 29], room: ['im Teamraum bei Colba', 'colba'], lounge: ['im Aufenthaltsraum bei Colba', 'colba'], balcony: ['auf dem Balkon (raucht)', 'colba'], backoffice: ['am Backoffice-Pult', 'colba'], lab: ['in der E-Bike-Ecke', 'colba'], lost: ['irgendwo im Office – sucht den Weg', 'colba'],
+    home: ['zuhause (kommt morgen mit Mofa oder Metro)', null], travel: ['noch unterwegs nach Valencia', null], commute: ['auf dem Weg ins Office (Mofa, Metro, Velo)', 'city', 76, 29], room: ['im Teamraum bei Colba', 'colba'], lounge: ['im Aufenthaltsraum bei Colba', 'colba'], balcony: ['auf dem Balkon (raucht)', 'colba'], backoffice: ['am Backoffice-Pult', 'colba'], lab: ['im E-Bike-Raum neben der Lounge', 'colba'], lost: ['irgendwo im Office – sucht den Weg', 'colba'],
     bbq: ['beim Asado in Dannys Garten', 'danny_house'],
     beach: ['am Strand der Malvarrosa', 'city', 90, 36], turia: ['mit dem Velo im Turia-Park', 'city', 46, 5], kart: ['auf der Kartbahn', 'city', 10, 63], crema: ['bei der Cremà auf der Plaza del Ayuntamiento', 'city', 34, 38],
   },
@@ -4719,8 +4753,8 @@ const Story = {
       const lseats = [[48, 8, 0], [51, 8, 0], [54, 8, 0], [48, 12, 3], [51, 12, 3], [54, 12, 3], [49, 15, 0], [50, 15, 0], [55, 15, 0], [56, 15, 0], [50, 6, 0], [52, 6, 0], [54, 6, 0], [56, 6, 0], [49, 18, 0], [52, 18, 0], [55, 18, 0]];
       (byLoc.lounge || []).forEach((id, i) => { const s = free(lseats, i); const sit = i < 6; put(id, s[0], s[1], s[2], { pose: sit ? 'sit' : 'stand', drinkIdle: !sit, sitIdle: sit, sortAdd: sit && s[2] === 0 ? 0 : 3, wander: sit ? null : { x: 47, y: 5, w: 11, h: 15 } }); });
       (byLoc.balcony || []).forEach((id) => put(id, 57, 23, 3, { smokeIdle: true }));
-      (byLoc.backoffice || []).forEach((id) => put(id, 49, 24, 0, { pose: 'sit', sitIdle: true, sortAdd: 2 }));
-      (byLoc.lab || []).forEach((id, i) => put(id, 7 + i * 2, 27, 3, { bubble: 'bike', bubbleT: 1e9 }));
+      (byLoc.backoffice || []).forEach((id) => put(id, 10, 24, 0, { pose: 'sit', sitIdle: true, sortAdd: 2 }));
+      (byLoc.lab || []).forEach((id, i) => put(id, 47 + (i % 4) * 2, 25 + Math.floor(i / 4) * 3, 0, { bubble: 'bike', bubbleT: 1e9 }));
       (byLoc.lost || []).forEach((id) => put(id, 30 + rint(0, 12), 23, rint(0, 3), { wander: { x: 24, y: 22, w: 20, h: 5 }, bubble: '?', bubbleT: 1e9 }));
       return;
     }
@@ -4968,11 +5002,39 @@ const Story = {
     if (this.isHere('fran', 'colba')) { await this.canopenQuiz(); return; }
     await this.say(null, 'Fran ist nicht da. Ohne ihn fasst man den Prüfstand besser nicht an – letztes Mal hat Guillem den Motor rückwärts laufen lassen.');
   },
+  async bikeComputer(n) {
+    const f = G.S.flags, d = today();
+    const bike = n === 0 ? 'Bike 1 (rot, Werkstatt-Firmware 2.4)' : 'Bike 2 (blau, OTA-Kandidat)';
+    const fran = this.isHere('fran', 'colba');
+    const o = await this.ask(null, `Diagnose-PC, per CAN-Kabel am ${bike} angeschlossen. Auf dem Bildschirm laufen die CANopen-Objekte durch.`, ['Telemetrie lesen', 'Firmware flashen (OTA)', 'Fehlerspeicher löschen', 'Lassen']);
+    if (o === 3) return;
+    passTime(5);
+    if (o === 0) {
+      const soc = 35 + Math.floor(Math.random() * 60), temp = 24 + Math.floor(Math.random() * 20);
+      await this.say(null, `0x6060 SOC ${soc} % · 0x6061 Spannung ${(36 + soc * 0.13).toFixed(1)} V · 0x6064 Motortemperatur ${temp} °C · 0x1001 Error-Register 0x00. Alles grün.`);
+      if (!f.telemetry) { f.telemetry = 1; achieve('telemetrie'); }
+      if (fran) await this.say('fran', pick(['Index 0x6060, Subindex 0. Merk dir das – kommt im Quiz.', 'Der Ladezustand kommt alle 100 Millisekunden per PDO. Wer das pollt, hat CANopen nicht verstanden.']));
+      return;
+    }
+    if (o === 1) {
+      if (!fran) {
+        if (Math.random() < 0.35) { mood(-3); f['brick' + d] = 1; await this.say(null, 'Blocktransfer … 41 % … Verbindung weg. Das Bike blinkt rot. Bootloader-Modus. Fran wird das morgen reparieren – mit einem Blick, den du nicht vergessen wirst.'); return; }
+        await this.say(null, 'SDO-Blocktransfer, 180 Sekunden, Neustart. Firmware 2.5 läuft. Glück gehabt – Fran hätte dich das nie allein machen lassen.'); mood(3); return;
+      }
+      await this.say('fran', 'OTA über CANopen: SDO-Blocktransfer, 1 Kilobyte pro Block, Checksumme am Ende. Schau zu.');
+      await this.say(null, 'Drei Minuten Fortschrittsbalken. Fran redet derweil über Index-Tabellen. Neustart – Firmware 2.5 läuft. Das ist der Prototyp für die OTA-Story von Rocket.');
+      if (!f['flash' + d]) { f['flash' + d] = 1; planAdd(teamOf('fran') === myTeam() ? myTeam() : 'indurain', 2); mood(3); }
+      return;
+    }
+    await this.say(null, 'Fehlerspeicher: 3 Einträge (Unterspannung, CAN-Timeout, Drehmomentsensor). Gelöscht.');
+    if (fran) await this.say('fran', 'Gelöscht?! Die wollte ich zuerst lesen. Der CAN-Timeout war mein Beweis gegen den Lieferanten.'); else await this.say(null, 'Fran wäre nicht begeistert – er liest Fehlerspeicher wie andere Leute Zeitungen.');
+    mood(-1);
+  },
   async officeBikes() {
     const d = today(), h = hourOf(G.S.time);
     if (d === 3 && h >= 15.5 && h < 18.5 && !G.S.flags.teamRide) { await this.teamRide(); return; }
     const o = await this.ask(null, 'Die Test-E-Bikes von Colba. Akku voll, Display an.', ['E-Bike ausleihen (Stadt)', 'Lassen']);
-    if (o === 0) { G.S.flags.battery = 100; G.S.flags.bikeFrom = 'colba'; await this.say(null, 'Du schiebst ein Test-Bike in den Lift. Unten geht die Fahrt los – im Office ist Fahren verboten (Isabell).'); G.S.flags.bikePending = 1; }
+    if (o === 0) { G.S.flags.battery = 100; G.S.flags.bikeFrom = 'colba'; await this.say(null, 'Du ziehst das CAN-Kabel ab und schiebst ein Test-Bike durch die Lounge zum Lift. Unten geht die Fahrt los – im Office ist Fahren verboten (Isabell).'); G.S.flags.bikePending = 1; }
   },
   async bikeRental(kind) {
     if (G.player.bike) { await this.say(null, 'Du sitzt schon auf einem E-Bike.'); return; }
@@ -5357,7 +5419,7 @@ const Story = {
       elena: { hello: ['Hola. Das Design-System ist fast fertig.', 'Kannst du das UI anschauen?', 'Farben, Abstände, Typografie. Der Rest ist Code.'], topics: [planTopic, { t: 'Design-System', f: async () => this.say('elena', pick(['Komponenten für alle Apps: Buttons, Karten, der Akku-Ring. Indurain nutzt sie für die Werkstatt-App.', 'Ich hab die Teamfarben gewählt: Rot für Indurain, Blau für Meeseeks, Orange für Rocket. Post-its passend.'])) }] },
       carlos: { hello: ['Das muss refactort werden.', 'Architektur zuerst.', 'Wer hat diesen Parser geschrieben? Ah. Ich. 2019.', 'Samstag Konzert. Hardrock. Ich bin am Bass.'], topics: [planTopic, { t: 'Refactoring', f: async () => this.say('carlos', pick(['Der CAN-Parser hat 4000 Zeilen in einer Datei. Nach dem Refactoring: 40 Dateien mit 100 Zeilen. Besser? Ja. Schneller? Wir werden sehen.', 'Ein Sprint Refactoring spart drei Sprints Bugs. Das sage ich jedem PO. Dominique hört zu.'])) }, { t: 'Deine Band', f: async () => { await this.say('carlos', pick(['„Stack Overflow“ – vier Entwickler, ein Proberaum in Benimaclet, Hardrock. Ich spiele Bass, weil der Bass die Architektur ist: Man hört ihn nicht, aber ohne ihn fällt alles zusammen.', 'Ein Riff ist auch nur eine Funktion: klein, wiederverwendbar, laut. Unser Drummer refactort nie. Darum spielen wir alles in E.', 'Mittwoch bei Danny bringe ich den Bass und den kleinen Verstärker mit. Nach dem Essen gibt es ein Solo. Die Nachbarn kennen es schon.'])); if (!f.bandTalk) { f.bandTalk = 1; mood(2); } } }] },
       salva: { hello: ['Kann ich dabei sein?', 'Ich hab das Buch über SAFe gelesen. Ganz.', 'Erklär mir das nochmal?'], topics: [planTopic, { t: 'Etwas erklären', f: async () => { await this.say('salva', pick(['Ein PI ist ein halbes Jahr? – Fünf Sprints plus einer für Innovation. Okay. Und das Board? – Alles klar, ich schreib es auf.', 'Lukas hat mir den Batteriepass erklärt. Zweimal. Ich glaube, ich kann ihn jetzt bauen.'])); planAdd('rocket', 0.5); mood(2); } }] },
-      aitor: { hello: ['Heute 60 Kilometer vor der Arbeit.', 'Es gibt immer eine Lösung.', 'Donnerstag Ausfahrt!'], topics: [planTopic, { t: 'Ausfahrt', f: async () => { if (d === 3 && h >= 15.5 && h < 18.5 && !f.teamRide && G.map.id === 'colba') await this.teamRide(); else await this.say('aitor', d === 3 ? 'Nachmittag ab halb vier, E-Bike-Ecke im Office. Turia-Park bis zum Strand.' : 'Donnerstagnachmittag fahren wir mit dem ganzen Team. Bis dahin: Turia-Park, jeden Morgen, allein.'); } }, { t: 'Lösungsorientiert?', f: async () => this.say('aitor', pick(['Jedes Problem ist ein Anstieg. Oben wartet die Abfahrt.', 'Rocket hat drei Leute und zehn Features. Lösung: fünf Features. Fertig.'])) }] },
+      aitor: { hello: ['Heute 60 Kilometer vor der Arbeit.', 'Es gibt immer eine Lösung.', 'Donnerstag Ausfahrt!'], topics: [planTopic, { t: 'Ausfahrt', f: async () => { if (d === 3 && h >= 15.5 && h < 18.5 && !f.teamRide && G.map.id === 'colba') await this.teamRide(); else await this.say('aitor', d === 3 ? 'Nachmittag ab halb vier, E-Bike-Raum neben der Lounge. Turia-Park bis zum Strand.' : 'Donnerstagnachmittag fahren wir mit dem ganzen Team. Bis dahin: Turia-Park, jeden Morgen, allein.'); } }, { t: 'Lösungsorientiert?', f: async () => this.say('aitor', pick(['Jedes Problem ist ein Anstieg. Oben wartet die Abfahrt.', 'Rocket hat drei Leute und zehn Features. Lösung: fünf Features. Fertig.'])) }] },
       isabell: { hello: ['Habt ihr die Klingel gefunden?', 'Mittagessen ist bestellt.', 'Ich organisiere, ihr plant.'], topics: [{ t: 'Hilfe anbieten', f: async () => { if (f['isa' + d]) { await this.say('isabell', 'Heute ist alles organisiert. Danke!'); return; } f['isa' + d] = 1; passTime(15); mood(3); const n = (f.isaHelp = (f.isaHelp || 0) + 1); await this.say('isabell', pick(['Kannst du die Stühle in den Aufenthaltsraum tragen? Danke! Du bist der Erste, der fragt.', 'Die Paella-Bestellung: 22 Portionen, zwei Vegetarier, ein Chris, der alles isst. Erledigt.', 'Hilf mir mit den Namensschildern – Robin hat seines im Hotel gelassen.'])); if (n >= 2) achieve('isabell'); } }, { t: 'Die Klingel', f: async () => this.say('isabell', 'Sie steht nicht dran. „C.B. Soluciones, 1º B“. Juanjo findet das lustig. Ich nicht. Aber ich lasse es so.') }, { t: 'Spesen', f: async () => this.say('isabell', 'Quittungen sammeln, Foto schicken, fertig. Nicht wie Luigi, der die Kart-Rechnung als „Teambuilding“ einreicht.') }] },
     };
     const L = P[id] || base;

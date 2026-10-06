@@ -97,6 +97,10 @@ with sync_playwright() as p:
     assert pg.evaluate("() => window.__bdd === 1"), "Board nicht beendet"
     shot("07_planning")
     print("Plan nach Dienstag:", state())
+    # E-Bike-Raum neben der Lounge: Diagnose-PC (Telemetrie lesen)
+    run("enterMap('colba', 'lab'); G.busy++; await Story.bikeComputer(0); G.busy--;", 1.5, q=[0])
+    assert pg.evaluate("() => !!G.S.ach.telemetrie"), "Telemetrie fehlt"
+    shot("07b_lab")
     # Mittagessen
     run("G.S.time = 1440 + 13 * 60 + 10; G.busy++; await Story.loungeTable(); G.busy--;", 1.5, q=[0])
     assert pg.evaluate("() => !!G.S.flags.lunch1"), "Paella fehlt"

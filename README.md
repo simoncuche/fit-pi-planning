@@ -18,7 +18,7 @@ Kein Server, keine Installation. Funktioniert am Handy und am Computer.
   Hotel Kramer finden, einchecken, Zimmer 412, abends alle in der Bar Pepita mit Agua de Valencia.
 - **Colba:** Hochhaus im Osten mit zwölf angeschriebenen Klingeln – auf keiner steht Colba. Eingangshalle mit Lift links und rechts und Treppe in der Mitte.
   Erster Stock: drei Teamräume (**Indurain**: Danny, Fran, Estella, Bea, Vicente · **Meeseeks**: Juanjo, Oscar, Pablo, Guillem, Elena, Pascal ·
-  **Rocket**: Carlos, Salva, Aitor, Lukas), Aufenthaltsraum mit grossem Bildschirm, Küche und Balkon, Backoffice mit Isabell, E-Bike-Ecke mit CANopen-Prüfstand.
+  **Rocket**: Carlos, Salva, Aitor, Lukas), Aufenthaltsraum mit grossem Bildschirm, Küche und Balkon, Backoffice mit Isabell beim Lift, E-Bike-Raum neben dem Aufenthaltsraum mit Diagnose-PCs am CAN-Kabel, Prüfstand und Test-Bikes.
 - **Planning (Di–Fr):** Kickoff mit Robins Business Context, dann pro Tag Planning Poker, CANopen-Index-Quiz mit Fran, ROAM-Risiken, Programm-Board
   und Abhängigkeiten mit den anderen Teams verhandeln. Freitag 15:00: Final-Präsentation und Confidence Vote.
 - **Mittagessen im Aufenthaltsraum:** Dienstag Paella, Mittwoch Smash Burger, Donnerstag Bocadillos, Freitag Healthy Breakfast.

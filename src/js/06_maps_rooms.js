@@ -160,14 +160,26 @@ MAP_BUILDERS.colba = () => {
   m.decal((c) => { R(c, 56 * TS, 21 * TS, 2 * TS, 4 * TS, '#c8b8a0'); for (let k = 0; k < 2 * TS; k += 4) R(c, 56 * TS + k, 21 * TS, 2, 6, '#5a5048'); R(c, 56 * TS, 21 * TS + 6, 2 * TS, 1, '#5a5048'); });
   m.add(objAshtray(56, 22)); m.trig(56, 22, 1, 1, { label: 'Balkon: Eine rauchen', act: () => Story.balcony() });
   m.add(objPlanter(57, 24, '#e8402e'));
-  /* Backoffice Isabell (unten rechts im grossen Raum), E-Bike-Ecke, WC */
-  m.add(objDesk(48, 23, 3, { coffee: true })); m.trig(48, 23, 3, 1, { label: 'Backoffice: Isabell', act: () => Story.isabellDesk() });
-  m.add(objOfficeChair(49, 24)); m.decal((c) => DECAL.logo(c, 47 * TS, 21 * TS + 8, 'BACKOFFICE', '#2a9aa0'));
-  m.add(objPlant(53, 23));
-  m.add(objTestBench(2, 24)); m.trig(2, 24, 2, 1, { label: 'CANopen-Prüfstand', act: () => Story.testBench() });
-  m.add(objBikeStand(5, 24, 3)); m.trig(5, 24, 2, 1, { label: 'Test-E-Bikes', act: () => Story.officeBikes() });
-  m.add(objEbike(8, 25, '#e2554a')); m.add(objEbike(10, 25, '#2fa0d8', true));
-  m.decal((c) => { DECAL.logo(c, 2 * TS, 21 * TS + 8, 'LAB', '#e2554a'); DECAL.poster(c, 12 * TS, 21 * TS + 4, '#2a9aa0', 'CAN'); DECAL.poster(c, 14 * TS, 21 * TS + 4, '#e2554a', 'OTA'); });
+  /* E-Bike-Raum (direkt unter dem Aufenthaltsraum, durch dessen Tür erreichbar): Diagnose-PCs am Kabel, Prüfstand, Test-Bikes */
+  roomBox(46, 20, 10, 10, 2, T.TILE, 0);
+  for (const yy of [20, 21, 22]) { m.set(52, yy, T.TILE, 1); m.set(53, yy, T.TILE, 1); }
+  m.set(46, 26, T.TILE, 1); m.set(46, 27, T.TILE, 1); m.set(55, 27, T.TILE, 1);
+  m.decal((c) => {
+    R(c, 52 * TS, 20 * TS, 2 * TS, 3 * TS, '#e4e8ec'); R(c, 52 * TS + 2, 20 * TS, 2 * TS - 4, 3 * TS, '#8a9098'); R(c, 52 * TS + 4, 20 * TS, 2 * TS - 8, 3 * TS, '#b4bcc4');
+    DECAL.logo(c, 47 * TS, 21 * TS + 8, 'BIKE LAB', '#e2554a'); DECAL.poster(c, 51 * TS + 4, 21 * TS + 4, '#2a9aa0', 'CAN'); DECAL.poster(c, 54 * TS + 4, 21 * TS + 4, '#e2554a', 'OTA');
+    R(c, 46 * TS, 26 * TS, TS, 2 * TS, '#e4e8ec'); R(c, 46 * TS + 2, 26 * TS + 2, TS - 4, 2 * TS - 4, '#8a9098');
+  });
+  m.add(objBikeRig(47, 23, '#e2554a')); m.trig(47, 23, 3, 1, { label: 'Diagnose-PC · Bike 1', act: () => Story.bikeComputer(0) });
+  m.add(objBikeRig(51, 23, '#2fa0d8')); m.trig(51, 23, 3, 1, { label: 'Diagnose-PC · Bike 2', act: () => Story.bikeComputer(1) });
+  m.add(objBikeStand(49, 26, 3)); m.trig(49, 26, 2, 1, { label: 'Test-E-Bikes', act: () => Story.officeBikes() });
+  m.add(objTestBench(53, 26)); m.trig(53, 26, 2, 1, { label: 'CANopen-Prüfstand', act: () => Story.testBench() });
+  m.add(objEbike(48, 28, '#f0a23a')); m.add(objEbike(54, 28, '#2a9aa0', true));
+  m.spawn('lab', 50, 25, 0);
+  /* Backoffice Isabell (unten links beim Lift) */
+  m.add(objDesk(9, 23, 3, { coffee: true })); m.trig(9, 23, 3, 1, { label: 'Backoffice: Isabell', act: () => Story.isabellDesk() });
+  m.add(objOfficeChair(10, 24)); m.decal((c) => { DECAL.logo(c, 8 * TS, 21 * TS + 8, 'BACKOFFICE', '#2a9aa0'); DECAL.shelf(c, 12 * TS + 6, 21 * TS + 4, 40); });
+  m.add(objPlant(13, 23)); m.add(objPlant(5, 23));
+  /* WC */
   m.fill(16, 21, 6, 1, T.WALL); m.fill(21, 21, 1, 5, T.WALL); m.fill(16, 25, 6, 1, T.WALL); m.fill(17, 22, 4, 3, T.TILE, 0); m.set(18, 25, T.TILE, 1);
   m.decal((c) => { R(c, 18 * TS, 25 * TS, TS, TS, '#e4e8ec'); R(c, 18 * TS + 2, 25 * TS + 2, TS - 4, 10, '#8a9098'); pxText(c, 'WC', 18 * TS + 6, 22 * TS - 6, '#2a2a30'); });
   m.add(mkObj(19, 22, 1, 1, 6, (c, W, H) => { R(c, 4, 0, 14, 8, '#f4f6f8'); E(c, 11, 15, 6, 6, '#f4f6f8'); E(c, 11, 15, 4, 4, '#c9dce6'); }, { solid: true }));

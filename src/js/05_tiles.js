@@ -640,6 +640,27 @@ function objPainting(x, y, kind) {
   }, { solid: false });
 }
 function objBikeStand(x, y, n = 3) { return mkObj(x, y, 2, 1, 14, (c, W, H) => { R(c, 0, H - 4, W, 4, '#8a8e94'); for (let k = 0; k < n; k++) { const bx = 4 + k * 14; ring(c, bx + 2, H - 8, 4, '#1e1e22'); ring(c, bx + 10, H - 8, 4, '#1e1e22'); line(c, bx + 2, H - 8, bx + 5, H - 16, ['#2a9aa0', '#e2554a', '#f0a23a'][k % 3]); line(c, bx + 5, H - 16, bx + 10, H - 8, ['#2a9aa0', '#e2554a', '#f0a23a'][k % 3]); R(c, bx + 3, H - 17, 4, 1, '#2a2a2e'); } }, { solid: true }); }
+/* Diagnose-Arbeitsplatz: Pult mit PC links, Kabel zum E-Bike auf dem Montageständer rechts */
+function objBikeRig(x, y, col = '#2a9aa0', o = {}) {
+  return mkObj(x, y, 3, 1, 22, (c, W, H) => {
+    /* Pult */
+    R(c, 0, 10, 44, H - 16, '#e8e4dc'); R(c, 0, 10, 44, 2, '#f8f4ec'); R(c, 1, H - 6, 3, 6, '#8a8e94'); R(c, 40, H - 6, 3, 6, '#8a8e94');
+    /* Monitor mit CAN-Trace */
+    R(c, 6, 0, 24, 18, '#3a3a40'); R(c, 7, 1, 22, 14, '#0a1a12'); for (let k = 0; k < 10; k++) R(c, 8 + k * 2, 3 + ((k * 7) % 9), 1, 1, '#3af07a'); line(c, 8, 12, 28, 12, '#1f6f4a'); R(c, 8, 4, 10, 1, '#7ad0f0'); R(c, 16, 15, 4, 3, '#5a5e64');
+    /* Tastatur, Tower */
+    R(c, 8, 20, 18, 3, '#c6ccd2'); R(c, 32, 4, 9, 20, '#2a2a2e'); P(c, 34, 6, '#3af07a'); P(c, 37, 6, '#ff9a3a');
+    /* CAN-Kabel zum Bike */
+    line(c, 41, 14, 50, 12, '#e8c23a'); line(c, 50, 12, 56, 18, '#e8c23a'); R(c, 49, 10, 3, 3, '#2a2a2e');
+    /* Montageständer */
+    R(c, 58, H - 2, 12, 2, '#5a5e64'); R(c, 63, H - 14, 2, 12, '#5a5e64');
+    /* E-Bike */
+    const cx = 60, by = H - 4;
+    ring(c, cx - 7, by - 4, 5, '#1e1e22'); ring(c, cx + 7, by - 4, 5, '#1e1e22'); P(c, cx - 7, by - 4, '#8a8e94'); P(c, cx + 7, by - 4, '#8a8e94');
+    line(c, cx - 7, by - 4, cx - 2, by - 12, col); line(c, cx - 2, by - 12, cx + 6, by - 12, col); line(c, cx + 6, by - 12, cx + 7, by - 4, col); line(c, cx - 7, by - 4, cx + 2, by - 4, col); line(c, cx + 2, by - 4, cx - 2, by - 12, shade(col, -0.3));
+    R(c, cx - 3, by - 11, 7, 3, '#2a2a2e'); R(c, cx + 4, by - 16, 2, 5, '#2a2a2e'); R(c, cx + 2, by - 17, 6, 1, '#2a2a2e'); R(c, cx - 4, by - 14, 4, 2, '#5a5e64'); P(c, cx + 8, by - 15, '#f4f0a0');
+    if (o.err) { P(c, cx + 5, by - 13, '#ff3a3a'); } else P(c, cx + 5, by - 13, '#3af07a');
+  }, { solid: true, emit: (c) => { R(c, 7, 1, 22, 14, 'rgba(60,240,120,0.3)'); } });
+}
 function objTestBench(x, y) { return mkObj(x, y, 2, 1, 18, (c, W, H) => { R(c, 0, 4, W, H - 8, '#5a5e64'); R(c, 0, 4, W, 2, '#8a8e94'); R(c, 4, 6, 18, 10, '#1a1a1e'); R(c, 5, 7, 16, 8, '#0a2a1a'); for (let k = 0; k < 6; k++) R(c, 6, 8 + k, 4 + (k * 5) % 10, 1, '#3af07a'); R(c, 26, 8, 8, 6, '#2a2a2e'); for (let k = 0; k < 4; k++) P(c, 27 + k * 2, 10, k % 2 ? '#ff3a3a' : '#3af07a'); R(c, 36, 6, 10, 10, '#2a9aa0'); R(c, 37, 7, 8, 3, '#f4f0e6'); line(c, 22, 12, 26, 11, '#e8c23a'); line(c, 34, 11, 36, 10, '#e8c23a'); R(c, 2, H - 4, 3, 4, '#3a3c40'); R(c, W - 5, H - 4, 3, 4, '#3a3c40'); }, { solid: true, emit: (c) => R(c, 5, 7, 16, 8, 'rgba(60,240,120,0.35)') }); }
 function objAshtray(x, y) { return mkObj(x, y, 1, 1, 18, (c, W, H) => { R(c, 8, 6, 8, H - 8, '#8a9096'); R(c, 8, 6, 2, H - 8, '#b0b6bc'); R(c, 7, 4, 10, 3, '#5a6066'); R(c, 8, 4, 8, 1, '#c8ccd0'); P(c, 10, 5, '#ff8a3a'); }, { solid: true }); }
 function objOrangeCart(x, y) { return mkObj(x, y, 2, 1, 20, (c, W, H) => { R(c, 2, 8, W - 4, 10, '#8a5e3a'); R(c, 2, 8, W - 4, 2, '#a87a50'); for (let k = 0; k < 10; k++) E(c, 6 + (k % 5) * 8, 6 + Math.floor(k / 5) * 4, 2.5, 2.5, '#ff8c1a'); ring(c, 8, H - 4, 4, '#2a2a2e'); ring(c, W - 8, H - 4, 4, '#2a2a2e'); R(c, W / 2 - 14, 0, 28, 6, '#3f8e4b'); pxText(c, 'ZUMO', W / 2 - 7, 1, '#ffffff'); }, { solid: true }); }
