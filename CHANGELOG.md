@@ -4,7 +4,7 @@
 - The game is now in English by default. German and Spanish can be selected on the title screen and in the phone's Options tab (the choice is remembered on this device).
 - All texts – dialogues, items, sights, achievements, menus, minigames and scenes – are translated; names and places stay Spanish.
 - Pixel font with accented letters for Spanish signs. Currency uses a point in English (12.50 €) and a comma in German and Spanish.
-- GitHub Pages workflow deploys from the development branch as well.
+- GitHub Pages workflow deploys from the development branch as well, publishing the build to the gh-pages branch.
 
 ## 1.2.0 – 06.10.2026
 - All characters reworked to match their descriptions: Fran (long beard, sturdy), Danny (short black hair, stubble), Vicente (thin, tall, big grin), Bea (long black hair, red top), Estella (long red hair), Juanjo (glasses, blue T-shirt), Luigi (black polo), Oscar (pointed nose, darker complexion), Pablo (beard), Pascal (long light-brown hair, green T-shirt), Chris (long brown curls, boardshorts), Dominique (polo, black trousers), Simon (white shirt), Salva (subtle glasses), Aitor (muscular, big nose), Carlos (slim, tall, dressed in black), Isabell (long brown hair), Elena (light make-up, black hair).

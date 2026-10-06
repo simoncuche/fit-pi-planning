@@ -1,5 +1,7 @@
 # PI Planning Valencia
 
+**Online spielen:** https://simoncuche.github.io/fit-pi-planning/ – der Workflow `.github/workflows/pages.yml` baut bei jedem Push und veröffentlicht `dist/` auf dem Branch `gh-pages`.
+
 **Sprachen:** Das Spiel läuft standardmässig auf Englisch; Deutsch und Spanisch sind auf dem Titelbildschirm und im Handy unter Optionen wählbar. Die Übersetzungen liegen in `i18n/en.json` und `i18n/es.json` (deutscher Text = Schlüssel).
 
 *Fünf Tage, drei Teams, ein Plan · Montag, 16. März 2026 (Fallas-Woche)*
