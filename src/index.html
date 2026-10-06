@@ -1,0 +1,48 @@
+<title>PI Planning Valencia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Silkscreen:wght@400;700&family=Oswald:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/*CSS*/
+body:not(.touch) #btnA, body:not(.touch) #stickHint { display: none; }
+body:not(.touch) #actLabel { bottom: calc(env(safe-area-inset-bottom, 0px) + 18px); }
+</style>
+<div id="app">
+  <canvas id="screen" aria-label="Spielwelt"></canvas>
+  <div id="hud" hidden>
+    <div class="hud-row">
+      <div class="badge"><div class="lanyard" aria-hidden="true"></div><div class="badge-in"><small id="hDay">Montag</small><b id="hClock">12:05</b><span id="hPlace">Valencia</span></div></div>
+      <div class="plate note-obj"><span class="pin" aria-hidden="true"></span><small id="boardGl">ZIEL</small><span id="boardText"></span></div>
+      <div class="hud-btns">
+        <button class="hud-btn cam" id="btnCam" aria-label="Foto machen"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></button>
+        <button class="hud-btn" id="btnPhone" aria-label="Handy öffnen"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M10 18h4"/></svg></button>
+      </div>
+    </div>
+    <div class="plate stats">
+      <div class="plan" id="hPlanWrap"><small>PI-Plan</small><div class="plan-bar"><i id="hPlan"></i></div><b id="hPlanPct">0 %</b></div>
+      <div class="bars">
+        <div class="bar" id="bEnergy"><em>⚡</em><i></i></div>
+        <div class="bar" id="bFood"><em>🥘</em><i></i></div>
+        <div class="bar" id="bMood"><em>😊</em><i></i></div>
+        <div class="bar money"><em>€</em><b id="hEur">0,00 €</b></div>
+      </div>
+      <div class="prom" id="hPromWrap" hidden><b id="hProm">0,00 ‰</b></div>
+    </div>
+  </div>
+  <div id="touch" hidden>
+    <div id="stickHint" aria-hidden="true"></div>
+    <div id="stick"><div id="knob"></div></div>
+    <div id="actLabel" hidden></div>
+    <button id="btnA" aria-label="Aktion">A</button>
+  </div>
+  <div id="cine" aria-hidden="true"><div class="cflash"></div><div class="cbar"></div><div class="cbar bot"></div><div class="ctext"><span class="ckick"></span><div class="ctitle"></div><span class="csub"></span></div></div>
+  <div id="toasts" aria-live="polite"></div>
+  <div id="dialog" hidden><canvas id="dlgPort" width="96" height="96"></canvas><div><div class="dlg-name" id="dlgName"></div><div class="dlg-text" id="dlgText"></div><div class="dlg-choices" id="dlgChoices"></div></div></div>
+  <div id="overlay" hidden></div>
+  <div id="editor" hidden></div>
+  <div id="title"></div>
+  <div id="fade"><canvas id="fadeCv" width="240" height="144" aria-hidden="true"></canvas><p id="fadeText"></p></div>
+</div>
+<script>
+/*JS*/
+</script>

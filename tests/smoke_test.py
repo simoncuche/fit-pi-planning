@@ -1,0 +1,138 @@
+#!/usr/bin/env python3
+"""Automatischer Durchlauf im Headless-Browser: Flughafen, Hotel, Bar, Colba, Planning, Freizeit, Ende.
+Benötigt: pip install playwright (Chromium über CHROMIUM_PATH oder playwright install chromium)."""
+import glob, json, os, pathlib, subprocess, sys, time
+from playwright.sync_api import sync_playwright
+
+ROOT = pathlib.Path(__file__).resolve().parent.parent
+subprocess.run([sys.executable, str(ROOT / "build.py")], check=True)
+URL = (ROOT / "dist" / "index.html").as_uri()
+errors = []
+SHOTS = pathlib.Path(os.environ.get("SHOTS", "")) if os.environ.get("SHOTS") else None
+
+def exe():
+    p = os.environ.get("CHROMIUM_PATH")
+    if p: return p
+    g = glob.glob("/opt/pw-browsers/chromium-*/chrome-linux/chrome")
+    return g[0] if g else None
+
+with sync_playwright() as p:
+    browser = p.chromium.launch(executable_path=exe())
+    pg = browser.new_page(viewport={"width": 390, "height": 844}, has_touch=True, is_mobile=True, device_scale_factor=3)
+    pg.on("pageerror", lambda e: errors.append(str(e)))
+    pg.on("console", lambda m: errors.append("console: " + m.text) if m.type == "error" and "Failed to load resource" not in m.text else None)
+    pg.route("**/fonts.googleapis.com/**", lambda r: r.abort())
+    pg.route("**/fonts.gstatic.com/**", lambda r: r.abort())
+    pg.goto(URL)
+    time.sleep(0.8)
+    pg.evaluate("""() => { window.__q = []; setInterval(() => { if (UI.dlgOpen) { if (UI._choices && UI._pick) { const q = window.__q.length ? window.__q.shift() : 0; UI._pick(Math.min(q, UI._choices.length - 1)); } else UI.dlgAdvance(); } }, 40); }""")
+
+    def shot(name):
+        if SHOTS:
+            pg.screenshot(path=str(SHOTS / f"{name}.png"))
+
+    def run(js, wait=0.4, q=None):
+        if q is not None:
+            pg.evaluate(f"window.__q = {json.dumps(q)}")
+        pg.evaluate(f"async () => {{ {js} }}")
+        time.sleep(wait)
+
+    def state():
+        return pg.evaluate("() => ({stage: G.S.stage, map: G.map.id, time: clockStr(), day: today(), plan: Math.round(G.S.plan[myTeam()]), busy: G.busy})")
+
+    shot("01_title")
+    run("const S2 = newState(personLook('simon'), 'Simon'); S2.pid = 'simon'; S2.team = 'indurain'; await startGame(S2, true);", 6.0)
+    shot("02_airport")
+    assert state()["map"] == "airport", state()
+    # Koffer: Minispiel direkt lösen
+    run("G.S.flags.koffer = 1; achieve('koffer'); Story.setStage('sammeln');")
+    run("for (const id of Story.airportGroup()) { const n = G.npcs.find((a) => a.id === id); G.busy++; await Story.meetAtAirport(id, n || { bubble: null }); G.busy--; }", 1.0)
+    assert state()["stage"] == "taxi", state()
+    run("G.busy++; await Story.taxiToHotel(); G.busy--;", 6.0)
+    assert state()["map"] == "city" and state()["stage"] == "hotel", state()
+    shot("03_city")
+    run("await warpTo('hotel_lobby', 'entry');", 2.5)
+    assert state()["stage"] == "checkin", state()
+    run("G.busy++; await Story.reception(); G.busy--;", 1.0)
+    assert state()["stage"] == "zimmer", state()
+    run("await warpTo('hotel_room', 'entry'); G.busy++; await Story.unpack(); G.busy--;", 3.0)
+    assert state()["stage"] == "bar", state()
+    shot("04_room")
+    run("G.S.time = 19 * 60 + 5; await warpTo('bar', 'entry');", 5.0)
+    assert state()["stage"] == "free", state()
+    shot("05_bar")
+    # Dienstag: Klingel, Office, Kickoff
+    run("G.S.time = 1440 + 9 * 60; Story.newDay(); await warpTo('city', 'colba');", 2.0)
+    run("G.busy++; const r = await (async () => { const p = Mini.bell(); setTimeout(() => { const b = [...document.querySelectorAll('.bell-grid button')].find((x) => x.dataset.n.startsWith('C.B.')); b.click(); }, 300); return p; })(); G.busy--; window.__bell = r;", 2.0)
+    assert pg.evaluate("() => window.__bell && window.__bell.ok"), "Klingel nicht gefunden"
+    run("G.S.flags.bellOk = 1; await warpTo('colba_entry', 'entry'); await warpTo('colba', 'lift');", 5.0)
+    assert state()["map"] == "colba", state()
+    shot("06_office")
+    run("G.S.time = 1440 + 9 * 60 + 35; G.busy++; await Story.kickoff(); G.busy--;", 4.0)
+    assert pg.evaluate("() => !!G.S.flags.kickoff"), "Kickoff fehlt"
+    # Planning: Poker automatisch durchklicken
+    pg.evaluate("""() => { window.__pk = setInterval(() => { const c = document.querySelector('.pcard[data-c="5"]'); if (c && !c.classList.contains('sel')) { c.click(); return; } const r = document.querySelector('#pkReveal:not([disabled])'); if (r) { r.click(); return; } const n = document.querySelector('#pkNext'); if (n) n.click(); }, 80); G.busy++; Story.poker('indurain').then(() => { G.busy--; clearInterval(window.__pk); window.__pkd = 1; }); }""")
+    for _ in range(40):
+        if pg.evaluate("() => window.__pkd === 1"): break
+        time.sleep(0.5)
+    assert pg.evaluate("() => window.__pkd === 1"), "Poker nicht beendet"
+    assert state()["plan"] > 5, state()
+    # CANopen-Quiz: immer erste Antwort
+    pg.evaluate("""() => { window.__cq = setInterval(() => { const b = document.querySelector('.pcard[data-a]'); if (b) b.click(); }, 80); G.busy++; Story.canopenQuiz().then(() => { G.busy--; clearInterval(window.__cq); window.__cqd = 1; }); }""")
+    for _ in range(30):
+        if pg.evaluate("() => window.__cqd === 1"): break
+        time.sleep(0.5)
+    assert pg.evaluate("() => window.__cqd === 1"), "CANopen nicht beendet"
+    # ROAM
+    pg.evaluate("""() => { window.__ro = setInterval(() => { const b = document.querySelector('.roam-grid button'); if (b) b.click(); }, 80); G.busy++; Story.roam('indurain').then(() => { G.busy--; clearInterval(window.__ro); window.__rod = 1; }); }""")
+    for _ in range(30):
+        if pg.evaluate("() => window.__rod === 1"): break
+        time.sleep(0.5)
+    assert pg.evaluate("() => window.__rod === 1"), "ROAM nicht beendet"
+    # Programm-Board: Features der Reihe nach auf Sprints
+    pg.evaluate("""() => { let i = 0; window.__bd = setInterval(() => { const f = document.querySelector('.pcard[data-f]'); if (f) { f.click(); const cols = document.querySelectorAll('.col'); cols[i % 6].click(); i++; return; } const ok = document.querySelector('#bdOk:not([disabled])'); if (ok) ok.click(); }, 100); G.busy++; Story.teamBoard('indurain').then(() => { G.busy--; clearInterval(window.__bd); window.__bdd = 1; }); }""")
+    for _ in range(30):
+        if pg.evaluate("() => window.__bdd === 1"): break
+        time.sleep(0.5)
+    assert pg.evaluate("() => window.__bdd === 1"), "Board nicht beendet"
+    shot("07_planning")
+    print("Plan nach Dienstag:", state())
+    # Mittagessen
+    run("G.S.time = 1440 + 13 * 60 + 10; G.busy++; await Story.loungeTable(); G.busy--;", 1.5, q=[0])
+    assert pg.evaluate("() => !!G.S.flags.lunch1"), "Paella fehlt"
+    # Abhängigkeit mit Meeseeks
+    run("G.S.time = 1440 + 15 * 60; enterMap('colba', 'room_meeseeks');", 1.0)
+    pg.evaluate("""() => { window.__dp = setInterval(() => { const cols = [...document.querySelectorAll('.col:not(.over)')]; if (cols.length) cols[0].click(); }, 100); G.busy++; Story.depBoard('meeseeks').then(() => { G.busy--; clearInterval(window.__dp); window.__dpd = 1; }); }""")
+    for _ in range(30):
+        if pg.evaluate("() => window.__dpd === 1"): break
+        time.sleep(0.5)
+    assert pg.evaluate("() => window.__dpd === 1"), "Dependency nicht beendet"
+    # Freizeit: Mascletà, Strand, Kart (Minispiele abbrechen lassen)
+    run("await warpTo('city', 'hotel'); G.S.time = 1440 + 14 * 60; Story.minute();", 9.0)
+    assert pg.evaluate("() => !!G.S.ach.mascleta"), "Mascletà fehlt"
+    shot("08_city_day")
+    run("G.busy++; await Story.ev_gota(); G.busy--;", 1.0)
+    run("G.busy++; Story.bikeOn(100); G.busy--;", 0.5)
+    run("G.S.st.nau = 101; checkThresholds();", 2.5)
+    assert pg.evaluate("() => !!G.S.ach.kotzen"), "Übergeben fehlt"
+    # Nacht & Schlafen
+    run("await warpTo('hotel_room', 'entry'); G.S.time = 1440 + 23 * 60; G.busy++; await Story.bed(); G.busy--;", 6.0, q=[0])
+    assert state()["day"] == 2, state()
+    # Donnerstag: Ausfahrt direkt; Freitag: Final; Samstag: Heimflug
+    run("G.S.time = 3 * 1440 + 16 * 60; enterMap('colba', 'lounge'); G.S.plan.indurain = 82; G.S.plan.meeseeks = 70; G.S.plan.rocket = 75;", 1.0)
+    pg.evaluate("""() => { window.__cv = setInterval(() => { const b = document.querySelector('.pcard[data-v="5"]'); if (b && !b.disabled) { b.click(); return; } const ok = document.querySelector('#cvOk'); if (ok) ok.click(); }, 100); G.S.time = 4 * 1440 + 15 * 60; G.busy++; Story.finalPresentation().then(() => { G.busy--; clearInterval(window.__cv); window.__cvd = 1; }); }""")
+    for _ in range(40):
+        if pg.evaluate("() => window.__cvd === 1"): break
+        time.sleep(0.5)
+    assert pg.evaluate("() => window.__cvd === 1 && !!G.S.flags.final"), "Final fehlt"
+    shot("09_final")
+    run("G.busy++; await Story.goHome(); G.busy--;", 7.0)
+    assert pg.evaluate("() => G.mode === 'over' && !!document.querySelector('#endNew')"), "Kein Ende"
+    shot("10_end")
+    print("Endzustand:", state())
+    browser.close()
+
+if errors:
+    print("FEHLER:\n" + "\n".join(errors))
+    sys.exit(1)
+print("Smoke-Test bestanden.")
