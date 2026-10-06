@@ -124,18 +124,18 @@ MAP_BUILDERS.hotel_room = () => {
 
 /* ----------- Colba: Eingangshalle & Office ----------- */
 MAP_BUILDERS.colba_entry = () => {
-  const m = new GMap('colba_entry', 20, 12, { name: _t('Edificio Turia · Eingang'), indoor: true, bg: '#0e1116', wallStyle: { cap: '#4a4e54' }, music: null });
-  m.room(0, 0, 20, 12, 8, T.MARBLE);
-  m.decal((c) => { DECAL.lift(c, 2 * TS + 6, TS + 2, '0'); DECAL.lift(c, 16 * TS + 6, TS + 2, '0'); for (let k = 0; k < 8; k++) { R(c, (6 + k) * TS + 4, TS + 6, 16, 10, '#b8a070'); R(c, (6 + k) * TS + 6, TS + 8, 12, 2, '#5a5048'); } pxText(c, 'BUZONES', 8 * TS + 8, TS + 20, '#5a5048'); });
-  m.warp(3, 3, 'colba', 'lift', { w: 1, label: _t('Lift links') });
-  m.warp(17, 3, 'colba', 'lift', { w: 1, label: _t('Lift rechts') });
-  m.fill(8, 3, 4, 3, T.STAIRS, 0); m.warp(8, 3, 'colba', 'stairs', { w: 4, label: _t('Treppe in den 1. Stock'), opts: { stairs: true } });
-  m.decal((c) => { R(c, 8 * TS, 3 * TS, 4 * TS, 1, '#8a8e94'); });
-  m.add(objPlant(1, 9, true)); m.add(objPlant(18, 9, true));
-  m.add(objSignpost(13, 6, _t('1º COLBA'), '#2a9aa0'));
-  m.add(objBikeStand(5, 9, 2));
-  doorBottom(m, 9, 2, 'city', 'colba', _t('Auf die Strasse'));
-  m.spawn('entry', 10, 10, 3); m.spawn('lift', 3, 4, 0); m.spawn('stairs', 10, 6, 0);
+  const m = new GMap('colba_entry', 16, 9, { name: _t('Edificio Turia · Eingang'), indoor: true, bg: '#0e1116', wallStyle: { cap: '#4a4e54' }, music: null });
+  m.room(0, 0, 16, 9, 8, T.MARBLE);
+  m.decal((c) => { DECAL.lift(c, TS + 6, TS + 2, '0'); DECAL.lift(c, 12 * TS + 6, TS + 2, '0'); for (let k = 0; k < 3; k++) { R(c, (4 + k) * TS + 4, TS + 6, 16, 10, '#b8a070'); R(c, (4 + k) * TS + 6, TS + 8, 12, 2, '#5a5048'); } pxText(c, 'BUZONES', 4 * TS + 6, TS + 20, '#5a5048'); DECAL.picture(c, 8 * TS, TS + 8, '#3a9ac8'); DECAL.picture(c, 10 * TS - 6, TS + 8, '#e8b040'); });
+  m.warp(2, 3, 'colba', 'lift', { w: 1, label: _t('Lift links') });
+  m.warp(13, 3, 'colba', 'lift', { w: 1, label: _t('Lift rechts') });
+  m.fill(6, 3, 4, 3, T.STAIRS, 0); m.warp(6, 3, 'colba', 'stairs', { w: 4, label: _t('Treppe in den 1. Stock'), opts: { stairs: true } });
+  m.decal((c) => { R(c, 6 * TS, 3 * TS, 4 * TS, 1, '#8a8e94'); });
+  m.add(objPlant(1, 6, true)); m.add(objPlant(14, 6, true));
+  m.add(objSignpost(11, 5, _t('1º COLBA'), '#2a9aa0'));
+  m.add(objBikeStand(3, 6, 2));
+  doorBottom(m, 7, 2, 'city', 'colba', _t('Auf die Strasse'));
+  m.spawn('entry', 8, 7, 3); m.spawn('lift', 2, 4, 0); m.spawn('stairs', 8, 6, 0);
   return m;
 };
 MAP_BUILDERS.colba = () => {
@@ -214,10 +214,9 @@ MAP_BUILDERS.colba = () => {
   m.add(objPlant(30, 21)); m.add(objPlant(44, 21)); m.add(objWaterCooler(40, 21));
   m.trig(40, 21, 1, 1, { label: _t('Wasserspender'), act: () => Story.water() });
   /* Lift & Treppe unten links */
-  m.decal((c) => { DECAL.lift(c, 2 * TS + 6, 23 * TS - 40, '1'); });
-  m.fill(1, 24, 3, 2, T.TILE, 2); m.warp(2, 25, 'colba_entry', 'lift', { w: 1, label: _t('Lift') });
+  m.add(objLift(1, 25, '1')); m.warp(2, 24, 'colba_entry', 'lift', { w: 1, dir: 0, label: _t('Lift') });
   m.fill(6, 24, 3, 2, T.STAIRS, 0); m.warp(6, 25, 'colba_entry', 'stairs', { w: 3, label: _t('Treppe'), opts: { stairs: true } });
-  m.decal((c) => { R(c, 1 * TS, 24 * TS, 3 * TS, 2 * TS, '#c6ccd2'); R(c, 2 * TS + 10, 24 * TS, 4, 2 * TS, '#7a8086'); R(c, 6 * TS, 24 * TS, 3 * TS, 1, '#8a8e94'); });
+  m.decal((c) => { R(c, 6 * TS, 24 * TS, 3 * TS, 1, '#8a8e94'); R(c, 6 * TS - 2, 24 * TS - 8, 2, 2 * TS + 8, '#5a6066'); R(c, 9 * TS, 24 * TS - 8, 2, 2 * TS + 8, '#5a6066'); R(c, 6 * TS - 2, 24 * TS - 8, 3 * TS + 4, 2, '#8a9096'); });
   m.add(objSignpost(10, 24, _t('COLBA 1º'), '#2a9aa0'));
   m.spawn('lift', 2, 23, 3); m.spawn('stairs', 7, 23, 3);
   m.pedZones.push({ x: 24, y: 19, w: 20, h: 6, n: 0 });

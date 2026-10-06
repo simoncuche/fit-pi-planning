@@ -676,6 +676,7 @@ function objPainting(x, y, kind) {
     R(c, 2, 16, 20, 2, '#8a7a50');
   }, { solid: false });
 }
+function objLift(x, y, label = '1') { return mkObj(x, y, 3, 1, 30, (c, W, H) => { R(c, 0, 0, W, H, '#8a9096'); R(c, 0, 0, W, 3, '#b8bec4'); R(c, 0, H - 4, W, 4, '#5a6066'); R(c, 12, 6, 48, H - 10, '#c6ccd2'); R(c, 12, 6, 48, 2, '#9aa0a6'); R(c, 35, 6, 2, H - 10, '#6a7076'); R(c, 14, 8, 2, H - 14, '#e4e8ec'); R(c, 56, 8, 2, H - 14, '#e4e8ec'); R(c, 28, 1, 16, 5, '#1a1a1e'); pxText(c, label, 34, 1, '#f2c84a'); R(c, 64, 18, 4, 4, '#2a2a2e'); P(c, 65, 19, '#f2c84a'); P(c, 66, 19, '#f2c84a'); P(c, 65, 20, '#f2c84a'); P(c, 66, 20, '#f2c84a'); }, { solid: true }); }
 function objBikeStand(x, y, n = 3) { return mkObj(x, y, 2, 1, 14, (c, W, H) => { R(c, 0, H - 4, W, 4, '#8a8e94'); for (let k = 0; k < n; k++) { const bx = 4 + k * 14; ring(c, bx + 2, H - 8, 4, '#1e1e22'); ring(c, bx + 10, H - 8, 4, '#1e1e22'); line(c, bx + 2, H - 8, bx + 5, H - 16, ['#2a9aa0', '#e2554a', '#f0a23a'][k % 3]); line(c, bx + 5, H - 16, bx + 10, H - 8, ['#2a9aa0', '#e2554a', '#f0a23a'][k % 3]); R(c, bx + 3, H - 17, 4, 1, '#2a2a2e'); } }, { solid: true }); }
 /* Diagnose-Arbeitsplatz: Pult mit PC links, Kabel zum E-Bike auf dem Montageständer rechts */
 function objBikeRig(x, y, col = '#2a9aa0', o = {}) {

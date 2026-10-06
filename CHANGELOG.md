@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.3.5 – 06.10.2026
+- The lift in the Colba office is now a proper cabin against the back wall with its doors facing the corridor (no more floating lift door); the stairs got a railing.
+- The ground-floor entrance hall of the Edificio Turia is smaller (16×9 instead of 20×12).
+- Very hungry (stomach below 12 %): you walk slower, and now and then you stop, sigh, rub your belly and mumble "Mmh, food".
+
 ## 2.3.4 – 06.10.2026
 - The Colba office is more compact: the corridor in front of the team rooms is four tiles instead of seven, the lounge is a little shorter, and everything below (bike lab, balcony, back office, WC, lift) moved up accordingly.
 

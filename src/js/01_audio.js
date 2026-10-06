@@ -61,6 +61,7 @@ const Snd = {
       case 'whoosh': this.noise(0.4, 0.08, 700, 0, 'bandpass'); break;
       case 'gull': this.tone(1400, 0.18, 'sawtooth', 0.04, 0, -500); this.tone(1200, 0.14, 'sawtooth', 0.03, 0.2, -300); break;
       case 'hicks': this.tone(520, 0.06, 'square', 0.05, 0, 260); break;
+      case 'sigh': this.noise(0.55, 0.05, 700, 0, 'bandpass'); this.tone(300, 0.55, 'sine', 0.035, 0.05, -130); break;
       case 'yawn': this.tone(330, 0.6, 'sine', 0.05, 0, -140); break;
       case 'vomit': this.noise(0.7, 0.12, 400); this.tone(160, 0.6, 'sawtooth', 0.04, 0, -90); break;
       case 'cheer': for (let i = 0; i < 10; i++) this.noise(0.25, 0.04, rnd(900, 2400), i * 0.04, 'bandpass'); break;

@@ -327,6 +327,7 @@ function drawBubble(c, x, y, b) {
   R(c, x - 8, y - 14, 17, 12, '#ffffff'); R(c, x - 7, y - 15, 15, 1, '#ffffff'); R(c, x - 7, y - 2, 15, 1, '#ffffff'); P(c, x - 1, y - 1, '#ffffff'); P(c, x, y, '#ffffff');
   R(c, x - 9, y - 14, 1, 12, '#1a1a22'); R(c, x + 9, y - 14, 1, 12, '#1a1a22'); R(c, x - 7, y - 16, 15, 1, '#1a1a22'); R(c, x - 7, y - 1, 5, 1, '#1a1a22'); R(c, x + 2, y - 1, 6, 1, '#1a1a22');
   const ic = b;
+  if (ic && ic.text) { const tw = pxTextW(ic.text) + 8, x0 = x - Math.floor(tw / 2); R(c, x0 - 9, y - 14, tw + 1, 12, '#ffffff'); R(c, x0 - 8, y - 15, tw - 1, 1, '#ffffff'); R(c, x0 - 8, y - 2, tw - 1, 1, '#ffffff'); R(c, x0 - 10, y - 14, 1, 12, '#1a1a22'); R(c, x0 + tw - 8, y - 14, 1, 12, '#1a1a22'); R(c, x0 - 8, y - 16, tw - 1, 1, '#1a1a22'); R(c, x0 - 8, y - 1, 5, 1, '#1a1a22'); R(c, x0 - 2 + 5, y - 1, tw - 8, 1, '#1a1a22'); pxText(c, ic.text, x0 - 5, y - 11, '#1a1a22'); return; }
   if (ic === '!') { R(c, x - 1, y - 12, 2, 6, '#d8352d'); R(c, x - 1, y - 5, 2, 2, '#d8352d'); }
   else if (ic === '?') { R(c, x - 2, y - 12, 5, 2, '#2f5fb8'); R(c, x + 1, y - 10, 2, 2, '#2f5fb8'); R(c, x - 1, y - 8, 2, 2, '#2f5fb8'); R(c, x - 1, y - 5, 2, 2, '#2f5fb8'); }
   else if (ic === 'beer') { R(c, x - 3, y - 11, 6, 7, '#e8b33a'); R(c, x - 3, y - 12, 6, 2, '#fff'); R(c, x + 3, y - 9, 2, 4, '#c9ccd2'); }
@@ -543,6 +544,7 @@ function checkAutoTriggers() {
     if (!t.auto) continue;
     if (tx >= t.x && tx < t.x + t.w && ty >= t.y && ty < t.y + t.h) {
       if (t.cond && !t.cond()) continue;
+      if (t.dir != null && p.dir !== t.dir) { G.lastTile = null; continue; }
       runAuto(t);
       return;
     }
@@ -562,12 +564,17 @@ function pushBack() { const p = G.player, d = DIRV[p.dir]; for (let i = 0; i < 1
 function updatePlayer(dt) {
   const p = G.player, st = G.S.st;
   if (p.lock) { p.moving = false; return; }
+  if (p.bubbleT > 0) p.bubbleT -= dt;
+  /* Sehr hungrig: langsamer, und ab und zu bleibt man stehen, seufzt und streicht sich über den Bauch */
+  const hungry = st.food < 12 && !p.bike;
+  if (p.sighT > 0) { p.sighT -= dt; p.moving = false; p.pose = Math.floor(p.sighT * 3) % 2 ? 'rub' : 'rubB'; if (p.sighT <= 0) p.pose = 'stand'; return; }
+  if (hungry && Math.random() < dt / 14) { p.sighT = 2.4; p.dir = 0; p.bubble = { text: _t('MMH, ESSEN') }; p.bubbleT = 2.8; Snd.sfx('sigh'); return; }
   const ax = Input.axis();
   let vx = ax.x, vy = ax.y;
   const prom = st.prom;
   if (prom > 1.1 && (vx || vy)) { const w = Math.min(0.75, (prom - 1.1) * 0.55); vx += Math.sin(G.t * 2.3) * w; vy += Math.cos(G.t * 1.7) * w * 0.7; }
   if (prom > 1.8 && Math.random() < dt * 0.35) { const a = rnd(0, 6.28); p.stumble = { x: Math.cos(a) * 45, y: Math.sin(a) * 30, t: 0.25 }; if (Math.random() < 0.5) Snd.sfx('hicks'); }
-  const tired = st.energy < 12 ? 0.7 : 1;
+  const tired = (st.energy < 12 ? 0.7 : 1) * (hungry ? 0.72 : 1);
   const run = ax.run && st.energy > 8;
   p.running = run && (vx || vy);
   let bikeF = 1;
@@ -577,7 +584,7 @@ function updatePlayer(dt) {
   if (p.stumble) { dx += p.stumble.x * dt; dy += p.stumble.y * dt; p.stumble.t -= dt; if (p.stumble.t <= 0) p.stumble = null; }
   if (Math.abs(ax.x) > 0.2 || Math.abs(ax.y) > 0.2) {
     p.dir = Math.abs(ax.x) > Math.abs(ax.y) ? (ax.x < 0 ? 1 : 2) : ax.y < 0 ? 3 : 0;
-    if (p.pose === 'sit' || p.pose === 'drink' || p.pose.startsWith('dance') || p.pose === 'bend') p.pose = 'stand';
+    if (p.pose === 'sit' || p.pose === 'drink' || p.pose.startsWith('dance') || p.pose === 'bend' || p.pose.startsWith('rub')) p.pose = 'stand';
   }
   const moved = (dx || dy) ? moveActor(p, dx, dy) : false;
   p.moving = moved && (Math.abs(dx) + Math.abs(dy) > 0.01);

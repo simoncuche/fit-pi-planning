@@ -1,6 +1,6 @@
 /* ============ Spielfigur: Sprite 28×40, 4 Richtungen, 9 Posen ============ */
 const SPR_W = 28, SPR_H = 40;
-const POSES = ['stand', 'walkA', 'walkB', 'sit', 'drink', 'danceA', 'danceB', 'bend', 'ride'];
+const POSES = ['stand', 'walkA', 'walkB', 'sit', 'drink', 'danceA', 'danceB', 'bend', 'ride', 'rub', 'rubB'];
 const POSE_I = Object.fromEntries(POSES.map((p, i) => [p, i]));
 const _sprCache = new Map();
 function getSheet(L) {
@@ -43,7 +43,7 @@ function drawSprite(x, L, dir, pose) {
   if (T === 8) topC = '#2c2622';
   const topD = shade(topC, -0.25), topL = shade(topC, 0.18);
   const longSleeve = [1, 3, 4, 7, 8, 9, 11].includes(T);
-  const sit = pose === 'sit' || pose === 'ride', bend = pose === 'bend', ride = pose === 'ride';
+  const sit = pose === 'sit' || pose === 'ride', bend = pose === 'bend', ride = pose === 'ride', rub = pose === 'rub' || pose === 'rubB';
   const walkA = pose === 'walkA', walkB = pose === 'walkB', walk = walkA || walkB;
   const dance = pose === 'danceA' || pose === 'danceB';
   const dh = [2, 0, -2][L.height], dh2 = [1, 0, -1][L.height];
@@ -138,6 +138,7 @@ function drawSprite(x, L, dir, pose) {
     if (pose === 'danceA' || (pose === 'danceB' && side > 0)) { for (let k = 0; k < tTop - hy + 3; k++) r(ax, hy - 2 + k, 2, 1, k < 3 ? skin : col(k > 6 ? 0 : 99)); return; }
     if (pose === 'danceB' && side < 0) { r(ax - 4, tTop + 2, 6, 2, col(0)); r(ax - 5, tTop + 2, 2, 2, skin); return; }
     if (ride) { r(ax, tTop + 1, 2, 4, col(0)); return; }
+    if (rub && side < 0 && !back) { const sh = pose === 'rubB' ? 3 : 0; r(ax, tTop + 1, 2, 5, col(0)); r(ax, tTop + 6, 5 + sh, 2, col(99)); r(ax + 4 + sh, tTop + 6, 2, 2, skin); return; }
     let l = len + (bend ? 2 : 0);
     if ((walkA && side < 0) || (walkB && side > 0)) l += 1;
     if ((walkA && side > 0) || (walkB && side < 0)) l -= 1;
