@@ -25,7 +25,7 @@ zugreifen – sonst TDZ-Fehler bei `const`. Darum heisst die Ereignis-Datei `09_
 | `01_audio.js` | `Snd`: synthetische Soundeffekte und Musik-Loops (`city`, `office`, `bar`, `disco`, `beach`, `lobby`, `market`, `museum`) |
 | `02_look.js` | Merkmale `LOOK_OPTS` (28 Merkmale, inkl. `fem`), `randomLook`, Porträt 96×96 (`drawPortrait`, `portraitCanvas`) |
 | `02_sprite.js` | Spielfigur 28×40, 4 Richtungen, 9 Posen (`POSES`, `getSheet`, `drawSprite`) |
-| `03_editor.js` | Charakter-Editor (`Editor.open({mode})`: `new`, `clothes`, `hair`, `beard`), Auswahl aus allen `PEOPLE` (nur Porträt und Name, keine Beschreibung) |
+| `03_editor.js` | Charakter-Editor (`Editor.open({mode})`: `new`, `clothes`, `hair`, `beard`), Auswahl aus allen `PEOPLE` (Porträt, Name und lustige Kurzbeschreibung `tag`) |
 | `04_state.js` | Spielzustand `G`, `newState`, `ITEMS`, `SIGHTS`, `ACH`, `TEAMS`, Werte-Logik (`consume`, `tickStats`), `planAdd`, Speichern (`SAVE_KEY`) |
 | `05_tiles.js` | Bodenkacheln `T`/`TILE_PAINT` (24 px), Wandstile `paintWallFace`, Objekte (Orangenbaum, Palme, Gebäude `objBuilding`, Hochhaus `objTower`, Möbel, Marktstände, Falla, Micalet …), `DECAL` |
 | `06_maps_city.js` | Karte `city` (100×84): Turia-Park, Plaza de la Virgen, Mercado, Hotel Kramer, Plaza del Ayuntamiento, Colba-Hochhaus, Museum, Calle Colón, Kartbahn, Padel, Disco, Estación, Ciudad de las Artes, Strand, Marina; Autos `cityCar`; Koordinaten in `CITY` |
