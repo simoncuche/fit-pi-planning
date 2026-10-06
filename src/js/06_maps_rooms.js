@@ -98,7 +98,10 @@ MAP_BUILDERS.hotel_floor = () => {
   m.warp(3, 3, 'hotel_lobby', 'lift', { w: 1, label: _t('Lift') });
   m.fill(27, 1, 2, 2, T.STAIRS, 1); m.warp(27, 2, 'hotel_lobby', 'stairs', { w: 2, label: _t('Treppe') });
   rooms.forEach((n, i) => { if (n === 412) m.warp(6 + i * 4, 3, 'hotel_room', 'entry', { w: 1, label: _t('Zimmer 412'), guard: () => Story.roomDoor(412) }); else m.trig(6 + i * 4, 3, 1, 1, { label: _t('Zimmer ') + n, act: () => Story.roomDoor(n) }); });
-  m.add(objPlant(1, 6)); m.add(objPlant(28, 6)); m.add(objTable(14, 6, 1, 1, { col: '#8a5e3a' }));
+  m.decal((c) => { DECAL.carpetRun(c, TS, 4 * TS + 4, 28 * TS, 2 * TS - 8, '#6a1e24'); for (let k = 0; k < 28 * TS; k += 12) R(c, TS + k, 4 * TS + 4, 6, 1, '#c8a040'); rooms.forEach((n, i) => { if (i < 5) DECAL.picture(c, (8 + i * 4) * TS + 5, TS + 8, ['#3a9ac8', '#e8b040', '#6a8ab0', '#c8352d', '#3f8e4b'][i]); }); R(c, 24 * TS + 2, 2 * TS + 4, 6, 12, '#c8352d'); R(c, 24 * TS + 4, 2 * TS + 2, 2, 3, '#2a2a2e'); R(c, 25 * TS + 10, TS + 2, 20, 8, '#3f8e4b'); pxText(c, 'EXIT', 25 * TS + 11, TS + 3, '#ffffff'); });
+  m.add(objPlant(1, 6)); m.add(objPlant(28, 6));
+  m.add(mkObj(14, 6, 2, 1, 22, (c, W, H) => { R(c, 2, H - 6, 4, 6, '#3a3c40'); R(c, W - 6, H - 6, 4, 6, '#3a3c40'); R(c, 1, 8, W - 2, H - 12, '#e8e4dc'); R(c, 1, 8, W - 2, 2, '#f8f4ec'); R(c, 1, H - 9, W - 2, 2, '#c8c4bc'); R(c, 6, 2, 10, 7, '#f4f0e6'); R(c, 7, 3, 8, 3, '#f8e0c0'); E(c, 30, 5, 5, 3, '#c0c6cc'); E(c, 30, 4, 4, 2, '#e8ecf0'); R(c, 20, 1, 3, 8, '#2fa0d8'); R(c, 24, 2, 3, 7, '#f4f0e6'); }, { solid: true }));
+  m.trig(14, 6, 2, 1, { label: _t('Servicewagen'), act: () => Story.say(null, _t('Ein Servicewagen: Handtücher, zwei Fläschchen Wasser, ein vergessenes Croissant. Das Zimmermädchen ist in 415.')) });
   m.spawn('lift', 3, 4, 0); m.spawn('stairs', 27, 3, 0); m.spawn('room', 14, 4, 0);
   return m;
 };
@@ -119,6 +122,8 @@ MAP_BUILDERS.hotel_room = () => {
   m.add(mkObj(12, 9, 1, 1, 8, (c, W, H) => { R(c, 3, 0, 18, H - 1, '#2a2c30'); R(c, 4, 2, 16, H - 6, '#3a3d42'); R(c, 17, 8, 1, 8, '#9aa0a6'); R(c, 4, 2, 16, 1, '#5a5e64'); }, { solid: true }));
   m.trig(12, 9, 1, 1, { label: _t('Minibar'), act: () => Story.shop('minibar') });
   m.add(objPlant(1, 10));
+  m.decal((c) => { R(c, 5 * TS, 7 * TS + 4, 3 * TS, 2 * TS - 8, '#8e2f34'); R(c, 5 * TS + 3, 7 * TS + 7, 3 * TS - 6, 2 * TS - 14, '#a84048'); for (let k = 0; k < 3 * TS; k += 6) R(c, 5 * TS + k, 7 * TS + 4, 3, 2, '#e8c070'); });
+  m.add(mkObj(4, 4, 1, 1, 22, (c, W, H) => { R(c, 4, H - 12, 16, 11, '#6a4428'); R(c, 4, H - 12, 16, 2, '#8a5a34'); R(c, 6, H - 8, 12, 4, '#5a3a20'); R(c, 11, H - 20, 2, 8, '#c8a060'); E(c, 12, H - 23, 7, 4, '#f4e0a0'); R(c, 5, H - 23, 14, 2, '#f4e0a0'); }, { solid: true, light: { dx: 12, dy: 2, r: 26, c: '#ffd890' }, emit: (c, W, H) => E(c, 12, H - 23, 7, 4, 'rgba(255,230,160,0.6)') }));
   doorBottom(m, 6, 1, 'hotel_floor', 'room', _t('Auf den Flur'));
   m.spawn('entry', 6, 10, 3);
   return m;
@@ -134,6 +139,7 @@ MAP_BUILDERS.colba_entry = () => {
   m.fill(6, 3, 4, 3, T.STAIRS, 0); m.warp(6, 3, 'colba', 'stairs', { w: 4, label: _t('Treppe in den 1. Stock'), opts: { stairs: true } });
   m.decal((c) => { R(c, 6 * TS, 3 * TS, 4 * TS, 1, '#8a8e94'); });
   m.add(objPlant(1, 6, true)); m.add(objPlant(14, 6, true));
+  m.decal((c) => { DECAL.carpetRun(c, 7 * TS, 6 * TS, 2 * TS, 3 * TS, '#2a4a5a'); R(c, 11 * TS + 2, TS + 6, 40, 22, '#1e2a3a'); R(c, 11 * TS + 3, TS + 7, 38, 20, '#2a3a4a'); pxText(c, '1 COLBA', 11 * TS + 5, TS + 8, '#7ad0d8'); pxText(c, '2 GESTOR', 11 * TS + 5, TS + 14, '#c8d0d8'); pxText(c, '3 DENTAL', 11 * TS + 5, TS + 20, '#c8d0d8'); R(c, 14 * TS + 8, 2 * TS + 4, 6, 12, '#c8352d'); R(c, 14 * TS + 10, 2 * TS + 2, 2, 3, '#2a2a2e'); });
   m.add(objSignpost(11, 5, _t('1º COLBA'), '#2a9aa0'));
   m.add(objBikeStand(3, 6, 2));
   doorBottom(m, 7, 2, 'city', 'colba', _t('Auf die Strasse'));
@@ -141,91 +147,98 @@ MAP_BUILDERS.colba_entry = () => {
   return m;
 };
 MAP_BUILDERS.colba = () => {
-  const m = new GMap('colba', 60, 27, { name: _t('Colba · 1. Stock'), indoor: true, bg: '#0e1116', wallStyle: { cap: '#3a3e44' }, music: 'office' });
-  m.room(0, 0, 60, 27, 2, T.TILE, 1);
-  /* Flur in der Mitte (y 14..17), Teamräume oben, Aufenthaltsraum rechts, Lift/Treppe unten links */
-  const roomBox = (x, y, w, h, style, floor, fv) => { m.fill(x, y, w, h, floor, fv); m.fill(x, y, w, 1, T.WALL); m.fill(x, y + 1, w, 2, T.WALLF, style); for (let yy = y; yy < y + h; yy++) { m.set(x, yy, T.WALL); m.set(x + w - 1, yy, T.WALL); } m.fill(x, y + h - 1, w, 1, T.WALL); };
-  /* Teamräume */
-  const TR = { indurain: { x: 1, y: 1 }, meeseeks: { x: 16, y: 1 }, rocket: { x: 31, y: 1 } };
-  for (const [team, p] of Object.entries(TR)) {
-    const t = TEAMS[team];
-    roomBox(p.x, p.y, 14, 13, 2, T.CARPET, team === 'indurain' ? 5 : team === 'meeseeks' ? 2 : 4);
-    m.set(p.x + 6, p.y + 12, T.TILE, 1); m.set(p.x + 7, p.y + 12, T.TILE, 1);
-    m.decal((c) => { R(c, (p.x + 6) * TS, (p.y + 12) * TS, 2 * TS, TS, '#e4e8ec'); R(c, (p.x + 6) * TS + 2, (p.y + 12) * TS + 2, 2 * TS - 4, 10, '#8a9098'); const tw = pxTextW(t.n.toUpperCase().replace(_t('TEAM '), ''), 1) + 8; R(c, (p.x + 7) * TS - tw / 2, (p.y + 1) * TS + 4, tw, 11, t.col); pxText(c, t.n.toUpperCase().replace(_t('TEAM '), ''), (p.x + 7) * TS - tw / 2 + 4, (p.y + 1) * TS + 7, '#ffffff'); DECAL.logo(c, (p.x + 1) * TS + 4, (p.y + 1) * TS + 24, 'COLBA', '#2a9aa0'); });
-    m.add(objWhiteboard(p.x + 4, p.y + 1, 5, { title: _t('PI ') + t.n.replace(_t('Team '), '').toUpperCase() }));
-    m.trig(p.x + 4, p.y + 3, 5, 1, { label: _t('Programm-Board · ') + t.n, act: () => Story.teamBoard(team) });
-    m.add(objTable(p.x + 3, p.y + 6, 8, 3, { col: '#e8e4dc', laptops: 3 }));
-    m.trig(p.x + 3, p.y + 6, 8, 3, { label: _t('Team-Tisch · ') + t.n, act: () => Story.teamTable(team) });
-    for (const dx of [3, 6, 9]) { m.add(objOfficeChair(p.x + dx, p.y + 5, '#2a2a30')); m.add(objOfficeChair(p.x + dx, p.y + 9, '#2a2a30')); }
-    m.add(objFlipchart(p.x + 11, p.y + 2)); m.add(objPlant(p.x + 1, p.y + 10));
-    m.add(objScreen(p.x + 10, p.y + 1, 3));
-    if (team === 'rocket') { m.add(objAmp(p.x + 1, p.y + 4)); m.trig(p.x + 1, p.y + 4, 1, 1, { label: _t('Carlos’ Bass-Verstärker'), act: () => Story.say('carlos', pick([_t('Der steht hier, weil der Proberaum in Benimaclet keine Heizung hat. Und weil ich in der Mittagspause übe. Leise. Meistens.'), _t('Nicht anfassen – der Regler steht auf elf. Immer.')])) }); m.decal((c) => DECAL.poster(c, (p.x + 2) * TS, (p.y + 1) * TS + 4, '#1a1a1e', 'ROCK')); }
-    m.trig(p.x + 10, p.y + 3, 3, 1, { label: _t('Bildschirm: Dependency-Board'), act: () => Story.depBoard(team) });
-    m.trig(p.x + 11, p.y + 3, 1, 1, { label: _t('Flipchart: Risiken (ROAM)'), act: () => Story.roam(team) });
-    m.spawn('room_' + team, p.x + 7, p.y + 11, 3);
+  const m = new GMap('colba', 48, 24, { name: _t('Colba · 1. Stock'), indoor: true, bg: '#0e1116', wallStyle: { cap: '#3a3e44' }, music: 'office' });
+  m.room(0, 0, 48, 24, 2, T.TILE, 1);
+  /* Kompakter Grundriss: Flur in der Mitte (y 11..13), oben drei Teamräume und die Lounge, unten Backoffice, WC, Lift/Treppe und das Bike-Lab mit Balkon */
+  const roomBox = (x, y, w, h, style, floor, fv) => { m.fill(x, y, w, h, floor, fv); m.fill(x, y, w, 1, T.WALL); m.fill(x, y + 1, w, 2, T.WALLF, style); for (let yy = y; yy < y + h; yy++) { m.set(x, yy, T.WALL); m.set(x + w - 1, yy, T.WALL); } m.fill(x, y + h - 1, w, 1, T.WALL); m.decal((c) => R(c, (x + 1) * TS, (y + 3) * TS, (w - 2) * TS, 4, 'rgba(0,0,0,0.16)')); };
+  /* Tür in einer Wand: Boden plus helle Schwelle, bei dicken Wänden (oben) drei Kacheln hoch */
+  const door = (x, y, w, h = 1) => { for (let yy = y; yy < y + h; yy++) for (let xx = x; xx < x + w; xx++) m.set(xx, yy, T.TILE, 1); m.decal((c) => { R(c, x * TS, y * TS, w * TS, h * TS, '#dde2e6'); R(c, x * TS + 2, y * TS, w * TS - 4, h * TS, '#b4bcc4'); R(c, x * TS + 4, y * TS, w * TS - 8, h * TS, '#cfd6dc'); R(c, x * TS, (y + h) * TS - 3, w * TS, 3, '#8a9098'); }); };
+  /* Teamräume oben: Whiteboard, Bildschirm und Flipchart an der Wand, Tisch mit sechs Stühlen, Tür unten */
+  const TR = { indurain: 1, meeseeks: 12, rocket: 23 };
+  for (const [team, x0] of Object.entries(TR)) {
+    const t = TEAMS[team], nm = t.n.toUpperCase().replace(_t('TEAM '), '');
+    roomBox(x0, 1, 11, 10, 2, T.CARPET, team === 'indurain' ? 5 : team === 'meeseeks' ? 2 : 4);
+    door(x0 + 5, 10, 2);
+    m.decal((c) => { const tw = pxTextW(nm) + 8; R(c, (x0 + 7) * TS + 2, 10 * TS + 5, tw, 12, t.col); R(c, (x0 + 7) * TS + 2, 10 * TS + 5, tw, 1, shade(t.col, 0.35)); pxText(c, nm, (x0 + 7) * TS + 6, 10 * TS + 8, '#ffffff'); });
+    m.add(objWhiteboard(x0 + 2, 3, 4, { title: _t('PI ') + nm }));
+    m.trig(x0 + 2, 3, 4, 1, { label: _t('Programm-Board · ') + t.n, act: () => Story.teamBoard(team) });
+    m.add(objScreen(x0 + 6, 3, 3)); m.trig(x0 + 6, 3, 3, 1, { label: _t('Bildschirm: Dependency-Board'), act: () => Story.depBoard(team) });
+    m.add(objFlipchart(x0 + 9, 3)); m.trig(x0 + 9, 3, 1, 1, { label: _t('Flipchart: Risiken (ROAM)'), act: () => Story.roam(team) });
+    m.add(objTable(x0 + 2, 6, 6, 2, { col: '#e8e4dc', laptops: 3 }));
+    m.trig(x0 + 2, 6, 6, 2, { label: _t('Team-Tisch · ') + t.n, act: () => Story.teamTable(team) });
+    for (const dx of [2, 4, 6]) { m.add(objOfficeChair(x0 + dx, 5, '#2a2a30')); m.add(objOfficeChair(x0 + dx, 8, '#2a2a30')); }
+    m.add(objPlant(x0 + 9, 9)); m.add(objPlant(x0 + 1, 9));
+    if (team === 'rocket') { m.add(objAmp(x0 + 1, 4)); m.trig(x0 + 1, 4, 1, 1, { label: _t('Carlos’ Bass-Verstärker'), act: () => Story.say('carlos', pick([_t('Der steht hier, weil der Proberaum in Benimaclet keine Heizung hat. Und weil ich in der Mittagspause übe. Leise. Meistens.'), _t('Nicht anfassen – der Regler steht auf elf. Immer.')])) }); m.decal((c) => DECAL.poster(c, (x0 + 1) * TS + 1, 2 * TS + 2, '#1a1a1e', 'ROCK')); }
+    else if (team === 'indurain') m.decal((c) => DECAL.poster(c, (x0 + 1) * TS + 1, 2 * TS + 2, '#2a9aa0', 'CAN'));
+    else m.decal((c) => DECAL.poster(c, (x0 + 1) * TS + 1, 2 * TS + 2, '#9a5ae0', 'APP'));
+    m.spawn('room_' + team, x0 + 5, 9, 3);
   }
-  /* Aufenthaltsraum (rechts) */
-  roomBox(46, 1, 13, 17, 2, T.WOOD, 4);
-  m.decal((c) => { DECAL.logo(c, 47 * TS + 6, TS + 20, 'LOUNGE', '#ff8c1a'); DECAL.window(c, 50 * TS, TS + 6, 48, 30); DECAL.window(c, 54 * TS, TS + 6, 48, 30); DECAL.clock(c, 47 * TS + 4, TS + 4); });
-  m.add(objScreen(52, 1, 4)); m.trig(52, 3, 4, 1, { label: _t('Grosser Bildschirm'), act: () => Story.loungeScreen() });
-  m.add(objKitchen(47, 4, 4)); m.add(objCoffee(51, 4)); m.trig(51, 4, 1, 1, { label: _t('Kaffeemaschine'), act: () => Story.coffee() });
-  m.add(objFridge(55, 4)); m.trig(55, 4, 1, 1, { label: _t('Kühlschrank'), act: () => Story.fridge() });
-  m.add(objWaterCooler(57, 4)); m.trig(57, 4, 1, 1, { label: _t('Wasserspender'), act: () => Story.water() });
-  m.add(objTable(48, 9, 9, 3, { col: '#a87a4a', items: (c, W, H) => { for (let k = 0; k < 6; k++) { const px = 14 + k * 32, py = 8 + (k % 2) * 36; E(c, px, py, 7, 4, '#f4f0e6'); E(c, px, py, 5, 2.5, '#e8b040'); R(c, px + 10, py - 4, 3, 7, 'rgba(230,240,245,0.85)'); } E(c, W / 2, H / 2 - 4, 18, 8, '#2a2a2e'); E(c, W / 2, H / 2 - 5, 16, 6, '#e8b040'); for (let k = 0; k < 10; k++) P(c, W / 2 - 12 + Math.floor(hash(k, 1) * 24), H / 2 - 8 + Math.floor(hash(1, k) * 6), ['#c8352d', '#3f8e4b', '#f4f0e6'][k % 3]); } })); m.trig(48, 9, 9, 3, { label: _t('Grosser Tisch'), act: () => Story.loungeTable() });
-  for (const dx of [48, 51, 54]) { m.add(objChair(dx, 8, 0, '#2a2a30')); m.add(objChair(dx, 12, 3, '#2a2a30')); }
-  m.add(objSofa(47, 14, 3, '#2a9aa0')); m.add(objSofa(53, 14, 3, '#ff8c1a')); m.add(objTable(50, 14, 2, 1, { col: '#e8e4dc' }));
-  m.trig(47, 14, 3, 1, { label: _t('Sofa: Kurz hinsetzen'), act: () => Story.sofa() });
-  m.add(objPlant(57, 15, true)); m.add(objVending(57, 12)); m.trig(57, 12, 1, 1, { label: _t('Snack-Automat'), act: () => Story.shop('automat') });
-  m.set(52, 17, T.TILE, 1); m.set(53, 17, T.TILE, 1); m.decal((c) => { R(c, 52 * TS, 17 * TS, 2 * TS, TS, '#e4e8ec'); R(c, 52 * TS + 2, 17 * TS + 2, 2 * TS - 4, 10, '#8a9098'); });
-  m.spawn('lounge', 52, 16, 3);
-  /* Balkon (rechts, über den E-Bike-Raum erreichbar) */
-  m.fill(56, 18, 3, 4, T.BALCONY); m.fill(56, 18, 3, 1, T.WALL); m.fill(58, 18, 1, 4, T.WALL); m.set(56, 17, T.WALL);
-  m.fill(46, 18, 13, 9, T.TILE, 1);
-  m.fill(55, 18, 1, 9, T.WALL); m.fill(55, 22, 4, 1, T.WALL); m.fill(56, 22, 2, 5, T.TILE, 1);
-  m.set(55, 24, T.TILE, 1); m.decal((c) => { R(c, 55 * TS, 24 * TS, TS, TS, '#e4e8ec'); R(c, 55 * TS + 2, 24 * TS + 2, 8, TS - 4, '#8a9098'); pxText(c, 'BALKON', 56 * TS + 2, 22 * TS + 6, '#2a9aa0'); });
-  m.fill(56, 18, 2, 4, T.BALCONY); m.set(57, 22, T.TILE, 1);
-  m.decal((c) => { R(c, 56 * TS, 18 * TS, 2 * TS, 4 * TS, '#c8b8a0'); for (let k = 0; k < 2 * TS; k += 4) R(c, 56 * TS + k, 18 * TS, 2, 6, '#5a5048'); R(c, 56 * TS, 18 * TS + 6, 2 * TS, 1, '#5a5048'); });
-  m.add(objAshtray(56, 19)); m.trig(56, 19, 1, 1, { label: _t('Balkon: Eine rauchen'), act: () => Story.balcony() });
-  m.add(objPlanter(56, 21, '#e8402e'));
-  /* E-Bike-Raum (direkt unter dem Aufenthaltsraum, durch dessen Tür erreichbar): Diagnose-PCs am Kabel, Prüfstand, Test-Bikes */
-  roomBox(46, 17, 10, 10, 2, T.TILE, 0);
-  for (const yy of [17, 18, 19]) { m.set(52, yy, T.TILE, 1); m.set(53, yy, T.TILE, 1); }
-  m.set(46, 23, T.TILE, 1); m.set(46, 24, T.TILE, 1); m.set(55, 24, T.TILE, 1);
-  m.decal((c) => {
-    R(c, 52 * TS, 17 * TS, 2 * TS, 3 * TS, '#e4e8ec'); R(c, 52 * TS + 2, 17 * TS, 2 * TS - 4, 3 * TS, '#8a9098'); R(c, 52 * TS + 4, 17 * TS, 2 * TS - 8, 3 * TS, '#b4bcc4');
-    DECAL.logo(c, 47 * TS, 18 * TS + 8, _t('BIKE LAB'), '#e2554a'); DECAL.poster(c, 51 * TS + 4, 18 * TS + 4, '#2a9aa0', 'CAN'); DECAL.poster(c, 54 * TS + 4, 18 * TS + 4, '#e2554a', 'OTA');
-    R(c, 46 * TS, 23 * TS, TS, 2 * TS, '#e4e8ec'); R(c, 46 * TS + 2, 23 * TS + 2, TS - 4, 2 * TS - 4, '#8a9098');
-  });
-  m.add(objBikeRig(47, 20, '#e2554a')); m.trig(47, 20, 3, 1, { label: _t('Diagnose-PC · Bike 1'), act: () => Story.bikeComputer(0) });
-  m.add(objBikeRig(52, 21, '#2fa0d8')); m.trig(52, 21, 3, 1, { label: _t('Diagnose-PC · Bike 2'), act: () => Story.bikeComputer(1) });
-  m.add(objBikeStand(49, 23, 3)); m.trig(49, 23, 2, 1, { label: _t('Test-E-Bikes'), act: () => Story.officeBikes() });
-  m.add(objTestBench(53, 23)); m.trig(53, 23, 2, 1, { label: _t('CANopen-Prüfstand'), act: () => Story.testBench() });
-  m.add(objEbike(48, 25, '#f0a23a')); m.add(objEbike(54, 25, '#2a9aa0', true));
-  m.add(objBatteryTester(51, 25)); m.trig(51, 25, 1, 1, { label: _t('Battery Tester'), act: () => Story.batteryTester() });
-  /* ABUS-Leser an der Wand neben der Labortür: Key Card oder App */
-  m.decal((c) => { R(c, 46 * TS + 7, 22 * TS + 6, 10, 14, '#1a1a1e'); R(c, 46 * TS + 9, 22 * TS + 8, 6, 6, '#2a3a4a'); P(c, 46 * TS + 11, 22 * TS + 16, '#ff5a4a'); pxText(c, 'ABUS', 46 * TS + 1, 22 * TS - 2, '#c8352d'); });
-  m.trig(46, 22, 1, 1, { label: _t('ABUS-Leser: Key Card oder App'), act: () => Story.abus() });
-  m.spawn('lab', 50, 22, 0);
-  /* Backoffice Isabel (unten links beim Lift) */
-  m.add(objDesk(9, 20, 3, { coffee: true })); m.trig(9, 20, 3, 1, { label: _t('Backoffice: Isabel'), act: () => Story.isabellDesk() });
-  m.add(objOfficeChair(10, 21)); m.decal((c) => { DECAL.logo(c, 8 * TS, 18 * TS + 8, 'BACKOFFICE', '#2a9aa0'); DECAL.shelf(c, 12 * TS + 6, 18 * TS + 4, 40); });
-  m.add(objPlant(13, 20)); m.add(objPlant(5, 20));
+  /* Aufenthaltsraum oben rechts: Küchenzeile, grosser Tisch, Sofa, Snack-Automat, Tür unten in den Flur */
+  roomBox(34, 1, 11, 10, 2, T.WOOD, 4);
+  door(38, 10, 2);
+  m.fill(45, 1, 2, 10, T.WALL);
+  m.decal((c) => { DECAL.logo(c, 35 * TS + 2, TS + 6, 'LOUNGE', '#ff8c1a'); DECAL.window(c, 35 * TS + 2, TS + 26, 44, 20); DECAL.window(c, 42 * TS + 2, TS + 6, 44, 30); DECAL.clock(c, 38 * TS + 4, TS + 4); const tw = pxTextW('LOUNGE') + 8; R(c, 40 * TS + 2, 10 * TS + 5, tw, 12, '#ff8c1a'); pxText(c, 'LOUNGE', 40 * TS + 6, 10 * TS + 8, '#ffffff'); });
+  m.add(objScreen(39, 3, 3)); m.trig(39, 3, 3, 1, { label: _t('Grosser Bildschirm'), act: () => Story.loungeScreen() });
+  m.add(objKitchen(35, 4, 3)); m.add(objCoffee(38, 4)); m.trig(38, 4, 1, 1, { label: _t('Kaffeemaschine'), act: () => Story.coffee() });
+  m.add(objFridge(42, 4)); m.trig(42, 4, 1, 1, { label: _t('Kühlschrank'), act: () => Story.fridge() });
+  m.add(objWaterCooler(43, 4)); m.trig(43, 4, 1, 1, { label: _t('Wasserspender'), act: () => Story.water() });
+  m.add(objTable(37, 6, 4, 2, { col: '#a87a4a', items: (c, W, H) => { for (let k = 0; k < 4; k++) { const px = 10 + k * 24, py = 8 + (k % 2) * 24; E(c, px, py, 7, 4, '#f4f0e6'); E(c, px, py, 5, 2.5, '#e8b040'); R(c, px + 10, py - 4, 3, 7, 'rgba(230,240,245,0.85)'); } E(c, W / 2, H / 2 - 4, 16, 7, '#2a2a2e'); E(c, W / 2, H / 2 - 5, 14, 5, '#e8b040'); for (let k = 0; k < 8; k++) P(c, W / 2 - 10 + Math.floor(hash(k, 1) * 20), H / 2 - 8 + Math.floor(hash(1, k) * 5), ['#c8352d', '#3f8e4b', '#f4f0e6'][k % 3]); } })); m.trig(37, 6, 4, 2, { label: _t('Grosser Tisch'), act: () => Story.loungeTable() });
+  for (const dx of [37, 39]) { m.add(objChair(dx, 5, 0, '#2a2a30')); m.add(objChair(dx, 8, 3, '#2a2a30')); }
+  m.add(objSofa(42, 6, 2, '#2a9aa0')); m.trig(42, 6, 2, 1, { label: _t('Sofa: Kurz hinsetzen'), act: () => Story.sofa() });
+  m.add(objVending(43, 8)); m.trig(43, 8, 1, 1, { label: _t('Snack-Automat'), act: () => Story.shop('automat') });
+  m.add(objPlant(35, 9, true));
+  m.spawn('lounge', 39, 9, 3);
+  /* Backoffice unten links: Isabels Pult, Regal, Drucker-Ecke */
+  roomBox(1, 14, 9, 10, 2, T.TILE, 1);
+  door(4, 14, 2, 3);
+  m.decal((c) => { DECAL.logo(c, 2 * TS, 15 * TS + 6, 'BACKOFFICE', '#2a9aa0'); DECAL.shelf(c, 6 * TS + 4, 15 * TS + 4, 44); DECAL.window(c, 2 * TS + 4, 16 * TS - 4, 28, 20); });
+  m.add(objDesk(3, 18, 3, { coffee: true })); m.trig(3, 18, 3, 1, { label: _t('Backoffice: Isabel'), act: () => Story.isabellDesk() });
+  m.add(objOfficeChair(4, 19));
+  m.add(objPlant(8, 21)); m.add(objPlant(2, 22));
+  m.add(mkObj(7, 18, 1, 1, 12, (c, W, H) => { R(c, 2, 6, 20, H - 8, '#d8dce0'); R(c, 2, 6, 20, 2, '#f4f6f8'); R(c, 6, 2, 12, 5, '#f4f6f8'); R(c, 4, 12, 16, 6, '#3a3a40'); R(c, 5, 13, 14, 3, '#6a7078'); P(c, 18, 9, '#3af07a'); }, { solid: true }));
   /* WC */
-  m.fill(16, 18, 6, 1, T.WALL); m.fill(21, 18, 1, 5, T.WALL); m.fill(16, 22, 6, 1, T.WALL); m.fill(17, 19, 4, 3, T.TILE, 0); m.set(18, 22, T.TILE, 1);
-  m.decal((c) => { R(c, 18 * TS, 22 * TS, TS, TS, '#e4e8ec'); R(c, 18 * TS + 2, 22 * TS + 2, TS - 4, 10, '#8a9098'); pxText(c, 'WC', 18 * TS + 6, 19 * TS - 6, '#2a2a30'); });
-  m.add(mkObj(19, 19, 1, 1, 6, (c, W, H) => { R(c, 4, 0, 14, 8, '#f4f6f8'); E(c, 11, 15, 6, 6, '#f4f6f8'); E(c, 11, 15, 4, 4, '#c9dce6'); }, { solid: true }));
-  m.trig(19, 19, 1, 1, { label: 'WC', act: () => Story.wc() });
-  /* Flur-Deko */
-  m.decal((c) => { for (let k = 0; k < 6; k++) DECAL.poster(c, (24 + k * 3) * TS, 18 * TS + 4, ['#2a9aa0', '#e2554a', '#f0a23a', '#2fa0d8', '#3f8e4b', '#6a4a9c'][k], ['SAFE', 'PI', 'OKR', 'CAN', 'BIKE', 'DEV'][k]); });
-  m.add(objPlant(30, 21)); m.add(objPlant(44, 21)); m.add(objWaterCooler(40, 21));
-  m.trig(40, 21, 1, 1, { label: _t('Wasserspender'), act: () => Story.water() });
-  /* Lift & Treppe unten links */
-  m.add(objLift(1, 25, '1')); m.warp(2, 24, 'colba_entry', 'lift', { w: 1, dir: 0, label: _t('Lift') });
-  m.fill(6, 24, 3, 2, T.STAIRS, 0); m.warp(6, 25, 'colba_entry', 'stairs', { w: 3, label: _t('Treppe'), opts: { stairs: true } });
-  m.decal((c) => { R(c, 6 * TS, 24 * TS, 3 * TS, 1, '#8a8e94'); R(c, 6 * TS - 2, 24 * TS - 8, 2, 2 * TS + 8, '#5a6066'); R(c, 9 * TS, 24 * TS - 8, 2, 2 * TS + 8, '#5a6066'); R(c, 6 * TS - 2, 24 * TS - 8, 3 * TS + 4, 2, '#8a9096'); });
-  m.add(objSignpost(10, 24, _t('COLBA 1º'), '#2a9aa0'));
-  m.spawn('lift', 2, 23, 3); m.spawn('stairs', 7, 23, 3);
-  m.pedZones.push({ x: 24, y: 19, w: 20, h: 6, n: 0 });
+  roomBox(10, 14, 6, 10, 2, T.TILE, 0);
+  door(12, 14, 2, 3);
+  m.decal((c) => { pxText(c, 'WC', 12 * TS + 10, 16 * TS + 4, '#2a2a30'); DECAL.mirror(c, 14 * TS + 2, 15 * TS + 8); for (let k = 0; k < 4; k++) R(c, 11 * TS + 2 + k * 6, 15 * TS + 4, 4, 18, k % 2 ? '#8ec3e6' : '#f4f6f8'); });
+  m.add(mkObj(14, 17, 1, 1, 6, (c, W, H) => { R(c, 4, 0, 14, 8, '#f4f6f8'); E(c, 11, 15, 6, 6, '#f4f6f8'); E(c, 11, 15, 4, 4, '#c9dce6'); }, { solid: true }));
+  m.trig(14, 17, 1, 1, { label: 'WC', act: () => Story.wc() });
+  m.add(mkObj(11, 17, 1, 1, 10, (c, W, H) => { R(c, 3, 8, 18, 8, '#f4f6f8'); R(c, 5, 10, 14, 4, '#c9dce6'); R(c, 11, 2, 2, 7, '#8a9096'); R(c, 8, 1, 8, 2, '#8a9096'); }, { solid: true }));
+  /* Lift und Treppe unten in der Mitte, Plakatwand */
+  roomBox(16, 14, 18, 10, 2, T.TILE, 1);
+  door(24, 14, 2, 3);
+  m.decal((c) => { for (let k = 0; k < 6; k++) DECAL.poster(c, [17, 19.4, 21.8, 26.2, 28.6, 31][k] * TS + 2, 15 * TS + 4, ['#2a9aa0', '#e2554a', '#f0a23a', '#2fa0d8', '#3f8e4b', '#6a4a9c'][k], ['SAFE', 'PI', 'OKR', 'CAN', 'BIKE', 'DEV'][k]); });
+  m.add(objLift(17, 22, '1')); m.warp(18, 21, 'colba_entry', 'lift', { w: 1, dir: 0, label: _t('Lift') });
+  m.fill(21, 21, 3, 2, T.STAIRS, 0); m.warp(21, 22, 'colba_entry', 'stairs', { w: 3, label: _t('Treppe'), opts: { stairs: true } });
+  m.decal((c) => { R(c, 21 * TS, 21 * TS, 3 * TS, 1, '#8a8e94'); R(c, 21 * TS - 2, 21 * TS - 8, 2, 2 * TS + 8, '#5a6066'); R(c, 24 * TS, 21 * TS - 8, 2, 2 * TS + 8, '#5a6066'); R(c, 21 * TS - 2, 21 * TS - 8, 3 * TS + 4, 2, '#8a9096'); });
+  m.add(objSignpost(25, 21, _t('COLBA 1º'), '#2a9aa0'));
+  m.add(objWaterCooler(29, 21)); m.trig(29, 21, 1, 1, { label: _t('Wasserspender'), act: () => Story.water() });
+  m.add(objPlant(32, 21, true)); m.add(objPlant(32, 17)); m.add(objPlant(17, 17));
+  m.add(objSeats(27, 17, 3, '#2a9aa0'));
+  m.spawn('lift', 18, 20, 3); m.spawn('stairs', 22, 20, 3);
+  /* Bike-Lab unten rechts: Diagnose-PCs am Kabel, Prüfstand, Test-Bikes, Battery Tester, ABUS-Leser; Balkon durch die Tür rechts */
+  roomBox(34, 14, 11, 10, 2, T.TILE, 0);
+  door(38, 14, 2, 3);
+  m.decal((c) => { DECAL.logo(c, 35 * TS, 15 * TS + 6, _t('BIKE LAB'), '#e2554a'); DECAL.poster(c, 40 * TS + 4, 15 * TS + 4, '#2a9aa0', 'CAN'); DECAL.poster(c, 42 * TS + 4, 15 * TS + 4, '#e2554a', 'OTA'); });
+  m.add(objBikeRig(35, 17, '#e2554a')); m.trig(35, 17, 3, 1, { label: _t('Diagnose-PC · Bike 1'), act: () => Story.bikeComputer(0) });
+  m.add(objBikeRig(41, 17, '#2fa0d8')); m.trig(41, 17, 3, 1, { label: _t('Diagnose-PC · Bike 2'), act: () => Story.bikeComputer(1) });
+  m.add(objBikeStand(35, 20, 3)); m.trig(35, 20, 2, 1, { label: _t('Test-E-Bikes'), act: () => Story.officeBikes() });
+  m.add(objTestBench(41, 20)); m.trig(41, 20, 2, 1, { label: _t('CANopen-Prüfstand'), act: () => Story.testBench() });
+  m.add(objEbike(36, 22, '#f0a23a')); m.add(objEbike(42, 22, '#2a9aa0', true));
+  m.add(objBatteryTester(39, 22)); m.trig(39, 22, 1, 1, { label: _t('Battery Tester'), act: () => Story.batteryTester() });
+  /* ABUS-Leser an der Wand links: Key Card oder App */
+  m.decal((c) => { R(c, 34 * TS + 7, 20 * TS + 6, 10, 14, '#1a1a1e'); R(c, 34 * TS + 9, 20 * TS + 8, 6, 6, '#2a3a4a'); P(c, 34 * TS + 11, 20 * TS + 16, '#ff5a4a'); pxText(c, 'ABUS', 34 * TS + 1, 20 * TS - 2, '#c8352d'); });
+  m.trig(34, 20, 1, 1, { label: _t('ABUS-Leser: Key Card oder App'), act: () => Story.abus() });
+  m.spawn('lab', 39, 18, 0);
+  /* Balkon rechts vom Lab */
+  m.fill(45, 11, 2, 13, T.WALL); m.fill(45, 17, 2, 4, T.BALCONY);
+  m.set(44, 19, T.TILE, 1);
+  m.decal((c) => { R(c, 44 * TS, 19 * TS, TS, TS, '#dde2e6'); R(c, 44 * TS + 2, 19 * TS + 2, TS - 4, TS - 4, '#8ec3e6'); R(c, 44 * TS + 4, 19 * TS + 4, 6, TS - 8, '#c8e8f8'); pxText(c, 'BALKON', 45 * TS - 2, 16 * TS + 8, '#ffffff'); for (let k = 0; k < 2 * TS; k += 4) R(c, 45 * TS + k, 17 * TS, 2, 6, '#5a5048'); R(c, 45 * TS, 17 * TS + 6, 2 * TS, 1, '#5a5048'); for (let k = 0; k < 4 * TS; k += 4) R(c, 47 * TS - 4, 17 * TS + k, 4, 2, '#5a5048'); });
+  m.add(objAshtray(45, 17)); m.trig(45, 17, 1, 1, { label: _t('Balkon: Eine rauchen'), act: () => Story.balcony() });
+  m.add(objPlanter(46, 20, '#e8402e'));
+  /* Flur: Pflanzen, Türmatten, Hinweisschilder */
+  m.add(objPlant(1, 12, true)); m.add(objPlant(46, 12, true)); m.add(objPlant(33, 11)); m.add(objPlant(11, 13));
+  m.decal((c) => { R(c, 31 * TS + 2, 11 * TS + 4, 44, 12, '#1e2a3a'); pxText(c, 'LOUNGE ->', 31 * TS + 5, 11 * TS + 7, '#f2c84a'); R(c, 20 * TS + 2, 13 * TS + 6, 48, 12, '#1e2a3a'); pxText(c, 'LIFT  WC', 20 * TS + 5, 13 * TS + 9, '#f2c84a'); });
+  m.pedZones.push({ x: 2, y: 11, w: 43, h: 3, n: 0 });
   return m;
 };
 
@@ -245,6 +258,9 @@ MAP_BUILDERS.bar = () => {
   m.add(objTable(14, 9, 3, 1, { col: '#6a4428' })); for (const x of [14, 15, 16]) { m.add(objChair(x, 8, 0, '#5a3a24')); m.add(objChair(x, 10, 3, '#5a3a24')); }
   m.trig(14, 9, 3, 1, { label: _t('Tisch der Colba-Leute'), act: () => Story.barTable2() });
   m.add(objPlant(20, 11)); m.add(objPlant(1, 12));
+  m.decal((c) => { DECAL.azulejos(c, TS, 3 * TS + 2, 20 * TS, 8); for (let k = 0; k < 7; k++) R(c, 4 * TS + k * 5, TS + 4, 4, 14, k % 2 ? '#1a1a1e' : '#ff8c1a'); R(c, 4 * TS, TS + 18, 34, 2, '#f4f0e6'); DECAL.poster(c, 20 * TS, TS + 4, '#ff8c1a', 'VCF'); });
+  m.add(mkObj(20, 3, 1, 1, 30, (c, W, H) => { R(c, 3, 0, 18, H - 2, '#2a2a3a'); R(c, 4, 2, 16, 10, '#1a1a26'); for (let k = 0; k < 3; k++) { R(c, 6 + k * 5, 4, 3, 6, ['#ffd23a', '#ff3a3a', '#3ae0ff'][k]); } R(c, 5, 14, 14, 8, '#3a3a4a'); R(c, 7, 16, 10, 2, '#ff3a3a'); R(c, 7, 19, 10, 1, '#ffd23a'); R(c, 20, 6, 2, 6, '#c8352d'); R(c, 3, 0, 18, 1, '#ffd23a'); }, { solid: true, emit: (c) => { R(c, 4, 2, 16, 10, 'rgba(255,210,58,0.35)'); } }));
+  m.trig(20, 3, 1, 1, { label: _t('Spielautomat'), act: () => Story.say(null, pick([_t('Der Spielautomat blinkt und spielt eine Melodie, die seit 1998 niemand mehr hören will. Pepita sagt: Das Ding zahlt die Miete.'), _t('„Tragaperras“ – Schluck-Pesetas. Du steckst nichts rein. Robin hat schon vier Euro verloren.')])) });
   m.pedZones.push({ x: 18, y: 7, w: 3, h: 4, n: 2, drink: true });
   m.light(14 * TS, 3 * TS, 90, '#ffc870'); m.light(4 * TS, 7 * TS, 70, '#ffb860');
   doorBottom(m, 9, 2, 'city', 'bar', _t('Auf die Plaza'));
@@ -260,6 +276,7 @@ MAP_BUILDERS.jamon = () => {
   m.trig(3, 4, 8, 1, { label: _t('Theke: Jamón'), act: () => Story.shop('jamon') });
   m.npcDefs.push({ id: 'ramon', name: _t('Ramón (Cortador)'), x: 7 * TS + 12, y: 3 * TS + 22, dir: 0, look: npcLook(702, { hair: 10, hairCol: 9, beard: 2, beardCol: 8, top: 1, topCol: 14, pants: 5, pantsCol: 2, build: 3 }), talk: () => Story.jamonTalk(), keepDir: true, bubbleRand: ['dots'] });
   m.add(objBarrel(13, 4)); m.add(objBarrel(15, 4));
+  m.decal((c) => { DECAL.azulejos(c, TS, 3 * TS + 2, 16 * TS, 8); DECAL.board(c, 11 * TS + 2, TS + 6, 34, 3); for (let k = 0; k < 3; k++) { E(c, 12 * TS + 6 + k * 14, 4 * TS - 6, 6, 3, '#f2c84a'); E(c, 12 * TS + 6 + k * 14, 4 * TS - 7, 5, 2, '#f8e088'); } });
   for (const [x, y] of [[3, 7], [8, 7], [13, 8]]) { m.add(objTable(x, y, 2, 1, { col: '#6a4428', cloth: '#c8352d' })); m.add(objChair(x, y - 1, 0, '#5a3a24')); m.add(objChair(x + 1, y - 1, 0, '#5a3a24')); m.add(objChair(x, y + 1, 3, '#5a3a24')); m.add(objChair(x + 1, y + 1, 3, '#5a3a24')); }
   m.pedZones.push({ x: 12, y: 7, w: 4, h: 3, n: 2, sit: true });
   m.light(7 * TS, 3 * TS, 80, '#ffb860');
@@ -273,6 +290,9 @@ MAP_BUILDERS.bodega = () => {
   m.room(0, 0, 18, 12, 9, T.COBBLE, 2);
   m.decal((c) => { DECAL.shelf(c, 2 * TS, TS + 4, 120); DECAL.logo(c, 11 * TS, TS + 26, 'UTIEL-REQUENA', '#3a1a10'); });
   for (const x of [2, 4, 6, 14, 16]) m.add(objBarrel(x, 4));
+  const tinaja = (x, y) => mkObj(x, y, 1, 1, 22, (c, W, H) => { E(c, 12, H - 2, 9, 2, 'rgba(0,0,0,0.3)'); E(c, 12, H - 14, 10, 13, '#a8602e'); E(c, 12, H - 14, 8, 11, '#b86a34'); R(c, 7, H - 29, 10, 5, '#a8602e'); R(c, 8, H - 30, 8, 2, '#8a4a22'); E(c, 9, H - 18, 2, 5, '#c8804a'); }, { solid: true });
+  m.add(tinaja(1, 8)); m.add(tinaja(16, 8)); m.add(tinaja(16, 10));
+  m.decal((c) => { DECAL.board(c, 3 * TS + 4, TS + 30, 40, 4); DECAL.azulejos(c, 8 * TS, 3 * TS + 2, 5 * TS, 8); for (let k = 0; k < 5; k++) { R(c, 7 * TS + 6 + k * 12, TS + 6, 2, 5, '#f4f0e6'); P(c, 7 * TS + 7 + k * 12, TS + 5, '#ffd23a'); } });
   m.add(objCounter(8, 4, 5, 1, { top: '#6a4428', front: '#3a2418', glasses: true }));
   m.trig(8, 4, 5, 1, { label: _t('Degustation'), act: () => Story.wine() });
   m.npcDefs.push({ id: 'ines', name: _t('Inés (Sommelière)'), x: 10 * TS + 12, y: 3 * TS + 22, dir: 0, look: npcLook(703, { fem: 1, hair: 13, hairCol: 0, top: 11, topCol: 1, pants: 5, pantsCol: 2, glasses: 1 }), talk: () => Story.wine(), keepDir: true, bubbleRand: ['dots'] });
@@ -290,7 +310,8 @@ MAP_BUILDERS.disco = () => {
   m.fill(8, 5, 10, 7, T.DARK, 1);
   m.decal((c) => { for (let x = 8; x < 18; x++) for (let y = 5; y < 12; y++) R(c, x * TS + 2, y * TS + 2, TS - 4, TS - 4, ['#2a1a4a', '#1a2a4a', '#3a1a3a', '#1a3a3a'][(x + y) % 4]); DECAL.neon(c, 9 * TS, TS + 8, 'MARINA', '#ff3ad0'); DECAL.neon(c, 15 * TS, TS + 8, 'BEACH', '#3ae0ff'); });
   m.add(objDJ(12, 2)); m.trig(12, 2, 2, 1, { label: _t('DJ Álex'), act: () => Story.dj() });
-  m.add(objSpeaker(10, 2)); m.add(objSpeaker(15, 2));
+  m.add(objSpeaker(8, 2)); m.add(objSpeaker(18, 2));
+  m.decal((c) => { E(c, 13 * TS, 4 * TS + 6, 7, 7, '#c8d0d8'); for (let k = 0; k < 12; k++) P(c, 13 * TS - 5 + (k % 4) * 3, 4 * TS + 2 + Math.floor(k / 4) * 3, k % 2 ? '#ffffff' : '#8a98a8'); R(c, 13 * TS, 3 * TS, 1, TS - 2, '#5a6068'); DECAL.poster(c, 20 * TS + 4, TS + 4, '#ff3ad0', 'GIN'); DECAL.poster(c, 23 * TS, TS + 4, '#3ae0ff', 'DJ'); for (let k = 0; k < 6; k++) R(c, 3 * TS + k * 8, TS + 10, 2, 2, ['#ff3ad0', '#3ae0ff', '#ffe03a'][k % 3]); });
   m.trig(8, 5, 10, 7, { here: true, label: _t('Tanzen'), act: () => Story.dance() });
   m.add(objCounter(20, 4, 4, 1, { top: '#1a1a26', front: '#101018', taps: 2, glasses: true }));
   m.trig(20, 4, 4, 1, { label: _t('Bar'), act: () => Story.shop('discobar') });
@@ -312,6 +333,12 @@ MAP_BUILDERS.museum = () => {
   const kinds = [['sorolla', _t('Sorolla: „Paseo a orillas del mar“'), _t('Joaquín Sorolla, 1909. Das Licht der Malvarrosa – zwei Frauen im Wind. Sorolla war Valencianer und malte den Strand immer wieder.')], ['velazquez', _t('Velázquez: Selbstbildnis'), _t('Diego Velázquez, um 1640. Eines der wenigen Selbstporträts des Meisters – und der Stolz des Museums.')], ['goya', _t('Goya: „Francisco Bayeu“'), _t('Francisco de Goya malte seinen Schwager und Lehrer Francisco Bayeu, 1795 – ein Meisterwerk der Porträtkunst.')], ['greco', _t('El Greco: „Johannes der Täufer“'), _t('Dominikos Theotokopoulos, genannt El Greco, um 1600. Lange Figuren, dramatisches Licht.')], ['modern', _t('Sempere: Kinetische Komposition'), _t('Eusebio Sempere, 1970er. Op-Art aus Valencia – Linien, die zu schwingen scheinen.')], ['bike', _t('Leihgabe: „Bicicleta“'), _t('Eine moderne Leihgabe. Hängt hier, weil das Museum eine Fahrrad-Ausstellung zeigt – oder weil Fran den Kurator kennt.')]];
   kinds.forEach(([k, n, f], i) => { const x = 3 + i * 5; m.add(objPainting(x, 1, k)); m.trig(x, 3, 1, 1, { label: n.split(':')[0], act: () => Story.painting(i, n, f) }); });
   for (const x of [6, 16, 26]) m.add(objBench(x, 7, 1, '#8a6a44'));
+  /* Absperrkordel vor den Bildern, Täfelchen, Skulpturen auf Sockeln */
+  m.decal((c) => { for (let i = 0; i < 6; i++) { const px = (3 + i * 5) * TS; R(c, px + 4, 3 * TS + 20, 16, 4, '#d8d4c8'); R(c, px + 5, 3 * TS + 21, 14, 1, '#6a6050'); R(c, px + 5, 3 * TS + 23, 10, 1, '#8a8070'); } for (let x = 2; x < 34; x += 4) { R(c, x * TS + 11, 4 * TS - 2, 2, 12, '#c8b060'); E(c, x * TS + 12, 4 * TS - 3, 2, 2, '#c8b060'); if (x < 30) { c.strokeStyle = '#8a1a2a'; c.lineWidth = 1; c.beginPath(); c.moveTo(x * TS + 12, 4 * TS); c.quadraticCurveTo((x + 2) * TS + 12, 4 * TS + 6, (x + 4) * TS + 12, 4 * TS); c.stroke(); } } });
+  const statue = (x, y, kind) => mkObj(x, y, 1, 1, 30, (c, W, H) => { E(c, 12, H - 2, 9, 2, 'rgba(0,0,0,0.25)'); R(c, 5, H - 12, 14, 11, '#b8b0a0'); R(c, 5, H - 12, 14, 2, '#d8d0c0'); R(c, 4, H - 1, 16, 1, '#8a8070'); if (kind === 0) { E(c, 12, H - 22, 5, 7, '#e8e4d8'); E(c, 12, H - 30, 3, 3, '#e8e4d8'); R(c, 8, H - 26, 8, 3, '#e8e4d8'); } else if (kind === 1) { R(c, 8, H - 30, 8, 18, '#5a4a3a'); R(c, 9, H - 28, 6, 4, '#c8a060'); R(c, 7, H - 20, 10, 2, '#c8a060'); } else { E(c, 12, H - 20, 6, 5, '#2a6a8a'); E(c, 12, H - 27, 4, 4, '#3a8aa0'); R(c, 11, H - 31, 2, 5, '#3a8aa0'); } }, { solid: true });
+  m.add(statue(11, 6, 0)); m.add(statue(21, 6, 1)); m.add(statue(31, 6, 2));
+  m.trig(11, 6, 1, 1, { label: _t('Skulptur: Torso'), act: () => Story.say(null, _t('Marmortorso, römisch, aus Sagunt. Der Kopf fehlt seit etwa 1700 Jahren. Niemand hat ihn vermisst, sagt Señor Ferrer.')) });
+  m.add(mkObj(16, 1, 2, 1, 20, (c, W, H) => { R(c, 2, 2, W - 4, H - 4, '#2a3a4a'); R(c, 4, 4, W - 8, H - 8, '#e8e4d8'); for (let k = 0; k < 6; k++) R(c, 7, 7 + k * 3, 14 + (k * 7) % 12, 1, '#4a5060'); }, { solid: true }));
   m.add(objPlant(1, 9, true)); m.add(objPlant(34, 9, true));
   m.npcDefs.push({ id: 'ferrer', name: _t('Señor Ferrer (Aufsicht)'), x: 32 * TS + 12, y: 6 * TS + 20, dir: 1, look: npcLook(705, { hair: 10, hairCol: 9, beard: 2, beardCol: 8, top: 7, topCol: 11, pants: 5, pantsCol: 8, glasses: 2 }), talk: () => Story.guard(), keepDir: true, bubbleRand: ['dots'] });
   m.pedZones.push({ x: 2, y: 4, w: 32, h: 6, n: 4 });

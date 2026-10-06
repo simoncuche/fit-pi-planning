@@ -39,7 +39,7 @@ Object.assign(Story, {
     const o = await this.ask('robin', pick([_t('Entschuldige – wo ist nochmal der Aufenthaltsraum? Ich war im Lift, und dann war ich im Keller.'), _t('Welcher Raum ist Indurain? Ich bin dreimal an Rocket vorbeigelaufen.'), _t('Gibt es hier ein WC, das nicht abgeschlossen ist?')]), [_t('Den Weg zeigen'), _t('Keine Zeit')]);
     if (o === 0) { G.S.flags.robinHelped = (G.S.flags.robinHelped || 0) + 1; mood(2); planAdd(myTeam(), 0.5); await this.say('robin', pick([_t('Danke! Ich sollte mir einen Plan zeichnen. Das wäre ironisch.'), _t('Du bist ein Schatz. Ich erwähne das beim nächsten Gehaltsgespräch. Deinem.')])); if (G.S.flags.robinHelped >= 3) achieve('robin'); }
     else await this.say('robin', _t('Verstehe. Ich frag Isabel. Wo ist Isabel?'));
-    r.path = [{ x: 52 * TS, y: 23 * TS }]; r.onArrive = (a) => dropActor(a);
+    r.path = [{ x: 25 * TS, y: 16 * TS }]; r.onArrive = (a) => dropActor(a);
     G.busy--;
   },
   async ev_gota() {

@@ -138,6 +138,7 @@ const ACH = {
   jamon: [_t('Bellota'), _t('Eine Ración Jamón Ibérico gegessen')],
   aguaval: [_t('Agua de Valencia'), _t('Den Stadt-Cocktail probiert')],
   paellachef: [_t('Socarrat'), _t('Den Paella-Kochwettbewerb gewonnen')],
+  sobremesa: [_t('Sobremesa'), _t('Nach dem Grillieren mit allen am Gartentisch gegessen')],
   ebike: [_t('Ausfahrt'), _t('Mit dem E-Bike durch den Turia-Park gefahren')],
   akku: [_t('Akku leer'), _t('Mit leerem Akku nach Hause getreten')],
   teamride: [_t('Team-Ausfahrt'), _t('Die Donnerstags-Ausfahrt mit dem Team gefahren')],

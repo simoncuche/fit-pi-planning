@@ -30,7 +30,8 @@ MAP_BUILDERS.city = () => {
   m.fill(0, 11, 100, 1, T.CURB);
   for (let x = 2; x < 98; x += 6) { m.add(objOrange(x + (x % 12 === 2 ? 0 : 1), x % 12 === 2 ? 2 : 9, x % 18 === 8)); }
   for (let x = 5; x < 98; x += 11) m.add(objPalm(x, 3, 40));
-  for (let x = 8; x < 96; x += 16) m.add(objBench(x, 8, 0, '#6a8a4a'));
+  for (let x = 8; x < 96; x += 16) { m.add(objBench(x, 8, 0, '#6a8a4a')); m.add(objBin(x + 2, 8)); }
+  for (const x of [18, 42, 66, 90]) m.add(objFlowerBed(x, 9, 2));
   for (let x = 14; x < 96; x += 24) m.add(objLamp(x, 4, 'old'));
   m.add(objFountain(46, 1));
   m.pedZones.push({ x: 0, y: 1, w: 100, h: 4, n: 8 }); m.pedZones.push({ x: 0, y: 5, w: 100, h: 2, n: 5, bike: true }); m.pedZones.push({ x: 0, y: 7, w: 100, h: 4, n: 6 });
@@ -54,7 +55,8 @@ MAP_BUILDERS.city = () => {
   m.trig(37, 20, 5, 2, { here: true, label: _t('Turia-Brunnen'), act: () => Story.fountain() });
   for (const [x, y] of [[24, 21], [28, 22], [44, 15], [45, 22], [34, 23]]) m.add(objOrange(x, y));
   for (const [x, y] of [[26, 19], [42, 19]]) m.add(objLamp(x, y, 'old'));
-  m.add(objBench(32, 22, 0)); m.add(objBench(40, 23, 0));
+  m.add(objBench(32, 22, 0)); m.add(objBench(40, 23, 0)); m.add(objBin(34, 22)); m.add(objBin(46, 19));
+  m.add(objFlowerBed(36, 15, 2, ['#e86ab0', '#f4f0e6', '#f2c84a'])); m.add(objFlowerBed(42, 15, 2, ['#e86ab0', '#f4f0e6', '#f2c84a']));
   m.add(objKiosk(44, 18, 'HORCHATA', '#e07b25')); m.trig(44, 18, 2, 1, { label: _t('Horchatería'), act: () => Story.shop('horchata') });
   m.npcDefs.push({ id: 'horchatera', name: _t('Horchatera Amparo'), x: 45 * TS + 12, y: 17 * TS + 20, dir: 0, look: npcLook(301, { fem: 1, hair: 12, hairCol: 1, top: 11, topCol: 14, pants: 8, pantsCol: 2, hat: 0, glasses: 0 }), talk: () => Story.shop('horchata'), keepDir: true, bubbleRand: ['dots', 'heart'] });
   m.add(objBuilding(CITY.bar.x, CITY.bar.y, CITY.bar.w, CITY.bar.h, { floors: 2, wall: '#f4d8a0', roof: '#b85a3a', roofType: 'gable', shutter: '#3f6a5a', doors: [{ dx: 2, type: 'door', col: '#5a3a24' }], shopWins: [0, 1, 3, 4], goods: ['#ff8c1a', '#e8b33a', '#f4f0e6'], awning: { cols: [0, 1, 3, 4], col: '#ff8c1a' }, sign: { text: _t('BAR PEPITA'), bg: '#2a1a10', fg: '#ffb53d' }, seed: 7 }));
@@ -71,6 +73,7 @@ MAP_BUILDERS.city = () => {
   m.trig(64, 21, 5, 1, { here: true, label: _t('Foto: Lonja de la Seda'), act: () => Story.photo('lonja'), cond: () => !G.S.photos.lonja });
   m.fill(50, 21, 19, 4, T.PLAZA, 2);
   m.add(objOrangeCart(58, 22)); m.trig(58, 22, 2, 1, { label: _t('Zumo-Wagen'), act: () => Story.shop('zumo') });
+  m.add(objBikes(51, 23, 4)); m.add(objBin(62, 23)); m.add(objBench(66, 23, 0));
   /* ---- Hotel Kramer (Seitengasse westlich) ---- */
   cityBlock(m, 1, 14, 18, 4, r);
   cityBlock(m, 1, 19, 7, 4, r);
@@ -78,7 +81,7 @@ MAP_BUILDERS.city = () => {
   m.warp(CITY.hotel.x + 3, CITY.hotel.y + CITY.hotel.h - 1, 'hotel_lobby', 'entry', { label: _t('Hotel Kramer') });
   for (const [x, y] of [[9, 31], [17, 31]]) m.add(objPlanter(x, y, '#e8402e'));
   m.add(objCar(2, 31, '#f0d040', 'h', { taxi: true })); m.trig(2, 31, 2, 1, { label: _t('Taxi'), act: () => Story.taxiCity() });
-  m.add(objLamp(8, 33, 'old'));
+  m.add(objLamp(8, 33, 'old')); m.add(objBusStop(4, 27)); m.add(objBin(6, 31));
   cityBlock(m, 1, 33, 18, 4, r);
   cityBlock(m, 1, 38, 18, 5, r);
   cityBlock(m, 9, 19, 10, 4, r);
@@ -89,7 +92,9 @@ MAP_BUILDERS.city = () => {
   m.trig(26, 33, 18, 3, { here: true, label: _t('Foto: Plaza del Ayuntamiento'), act: () => Story.photo('ayuntamiento'), cond: () => !G.S.photos.ayuntamiento });
   for (const [x, y] of [[24, 34], [45, 34], [24, 41], [45, 41]]) m.add(objPalm(x, y, 46));
   for (const [x, y] of [[28, 36], [41, 36]]) m.add(objLamp(x, y, 'old'));
-  for (const [x, y] of [[27, 41], [40, 41]]) m.add(objBench(x, y, 0));
+  for (const [x, y] of [[27, 41], [40, 41]]) { m.add(objBench(x, y, 0)); m.add(objBin(x + 2, y)); }
+  for (const [x, y] of [[36, 39], [38, 39]]) m.add(objUmbrellaTable(x, y, '#c8352d'));
+  m.add(objBollard(23, 43)); m.add(objBollard(30, 43)); m.add(objBollard(37, 43)); m.add(objBollard(44, 43));
   m.add(objKiosk(42, 38, 'CHURROS', '#c8352d')); m.trig(42, 38, 2, 1, { label: _t('Churrería'), act: () => Story.shop('churros') });
   m.pedZones.push({ x: 22, y: 32, w: 26, h: 12, n: 9 }); m.birdSpots.push({ x: 24, y: 36, w: 8, h: 6, n: 7 });
   m.add(objSignpost(23, 32, _t('MASCLETÀ 14:00'), '#c8352d'));
@@ -114,6 +119,7 @@ MAP_BUILDERS.city = () => {
   m.add(objScooter(78, 29, '#c8302a')); m.add(objScooter(80, 29, '#2f5fb8', true));
   for (const [x, y] of [[71, 30], [81, 30]]) m.add(objPalm(x, y, 44));
   m.add(objVending(76, 30)); m.trig(76, 30, 1, 1, { label: _t('Automat'), act: () => Story.shop('automat') });
+  m.add(objBusStop(72, 32)); m.add(objBin(78, 31)); m.add(objFlowerBed(73, 31, 2, ['#2a9aa0', '#f4f0e6', '#e8402e']));
   m.fill(72, 28, 10, 4, T.PLAZA, 1);
   cityBlock(m, 72, 33, 10, 4, r, { roofType: 'flat', wall: '#c8d0d8', balcony: false, solar: true });
   cityBlock(m, 72, 38, 10, 5, r, { roofType: 'flat' });
@@ -122,7 +128,7 @@ MAP_BUILDERS.city = () => {
   m.warp(CITY.museum.x + 4, CITY.museum.y + CITY.museum.h - 1, 'museum', 'entry', { w: 2, label: _t('Museu de Belles Arts'), guard: () => Story.openGuard('museum') });
   m.fill(84, 19, 14, 6, T.PLAZA, 3);
   for (const [x, y] of [[85, 21], [96, 21]]) m.add(objCypress(x, y));
-  m.add(objBench(89, 22, 0)); m.add(objBench(93, 22, 0));
+  m.add(objBench(89, 22, 0)); m.add(objBench(93, 22, 0)); m.add(objBin(91, 22)); m.add(objFlowerBed(88, 24, 3, ['#f2c84a', '#e8402e', '#f4f0e6']));
   m.trig(87, 20, 6, 2, { here: true, label: _t('Foto: Museu de Belles Arts'), act: () => Story.photo('museum'), cond: () => !G.S.photos.museum });
   cityBlock(m, 84, 26, 14, 4, r);
   /* ---- Calle Colón: Jamonería, Bodega, Souvenirs ---- */
@@ -142,6 +148,7 @@ MAP_BUILDERS.city = () => {
   cityBlock(m, 61, 46, 8, 5, r);
   cityBlock(m, 72, 46, 10, 5, r);
   m.add(objAtm(21, 50)); m.trig(21, 50, 1, 1, { label: _t('Bankomat'), act: () => Story.atm() });
+  m.add(objScooter(35, 51, '#2a2a2e')); m.add(objScooter(62, 51, '#c8302a', true)); m.add(objBikes(64, 51, 3)); m.add(objBin(30, 51)); m.add(objBin(47, 51));
   m.fill(21, 50, 1, 1, T.PAVE);
   /* ---- Süden: Estación del Norte, Kartbahn, Padel, Disco ---- */
   m.add(objBuilding(CITY.estacion.x, CITY.estacion.y, CITY.estacion.w, CITY.estacion.h, { floors: 3, wall: '#e8c89a', roof: '#8a9aa0', roofType: 'flat', balcony: false, wins: 'arch', doors: [{ dx: 6, type: 'arch' }, { dx: 7, type: 'arch' }], shopWins: [], sign: { text: _t('ESTACIÓ DEL NORD'), bg: '#2a2a3a', fg: '#ff8c1a' }, seed: 61, special: (c, W, H, fy0) => { for (let k = 0; k < 10; k++) { E(c, 14 + k * 32, fy0 + 10, 4, 4, '#ff8c1a'); P(c, 14 + k * 32, fy0 + 5, '#3f8e4b'); } R(c, W / 2 - 16, fy0 - 10, 32, 10, '#d8ccb0'); E(c, W / 2, fy0 - 5, 4, 4, '#f4f2ea'); } }));
@@ -151,6 +158,7 @@ MAP_BUILDERS.city = () => {
   for (const [x, y] of [[23, 62], [46, 62]]) m.add(objPalm(x, y, 44));
   m.add(objCar(24, 64, '#f0d040', 'h', { taxi: true })); m.trig(24, 64, 2, 1, { label: _t('Taxi'), act: () => Story.taxiCity() });
   m.add(objCar(27, 64, '#f0d040', 'h', { taxi: true }));
+  m.add(objBusStop(40, 54)); m.add(objBikes(44, 62, 4)); m.add(objBin(45, 61)); m.add(objBench(30, 62, 0)); m.add(objBench(40, 62, 0));
   m.pedZones.push({ x: 22, y: 60, w: 26, h: 8, n: 6 });
   cityBlock(m, 1, 54, 18, 4, r);
   m.fill(1, 59, 18, 9, T.GRAVEL);
@@ -175,7 +183,7 @@ MAP_BUILDERS.city = () => {
   m.add(objHemisferic(52, 71, 10));
   m.trig(50, 75, 14, 1, { here: true, label: _t('Foto: Ciudad de las Artes'), act: () => Story.photo('ciudad'), cond: () => !G.S.photos.ciudad });
   for (const [x, y] of [[45, 72], [78, 72]]) m.add(objPalm(x, y, 46));
-  m.add(objBench(64, 74, 0)); m.add(objBench(70, 74, 0));
+  m.add(objBench(64, 74, 0)); m.add(objBench(70, 74, 0)); m.add(objBin(66, 74)); m.add(objFlowerBed(48, 73, 3, ['#f4f0e6', '#2a9aa0', '#e86ab0'])); m.add(objFlowerBed(74, 73, 3, ['#f4f0e6', '#2a9aa0', '#e86ab0']));
   m.pedZones.push({ x: 44, y: 70, w: 36, h: 6, n: 5 });
   cityBlock(m, 1, 76, 40, 6, r);
   /* ---- Strand & Marina (Osten) ---- */

@@ -296,16 +296,18 @@ const Story = {
       return;
     }
     if (m.id === 'colba') {
-      const TR = { indurain: 1, meeseeks: 16, rocket: 31 };
-      const roomSeats = (team) => { const x0 = TR[team]; return [[x0 + 3, 5, 0], [x0 + 6, 5, 0], [x0 + 9, 5, 0], [x0 + 3, 9, 3], [x0 + 6, 9, 3], [x0 + 9, 9, 3], [x0 + 11, 7, 1], [x0 + 2, 7, 2]]; };
+      const TR = { indurain: 1, meeseeks: 12, rocket: 23 };
+      const roomSeats = (team) => { const x0 = TR[team]; return [[x0 + 2, 5, 0], [x0 + 4, 5, 0], [x0 + 6, 5, 0], [x0 + 2, 8, 3], [x0 + 4, 8, 3], [x0 + 6, 8, 3], [x0 + 8, 6, 1], [x0 + 1, 6, 2]]; };
       const cnt = { indurain: 0, meeseeks: 0, rocket: 0 };
       (byLoc.room || []).forEach((id) => { const tm = teamOf(id) || 'indurain'; const s = free(roomSeats(tm), cnt[tm]++); put(id, s[0], s[1], s[2], { pose: s[2] === 1 || s[2] === 2 ? 'stand' : 'sit', sitIdle: true, sortAdd: s[2] === 0 ? 0 : 3 }); });
-      const lseats = [[48, 8, 0], [51, 8, 0], [54, 8, 0], [48, 12, 3], [51, 12, 3], [54, 12, 3], [49, 13, 0], [50, 13, 0], [55, 13, 0], [56, 13, 0], [50, 6, 0], [52, 6, 0], [54, 6, 0], [56, 6, 0], [49, 16, 0], [52, 16, 0], [55, 16, 0]];
-      (byLoc.lounge || []).forEach((id, i) => { const s = free(lseats, i); const sit = i < 6; put(id, s[0], s[1], s[2], { pose: sit ? 'sit' : 'stand', drinkIdle: !sit, sitIdle: sit, sortAdd: sit && s[2] === 0 ? 0 : 3, wander: sit ? null : { x: 47, y: 5, w: 11, h: 11 } }); });
-      (byLoc.balcony || []).forEach((id) => put(id, 57, 20, 3, { smokeIdle: true }));
-      (byLoc.backoffice || []).forEach((id) => put(id, 10, 21, 0, { pose: 'sit', sitIdle: true, sortAdd: 2 }));
-      (byLoc.lab || []).forEach((id, i) => put(id, 47 + (i % 4) * 2, 22 + Math.floor(i / 4) * 3, 0, { bubble: 'bike', bubbleT: 1e9 }));
-      (byLoc.lost || []).forEach((id) => put(id, 30 + rint(0, 12), 20, rint(0, 3), { wander: { x: 24, y: 19, w: 20, h: 5 }, bubble: '?', bubbleT: 1e9 }));
+      /* Vier Stühle am Tisch, zwei auf dem Sofa; wer steht, steht rechts bei Küche und Automat – die Spalten 35/36 und 41 und die Reihe 9 bleiben frei zum Durchgehen */
+      const lseats = [[37, 5, 0], [39, 5, 0], [37, 8, 3], [39, 8, 3], [42, 6, 0], [43, 6, 0], [41, 5, 0], [42, 5, 0], [43, 5, 0], [40, 4, 0], [41, 4, 0], [39, 4, 0], [42, 8, 0], [41, 7, 1], [43, 9, 0], [35, 5, 0], [36, 4, 0]];
+      (byLoc.lounge || []).forEach((id, i) => { const s = free(lseats, i); const sit = i < 6; put(id, s[0], s[1], s[2], { pose: sit ? 'sit' : 'stand', drinkIdle: !sit, sitIdle: sit, sortAdd: sit && s[2] === 0 ? 0 : 3 }); });
+      (byLoc.balcony || []).forEach((id) => put(id, 45, 18, 3, { smokeIdle: true }));
+      (byLoc.backoffice || []).forEach((id) => put(id, 4, 19, 0, { pose: 'sit', sitIdle: true, sortAdd: 2 }));
+      const labSpots = [[36, 18], [41, 18], [36, 19], [42, 19], [37, 20], [40, 20], [39, 21], [35, 21]];
+      (byLoc.lab || []).forEach((id, i) => { const s = labSpots[i % labSpots.length]; put(id, s[0], s[1], 0, { bubble: 'bike', bubbleT: 1e9 }); });
+      (byLoc.lost || []).forEach((id) => put(id, 20 + rint(0, 12), 12, rint(0, 3), { wander: { x: 2, y: 11, w: 43, h: 3 }, bubble: '?', bubbleT: 1e9 }));
       return;
     }
   },
@@ -752,17 +754,54 @@ const Story = {
   async grill() {
     const f = G.S.flags;
     const here = this.isHere('danny', 'danny_house') || f.asado;
-    const o = await this.ask(here ? 'danny' : null, here ? _t('Grillzange? Chorizo, Pollo oder Maiskolben – aber nicht verbrennen lassen. Der Grill ist heiss wie Havanna im August.') : _t('Der Grill ist aus. Danny grillt nur, wenn Gäste da sind.'), here ? [{ t: _t('Chorizo wenden & essen') }, { t: _t('Pollo asado') }, { t: _t('Maiskolben') }, _t('Nur zuschauen')] : [_t('Okay')]);
-    if (!here || o === 3) return;
-    const timing = Math.random();
-    const burnt = timing < 0.15 && G.S.st.prom > 1.2;
-    const item = ['chorizo', 'pollo', 'maiz'][o];
-    passTime(10);
-    if (burnt) { mood(-2); await this.say('danny', _t('¡Ay, no! Verbrannt. Das war mein letzter Chorizo. Nein, Spass – hier, der nächste.')); }
-    consume(item);
-    f.grilled = (f.grilled || 0) + 1;
-    if (f.grilled >= 3 && !burnt) achieve('grillmeister');
-    await this.say(null, pick([_t`${ITEMS[item].n}. Rauch, Holzkohle, ein Hauch Limette – Danny marinert mit Mojo.`, _t('Vom Grill direkt auf den Teller. Vicente fotografiert sein Essen, Estella isst seines.'), _t('Danny wendet mit der einen Hand und erklärt mit der anderen den Backlog.')]));
+    if (!here) { await this.say(null, _t('Der Grill ist aus. Danny grillt nur, wenn Gäste da sind.')); return; }
+    const o = await this.ask('danny', f.bbq ? _t('Nochmal an die Zange? Der Grill ist für alle da. Oder einfach nur etwas nehmen.') : _t('Grillzange? Chorizo, Pollo und Maiskolben – aber nichts verbrennen lassen. Der Grill ist heiss wie Havanna im August. Wenn alles auf dem Teller ist, essen wir zusammen.'), [{ t: _t('Grillzange übernehmen'), r: _t('Minispiel') }, { t: _t('Nur einen Chorizo nehmen') }, { t: _t('Nur ein Pollo nehmen') }, _t('Später')]);
+    if (o === 3) return;
+    if (o > 0) { const item = o === 1 ? 'chorizo' : 'pollo'; passTime(10); consume(item); f.grilled = (f.grilled || 0) + 1; await this.say(null, pick([_t`${ITEMS[item].n}. Rauch, Holzkohle, ein Hauch Limette – Danny marinert mit Mojo.`, _t('Vom Grill direkt auf den Teller. Vicente fotografiert sein Essen, Estella isst seines.'), _t('Danny wendet mit der einen Hand und erklärt mit der anderen den Backlog.')])); return; }
+    const res = await Mini.bbq();
+    if (!res) return;
+    passTime(25);
+    G.S.rec.bbq = Math.max(G.S.rec.bbq || 0, res.score);
+    f.grilled = (f.grilled || 0) + res.served;
+    if (res.served >= 6 && res.burnt === 0) achieve('grillmeister');
+    const first = !f.bbq; f.bbq = 1;
+    await this.say('danny', res.burnt === 0 ? _t`${res.served} Stück auf dem Teller, nichts verbrannt. ¡Qué nivel! In Havanna würden sie dich adoptieren.` : res.burnt <= 2 ? _t`${res.served} auf dem Teller, ${res.burnt} für den Hund. Akzeptabel – der Hund ist auch ein Gast.` : _t`${res.burnt} verbrannt! Der Rauchmelder vom Nachbarn hat angeschlagen. Egal, Bea hat Ropa Vieja.`);
+    if (first) await this.bbqDinner(res);
+    else { consume(res.items.pollo ? 'pollo' : res.items.chorizo ? 'chorizo' : 'maiz'); }
+  },
+  /* Nach dem Grillieren: alle setzen sich an den Gartentisch und essen zusammen */
+  async bbqDinner(res) {
+    const f = G.S.flags;
+    G.busy++;
+    await this.say('danny', _t('¡A comer! Alle an den Tisch – Teller, Mojo, Limetten. Wer steht, bekommt nichts.'));
+    const seats = [[10, 8, 0], [12, 8, 0], [14, 8, 0], [10, 11, 3], [12, 11, 3], [14, 11, 3]];
+    const stands = [[9, 9, 2], [9, 10, 2], [16, 10, 1], [11, 12, 3], [13, 12, 3], [15, 12, 3], [8, 9, 2], [17, 9, 1]];
+    const npcs = G.npcs.filter((a) => a.id && PEOPLE[a.id]);
+    const order = ['danny', 'bea', 'vicente'].concat(npcs.map((a) => a.id).filter((id) => !['danny', 'bea', 'vicente'].includes(id)));
+    let si = 0, ki = 0;
+    const moves = [];
+    for (const id of order) {
+      const a = npcs.find((n) => n.id === id); if (!a) continue;
+      const seat = si < seats.length ? seats[si++] : stands[ki++ % stands.length];
+      a.wander = null; a.danceIdle = false; a.sitIdle = false; a.pose = 'stand'; a.bubble = null;
+      moves.push(walk(a, [[seat[0], seat[1]]], 70).then(() => { a.dir = seat[2]; a.pose = si <= seats.length && seats.includes(seat) ? 'sit' : 'stand'; a.sitIdle = a.pose === 'sit'; a.drinkIdle = true; a.sortAdd = seat[2] === 0 ? 0 : 3; }));
+    }
+    const me = T2P(16, 9); G.player.path = null;
+    await Promise.race([Promise.all(moves), sleep(3500)]);
+    G.player.x = me.x; G.player.y = me.y; G.player.dir = 1; G.player.pose = 'sit';
+    await sleep(400);
+    const eat = res.items.pollo ? 'pollo' : res.items.chorizo ? 'chorizo' : 'maiz';
+    consume(eat); if (res.items.maiz && eat !== 'maiz') consume('maiz');
+    await this.say('bea', _t('Ropa Vieja dazu, Mojo auf alles. Und wer über Sprints redet, spült.'));
+    await this.say('vicente', pick([_t('Chorizo vom Grill ist erlaubt. In der Paella nicht. Das ist der ganze Unterschied zwischen Kuba und Valencia.'), _t('Ich fotografiere das. Für die Nachwelt und für Instagram.')]));
+    await this.say('danny', pick([_t('Das ist der eigentliche PI-Plan: ein Tisch, alle dran, keiner schaut aufs Handy. Robin, Handy weg.'), _t('In Havanna sagt man: Wer zusammen isst, streitet weniger im Daily. Hab ich mir gerade ausgedacht. Stimmt trotzdem.')]));
+    if (this.isHere('robin', 'danny_house')) await this.say('robin', _t('Ich schreibe das in den Business Context. „Teamessen: wirkt.“'));
+    passTime(45); mood(10); energy(6);
+    for (const a of npcs) if (a.id !== G.S.pid) G.S.fprom[a.id] = fprom(a.id) + 0.15;
+    f.bbqDinner = 1; achieve('sobremesa');
+    G.player.pose = 'stand';
+    G.busy--;
+    await this.say(null, _t('Sobremesa: Der Tisch bleibt voll, die Gläser leeren sich, niemand steht auf. Das ist in Spanien der wichtigste Gang.'));
   },
   async gardenTable() {
     const f = G.S.flags;
@@ -980,7 +1019,7 @@ const Story = {
     const P = {
       simon: { hello: [_t('Alles im Plan?'), _t('Hast du die Agenda gesehen?'), _t('Reservierung für Donnerstag steht.')], topics: [planTopic, { t: _t('Was steht heute an?'), f: async () => this.say('simon', this.objective()) }, { t: _t('Organisation'), f: async () => this.say('simon', pick([_t('Taxi Samstag 8:15, Flug 10:00. Ich hab es dreimal bestätigt.'), _t('Isabel und ich haben den Mittagsplan: Di Paella, Mi Burger, Do Bocadillos, Fr Healthy.'), _t('Jeder hat seinen Raum. Jeder hat Post-its. Was kann schiefgehen.')])) }] },
       luigi: { hello: [_t('Hast du die Autos hier gesehen?'), _t('Mittwoch: Kartbahn.'), _t('Ein Seat León mit 300 PS …'), _t('Padel heute Abend? Fast wie Tennis.')], topics: [planTopic, { t: _t('Über Autos reden'), f: async () => { await this.say('luigi', pick([_t('Der Taxifahrer hatte einen Toledo. Ein Toledo! Die gibt es seit 2019 nicht mehr.'), _t('Cupra, das ist Seat mit Attitüde. Und Kupferfarbe.'), _t('Wenn ich reich bin: Alpine A110. Leicht, französisch, laut.'), _t('E-Bikes sind auch Autos. Nur ohne Dach. Und ohne Motor. Also, mit kleinem Motor.')])); if (!f.autofan) { f.autofan = 1; achieve('autofan'); } } }, { t: _t('Tennis'), f: async () => this.say('luigi', pick([_t('Zweimal die Woche Tennis, seit zwanzig Jahren. Vorhand wie ein Rennwagen, Rückhand wie ein Anhänger.'), _t('Der Padel-Court beim Park? Padel ist Tennis für Leute, die keine Lust auf Laufen haben. Ich spiele trotzdem mit. Bring deinen Schläger – ach, Sergio hat welche.'), _t('Nadal hat auf Sand gewonnen, ich verliere auf Sand. Hartplatz. Immer Hartplatz.')])) }, { t: _t('Kartbahn?'), f: async () => this.say('luigi', d === 2 && h < 18 ? _t('Heute Abend ab 18 Uhr bin ich dort. Südwesten der Stadt. Bring Mut mit.') : _t('Mittwochabend. Ich bin dort. Du wirst verlieren.')) }] },
-      dominique: { hello: [_t('Kommst du mit auf den Balkon?'), _t('Hast du Feuer?'), _t('Rocket ist bereit.'), _t('Boxtraining fällt diese Woche aus. Dafür: Treppe statt Lift.')], topics: [planTopic, { t: _t('Rauchpause?'), f: async () => { if (G.map.id === 'colba') { await this.say('dominique', _t('Balkon, oben rechts im Aufenthaltsraum. Ich geh vor.')); } else await this.say('dominique', _t('Hier? Gern. Aber nur, wenn du eine hast.')); } }, { t: _t('Boxen'), f: async () => this.say('dominique', pick([_t('Dienstag und Donnerstag Boxtraining. Sandsack, Seil, Pratzen. Besser als jede Retrospektive.'), _t('Boxen und Rauchen? Ja, ich weiss. Mein Trainer sagt das auch. Jede Woche.'), _t('Im Ring zählt nur die nächste Runde. Im Sprint auch. Deshalb bin ich PO geworden.')])) }, { t: _t('Team Rocket'), f: async () => this.say('dominique', pick([_t('Carlos refactort, Salva lernt, Aitor löst. Und Lukas erklärt den Batteriepass. Beste Mischung.'), _t('Rocket macht das Händlerportal und die Battery-Pass-API. Und OTA, wenn Indurain liefert.')])) }] },
+      dominique: { hello: [_t('Kommst du mit auf den Balkon?'), _t('Hast du Feuer?'), _t('Rocket ist bereit.'), _t('Boxtraining fällt diese Woche aus. Dafür: Treppe statt Lift.')], topics: [planTopic, { t: _t('Rauchpause?'), f: async () => { if (G.map.id === 'colba') { await this.say('dominique', _t('Balkon, hinten durchs Bike-Lab. Ich geh vor.')); } else await this.say('dominique', _t('Hier? Gern. Aber nur, wenn du eine hast.')); } }, { t: _t('Boxen'), f: async () => this.say('dominique', pick([_t('Dienstag und Donnerstag Boxtraining. Sandsack, Seil, Pratzen. Besser als jede Retrospektive.'), _t('Boxen und Rauchen? Ja, ich weiss. Mein Trainer sagt das auch. Jede Woche.'), _t('Im Ring zählt nur die nächste Runde. Im Sprint auch. Deshalb bin ich PO geworden.')])) }, { t: _t('Team Rocket'), f: async () => this.say('dominique', pick([_t('Carlos refactort, Salva lernt, Aitor löst. Und Lukas erklärt den Batteriepass. Beste Mischung.'), _t('Rocket macht das Händlerportal und die Battery-Pass-API. Und OTA, wenn Indurain liefert.')])) }] },
       robin: { hello: [_t('Sag mal, wo ist nochmal der Aufenthaltsraum?'), _t('Ist das normal, dass alle Post-its kleben?'), _t('Mein erstes PI Planning. Aufregend.')], topics: [{ t: _t('Den Weg zeigen'), f: async () => { f.robinHelped = (f.robinHelped || 0) + 1; mood(2); await this.say('robin', pick([_t('Danke. Ich hatte den Lift rechts genommen – der hält im Zwischengeschoss.'), _t('Ah, der Aufenthaltsraum ist rechts. Ich war im WC. Zweimal.'), _t('Ihr seid alle so geduldig mit mir.')])); if (f.robinHelped >= 3) achieve('robin'); } }, planTopic, { t: _t('Business Context'), f: async () => this.say('robin', f.kickoff ? _t('Meine Folien kamen an, oder? Fran hat gelacht. Ich glaube, es war ein gutes Lachen.') : _t('24 Folien. Ich übe noch. Was heisst nochmal „Commitment“ auf Spanisch?')) }] },
       lukas: { hello: [_t('Wusstest du, dass jede Batterie ab 2027 einen Pass braucht?'), _t('Der Entwurf hat 40 Seiten.'), _t('Grüezi.')], topics: [{ t: _t('Battery Tester'), f: async () => this.say('lukas', pick([_t('Der Battery Tester hat drei Zustände: grün, rot und „bitte warten“. Den dritten sehen wir am meisten.'), _t('Ich habe den Battery Tester getestet. Er hat bestanden. Knapp. Wer testet eigentlich mich?'), _t('Zyklus 412 von 500. Die Batterie hält länger durch als ich. Und sie beschwert sich nicht.'), _t('Der Tester sagt 97 % Kapazität. Die Batterie sagt nichts. Der Batteriepass sagt: bitte dokumentieren.')])) }, planTopic, { t: _t('Battery Pass erklären lassen'), f: async () => { await this.say('lukas', _t('EU-Batterieverordnung: Jede E-Bike-Batterie bekommt einen digitalen Pass. QR-Code drauf, Daten dahinter: Herkunft, Kapazität, CO₂-Fussabdruck, Zustand. Rocket baut die API, Meeseeks zeigt es in der App. Und die Zelle meldet ihren State of Health über CANopen – Index 0x6080, falls Fran fragt.')); if (!f.battery) { f.battery = 1; achieve('battery'); planAdd(tm, 1); } } }, { t: _t('Schweiz vs. Spanien'), f: async () => this.say('lukas', pick([_t('Hier isst man um 14 Uhr Mittag. Mein Magen ist auf Berner Zeit.'), _t('Der Mestalla ist lauter als das Wankdorf. Viel lauter.'), _t('Ich hab Rivella im Koffer. Nur für Notfälle.')])) }] },
       pascal: { hello: [_t('Nu, alles klar?'), _t('SwiftUI ist die Zukunft.'), _t('Club Mate?'), _t('Freitag ist Demo-Tag. Hier: Final-Tag. Auch okay.')], topics: [planTopic, { t: _t('Wie war die Anreise?'), f: async () => { await this.say('pascal', _t('Leipzig – Frankfurt – Valencia. In Frankfurt drei Stunden Verspätung, aber ich hab dabei das Onboarding-Flow neu gebaut. Guillem wird es lieben. Oder hassen. Beides okay.')); if (!f.leipzig) { f.leipzig = 1; achieve('leipzig'); } } }, { t: _t('Fridays for Future'), f: async () => this.say('pascal', pick([_t('Freitags bin ich in Leipzig auf der Demo. Darum: Zug statt Flieger, wenn es geht. Nach Valencia ging es nicht – 17 Stunden, sagt der Schalterbeamte.'), _t('E-Bikes statt Autos, das ist für mich keine Roadmap, das ist der Grund, warum ich hier arbeite. Sag das Luigi nicht zu laut.'), _t('Der Battery Pass ist Klimapolitik in einer JSON-Datei. Lukas versteht mich.')])) }, { t: _t('iOS bei Meeseeks'), f: async () => this.say('pascal', pick([_t('Pablo und Guillem machen die UI, ich die CAN-Bridge. Alles in Swift, alles typsicher.'), _t('Oscar ist der ruhigste Mensch, den ich kenne. Sein Code auch.')])) }] },

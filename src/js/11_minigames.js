@@ -131,11 +131,11 @@ Object.assign(Mini, {
     });
   },
   /* ---------- Paella: Zutaten in der richtigen Reihenfolge zum richtigen Zeitpunkt ---------- */
-  paella() {
+  paella(opts = {}) {
     const steps = [[_t('Öl'), 'oil', '#e8c23a'], [_t('Hühnchen & Kaninchen'), 'meat', '#c87a4a'], [_t('Bohnen & Garrofó'), 'beans', '#3f8e4b'], [_t('Tomate & Paprika'), 'tomato', '#c8352d'], [_t('Wasser'), 'water', '#5ab8e0'], [_t('Safran'), 'saffron', '#ff8c1a'], [_t('Reis'), 'rice', '#f4f0e6'], [_t('Socarrat: Hitze hoch!'), 'fire', '#ff5a2a']];
     const order = steps.map((s) => s[1]);
     const W = 240, H = 120;
-    return this.run(_t('Paella-Wettbewerb'), _t('Abuela Carmen schaut zu'), _t`<canvas aria-label="Paella"></canvas><div class="mini-bar"><span id="paInfo">Zutaten in der richtigen Reihenfolge – wenn die Pfanne grün blinkt!</span><b id="paS">0</b></div><div class="cards" id="paBtns">${shuffle(steps.slice()).map((s) => `<button class="pcard" style="width:auto;padding:0 8px;height:40px;font-size:11px;font-family:var(--f-sign);border-color:${s[2]}" data-k="${s[1]}">${s[0]}</button>`).join('')}</div>`, W, H, (api) => {
+    return this.run(opts.title || _t('Paella-Wettbewerb'), opts.sub || _t('Abuela Carmen schaut zu'), _t`<canvas aria-label="Paella"></canvas><div class="mini-bar"><span id="paInfo">Zutaten in der richtigen Reihenfolge – wenn die Pfanne grün blinkt!</span><b id="paS">0</b></div><div class="cards" id="paBtns">${shuffle(steps.slice()).map((s) => `<button class="pcard" style="width:auto;padding:0 8px;height:40px;font-size:11px;font-family:var(--f-sign);border-color:${s[2]}" data-k="${s[1]}">${s[0]}</button>`).join('')}</div>`, W, H, (api) => {
       let idx = 0, score = 0, t = 0, phase = 0, win = 0, msg = '', stirT = 0;
       const added = [];
       api.o.querySelectorAll('#paBtns button').forEach((b) => b.onclick = () => {
@@ -158,6 +158,78 @@ Object.assign(Mini, {
         api.o.querySelector('#paInfo').textContent = msg || (idx < order.length ? _t`Als Nächstes: ${steps[idx][0]} – wenn die Hitze grün ist.` : _t('Fertig!'));
         if (win) { stirT += dt; if (stirT > 1.2) { Snd.sfx('win'); api.finish({ score: Math.min(100, score + 4) }); } }
         if (t > 120) api.finish({ score });
+      };
+    });
+  },
+  /* ---------- BBQ bei Danny: Grillgut im richtigen Moment vom Rost nehmen ---------- */
+  bbq() {
+    const W = 240, H = 130, KINDS = { chorizo: { n: _t('Chorizo'), rate: 0.2, col: '#c8352d' }, pollo: { n: _t('Pollo'), rate: 0.13, col: '#e8c89a' }, maiz: { n: _t('Maiskolben'), rate: 0.16, col: '#f2c84a' } };
+    const SLOTS = [52, 97, 142, 187], TOTAL = 8;
+    const queue = ['chorizo', 'pollo', 'maiz', 'chorizo', 'pollo', 'chorizo', 'maiz', 'pollo'];
+    return this.run(_t('Asado bei Danny'), _t('Danny: „Nicht verbrennen lassen!“'), _t`<canvas aria-label="Grill"></canvas><div class="mini-bar"><span id="bqInfo">Tipp auf ein Stück, wenn der Balken grün ist. Tasten 1–4 oder A für das reifste Stück.</span><b id="bqS">0</b></div>`, W, H, (api) => {
+      const st = { t: 0, slots: [null, null, null, null], served: 0, burnt: 0, perfect: 0, score: 0, next: 0, msg: '', msgT: 0, items: { chorizo: 0, pollo: 0, maiz: 0 }, flare: 0, done: false, smoke: [] };
+      const say = (m, sec = 2.2) => { st.msg = m; st.msgT = sec; };
+      const spawnItem = (i) => { if (st.next >= queue.length) return; st.slots[i] = { kind: queue[st.next++], cook: 0, side: 0, flipAt: rnd(0.3, 0.5) }; };
+      for (let i = 0; i < 4; i++) spawnItem(i);
+      const tap = (i) => {
+        if (st.done) return;
+        const it = st.slots[i]; if (!it) return;
+        const K = KINDS[it.kind];
+        if (it.cook < 0.55) { it.side = 1 - it.side; say(pick([_t('Noch roh – gewendet.'), _t`${K.n} braucht noch.`, _t('Danny: „Geduld, asere.“')])); Snd.sfx('blip'); return; }
+        const perfect = it.cook >= 0.7 && it.cook <= 1.0;
+        const pts = perfect ? 12 : 6;
+        st.score += pts; st.served++; st.items[it.kind]++; if (perfect) st.perfect++;
+        say(perfect ? pick([_t('¡Perfecto! Auf den Teller.'), _t('Genau richtig – Danny nickt.'), _t('Saftig. Vicente fotografiert.')]) : _t('Etwas dunkel, aber gut.'));
+        Snd.sfx(perfect ? 'ok' : 'blip');
+        st.slots[i] = null; spawnItem(i);
+      };
+      api.cv.addEventListener('pointerdown', (e) => { const r = api.cv.getBoundingClientRect(); const x = (e.clientX - r.left) / r.width * W; let best = 0; for (let i = 1; i < 4; i++) if (Math.abs(SLOTS[i] - x) < Math.abs(SLOTS[best] - x)) best = i; tap(best); });
+      Mini.key = (k) => { const n = ['Digit1', 'Digit2', 'Digit3', 'Digit4'].indexOf(k); if (n >= 0) { tap(n); return; } if (['Space', 'Enter', 'KeyE'].includes(k)) { let best = -1; for (let i = 0; i < 4; i++) if (st.slots[i] && (best < 0 || st.slots[i].cook > st.slots[best].cook)) best = i; if (best >= 0) tap(best); } };
+      const drawItem = (c, x, y, it) => {
+        const K = KINDS[it.kind], d = clamp(it.cook, 0, 1.2);
+        const col = d > 1.08 ? '#2a1a12' : mix(K.col, '#5a2a10', Math.max(0, (d - 0.5)) * 0.9);
+        if (it.kind === 'chorizo') { E(c, x, y, 13, 4, col); E(c, x - 6, y, 3, 3, col); E(c, x + 6, y, 3, 3, col); if (d < 0.9) for (let k = -8; k <= 8; k += 4) P(c, x + k, y - 1 + (it.side ? 1 : 0), shade(col, 0.3)); }
+        else if (it.kind === 'pollo') { E(c, x, y, 11, 7, col); E(c, x + 7, y - 3, 4, 3, col); R(c, x + 9, y - 6, 2, 4, '#f4f0e6'); if (d > 0.6 && d < 1.08) for (let k = 0; k < 4; k++) P(c, x - 6 + k * 4, y + (k % 2) - 1, shade(col, -0.35)); }
+        else { E(c, x, y, 12, 4, col); for (let k = -9; k <= 9; k += 3) for (let j = -2; j <= 2; j += 2) P(c, x + k, y + j, (k + j) % 2 ? shade(col, 0.2) : shade(col, -0.15)); R(c, x - 14, y - 2, 5, 4, '#7ab84a'); }
+        if (d > 1.08) for (let k = 0; k < 3; k++) P(c, x - 4 + k * 4, y - 6 - ((st.t * 20 + k * 7) % 10), 'rgba(60,60,60,0.7)');
+      };
+      return (dt) => {
+        if (st.done) return;
+        st.t += dt;
+        if (st.flare > 0) st.flare -= dt; else if (Math.random() < dt * 0.08) { st.flare = 1.6; say(_t('Flammen! Das Fett tropft – schnell!'), 1.6); Snd.sfx('sizzle'); }
+        if (st.msgT > 0) st.msgT -= dt;
+        for (let i = 0; i < 4; i++) {
+          const it = st.slots[i]; if (!it) continue;
+          it.cook += KINDS[it.kind].rate * dt * (st.flare > 0 ? 1.8 : 1) * (1 + 0.15 * Mini.wob());
+          if (it.cook > 1.2) { st.burnt++; st.score = Math.max(0, st.score - 5); say(pick([_t('Verbrannt! Der Hund freut sich.'), _t('Kohle. Danny schaut weg.'), _t('Schwarz. Das zählt nicht als Socarrat.')])); Snd.sfx('error'); st.slots[i] = null; spawnItem(i); }
+        }
+        const c = api.ctx;
+        R(c, 0, 0, W, H, '#2a4a2a'); for (let k = 0; k < 40; k++) P(c, (k * 37) % W, (k * 53) % 32, '#3a5a30');
+        R(c, 0, 108, W, 22, '#8a6a46'); R(c, 0, 108, W, 2, '#a8865a');
+        /* Grill */
+        R(c, 26, 36, 188, 62, '#1e1e22'); R(c, 28, 38, 184, 58, '#2a2a2e');
+        for (let j = 0; j < 8; j++) for (let k = 0; k < 24; k++) { const g = 0.4 + 0.6 * Math.abs(Math.sin(st.t * 3 + k * 0.7 + j)); R(c, 32 + k * 7.5, 42 + j * 6.5, 5, 4, `rgba(${200 + g * 55},${60 + g * 60},20,${0.35 + g * 0.5})`); }
+        if (st.flare > 0) for (let k = 0; k < 10; k++) { const h = 8 + hash(k, Math.floor(st.t * 10)) * 16; R(c, 40 + k * 17, 40 - h + 8, 5, h, k % 2 ? '#ff8c1a' : '#ffd23a'); }
+        for (let k = 0; k < 8; k++) R(c, 28, 40 + k * 7, 184, 2, '#5a5e64');
+        R(c, 22, 96, 196, 5, '#4a4e56'); R(c, 30, 101, 4, 10, '#3a3c40'); R(c, 206, 101, 4, 10, '#3a3c40');
+        /* Grillgut und Garbalken */
+        for (let i = 0; i < 4; i++) {
+          const it = st.slots[i]; const x = SLOTS[i];
+          if (!it) continue;
+          drawItem(c, x, 66, it);
+          const d = clamp(it.cook, 0, 1.2) / 1.2;
+          R(c, x - 18, 86, 36, 6, '#1a1a1e'); R(c, x - 17 + Math.round(34 * (0.7 / 1.2)), 87, Math.round(34 * (0.3 / 1.2)), 4, '#2f6a2a');
+          R(c, x - 17, 87, Math.round(34 * d), 4, it.cook < 0.55 ? '#c8c0b0' : it.cook <= 1.0 ? '#3fd04a' : '#ff5a2a');
+          pxText(c, String(i + 1), x - 2, 24, '#f4f0e6');
+        }
+        /* Teller und Danny-Spruch */
+        R(c, 8, 110, 46, 16, '#f4f0e6'); R(c, 10, 112, 42, 12, '#e8e4dc');
+        for (let k = 0; k < Math.min(st.served, 8); k++) E(c, 14 + k * 5, 118, 2, 1.5, ['#c8352d', '#e8c89a', '#f2c84a'][k % 3]);
+        pxText(c, `${st.served}/${TOTAL}`, 60, 114, '#f4f0e6');
+        if (st.burnt) pxText(c, `X${st.burnt}`, 90, 114, '#ff8a6a');
+        if (st.msgT > 0) pxText(c, st.msg.toUpperCase().slice(0, 30), 120, 114, '#ffd23a');
+        api.o.querySelector('#bqS').textContent = _t`${st.score} Punkte`;
+        if (st.served + st.burnt >= TOTAL || st.t > 100) { st.done = true; Snd.sfx(st.burnt === 0 ? 'win' : 'ok'); setTimeout(() => api.finish({ score: st.score, served: st.served, burnt: st.burnt, perfect: st.perfect, items: st.items }), 500); }
       };
     });
   },

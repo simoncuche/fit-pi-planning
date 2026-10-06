@@ -485,7 +485,7 @@ function objWhiteboard(x, y, w = 3, o = {}) {
     if (o.notes !== false) for (let k = 0; k < Math.floor((W - 10) / 11); k++) for (let j = 0; j < 2; j++) if (hash(x + k, y + j, 5) > 0.3) { R(c, 5 + k * 11, 5 + j * 11, 9, 9, cols[(k + j) % 5]); R(c, 6 + k * 11, 7 + j * 11, 6, 1, 'rgba(0,0,0,0.3)'); R(c, 6 + k * 11, 9 + j * 11, 4, 1, 'rgba(0,0,0,0.3)'); }
     if (o.title) { R(c, 3, H - 16, W - 6, 10, '#f8f8f6'); pxText(c, o.title, 5, H - 15, '#2a4a8a'); }
     if (o.graph) { line(c, 6, H - 8, W - 8, H - 18, '#c8352d'); line(c, 6, H - 12, W - 8, H - 9, '#2f5fb8'); }
-    R(c, 3, H - 6, W - 6, 2, '#b0b4b8'); R(c, 6, H - 7, 6, 1, '#c8352d'); R(c, 14, H - 7, 6, 1, '#2f5fb8');
+    R(c, 3, H - 6, W - 6, 2, '#b0b4b8'); R(c, W - 20, H - 5, 6, 1, '#c8352d'); R(c, W - 12, H - 5, 6, 1, '#2f5fb8');
     R(c, 2, H - 4, 3, 4, '#5a5e64'); R(c, W - 5, H - 4, 3, 4, '#5a5e64');
   }, { solid: true });
 }
@@ -634,6 +634,24 @@ function objBelt(x, y, w, dir = 1) {
       }
     },
   });
+}
+/* Bushaltestelle der EMT: Wartehäuschen mit Fahrplan und Haltestellenschild */
+function objBusStop(x, y) {
+  return mkObj(x, y, 2, 1, 34, (c, W, H) => {
+    E(c, W / 2, H - 2, 20, 3, 'rgba(0,0,0,0.2)');
+    R(c, 2, H - 12, 2, 12, '#5a6068'); R(c, W - 4, H - 12, 2, 12, '#5a6068'); R(c, 2, 8, 2, H - 20, '#5a6068'); R(c, W - 4, 8, 2, H - 20, '#5a6068');
+    R(c, 4, 10, W - 8, H - 22, 'rgba(150,200,230,0.55)'); R(c, 0, 4, W, 6, '#c8352d'); R(c, 0, 4, W, 1, '#e86a5a'); R(c, 0, 10, W, 1, '#8a2a20');
+    R(c, 6, 14, 12, 14, '#f4f0e6'); for (let k = 0; k < 5; k++) R(c, 8, 16 + k * 2, 6 + (k % 3) * 2, 1, '#2a3a4a'); R(c, 20, 16, 8, 6, '#2f5fb8'); pxText(c, 'EMT', 20, 17, '#ffffff');
+    R(c, W - 10, 0, 2, 6, '#5a6068'); R(c, W - 14, 0, 10, 5, '#2f5fb8'); R(c, W - 13, 1, 8, 3, '#f4f0e6'); R(c, W - 12, 2, 6, 1, '#2f5fb8');
+    R(c, 6, H - 8, W - 12, 3, '#8a9096'); R(c, 7, H - 5, 2, 4, '#6a7076'); R(c, W - 9, H - 5, 2, 4, '#6a7076');
+  }, { solid: true });
+}
+/* Blumenbeet mit Rand (Park, Plaza) */
+function objFlowerBed(x, y, w = 2, cols = ['#e8402e', '#f2c84a', '#e86ab0']) {
+  return mkObj(x, y, w, 1, 4, (c, W, H) => {
+    R(c, 0, 2, W, H - 2, '#8a7a60'); R(c, 2, 4, W - 4, H - 6, '#5a4a30'); R(c, 2, 4, W - 4, 1, '#7a6a48');
+    for (let k = 0; k < w * 10; k++) { const px = 3 + Math.floor(hash(k, x) * (W - 8)), py = 5 + Math.floor(hash(x, k) * (H - 10)); R(c, px, py + 1, 1, 2, '#3f7a34'); P(c, px, py, cols[k % cols.length]); P(c, px + 1, py, cols[k % cols.length]); }
+  }, { solid: true });
 }
 function objGrill(x, y) {
   return mkObj(x, y, 2, 1, 18, (c, W, H) => {

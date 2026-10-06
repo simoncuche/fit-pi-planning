@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.8.0 – 06.10.2026
+- The Colba office is compact now (48×24 tiles instead of 60×27): three team rooms and the lounge along the top corridor, backoffice, WC, lift/stairs and the bike lab along the bottom, so every way is short. The lift and stairs arrive in the middle, the lounge door is right above the bike lab door, and the balcony opens off the lab.
+- The lounge table is a small four-seater with free walkways on both sides and along the door; two more people sit on the sofa and the rest stand by the kitchen, so nobody blocks the way any more.
+- Danny's asado has a grill minigame: take the tongs, flip the raw pieces and lift chorizo, chicken and corn off the grate when their bar is green – watch out for flare-ups. Afterwards everyone walks to the garden table and eats together (new achievement "Sobremesa"); "Grill master" is for a round with nothing burnt.
+- Whiteboard titles no longer get a marker drawn through the text, and the "MARINA BEACH" neon in the club is no longer hidden behind the speakers.
+- More love in the rooms: statues on pedestals, a rope barrier and plaques in the museum; a carpet runner, pictures, extinguisher, exit sign and a room-service trolley on the hotel corridor; a bedside lamp and rug in room 412; clay tinajas, a chalkboard and tiles in the bodega; tiles, a price board and cheeses at the jamonería; tiles, a Valencia CF scarf and a tragaperras slot machine at Bar Pepita; a mirror ball and posters in the club; a tenants' board and runner in the Edificio Turia entrance.
+- More love in the city: EMT bus stops at the hotel, the Colba block and the station, bins beside every bench, flower beds in the Turia park and on the plazas, bollards and a second café terrace on the Plaza del Ayuntamiento, bike racks and parked scooters on Calle Colón, at the Mercado and the station.
+
 ## 2.7.1 – 06.10.2026
 - Seen from behind, every figure now shows their hairstyle: a stray `else` meant that from the back only stubble was drawn and everyone else looked bald.
 - Planning Poker no longer repeats stories: each team has 18 features now, the game remembers which ones were already estimated and deals only fresh ones. The CANopen quiz prefers questions Fran has not asked yet.

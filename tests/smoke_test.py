@@ -150,8 +150,11 @@ with sync_playwright() as p:
     assert pg.evaluate("() => !!G.S.flags.asado && !!G.S.ach.asado"), "Asado fehlt"
     assert pg.evaluate("() => ['danny', 'bea', 'carlos'].every((id) => G.npcs.some((n) => n.id === id))"), "Danny, Bea oder Carlos fehlt im Garten"
     shot("08b_asado")
-    run("G.busy++; await Story.grill(); await Story.grill(); await Story.grill(); await Story.gardenTable(); await Story.bassSolo(); G.busy--;", 3.0, q=[0, 1, 2, 2])
+    # Grill: Option 0 wäre das Minispiel (Grillzange); hier drei Stücke direkt nehmen, dann das gemeinsame Essen direkt auslösen
+    run("G.busy++; await Story.grill(); await Story.grill(); await Story.grill(); await Story.gardenTable(); await Story.bassSolo(); G.busy--;", 3.0, q=[1, 2, 1, 2])
     assert pg.evaluate("() => G.S.flags.grilled >= 3 && !!G.S.ach.bass && !!G.S.ach.cuba && G.S.flags.bassOn === 1"), "Grill/Bass/Cuba fehlt"
+    run("G.busy++; await Story.bbqDinner({ score: 60, served: 6, burnt: 0, perfect: 3, items: { chorizo: 3, pollo: 2, maiz: 1 } }); G.busy--;", 6.0)
+    assert pg.evaluate("() => !!G.S.flags.bbqDinner && !!G.S.ach.sobremesa && G.npcs.filter((n) => n.id && n.pose === 'sit').length >= 4"), "BBQ-Essen am Gartentisch fehlt"
     run("G.busy++; await Story.leaveDanny(); G.busy--;", 4.0, q=[0])
     assert state()["map"] == "city" and pg.evaluate("() => hasInv('chorizo')"), state()
     # Donnerstag: Ausfahrt direkt; Freitag: Final; Samstag: Heimflug
