@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.8.2 – 06.10.2026
+- Lounge: the big screen is reachable even when the whole company is in the room. Nobody stands in front of it or in the walkways any more (standing guests keep to the fridge, sofa and left wall), and standing people in the lounge and at Bar Pepita no longer block you – you can squeeze past them.
+
 ## 2.8.1 – 06.10.2026
 - Monday evening the Colba team is at Bar Pepita from 17:00: Juanjo, Danny, Fran and the others sit at their table, on the bar stools and stand at the counter, and Danny and Fran say hello at the welcome round. Before, only Juanjo came at 17:30.
 

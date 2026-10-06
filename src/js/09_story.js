@@ -281,7 +281,7 @@ const Story = {
       const tseats = [[2, 5, 0], [3, 5, 0], [2, 7, 3], [3, 7, 3], [6, 7, 0], [7, 7, 0], [6, 9, 3], [7, 9, 3], [4, 6, 1], [5, 8, 2]];
       const cseats = [[14, 8, 0], [15, 8, 0], [16, 8, 0], [14, 10, 3], [15, 10, 3], [16, 10, 3], [11, 7, 3], [13, 7, 3], [15, 7, 3], [17, 7, 3], [18, 8, 1], [19, 9, 1], [18, 11, 0], [12, 12, 0], [10, 12, 0], [19, 12, 1]];
       let ti = 0, ci = 0;
-      (byLoc.bar || []).forEach((id) => { const trav = TRAVELLERS.includes(id); const s = trav ? free(tseats, ti++) : free(cseats, ci++); const sit = trav ? ti <= 8 : ci <= 10; put(id, s[0], s[1], s[2], { pose: sit ? 'sit' : 'stand', drinkIdle: true, sitIdle: sit, sortAdd: sit && s[2] === 0 ? 0 : 2 }); });
+      (byLoc.bar || []).forEach((id) => { const trav = TRAVELLERS.includes(id); const s = trav ? free(tseats, ti++) : free(cseats, ci++); const sit = trav ? ti <= 8 : ci <= 10; put(id, s[0], s[1], s[2], { pose: sit ? 'sit' : 'stand', drinkIdle: true, sitIdle: sit, solid: sit, sortAdd: sit && s[2] === 0 ? 0 : 2 }); });
       return;
     }
     if (m.id === 'jamon') { const seats = [[3, 6, 0], [4, 6, 0], [3, 8, 3], [4, 8, 3], [8, 6, 0], [9, 6, 0], [8, 8, 3], [9, 8, 3], [13, 7, 0], [14, 7, 0], [13, 9, 3], [14, 9, 3]]; (byLoc.jamon || []).forEach((id, i) => { const s = free(seats, i); put(id, s[0], s[1], s[2], { pose: 'sit', drinkIdle: true, sitIdle: true }); }); return; }
@@ -304,9 +304,11 @@ const Story = {
       const roomSeats = (team) => { const x0 = TR[team]; return [[x0 + 2, 5, 0], [x0 + 4, 5, 0], [x0 + 6, 5, 0], [x0 + 2, 8, 3], [x0 + 4, 8, 3], [x0 + 6, 8, 3], [x0 + 8, 6, 1], [x0 + 1, 6, 2]]; };
       const cnt = { indurain: 0, meeseeks: 0, rocket: 0 };
       (byLoc.room || []).forEach((id) => { const tm = teamOf(id) || 'indurain'; const s = free(roomSeats(tm), cnt[tm]++); put(id, s[0], s[1], s[2], { pose: s[2] === 1 || s[2] === 2 ? 'stand' : 'sit', sitIdle: true, sortAdd: s[2] === 0 ? 0 : 3 }); });
-      /* Vier Stühle am Tisch, zwei auf dem Sofa; wer steht, steht rechts bei Küche und Automat – die Spalten 35/36 und 41 und die Reihe 9 bleiben frei zum Durchgehen */
-      const lseats = [[37, 5, 0], [39, 5, 0], [37, 8, 3], [39, 8, 3], [42, 6, 0], [43, 6, 0], [41, 5, 0], [42, 5, 0], [43, 5, 0], [40, 4, 0], [41, 4, 0], [39, 4, 0], [42, 8, 0], [41, 7, 1], [43, 9, 0], [35, 5, 0], [36, 4, 0]];
-      (byLoc.lounge || []).forEach((id, i) => { const s = free(lseats, i); const sit = i < 6; put(id, s[0], s[1], s[2], { pose: sit ? 'sit' : 'stand', drinkIdle: !sit, sitIdle: sit, sortAdd: sit && s[2] === 0 ? 0 : 3 }); });
+      /* Vier Stühle am Tisch, zwei auf dem Sofa; wer steht, steht am Rand (rechts bei Kühlschrank und Sofa, links an der Wand).
+         Frei bleiben: die Reihe 4 vor dem grossen Bildschirm (x 39–41), die Spalten 36 und 41 als Durchgänge und die Reihe 9 vor der Tür.
+         Stehende sind nicht solid, damit man sich im vollen Raum vorbeidrücken kann. */
+      const lseats = [[37, 5, 0], [39, 5, 0], [37, 8, 3], [39, 8, 3], [42, 6, 0], [43, 6, 0], [42, 5, 0], [43, 5, 0], [42, 7, 3], [43, 7, 3], [35, 6, 2], [35, 7, 2], [35, 8, 2], [42, 8, 0], [42, 9, 3], [43, 9, 3], [40, 5, 3], [38, 5, 3]];
+      (byLoc.lounge || []).forEach((id, i) => { const s = free(lseats, i); const sit = i < 6; put(id, s[0], s[1], s[2], { pose: sit ? 'sit' : 'stand', drinkIdle: !sit, sitIdle: sit, solid: sit, sortAdd: sit && s[2] === 0 ? 0 : 3 }); });
       (byLoc.balcony || []).forEach((id) => put(id, 45, 18, 3, { smokeIdle: true }));
       (byLoc.backoffice || []).forEach((id) => put(id, 4, 19, 0, { pose: 'sit', sitIdle: true, sortAdd: 2 }));
       const labSpots = [[36, 18], [41, 18], [36, 19], [42, 19], [37, 20], [40, 20], [39, 21], [35, 21]];
