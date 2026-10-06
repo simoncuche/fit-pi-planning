@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.1 – 06.10.2026
+- Looks: Lukas with very short black hair, Robin with round glasses and brown hair, Chris with longer hair, Pascal a shade blonder.
+- New conversation topics: Luigi plays tennis (and padel as a stand-in), Dominique goes boxing, Pascal joins Fridays for Future demonstrations.
+
 ## 2.1.0 – 06.10.2026
 - All 21 characters are playable, including the Colba team and Isabell. Colba players pick the Swiss crew up at the airport on Monday and stay at Hotel Kramer for the PI week; on Saturday they see the guests off instead of flying.
 - Character selection shows portraits and names only, grouped into travel group and Colba. Role descriptions are now neutral job titles.
