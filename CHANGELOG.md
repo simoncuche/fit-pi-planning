@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.3.2 – 06.10.2026
+- Suitcases now ride on the baggage carousels (top belt to the right, bottom belt to the left) and the belt slats move.
+- The camera lets the top edge of a map appear below the HUD, so the airport's glass front, signs and arrivals board are visible.
+
 ## 2.3.1 – 06.10.2026
 - Suitcase minigame fixed: the grab zone now matches the yellow marker in front of you, the suitcase in reach is highlighted, the belt runs a little slower and a tap on the belt works too.
 - Tapping the screen now triggers the nearby action (same as the A button), so belts, counters and people can be used by tapping at them.

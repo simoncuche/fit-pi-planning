@@ -25,7 +25,7 @@ MAP_BUILDERS.airport = () => {
   m.fill(3, 1, 3, 2, T.TILE, 2); m.decal((c) => { R(c, 3 * TS, TS, 3 * TS, 2 * TS, '#5a7086'); R(c, 3 * TS + 4, TS + 4, 3 * TS - 8, 2 * TS - 6, '#8ab8d8'); R(c, 4 * TS + 11, TS + 4, 2, 2 * TS - 6, '#2e3a46'); });
   m.add(objFlightBoard(16, 2, 8));
   /* Gepäckkarussell 3 (Zürich): oben und unten ein Band, runde Enden, Insel in der Mitte */
-  m.add(objBelt(8, 6, 14)); m.add(objBelt(8, 10, 14)); m.add(objBeltEnd(7, 7, 3)); m.add(objBeltEnd(22, 7, 3, true));
+  m.add(objBelt(8, 6, 14, 1)); m.add(objBelt(8, 10, 14, -1)); m.add(objBeltEnd(7, 7, 3)); m.add(objBeltEnd(22, 7, 3, true));
   m.decal((c) => { R(c, 8 * TS, 7 * TS, 14 * TS, 3 * TS, '#aeb2b8'); R(c, 8 * TS + 2, 7 * TS, 14 * TS - 4, 1, '#d0d4d8'); R(c, 13 * TS, 7 * TS + 6, 4 * TS, 2 * TS + 8, '#6a6e74'); R(c, 13 * TS + 4, 7 * TS + 10, 4 * TS - 8, 2 * TS, '#3a3c40'); for (let k = 0; k < 5; k++) R(c, 13 * TS + 6 + k * 18, 7 * TS + 12, 2, 2 * TS - 4, '#4a4c50'); });
   m.solid(8, 7, 14, 3, 1);
   m.trig(8, 11, 14, 1, { label: _t('Gepäckband 3: Koffer suchen'), act: () => Story.baggage() });
@@ -34,7 +34,7 @@ MAP_BUILDERS.airport = () => {
   m.trig(23, 6, 1, 5, { label: _t('Gepäckband 3: Koffer suchen'), act: () => Story.baggage() });
   m.add(objSignpost(15, 4, _t('BAND 3 · ZRH'), '#1a3a7a'));
   /* Gepäckkarussell 4 (Leipzig) */
-  m.add(objBelt(26, 13, 10)); m.add(objBelt(26, 16, 10)); m.add(objBeltEnd(25, 14, 2)); m.add(objBeltEnd(36, 14, 2, true));
+  m.add(objBelt(26, 13, 10, 1)); m.add(objBelt(26, 16, 10, -1)); m.add(objBeltEnd(25, 14, 2)); m.add(objBeltEnd(36, 14, 2, true));
   m.decal((c) => { R(c, 26 * TS, 14 * TS, 10 * TS, 2 * TS, '#aeb2b8'); R(c, 26 * TS + 2, 14 * TS, 10 * TS - 4, 1, '#d0d4d8'); R(c, 30 * TS, 14 * TS + 4, 2 * TS, TS + 16, '#6a6e74'); R(c, 30 * TS + 4, 14 * TS + 8, 2 * TS - 8, TS + 8, '#3a3c40'); });
   m.solid(26, 14, 10, 2, 1);
   m.trig(26, 12, 10, 1, { label: _t('Gepäckband 4 · Leipzig'), act: () => Story.say(null, _t('Band 4: Leipzig – Frankfurt – Valencia. Hier kommt Pascals Koffer. Deiner läuft auf Band 3.')) });

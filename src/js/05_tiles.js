@@ -616,8 +616,24 @@ function objBeltEnd(x, y, h, right = false) {
     R(c, 0, H - 6, W, 6, '#6a6e74');
   }, { solid: true });
 }
-function objBelt(x, y, w) {
-  return mkObj(x, y, w, 1, 10, (c, W, H) => { R(c, 0, 0, W, H, '#8a8e94'); R(c, 0, 0, W, 3, '#a8acb2'); R(c, 2, 4, W - 4, H - 10, '#3a3c40'); for (let k = 0; k < W; k += 6) R(c, k + 2, 4, 1, H - 10, '#4a4c50'); R(c, 0, H - 6, W, 6, '#6a6e74'); }, { solid: true });
+/* Gepäckband: Laufrichtung dir (1 = nach rechts, -1 = nach links), Koffer und Lamellen bewegen sich */
+function objBelt(x, y, w, dir = 1) {
+  const cols = ['#c8352d', '#2f5fb8', '#3f8e4b', '#e8c23a', '#8a4a9c', '#1e1e22', '#f4f0e6', '#2a9aa0', '#e07b25'];
+  return mkObj(x, y, w, 1, 10, (c, W, H) => { R(c, 0, 0, W, H, '#8a8e94'); R(c, 0, 0, W, 3, '#a8acb2'); R(c, 2, 4, W - 4, H - 10, '#3a3c40'); R(c, 0, H - 6, W, 6, '#6a6e74'); }, {
+    solid: true,
+    anim: (c, t, px, py) => {
+      const W = w * TS, H = TS + 10, span = W - 4, v = 22 * dir;
+      for (let k = 2; k < W - 2; k += 6) { const sx = 2 + (((k + t * v) % span) + span) % span; c.fillStyle = '#4a4c50'; c.fillRect(px + sx, py + 4, 1, H - 10); }
+      const n = Math.max(2, Math.floor(W / 48));
+      for (let k = 0; k < n; k++) {
+        const base = k * (span / n) + hash(x + k, y, 3) * 20;
+        const sx = (((base + t * v) % span) + span) % span;
+        if (sx < 2 || sx > span - 16) continue;
+        const col = cols[(x + y + k * 7) % cols.length];
+        c.fillStyle = col; c.fillRect(px + sx, py + 9, 14, 10); c.fillStyle = shade(col, 0.3); c.fillRect(px + sx, py + 9, 14, 2); c.fillStyle = '#2a2a2e'; c.fillRect(px + sx + 5, py + 7, 4, 2);
+      }
+    },
+  });
 }
 function objGrill(x, y) {
   return mkObj(x, y, 2, 1, 18, (c, W, H) => {

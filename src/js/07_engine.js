@@ -105,7 +105,7 @@ const Input = {
 
 /* ============ Kamera & Ansicht ============
    Die Spielpixel werden auf ganze Gerätepixel vergrössert (DPR-bewusst): scharf auf dem Handy, nicht zu gross am Computer. */
-const View = { cv: null, ctx: null, wcv: null, wctx: null, lcv: null, lctx: null, w: 480, h: 270, scale: 3, dpr: 1 };
+const View = { cv: null, ctx: null, wcv: null, wctx: null, lcv: null, lctx: null, w: 480, h: 270, scale: 3, dpr: 1, hudPad: 0 };
 function resizeView() {
   const dpr = window.devicePixelRatio || 1;
   const W = window.innerWidth, H = window.innerHeight;
@@ -122,7 +122,9 @@ function updateCamera(snap) {
   let tx = p.x - View.w / 2, ty = p.y - 18 - View.h / 2;
   const mw = m.w * TS, mh = m.h * TS;
   if (mw <= View.w) tx = (mw - View.w) / 2; else tx = clamp(tx, 0, mw - View.w);
-  if (mh <= View.h) ty = (mh - View.h) / 2; else ty = clamp(ty, 0, mh - View.h);
+  /* Oberer Rand darf unter dem HUD hervorkommen: Kamera bis hudPad über den Kartenrand */
+  const pad = View.hudPad || 0;
+  if (mh + pad <= View.h) ty = (mh - View.h) / 2 - pad / 2; else ty = clamp(ty, -pad, mh - View.h);
   if (snap) { G.cam.x = tx; G.cam.y = ty; }
   else { G.cam.x += (tx - G.cam.x) * 0.18; G.cam.y += (ty - G.cam.y) * 0.18; }
 }

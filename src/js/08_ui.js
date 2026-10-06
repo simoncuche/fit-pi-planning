@@ -67,6 +67,7 @@ const UI = {
     document.getElementById('btnCam').addEventListener('click', (e) => { e.stopPropagation(); Snap.shoot(); });
   },
   hud() {
+    if (this.els.hud && !this.els.hud.hidden) View.hudPad = Math.round((this.els.hud.offsetHeight + 4) / View.scale);
     if (!G.S) return;
     const e = this.els, st = G.S.st;
     e.hClock.textContent = clockStr();
