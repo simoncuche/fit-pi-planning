@@ -27,6 +27,8 @@ Kein Server, keine Installation. Funktioniert am Handy und am Computer.
   Museu de Belles Arts, Estación del Norte, Ciudad de las Artes, Strand der Malvarrosa, Marina.
 - **Freizeit:** Segeltörn im Hafen, Shopping (Moda Valencia, Souvenirs), Jamón Ibérico bei Ramón, Bars, Kartbahn (gegen Luigi), Paella-Kochwettbewerb,
   Weindegustation in der Bodega, Museum, Strandfussball, Marina Beach Club (Disco), Padel-Turnier, Fischmarkt.
+- **Asado bei Danny:** Mittwochabend lädt Danny (aus Kuba, wie Bea) in sein Haus im Vorort ein – Garten mit Pool, Hängematte und BBQ-Grill.
+  Chorizo, Pollo und Maiskolben vom Grill, Beas Ropa Vieja, Mojito cubano und ein Bass-Solo von Carlos (Hardrock-Band „Stack Overflow“).
 - **Valencia-Ereignisse:** Mascletà täglich um 14 Uhr, Cremà am Donnerstagabend, Wassergericht am Donnerstag um 12, Falleras-Umzug, Gota fría,
   Möwen am Strand, Peloton im Turia-Park, Valencia-CF-Fans, Horchata-Verkäufer.
 - **Körper:** Energie, Hunger, Laune, Promille, Übelkeit, Sonne. Wer trinkt, ohne zu essen und zu schlafen, muss sich übergeben. Zu viel → Filmriss.

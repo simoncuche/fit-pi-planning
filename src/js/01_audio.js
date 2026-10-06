@@ -155,6 +155,16 @@ const Snd = {
         const mel = [[392, 440, 494, 0, 440, 392, 0, 0], [440, 494, 523, 0, 494, 440, 0, 0], [349, 392, 440, 0, 392, 349, 0, 0], [330, 392, 440, 0, 494, 440, 392, 0]][ph];
         if (mel[i]) self.tone(mel[i], 0.12, 'sawtooth', 0.035, dt, 0, g);
       } },
+      rock: { bpm: 140, steps: 16, play(i, t) {
+        const g = self.musicGain, bar = Math.floor(st.step / 16) % 4, dt = t - self.ctx.currentTime;
+        const root = [82.4, 82.4, 98, 110][bar];
+        if (i % 4 === 0) self.tone(55, 0.2, 'sine', 0.5, dt, -40, g);
+        if (i % 4 === 2) self.noise(0.08, 0.18, 2500, dt, 'highpass', g);
+        if (i % 2 === 0) { self.tone(root, 0.14, 'sawtooth', 0.09, dt, 0, g); self.tone(root * 1.5, 0.14, 'sawtooth', 0.05, dt, 0, g); }
+        if (i % 8 === 6) self.tone(root * 2, 0.12, 'square', 0.04, dt, 0, g);
+        const mel = [[0, 0, 0, 0, 0, 0, 0, 0, 330, 0, 392, 0, 440, 0, 392, 0], [0, 0, 0, 0, 0, 0, 0, 0, 330, 0, 294, 0, 330, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 392, 0, 440, 0, 494, 0, 440, 0], [0, 0, 0, 0, 0, 0, 0, 0, 440, 0, 392, 0, 330, 0, 0, 0]][bar];
+        if (mel[i]) self.tone(mel[i], 0.12, 'sawtooth', 0.04, dt, 0, g);
+      } },
       museum: { bpm: 60, steps: 8, play(i, t) {
         const g = self.musicGain, ph = Math.floor(st.step / 8) % 4, dt = t - self.ctx.currentTime;
         const mel = [[523, 0, 659, 0, 784, 0, 659, 0], [494, 0, 587, 0, 740, 0, 587, 0], [440, 0, 523, 0, 659, 0, 523, 0], [494, 0, 587, 0, 659, 0, 740, 0]][ph];

@@ -132,6 +132,7 @@ MAP_BUILDERS.colba = () => {
     for (const dx of [3, 6, 9]) { m.add(objOfficeChair(p.x + dx, p.y + 5, '#2a2a30')); m.add(objOfficeChair(p.x + dx, p.y + 9, '#2a2a30')); }
     m.add(objFlipchart(p.x + 11, p.y + 2)); m.add(objPlant(p.x + 1, p.y + 10));
     m.add(objScreen(p.x + 10, p.y + 1, 3));
+    if (team === 'rocket') { m.add(objAmp(p.x + 1, p.y + 4)); m.trig(p.x + 1, p.y + 4, 1, 1, { label: 'Carlos’ Bass-Verstärker', act: () => Story.say('carlos', pick(['Der steht hier, weil der Proberaum in Benimaclet keine Heizung hat. Und weil ich in der Mittagspause übe. Leise. Meistens.', 'Nicht anfassen – der Regler steht auf elf. Immer.'])) }); m.decal((c) => DECAL.poster(c, (p.x + 2) * TS, (p.y + 1) * TS + 4, '#1a1a1e', 'ROCK')); }
     m.trig(p.x + 10, p.y + 3, 3, 1, { label: 'Bildschirm: Dependency-Board', act: () => Story.depBoard(team) });
     m.trig(p.x + 11, p.y + 3, 1, 1, { label: 'Flipchart: Risiken (ROAM)', act: () => Story.roam(team) });
     m.spawn('room_' + team, p.x + 7, p.y + 11, 3);
@@ -289,5 +290,41 @@ MAP_BUILDERS.mercado = () => {
   m.add(objPlant(1, 15)); m.add(objPlant(32, 15));
   doorBottom(m, 16, 2, 'city', 'mercado', 'Hinaus');
   m.spawn('entry', 17, 16, 3);
+  return m;
+};
+
+/* ----------- Dannys Haus: Garten mit BBQ-Grill (Mittwochabend Asado) ----------- */
+MAP_BUILDERS.danny_house = () => {
+  const m = new GMap('danny_house', 30, 20, { name: 'Bei Danny · Garten', bg: '#2a4a2a', city: 'vlc' });
+  m.fill(0, 0, 30, 20, T.GRASS, (x, y) => ((x * 3 + y) % 7 === 0 ? 1 : 0));
+  m.fill(0, 0, 30, 1, T.HEDGE); m.fill(0, 19, 30, 1, T.HEDGE); for (let y = 0; y < 20; y++) { m.set(0, y, T.HEDGE); m.set(29, y, T.HEDGE); }
+  /* Haus oben: weiss, Terrakotta-Dach, Terrasse davor */
+  m.add(objBuilding(9, 1, 12, 4, { floors: 2, wall: '#f4f0e6', roof: '#b85a3a', roofType: 'gable', shutter: '#2f6fb8', balcony: false, doors: [{ dx: 5, type: 'glass' }, { dx: 6, type: 'glass' }], shopWins: [], seed: 88, sign: { text: 'CASA DANNY', bg: '#2f6fb8', fg: '#ffffff' }, special: (c, W, H, fy0) => { for (let k = 0; k < 3; k++) { R(c, 20 + k * 100, H - 44, 14, 6, '#8a5e3a'); for (let j = 0; j < 5; j++) P(c, 22 + k * 100 + j * 3, H - 46, j % 2 ? '#e8402e' : '#f2c23a'); } } }));
+  m.trig(14, 4, 2, 1, { label: 'Dannys Haustür', act: () => Story.dannyDoor() });
+  m.fill(8, 5, 14, 3, T.PLAZA, 2);
+  for (const [x, y] of [[8, 5], [21, 5]]) m.add(objPlanter(x, y, '#e86ab0'));
+  /* Grill, grosser Tisch, Verstärker, Pool, Hängematte, Bäume */
+  m.add(objGrill(17, 6)); m.trig(17, 7, 2, 1, { label: 'BBQ-Grill', act: () => Story.grill() });
+  m.add(objTable(10, 9, 6, 2, { col: '#a87a4a', cloth: '#f4f0e6', items: (c, W, H) => { for (let k = 0; k < 5; k++) { E(c, 14 + k * 28, 10, 6, 3, '#f4f0e6'); R(c, 24 + k * 28, 4, 3, 6, 'rgba(230,240,245,0.85)'); E(c, 25 + k * 28, 7, 1, 1.5, '#8ac860'); } E(c, W / 2, H / 2 - 2, 14, 6, '#5a3a24'); E(c, W / 2, H / 2 - 3, 12, 4, '#a83a30'); } }));
+  m.trig(10, 9, 6, 2, { label: 'Gartentisch', act: () => Story.gardenTable() });
+  for (const dx of [10, 12, 14]) { m.add(objChair(dx, 8, 0, '#e8e4dc')); m.add(objChair(dx, 11, 3, '#e8e4dc')); }
+  m.add(objAmp(23, 9)); m.trig(23, 9, 1, 1, { label: 'Verstärker (Carlos)', act: () => Story.bassSolo() });
+  m.add(objSpeaker(25, 9));
+  m.fill(3, 8, 4, 4, T.WATER, 1); m.fill(2, 7, 6, 1, T.DECK); m.fill(2, 12, 6, 1, T.DECK); m.fill(2, 8, 1, 4, T.DECK); m.fill(7, 8, 1, 4, T.DECK);
+  m.trig(2, 12, 6, 1, { here: true, label: 'Pool: Füsse reinhängen', act: () => Story.pool() });
+  m.add(objSunbed(3, 13, '#ff8c1a'));
+  m.add(objHammock(20, 13)); m.trig(20, 13, 3, 1, { label: 'Hängematte', act: () => Story.hammock() });
+  for (const [x, y] of [[2, 3], [26, 3], [26, 15]]) m.add(objPalm(x, y, 44));
+  for (const [x, y] of [[5, 15], [24, 6], [12, 16]]) m.add(objOrange(x, y));
+  m.add(objBush(8, 15, '#4f8040', '#e86ab0')); m.add(objBush(17, 16, '#4f8040', '#f2c23a'));
+  for (const [x, y] of [[9, 13], [19, 12]]) m.add(objLamp(x, y, 'old'));
+  /* Gartentor unten: Taxi zurück */
+  m.set(14, 19, T.GRAVEL); m.set(15, 19, T.GRAVEL);
+  m.decal((c) => { R(c, 14 * TS, 19 * TS, 2 * TS, TS, '#8a7a60'); for (let k = 2; k < 2 * TS - 2; k += 5) R(c, 14 * TS + k, 19 * TS + 2, 2, TS - 4, '#5a4a3a'); });
+  m.trig(14, 19, 2, 1, { here: true, label: 'Gartentor: Taxi zurück in die Stadt', act: () => Story.leaveDanny() });
+  m.light(18 * TS, 6 * TS, 70, '#ff9a4a');
+  m.musicFn = () => (G.S.flags.bassOn ? 'rock' : 'beach');
+  m.birdSpots.push({ x: 8, y: 14, w: 6, h: 3, n: 3 });
+  m.spawn('entry', 15, 18, 3);
   return m;
 };

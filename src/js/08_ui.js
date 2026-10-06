@@ -20,6 +20,8 @@ function itemIconURL(icon) {
     case 'sandwich': R(x, 2, 5, 12, 3, '#e8c890'); R(x, 2, 8, 12, 1, '#a83a30'); R(x, 2, 9, 12, 1, '#3f8a3a'); R(x, 2, 10, 12, 3, '#e8c890'); break;
     case 'jamon': R(x, 3, 3, 3, 10, '#5a5048'); R(x, 5, 5, 9, 8, '#a83a30'); R(x, 6, 6, 4, 3, '#f4e8d8'); break;
     case 'tapas': E(x, 8, 9, 7, 4, '#f4f0e6'); E(x, 6, 8, 2, 1.5, '#c8352d'); E(x, 10, 8, 2, 1.5, '#3f8e4b'); E(x, 8, 10, 2, 1, '#e8c23a'); break;
+    case 'wurst': R(x, 2, 7, 12, 4, '#b8582a'); R(x, 2, 7, 12, 1, '#d87a4a'); R(x, 4, 10, 8, 1, '#e8c23a'); break;
+    case 'corn': R(x, 4, 3, 8, 11, '#f2d84a'); for (let k = 4; k < 14; k += 3) R(x, 4, k, 8, 1, '#e8c020'); R(x, 2, 12, 3, 3, '#3f8e4b'); R(x, 11, 12, 3, 3, '#3f8e4b'); break;
     case 'fries': R(x, 4, 7, 8, 8, '#c8352d'); for (let k = 5; k < 12; k += 2) R(x, k, 2 + (k % 3), 1, 6, '#f2c84a'); break;
     case 'tortilla': E(x, 8, 9, 7, 4, '#e8b040'); E(x, 8, 8, 6, 3, '#f4c860'); R(x, 8, 5, 1, 8, '#c89030'); break;
     case 'burger': E(x, 8, 5, 6, 3, '#d8902a'); R(x, 2, 7, 12, 2, '#3f8a3a'); R(x, 2, 9, 12, 2, '#6a3a1e'); R(x, 2, 8, 12, 1, '#e8c23a'); E(x, 8, 12, 6, 2, '#d8902a'); break;
@@ -332,7 +334,7 @@ const Phone = {
     b.querySelectorAll('canvas[data-p]').forEach((c) => c.getContext('2d').drawImage(portraitCanvas(personLook(c.dataset.p), PEOPLE[c.dataset.p].bg || '#2a3a52'), 0, 0));
   },
   karte(b) {
-    const showCity = G.map.indoor && BUILT.city && G.map.id !== 'airport';
+    const showCity = G.map.indoor && BUILT.city && G.map.id !== 'airport' && G.map.id !== 'danny_house';
     const m = showCity ? BUILT.city : G.map;
     const sc = m.w > 60 ? 5 : 8;
     const [c, x] = canvas(m.w * sc, m.h * sc);

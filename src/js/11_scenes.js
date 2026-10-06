@@ -41,6 +41,7 @@ function transitionFor(from, to, spawn, opts = {}) {
   if (from === 'hotel_floor' && to === 'hotel_room') return { kind: 'roomdoor', exit: false, ms: 1150 };
   if (from === 'hotel_room' && to === 'hotel_floor') return { kind: 'roomdoor', exit: true, ms: 1000 };
   if ((from === 'colba_entry' && to === 'colba') || (from === 'colba' && to === 'colba_entry')) return spawn === 'stairs' || opts.stairs ? { kind: 'stairs', up: to === 'colba', ms: 1300 } : { kind: 'lift', up: to === 'colba', floor: '1', ms: 1900 };
+  if (to === 'danny_house' || from === 'danny_house') return null;
   const toM = getMap(to), fromM = getMap(from);
   const exit = !toM.indoor;
   const venue = exit ? from : to;

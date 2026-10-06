@@ -598,6 +598,26 @@ function objPaellaStand(x, y) {
 function objBelt(x, y, w) {
   return mkObj(x, y, w, 1, 10, (c, W, H) => { R(c, 0, 0, W, H, '#8a8e94'); R(c, 0, 0, W, 3, '#a8acb2'); R(c, 2, 4, W - 4, H - 10, '#3a3c40'); for (let k = 0; k < W; k += 6) R(c, k + 2, 4, 1, H - 10, '#4a4c50'); R(c, 0, H - 6, W, 6, '#6a6e74'); }, { solid: true });
 }
+function objGrill(x, y) {
+  return mkObj(x, y, 2, 1, 18, (c, W, H) => {
+    E(c, W / 2, H - 2, 18, 3, 'rgba(0,0,0,0.25)');
+    R(c, 6, H - 10, 3, 9, '#2a2a2e'); R(c, W - 9, H - 10, 3, 9, '#2a2a2e'); R(c, 10, H - 3, 28, 2, '#3a3c40');
+    E(c, W / 2, H - 14, 20, 7, '#1e1e22'); E(c, W / 2, H - 15, 18, 5, '#3a3c40');
+    for (let k = -14; k <= 14; k += 4) R(c, W / 2 + k, H - 18, 1, 7, '#8a8e94');
+    E(c, W / 2 - 8, H - 17, 4, 2, '#a83a30'); E(c, W / 2 + 2, H - 17, 5, 2, '#d8902a'); E(c, W / 2 + 10, H - 17, 3, 2, '#e8c23a');
+    R(c, W / 2 - 22, H - 30, 44, 12, '#2a2a2e'); R(c, W / 2 - 20, H - 28, 40, 8, '#3a3c40'); R(c, W / 2 - 4, H - 32, 8, 2, '#8a8e94');
+    for (let k = 0; k < 6; k++) P(c, W / 2 - 15 + k * 6, H - 16, '#ff6a2a');
+  }, { solid: true, light: { dx: 24, dy: 14, r: 50, c: '#ff9a4a' }, anim: (c, t, px, py) => { for (let k = 0; k < 4; k++) { const ph = (t * 0.5 + k / 4) % 1; c.fillStyle = `rgba(200,200,205,${0.4 * (1 - ph)})`; c.fillRect(px + 14 + k * 7 + Math.sin(t * 2 + k) * 2, py + 8 - ph * 14, 3, 3); } } });
+}
+function objAmp(x, y) {
+  return mkObj(x, y, 1, 1, 20, (c, W, H) => {
+    R(c, 1, 2, 22, H - 4, '#1a1a1e'); R(c, 1, 2, 22, 1, '#3a3a40'); R(c, 3, 4, 18, 6, '#2a2a30'); for (let k = 0; k < 5; k++) E(c, 5 + k * 3.5, 7, 1, 1, '#c9ccd2'); P(c, 19, 6, '#ff3a3a');
+    R(c, 3, 11, 18, H - 15, '#3a3030'); E(c, 12, H - 11, 7, 7, '#1a1a1e'); E(c, 12, H - 11, 3, 3, '#5a5a66');
+  }, { solid: true, light: { dx: 20, dy: 6, r: 24, c: '#ff3a3a' } });
+}
+function objHammock(x, y) { return mkObj(x, y, 3, 1, 20, (c, W, H) => { R(c, 3, 0, 3, H - 2, '#6a4a2a'); R(c, W - 6, 0, 3, H - 2, '#6a4a2a'); for (let k = 6; k < W - 6; k++) { const yy = 6 + Math.sin((k - 6) / (W - 12) * 3.14) * 9; R(c, k, yy, 1, 4, k % 4 < 2 ? '#e8c23a' : '#2f8fd8'); } }, { solid: true }); }
+/* Bassgitarre quer vor der Figur (Carlos) */
+function drawBass(c, x, y, a) { const s = a.dir === 1 ? -1 : 1; line(c, x - 9 * s, y - 14, x + 7 * s, y - 24, '#5a3a1a'); line(c, x - 9 * s, y - 15, x + 7 * s, y - 25, '#8a5a2a'); E(c, x - 7 * s, y - 14, 5, 4, '#8a1e1e'); E(c, x - 10 * s, y - 11, 4, 3, '#8a1e1e'); R(c, x + 6 * s, y - 27, 3, 4, '#2a2a2e'); for (let k = 0; k < 4; k++) P(c, x - 6 * s + k * 3 * s, y - 15 - k, '#e8e8e8'); }
 function objBellPanel(x, y) { return mkObj(x, y, 1, 1, 26, (c, W, H) => { R(c, 4, 0, 16, 24, '#d8c890'); R(c, 4, 0, 16, 1, '#f0e0b0'); for (let k = 0; k < 6; k++) { R(c, 7, 3 + k * 3, 2, 2, '#5a5048'); R(c, 11, 3 + k * 3, 6, 1, '#8a8070'); } R(c, 6, 20, 12, 3, '#8a8070'); R(c, 11, 24, 2, 4, '#8a8e94'); }, { solid: false }); }
 function objPadelCourt(x, y) {
   return mkObj(x, y, 6, 4, 10, (c, W, H) => {

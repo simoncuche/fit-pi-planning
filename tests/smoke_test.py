@@ -118,6 +118,19 @@ with sync_playwright() as p:
     # Nacht & Schlafen
     run("await warpTo('hotel_room', 'entry'); G.S.time = 1440 + 23 * 60; G.busy++; await Story.bed(); G.busy--;", 6.0, q=[0])
     assert state()["day"] == 2, state()
+    # Mittwochabend: Taxi zu Dannys Haus, Asado, Grill, Gartentisch, Bass-Solo, zurück
+    run("G.S.time = 2 * 1440 + 19 * 60; await warpTo('city', 'hotel'); G.busy++; await Story.taxiCity(); G.busy--;", 5.0, q=[3])
+    assert state()["map"] == "danny_house", state()
+    for _ in range(20):
+        if pg.evaluate("() => !!G.S.flags.asado && G.busy === 0"): break
+        time.sleep(0.5)
+    assert pg.evaluate("() => !!G.S.flags.asado && !!G.S.ach.asado"), "Asado fehlt"
+    assert pg.evaluate("() => ['danny', 'bea', 'carlos'].every((id) => G.npcs.some((n) => n.id === id))"), "Danny, Bea oder Carlos fehlt im Garten"
+    shot("08b_asado")
+    run("G.busy++; await Story.grill(); await Story.grill(); await Story.grill(); await Story.gardenTable(); await Story.bassSolo(); G.busy--;", 3.0, q=[0, 1, 2, 2])
+    assert pg.evaluate("() => G.S.flags.grilled >= 3 && !!G.S.ach.bass && !!G.S.ach.cuba && G.S.flags.bassOn === 1"), "Grill/Bass/Cuba fehlt"
+    run("G.busy++; await Story.leaveDanny(); G.busy--;", 4.0, q=[0])
+    assert state()["map"] == "city" and pg.evaluate("() => hasInv('chorizo')"), state()
     # Donnerstag: Ausfahrt direkt; Freitag: Final; Samstag: Heimflug
     run("G.S.time = 3 * 1440 + 16 * 60; enterMap('colba', 'lounge'); G.S.plan.indurain = 82; G.S.plan.meeseeks = 70; G.S.plan.rocket = 75;", 1.0)
     pg.evaluate("""() => { window.__cv = setInterval(() => { const b = document.querySelector('.pcard[data-v="5"]'); if (b && !b.disabled) { b.click(); return; } const ok = document.querySelector('#cvOk'); if (ok) ok.click(); }, 100); G.S.time = 4 * 1440 + 15 * 60; G.busy++; Story.finalPresentation().then(() => { G.busy--; clearInterval(window.__cv); window.__cvd = 1; }); }""")
