@@ -16,7 +16,7 @@ const Snd = {
     this._unlocked = true;
     try { const a = new Audio('data:audio/wav;base64,UklGRnQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YVAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=='); a.volume = 0.01; const pr = a.play(); if (pr && pr.catch) pr.catch(() => { this._unlocked = false; }); } catch (e) { this._unlocked = false; }
   },
-  state() { if (!this.ctx) return 'noch nicht gestartet'; return this.ctx.state === 'running' ? 'bereit' : 'angehalten (' + this.ctx.state + ')'; },
+  state() { if (!this.ctx) return 'noch nicht gestartet'; return this.ctx.state === 'running' ? 'bereit' : _t('angehalten (') + this.ctx.state + ')'; },
   tone(freq, dur, type = 'square', vol = 0.12, when = 0, slide = 0, dest) {
     if (!this.ctx || !this.on) return;
     const t = this.ctx.currentTime + when;

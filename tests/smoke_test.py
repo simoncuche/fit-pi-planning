@@ -23,8 +23,11 @@ with sync_playwright() as p:
     pg.on("console", lambda m: errors.append("console: " + m.text) if m.type == "error" and "Failed to load resource" not in m.text else None)
     pg.route("**/fonts.googleapis.com/**", lambda r: r.abort())
     pg.route("**/fonts.gstatic.com/**", lambda r: r.abort())
+    LANG = os.environ.get("GAME_LANG", "en")
+    pg.add_init_script(f"try {{ localStorage.setItem('pi-valencia-lang', {json.dumps(LANG)}); }} catch (e) {{}}")
     pg.goto(URL)
     time.sleep(0.8)
+    assert pg.evaluate("() => LANG") == LANG, "Sprache nicht gesetzt"
     pg.evaluate("""() => { window.__q = []; setInterval(() => { if (UI.dlgOpen) { if (UI._choices && UI._pick) { const q = window.__q.length ? window.__q.shift() : 0; UI._pick(Math.min(q, UI._choices.length - 1)); } else UI.dlgAdvance(); } }, 40); }""")
 
     def shot(name):
@@ -147,6 +150,9 @@ with sync_playwright() as p:
     assert pg.evaluate("() => G.mode === 'over' && !!document.querySelector('#endNew')"), "Kein Ende"
     shot("10_end")
     print("Endzustand:", state())
+    missing = pg.evaluate("() => [...I18N_MISSING]")
+    if LANG != "de" and missing:
+        errors.append("Fehlende Übersetzungen (" + LANG + "): " + json.dumps(missing, ensure_ascii=False))
     browser.close()
 
 if errors:

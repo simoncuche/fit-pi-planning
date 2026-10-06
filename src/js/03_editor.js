@@ -9,15 +9,15 @@ const Editor = {
       let pid = o.pid || (mode === 'new' ? pick(TRAVELLERS) : null);
       if (mode === 'new' && pid) Object.assign(L, personLook(pid));
       const keysFor = { clothes: ['hat', 'hatCol', 'top', 'topCol', 'print', 'pants', 'pantsCol', 'shoes', 'shoesCol', 'acc', 'glasses'], hair: ['hair', 'hairCol'], beard: ['beard', 'beardCol'] }[mode];
-      const groups = mode === 'new' ? ['Wer bist du?', ...LOOK_GROUPS] : ['Auswahl'];
+      const groups = mode === 'new' ? [_t('Wer bist du?'), ...LOOK_GROUPS] : [_t('Auswahl')];
       let tab = groups[0];
       let dir = 0, walk = 0;
-      const title = { new: 'Wer fliegt nach Valencia?', clothes: 'Kleiderschrank', hair: 'Frisur', beard: 'Bart' }[mode];
-      el.innerHTML = `<div class="ed-head"><h1>${title}</h1><div class="cnt">${mode === 'new' ? `${LOOK_OPTS.length} Merkmale<br>${LOOK_COUNT} Varianten` : ''}</div></div>
+      const title = { new: _t('Wer fliegt nach Valencia?'), clothes: _t('Kleiderschrank'), hair: _t('Frisur'), beard: _t('Bart') }[mode];
+      el.innerHTML = _t`<div class="ed-head"><h1>${title}</h1><div class="cnt">${mode === 'new' ? _t`${LOOK_OPTS.length} Merkmale<br>${LOOK_COUNT} Varianten` : ''}</div></div>
         <div class="ed-main"><div class="ed-preview"><div class="ed-figs"><canvas id="edPortrait" width="96" height="96" aria-label="Porträt"></canvas><div><canvas id="edBody" width="28" height="40" aria-label="Spielfigur"></canvas><div class="ed-rot"><button id="edL" aria-label="Drehen links">◀</button><button id="edR" aria-label="Drehen rechts">▶</button></div></div></div>
-        <div class="ed-name"><label>Spieler</label><div id="edWho" style="font-family:var(--f-sign);font-size:20px;font-weight:600">${pid ? PEOPLE[pid].name : '<span style="color:var(--ink-dim)">noch niemand gewählt</span>'}</div></div></div>
+        <div class="ed-name"><label>Spieler</label><div id="edWho" style="font-family:var(--f-sign);font-size:20px;font-weight:600">${pid ? PEOPLE[pid].name : _t('<span style="color:var(--ink-dim)">noch niemand gewählt</span>')}</div></div></div>
         <div class="ed-controls"><div class="ed-tabs" role="tablist">${groups.map((g) => `<button class="tab ${g === tab ? 'on' : ''}" data-g="${g}">${g}</button>`).join('')}</div><div class="ed-list" id="edList"></div></div></div>
-        <div class="ed-foot"><span class="grow" id="edHint">${mode === 'new' ? `Vorschlag: ${PEOPLE[pid].name}, ${PEOPLE[pid].role}. Tipp auf einen anderen Namen oder gestalte dein Aussehen – dann Boarding!` : 'Änderungen werden sofort übernommen.'}</span>${mode === 'new' ? '<button class="btn" id="edRnd">Zufall</button>' : '<button class="btn" id="edCancel">Abbrechen</button>'}<button class="btn primary" id="edOk">${mode === 'new' ? 'Boarding!' : 'Fertig'}</button></div>`;
+        <div class="ed-foot"><span class="grow" id="edHint">${mode === 'new' ? _t`Vorschlag: ${PEOPLE[pid].name}, ${PEOPLE[pid].role}. Tipp auf einen anderen Namen oder gestalte dein Aussehen – dann Boarding!` : _t('Änderungen werden sofort übernommen.')}</span>${mode === 'new' ? _t('<button class="btn" id="edRnd">Zufall</button>') : _t('<button class="btn" id="edCancel">Abbrechen</button>')}<button class="btn primary" id="edOk">${mode === 'new' ? _t('Boarding!') : _t('Fertig')}</button></div>`;
       el.hidden = false;
       const pcv = el.querySelector('#edPortrait'), pcx = pcv.getContext('2d');
       const bcv = el.querySelector('#edBody'), bcx = bcv.getContext('2d');
@@ -39,7 +39,7 @@ const Editor = {
         const keep = list.scrollTop;
         list.innerHTML = '';
         requestAnimationFrame(() => { list.scrollTop = keep; });
-        if (tab === 'Wer bist du?') {
+        if (tab === _t('Wer bist du?')) {
           const grid = document.createElement('div');
           grid.className = 'crew-grid';
           for (const id of TRAVELLERS) {
@@ -53,7 +53,7 @@ const Editor = {
               pid = id;
               Object.assign(L, look);
               el.querySelector('#edWho').textContent = c.name;
-              el.querySelector('#edHint').textContent = `${c.name}, ${c.role}. ${c.intro || ''} Jetzt Aussehen gestalten – oder direkt einsteigen.`;
+              el.querySelector('#edHint').textContent = _t`${c.name}, ${c.role}. ${c.intro || ''} Jetzt Aussehen gestalten – oder direkt einsteigen.`;
               renderList(); draw(); Snd.sfx('blip');
             };
             grid.appendChild(b);
@@ -61,7 +61,7 @@ const Editor = {
           list.appendChild(grid);
           const n = document.createElement('p');
           n.className = 'note';
-          n.textContent = 'Die anderen reisen als Kollegen mit. Die POs Simon, Luigi und Dominique führen je ein Team; wer einen PO spielt, plant mit dessen Team. Robin, Lukas, Pascal und Chris helfen überall mit – ihr Team ist Indurain, Rocket, Meeseeks bzw. Meeseeks.';
+          n.textContent = _t('Die anderen reisen als Kollegen mit. Die POs Simon, Luigi und Dominique führen je ein Team; wer einen PO spielt, plant mit dessen Team. Robin, Lukas, Pascal und Chris helfen überall mit – ihr Team ist Indurain, Rocket, Meeseeks bzw. Meeseeks.');
           list.appendChild(n);
           return;
         }
@@ -70,7 +70,7 @@ const Editor = {
           const row = document.createElement('div');
           row.className = 'feat';
           const n = (op.col || op.v).length;
-          row.innerHTML = `<span>${op.n}<small>${n} Varianten</small></span>`;
+          row.innerHTML = _t`<span>${op.n}<small>${n} Varianten</small></span>`;
           if (op.col) {
             const sw = document.createElement('div'); sw.className = 'swatches';
             op.col.forEach(([name, hex], i) => {
@@ -92,11 +92,11 @@ const Editor = {
               L[op.k] = i; renderList(); draw(); Snd.sfx('blip');
             };
             const a = document.createElement('button'); a.textContent = '◀'; a.setAttribute('aria-label', 'vorherige'); a.onclick = () => step(-1);
-            const b = document.createElement('button'); b.textContent = '▶'; b.setAttribute('aria-label', 'nächste'); b.onclick = () => step(1);
+            const b = document.createElement('button'); b.textContent = '▶'; b.setAttribute('aria-label', _t('nächste')); b.onclick = () => step(1);
             stp.append(a, out, b);
             row.appendChild(stp);
             const locks = Object.keys(LOCKED[op.k] || {});
-            if (locks.some((i) => isLocked(op.k, +i, unlocked))) { const hint = document.createElement('small'); hint.style.cssText = 'grid-column:1/-1;color:var(--ink-dim);font-family:var(--f-sign)'; hint.textContent = `🔒 ${op.v[locks[0]]}: gibt es in Valencia zu kaufen`; row.appendChild(hint); }
+            if (locks.some((i) => isLocked(op.k, +i, unlocked))) { const hint = document.createElement('small'); hint.style.cssText = 'grid-column:1/-1;color:var(--ink-dim);font-family:var(--f-sign)'; hint.textContent = _t`🔒 ${op.v[locks[0]]}: gibt es in Valencia zu kaufen`; row.appendChild(hint); }
           }
           list.appendChild(row);
         }
@@ -104,7 +104,7 @@ const Editor = {
       el.querySelectorAll('.ed-tabs .tab').forEach((t) => t.addEventListener('click', () => { tab = t.dataset.g; el.querySelectorAll('.ed-tabs .tab').forEach((x) => x.classList.toggle('on', x === t)); renderList(); }));
       const close = (val) => { clearInterval(iv); el.hidden = true; el.innerHTML = ''; resolve(val); };
       okBtn.onclick = () => {
-        if (mode === 'new' && !pid) { el.querySelector('#edHint').textContent = 'Wähle zuerst, wer du bist!'; Snd.sfx('error'); return; }
+        if (mode === 'new' && !pid) { el.querySelector('#edHint').textContent = _t('Wähle zuerst, wer du bist!'); Snd.sfx('error'); return; }
         if (mode !== 'new' && G.S) { Object.assign(G.S.look, L); if (G.player) G.player.look = G.S.look; }
         Snd.sfx('ok');
         close({ look: L, pid });

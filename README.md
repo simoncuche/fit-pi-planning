@@ -1,5 +1,7 @@
 # PI Planning Valencia
 
+**Sprachen:** Das Spiel läuft standardmässig auf Englisch; Deutsch und Spanisch sind auf dem Titelbildschirm und im Handy unter Optionen wählbar. Die Übersetzungen liegen in `i18n/en.json` und `i18n/es.json` (deutscher Text = Schlüssel).
+
 *Fünf Tage, drei Teams, ein Plan · Montag, 16. März 2026 (Fallas-Woche)*
 
 Ein Pixel-Rollenspiel für den Browser: Die Product Owner Simon, Luigi und Dominique fliegen mit ihrem Chef Robin und

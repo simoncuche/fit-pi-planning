@@ -70,7 +70,7 @@ const UI = {
     if (!G.S) return;
     const e = this.els, st = G.S.st;
     e.hClock.textContent = clockStr();
-    e.hDay.textContent = `${DAY_NAMES[dayStr()]} · Tag ${dayOf(G.S.time) + 1}`;
+    e.hDay.textContent = _t`${DAY_NAMES[dayOf(G.S.time) % 7]} · Tag ${dayOf(G.S.time) + 1}`;
     e.hPlace.textContent = G.map ? G.map.name : '';
     e.hEur.textContent = fmtEur(G.S.money.eur);
     e.hProm.textContent = promStr();
@@ -87,7 +87,7 @@ const UI = {
   toast(html, type = '') {
     const d = document.createElement('div');
     d.className = 'toast ' + type;
-    d.innerHTML = `<span>${html}</span><b class="x" aria-label="Schliessen">×</b>`;
+    d.innerHTML = _t`<span>${html}</span><b class="x" aria-label="Schliessen">×</b>`;
     this.els.toasts.appendChild(d);
     while (this.els.toasts.children.length > 4) this.els.toasts.firstChild.remove();
     const close = () => { if (d.classList.contains('out')) return; d.classList.add('out'); setTimeout(() => d.remove(), 350); };
@@ -197,7 +197,7 @@ const UI = {
   async fadeIn() { this.els.fade.classList.remove('on'); await sleep(300); this.els.fade.classList.remove('scene'); },
   async card(text, ms = 1600) { await this.fadeOut(text); await sleep(ms); await this.fadeIn(); },
   gameOver(title, text, note) {
-    const html = `<div class="panel"><div class="panel-head"><h2>${title}</h2></div><div class="panel-body"><p class="note">${text}</p><p class="note">${note || 'Der Spielstand wird gelöscht – versuch es nochmal.'}</p></div><div class="panel-foot"><span>Game Over</span><button class="btn primary" id="goRestart">Von vorne anfangen</button></div></div>`;
+    const html = _t`<div class="panel"><div class="panel-head"><h2>${title}</h2></div><div class="panel-body"><p class="note">${text}</p><p class="note">${note || _t('Der Spielstand wird gelöscht – versuch es nochmal.')}</p></div><div class="panel-foot"><span>Game Over</span><button class="btn primary" id="goRestart">Von vorne anfangen</button></div></div>`;
     const o = this.overlay(html, null);
     o.querySelector('#goRestart').addEventListener('click', () => { clearSave(); try { localStorage.removeItem(SAVE_KEY + '-img'); } catch (e) {} location.reload(); });
     G.mode = 'over';
@@ -249,15 +249,15 @@ const UI = {
             body += `<div class="shop-item ${ok ? '' : 'off'}"><img alt="" src="${itemIconURL(it.icon || item.icon)}"><span><span class="nm">${it.n || item.n}${have}</span><br><span class="ds">${it.d || itemDesc(it.id)}</span></span><span class="pr">${btns}</span></div>`;
           }
         }
-        const foot = def.foot || (def.mode === 'eat' ? 'Preis = jetzt konsumieren · 🎒 = mitnehmen' : def.mode === 'take' ? 'Gekauftes landet in der Tasche (Handy)' : 'Tippen zum Kaufen');
-        return `<div class="panel"><div class="panel-head"><h2>${def.title}</h2><span class="sub">${fmtEur(G.S.money.eur)}</span><button class="x-btn" data-close aria-label="Schliessen">×</button></div><div class="panel-body">${def.intro ? `<p class="note">${def.intro}</p>` : ''}${body}</div><div class="panel-foot"><span>${foot}</span><button class="btn" data-close>Fertig</button></div></div>`;
+        const foot = def.foot || (def.mode === 'eat' ? _t('Preis = jetzt konsumieren · 🎒 = mitnehmen') : def.mode === 'take' ? _t('Gekauftes landet in der Tasche (Handy)') : _t('Tippen zum Kaufen'));
+        return _t`<div class="panel"><div class="panel-head"><h2>${def.title}</h2><span class="sub">${fmtEur(G.S.money.eur)}</span><button class="x-btn" data-close aria-label="Schliessen">×</button></div><div class="panel-body">${def.intro ? `<p class="note">${def.intro}</p>` : ''}${body}</div><div class="panel-foot"><span>${foot}</span><button class="btn" data-close>Fertig</button></div></div>`;
       };
       const flat = {};
       let k = 0;
       for (const sec of def.sections) for (const it of sec.items) { it.key = k; flat[k++] = it; }
       const o = this.overlay(render(), resolve);
       const wire = () => {
-        o.querySelectorAll('.shop-item .buy, .shop-item .take').forEach((b) => b.addEventListener('click', async () => {
+        o.querySelectorAll(_t('.shop-item .buy, .shop-item .take')).forEach((b) => b.addEventListener('click', async () => {
           const it = flat[b.dataset.i];
           const done = await Story.buy(def, it, { take: b.classList.contains('take') });
           if (done === 'close') { this.closeOverlay(); return; }
@@ -285,15 +285,15 @@ const UI = {
 function itemDesc(id) {
   const it = ITEMS[id]; if (!it) return '';
   const p = [];
-  if (it.alc) p.push('Alkohol');
-  if (it.food) p.push(it.food >= 50 ? 'macht richtig satt' : it.food >= 25 ? 'macht satt' : 'Snack');
+  if (it.alc) p.push(_t('Alkohol'));
+  if (it.food) p.push(it.food >= 50 ? 'macht richtig satt' : it.food >= 25 ? 'macht satt' : _t('Snack'));
   if (it.en > 10) p.push('weckt auf');
-  if (it.nau < -20) p.push('beruhigt den Magen');
-  if (it.hang) p.push('gegen Kater');
-  if (it.water) p.push('Wasser');
-  if (it.sun) p.push('schützt vor der Sonne');
-  if (it.t === 'souv') p.push('Andenken');
-  if (it.t === 'read') p.push('zum Lesen');
+  if (it.nau < -20) p.push(_t('beruhigt den Magen'));
+  if (it.hang) p.push(_t('gegen Kater'));
+  if (it.water) p.push(_t('Wasser'));
+  if (it.sun) p.push(_t('schützt vor der Sonne'));
+  if (it.t === 'souv') p.push(_t('Andenken'));
+  if (it.t === 'read') p.push(_t('zum Lesen'));
   return p.join(' · ');
 }
 
@@ -302,8 +302,8 @@ const Phone = {
   tab: 'sprint',
   open(tab) {
     if (tab) this.tab = tab;
-    const o = UI.overlay(`<div class="panel" style="height:min(740px,100%)"><div class="panel-head"><h2>${G.S.name}s Handy</h2><span class="sub">${clockStr()} · ${dateStr()}</span><button class="x-btn" data-close aria-label="Schliessen">×</button></div>
-      <div class="tabs" role="tablist">${[['sprint', 'Sprint'], ['team', 'Team'], ['karte', 'Karte'], ['inv', 'Tasche'], ['fotos', 'Fotos'], ['status', 'Status'], ['opt', 'Optionen']].map(([k, n]) => `<button class="tab ${k === this.tab ? 'on' : ''}" data-tab="${k}" role="tab">${n}</button>`).join('')}</div>
+    const o = UI.overlay(_t`<div class="panel" style="height:min(740px,100%)"><div class="panel-head"><h2>${G.S.name}s Handy</h2><span class="sub">${clockStr()} · ${dateStr()}</span><button class="x-btn" data-close aria-label="Schliessen">×</button></div>
+      <div class="tabs" role="tablist">${[['sprint', _t('Sprint')], ['team', _t('Team')], ['karte', _t('Karte')], ['inv', _t('Tasche')], ['fotos', _t('Fotos')], ['status', _t('Status')], ['opt', _t('Optionen')]].map(([k, n]) => `<button class="tab ${k === this.tab ? 'on' : ''}" data-tab="${k}" role="tab">${n}</button>`).join('')}</div>
       <div class="panel-body" id="phoneBody"></div></div>`);
     o.querySelectorAll('.tab').forEach((b) => b.addEventListener('click', () => { this.tab = b.dataset.tab; o.querySelectorAll('.tab').forEach((x) => x.classList.toggle('on', x === b)); this.render(); }));
     this.render();
@@ -318,18 +318,18 @@ const Phone = {
     const steps = Story.steps();
     const achN = Object.keys(G.S.ach).length, achT = Object.keys(ACH).length;
     const tm = myTeam();
-    const planRows = Object.entries(TEAMS).map(([k, t]) => `<div class="teamhead"><i style="background:${t.col}"></i><span>${t.n}${k === tm ? ' (du)' : ''}</span><div class="plan-bar"><i style="width:${Math.round(G.S.plan[k])}%;background:${t.col}"></i></div><b>${Math.round(G.S.plan[k])} %</b></div>`).join('');
-    b.innerHTML = `<div class="row" style="border-color:var(--sun)"><div><div class="d">Jetzt</div><div class="t">${Story.objective()}</div></div></div>
+    const planRows = Object.entries(TEAMS).map(([k, t]) => `<div class="teamhead"><i style="background:${t.col}"></i><span>${t.n}${k === tm ? _t(' (du)') : ''}</span><div class="plan-bar"><i style="width:${Math.round(G.S.plan[k])}%;background:${t.col}"></i></div><b>${Math.round(G.S.plan[k])} %</b></div>`).join('');
+    b.innerHTML = _t`<div class="row" style="border-color:var(--sun)"><div><div class="d">Jetzt</div><div class="t">${Story.objective()}</div></div></div>
       <div class="shop-sec">PI-Plan · Stand</div>${planRows}
       <div class="shop-sec">Wochenplan</div><div class="list">${steps.map((s) => `<div class="row postit ${s.done ? 'done' : ''}"><div><div class="t">${s.t}</div>${s.d ? `<div class="d">${s.d}</div>` : ''}</div><span class="${s.done ? 'tick' : 'open'}">${s.done ? '✓' : '·'}</span></div>`).join('')}</div>
       <div class="shop-sec">Erlebnisse ${achN}/${achT}</div><div class="list">${Object.entries(ACH).map(([k, [t, d]]) => `<div class="row ${G.S.ach[k] ? 'done' : ''}"><div><div class="t">${G.S.ach[k] ? t : '???'}</div><div class="d">${d}</div></div><span class="${G.S.ach[k] ? 'tick' : 'open'}">${G.S.ach[k] ? '✓' : '·'}</span></div>`).join('')}</div>`;
   },
   team(b) {
     let html = '';
-    const card = (id) => { const p = PEOPLE[id]; const w = Story.whereIs(id); return `<div class="teamcard"><canvas width="96" height="96" data-p="${id}"></canvas><div><div class="n">${p.name}${id === G.S.pid ? ' (du)' : ''}</div><div class="r">${p.role}</div></div><div class="w">${id === G.S.pid ? 'hier' : w.t}</div></div>`; };
-    html += `<div class="shop-sec">Reisegruppe</div><div class="list">${TRAVELLERS.map(card).join('')}</div>`;
-    for (const [k, t] of Object.entries(TEAMS)) html += `<div class="teamhead"><i style="background:${t.col}"></i><span>${t.n} · PO ${PEOPLE[t.po].name}</span></div><div class="list">${t.members.filter((m) => !TRAVELLERS.includes(m)).map(card).join('')}</div>`;
-    html += `<div class="shop-sec">Backoffice</div><div class="list">${card('isabell')}</div>`;
+    const card = (id) => { const p = PEOPLE[id]; const w = Story.whereIs(id); return `<div class="teamcard"><canvas width="96" height="96" data-p="${id}"></canvas><div><div class="n">${p.name}${id === G.S.pid ? _t(' (du)') : ''}</div><div class="r">${p.role}</div></div><div class="w">${id === G.S.pid ? 'hier' : w.t}</div></div>`; };
+    html += _t`<div class="shop-sec">Reisegruppe</div><div class="list">${TRAVELLERS.map(card).join('')}</div>`;
+    for (const [k, t] of Object.entries(TEAMS)) html += _t`<div class="teamhead"><i style="background:${t.col}"></i><span>${t.n} · PO ${PEOPLE[t.po].name}</span></div><div class="list">${t.members.filter((m) => !TRAVELLERS.includes(m)).map(card).join('')}</div>`;
+    html += _t`<div class="shop-sec">Backoffice</div><div class="list">${card('isabell')}</div>`;
     b.innerHTML = html;
     b.querySelectorAll('canvas[data-p]').forEach((c) => c.getContext('2d').drawImage(portraitCanvas(personLook(c.dataset.p), PEOPLE[c.dataset.p].bg || '#2a3a52'), 0, 0));
   },
@@ -347,34 +347,34 @@ const Phone = {
     if (!showCity) { const px = G.player.x / TS * sc, py = G.player.y / TS * sc; E(x, px, py, 6, 6, '#ff8c1a'); E(x, px, py, 3, 3, '#ffffff'); }
     for (const id of Object.keys(PEOPLE)) { if (id === G.S.pid) continue; const w = Story.whereIs(id); if (w.x != null && w.map === m.id) { E(x, w.x * sc + sc / 2 + (hash(id.length, 1) * 8 - 4), w.y * sc + sc / 2, 3, 3, PEOPLE[id].bg || '#444'); } }
     const wrap = document.createElement('div'); wrap.className = 'mapwrap'; wrap.appendChild(c);
-    b.innerHTML = `<div class="legend"><span><i style="background:#ff8c1a"></i>Du</span><span><i style="background:#2a9aa0"></i>Colba</span><span><i style="background:#1f7fb8"></i>Sehenswürdigkeit</span><span><i style="background:#3f9a4b"></i>Läden & Freizeit</span><span><i style="background:#e85af0"></i>Nachtleben</span></div>`;
+    b.innerHTML = _t`<div class="legend"><span><i style="background:#ff8c1a"></i>Du</span><span><i style="background:#2a9aa0"></i>Colba</span><span><i style="background:#1f7fb8"></i>Sehenswürdigkeit</span><span><i style="background:#3f9a4b"></i>Läden & Freizeit</span><span><i style="background:#e85af0"></i>Nachtleben</span></div>`;
     b.appendChild(wrap);
-    const note = document.createElement('p'); note.className = 'note'; note.textContent = showCity ? 'Karte von Valencia. Kleine Punkte: wo die Kollegen gerade sind.' : `Karte: ${m.name}`; b.appendChild(note);
+    const note = document.createElement('p'); note.className = 'note'; note.textContent = showCity ? _t('Karte von Valencia. Kleine Punkte: wo die Kollegen gerade sind.') : _t`Karte: ${m.name}`; b.appendChild(note);
   },
   inv(b) {
     const keys = Object.keys(G.S.inv);
-    if (!keys.length) { b.innerHTML = '<p class="note">Deine Tasche ist leer. Im Mercado, am Kiosk oder im Supermarkt gibt es Proviant.</p>'; return; }
-    b.innerHTML = `<div class="shop-sec">Tasche · ${fmtEur(G.S.money.eur)}</div>`;
+    if (!keys.length) { b.innerHTML = _t('<p class="note">Deine Tasche ist leer. Im Mercado, am Kiosk oder im Supermarkt gibt es Proviant.</p>'); return; }
+    b.innerHTML = _t`<div class="shop-sec">Tasche · ${fmtEur(G.S.money.eur)}</div>`;
     for (const id of keys) {
       const it = ITEMS[id]; if (!it) continue;
       const n = G.S.inv[id];
       const usable = ['drink', 'food', 'med'].includes(it.t);
-      const uses = it.uses ? ` · ${G.S.uses[id] || it.uses} übrig` : '';
+      const uses = it.uses ? _t` · ${G.S.uses[id] || it.uses} übrig` : '';
       const d = document.createElement('div'); d.className = 'shop-item';
-      d.innerHTML = `<img alt="" src="${itemIconURL(it.icon)}"><span><span class="nm">${it.n} ${n > 1 ? '× ' + n : ''}</span><br><span class="ds">${itemDesc(id)}${uses}</span></span><span class="pr">${usable ? `<button class="btn use">${it.t === 'food' ? 'Essen' : it.t === 'med' ? 'Nehmen' : 'Trinken'}</button>` : it.t === 'read' ? '<button class="btn use">Lesen</button>' : ''}</span>`;
+      d.innerHTML = `<img alt="" src="${itemIconURL(it.icon)}"><span><span class="nm">${it.n} ${n > 1 ? '× ' + n : ''}</span><br><span class="ds">${itemDesc(id)}${uses}</span></span><span class="pr">${usable ? `<button class="btn use">${it.t === 'food' ? _t('Essen') : it.t === 'med' ? _t('Nehmen') : _t('Trinken')}</button>` : it.t === 'read' ? _t('<button class="btn use">Lesen</button>') : ''}</span>`;
       const u = d.querySelector('.use');
-      if (u) u.addEventListener('click', async () => { if (it.t === 'read') { UI.closeOverlay(); G.busy++; await Story.readItem(id); G.busy--; return; } takeInv(id); consume(id); UI.toast(`${it.t === 'food' ? 'Gegessen' : 'Getrunken'}: ${it.n}`); this.render(); UI.hud(); });
+      if (u) u.addEventListener('click', async () => { if (it.t === 'read') { UI.closeOverlay(); G.busy++; await Story.readItem(id); G.busy--; return; } takeInv(id); consume(id); UI.toast(`${it.t === 'food' ? _t('Gegessen') : _t('Getrunken')}: ${it.n}`); this.render(); UI.hud(); });
       b.appendChild(d);
     }
   },
   fotos(b) {
     const snaps = Snap.list();
-    let html = `<div class="shop-sec">Schnappschüsse (${snaps.length})</div>`;
-    html += snaps.length ? `<div class="snaps">${snaps.map((s, i) => `<button class="snap" data-i="${i}"><img alt="Schnappschuss" src="${s.img}"></button>`).join('')}</div>` : '<p class="note">Noch keine Schnappschüsse. Kamera-Knopf oben rechts (oder P) – geht auch während Gesprächen und Minispielen.</p>';
-    html += `<div class="shop-sec">Sehenswürdigkeiten ${Object.keys(G.S.photos).length}/${Object.keys(SIGHTS).length}</div><div class="photos">`;
+    let html = _t`<div class="shop-sec">Schnappschüsse (${snaps.length})</div>`;
+    html += snaps.length ? `<div class="snaps">${snaps.map((s, i) => `<button class="snap" data-i="${i}"><img alt="Schnappschuss" src="${s.img}"></button>`).join('')}</div>` : _t('<p class="note">Noch keine Schnappschüsse. Kamera-Knopf oben rechts (oder P) – geht auch während Gesprächen und Minispielen.</p>');
+    html += _t`<div class="shop-sec">Sehenswürdigkeiten ${Object.keys(G.S.photos).length}/${Object.keys(SIGHTS).length}</div><div class="photos">`;
     for (const [id, s] of Object.entries(SIGHTS)) {
       if (G.S.photos[id]) html += `<div class="photo" style="--r:${(hash(id.length, 3) * 4 - 2).toFixed(1)}deg"><canvas data-s="${id}" width="96" height="64"></canvas><b>${s.n}</b><p>${s.f}</p></div>`;
-      else html += `<div class="photo missing">${s.n}<br><small>noch kein Foto</small></div>`;
+      else html += _t`<div class="photo missing">${s.n}<br><small>noch kein Foto</small></div>`;
     }
     b.innerHTML = html + '</div>';
     b.querySelectorAll('canvas[data-s]').forEach((c) => drawSightCard(c.getContext('2d'), c.dataset.s));
@@ -383,29 +383,31 @@ const Phone = {
   status(b) {
     const st = G.S.st;
     const f = (v) => Math.round(v);
-    b.innerHTML = `<div class="statgrid">
+    b.innerHTML = _t`<div class="statgrid">
       <div class="stat"><small>Energie</small><b>${f(st.energy)} %</b></div><div class="stat"><small>Satt</small><b>${f(st.food)} %</b></div>
       <div class="stat"><small>Laune</small><b>${f(st.mood)} %</b></div><div class="stat"><small>Pegel</small><b>${promStr()}</b></div>
       <div class="stat"><small>Übelkeit</small><b>${f(st.nau)}</b></div><div class="stat"><small>Sonne</small><b>${f(st.sun)} %${st.sun > 60 ? ' 🔥' : ''}</b></div>
       <div class="stat"><small>Kater</small><b>${st.hang > 0 ? f(st.hang) : '–'}</b></div><div class="stat"><small>Wach seit</small><b>${Math.floor(minutesAwake() / 60)} h</b></div>
       <div class="stat"><small>Biere</small><b>${G.S.beers}</b></div><div class="stat"><small>Kaffees</small><b>${G.S.coffees}</b></div>
-      <div class="stat"><small>Rekord Kart</small><b>${G.S.rec.kart ? G.S.rec.kart.toFixed(1) + ' s' : '–'}</b></div><div class="stat"><small>Rekord Disco</small><b>${G.S.rec.dance ? G.S.rec.dance + ' %' : '–'}</b></div>
+      <div class="stat"><small>Rekord Kart</small><b>${G.S.rec.kart ? G.S.rec.kart.toFixed(1) + _t(' s') : '–'}</b></div><div class="stat"><small>Rekord Disco</small><b>${G.S.rec.dance ? G.S.rec.dance + ' %' : '–'}</b></div>
       </div>
       <div class="shop-sec">Spieler</div><div class="row"><div><div class="t">${G.S.name}</div><div class="d">${PEOPLE[G.S.pid].role} · ${TEAMS[myTeam()].n}</div></div><button class="btn" id="stEdit">Kleider</button></div>
       <div class="shop-sec">Abhängigkeiten</div><div class="list">${Object.entries(DEPS).filter(([k, d]) => d.from === myTeam() || d.to === myTeam()).map(([k, d]) => `<div class="row ${G.S.deps[k] ? 'done' : ''}"><div><div class="t">${d.t}</div><div class="d">${TEAMS[d.from].n} → ${TEAMS[d.to].n}</div></div><span class="${G.S.deps[k] ? 'tick' : 'open'}">${G.S.deps[k] ? '✓' : '·'}</span></div>`).join('')}</div>`;
     b.querySelector('#stEdit').addEventListener('click', async () => { UI.closeOverlay(); G.busy++; await Editor.open({ mode: 'clothes' }); G.busy--; });
   },
   opt(b) {
-    b.innerHTML = `<div class="opt-row"><span>Soundeffekte</span><button class="btn" id="oSfx">${Snd.on ? 'An' : 'Aus'}</button></div>
-      <div class="opt-row"><span>Musik</span><button class="btn" id="oMus">${Snd.musicOn ? 'An' : 'Aus'}</button></div>
+    b.innerHTML = _t`<div class="opt-row"><span>Soundeffekte</span><button class="btn" id="oSfx">${Snd.on ? _t('An') : _t('Aus')}</button></div>
+      <div class="opt-row"><span>Musik</span><button class="btn" id="oMus">${Snd.musicOn ? _t('An') : _t('Aus')}</button></div>
       <div class="opt-row"><span>Spielstand</span><button class="btn" id="oSave">Jetzt speichern</button></div>
       <div class="opt-row"><span>Neues Spiel</span><button class="btn red" id="oReset">Spielstand löschen</button></div>
       <p class="note">Version ${APP_VERSION} · ${APP_VERSION_DATE} · Audio: ${Snd.state()}</p>
       <div class="shop-sec">Was ist neu?</div><div class="changelog" style="padding:0">${changelogHtml()}</div>`;
-    b.querySelector('#oSfx').addEventListener('click', (e) => { Snd.on = !Snd.on; e.target.textContent = Snd.on ? 'An' : 'Aus'; });
-    b.querySelector('#oMus').addEventListener('click', (e) => { Snd.musicOn = !Snd.musicOn; e.target.textContent = Snd.musicOn ? 'An' : 'Aus'; });
+    b.querySelector('#oSfx').addEventListener('click', (e) => { Snd.on = !Snd.on; e.target.textContent = Snd.on ? _t('An') : _t('Aus'); });
+    b.querySelector('#oMus').addEventListener('click', (e) => { Snd.musicOn = !Snd.musicOn; e.target.textContent = Snd.musicOn ? _t('An') : _t('Aus'); });
     b.querySelector('#oSave').addEventListener('click', () => saveGame(false));
-    b.querySelector('#oReset').addEventListener('click', () => { if (confirm('Spielstand wirklich löschen?')) { clearSave(); try { localStorage.removeItem(SAVE_KEY + '-img'); } catch (e) {} location.reload(); } });
+    b.querySelector('#oSave').closest('.opt-row').insertAdjacentHTML('beforebegin', `<div class="opt-row"><span>${_t('Sprache')}</span><span class="langs">${Object.entries(LANGS).map(([k, n]) => `<button class="btn lang${k === LANG ? ' on' : ''}" data-lang="${k}">${n}</button>`).join('')}</span></div>`);
+    b.querySelectorAll('.lang').forEach((el) => el.addEventListener('click', () => { saveGame(true); setLang(el.dataset.lang); }));
+    b.querySelector('#oReset').addEventListener('click', () => { if (confirm(_t('Spielstand wirklich löschen?'))) { clearSave(); try { localStorage.removeItem(SAVE_KEY + '-img'); } catch (e) {} location.reload(); } });
   },
 };
 /* Sehenswürdigkeit als Postkarte zeichnen */
@@ -440,12 +442,12 @@ const Snap = {
     const list = this.list();
     list.push({ img: c.toDataURL('image/png'), t: G.S.time, g: G.S.flags.gameId, map: G.map.name });
     while (list.length > 24) list.shift();
-    try { localStorage.setItem(this.KEY(), JSON.stringify(list)); } catch (e) { UI.toast('Kein Platz mehr für Schnappschüsse.', 'warn'); }
+    try { localStorage.setItem(this.KEY(), JSON.stringify(list)); } catch (e) { UI.toast(_t('Kein Platz mehr für Schnappschüsse.'), 'warn'); }
     achieve('knipser');
-    UI.toast('📷 Schnappschuss gespeichert (Handy → Fotos).');
+    UI.toast(_t('📷 Schnappschuss gespeichert (Handy → Fotos).'));
   },
   view(i) {
     const s = this.list()[i]; if (!s) return;
-    const o = UI.overlay(`<div class="panel snap-panel"><div class="panel-head"><h2>Schnappschuss</h2><span class="sub">${s.map} · ${dateStr(s.t)} ${clockStr(s.t)}</span><button class="x-btn" data-close aria-label="Schliessen">×</button></div><div class="panel-body"><div class="snap-view"><img alt="Schnappschuss" src="${s.img}"></div><div class="snap-btns"><a class="btn primary" style="text-align:center;text-decoration:none" download="valencia-${i + 1}.png" href="${s.img}">Speichern</a><button class="btn" data-close>Zurück</button></div></div></div>`, () => Phone.open('fotos'));
+    const o = UI.overlay(_t`<div class="panel snap-panel"><div class="panel-head"><h2>Schnappschuss</h2><span class="sub">${s.map} · ${dateStr(s.t)} ${clockStr(s.t)}</span><button class="x-btn" data-close aria-label="Schliessen">×</button></div><div class="panel-body"><div class="snap-view"><img alt="Schnappschuss" src="${s.img}"></div><div class="snap-btns"><a class="btn primary" style="text-align:center;text-decoration:none" download="valencia-${i + 1}.png" href="${s.img}">Speichern</a><button class="btn" data-close>Zurück</button></div></div></div>`, () => Phone.open('fotos'));
   },
 };

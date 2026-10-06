@@ -136,7 +136,7 @@ function enterMap(id, spawn, opts = {}) {
   G.player.look = G.S.look;
   if (sp) { G.player.x = sp.x; G.player.y = sp.y; G.player.dir = sp.dir ?? G.player.dir; }
   if (!sp || typeof spawn !== 'string') {
-    if (!sp) { const d = m.spawns.entry || Object.values(m.spawns)[0]; if (typeof spawn === 'string') console.warn('Ankunftspunkt fehlt:', id, spawn); if (d) { G.player.x = d.x; G.player.y = d.y; G.player.dir = d.dir ?? 0; } }
+    if (!sp) { const d = m.spawns.entry || Object.values(m.spawns)[0]; if (typeof spawn === 'string') console.warn(_t('Ankunftspunkt fehlt:'), id, spawn); if (d) { G.player.x = d.x; G.player.y = d.y; G.player.dir = d.dir ?? 0; } }
     const tx = Math.floor(G.player.x / TS), ty = Math.floor((G.player.y - 3) / TS);
     if (m.isSolid(tx, ty)) {
       let found = null;
@@ -485,8 +485,8 @@ function findInteraction() {
   for (const n of G.npcs) {
     if (n.hidden || !n.talk) continue;
     const d = Math.hypot(n.x - fp.x, n.y - 6 - fp.y);
-    if (n.follower) { if (d < fd) { fd = d; fol = { npc: n, label: n.label || 'Reden: ' + n.name }; } continue; }
-    if (d < bd) { bd = d; best = { npc: n, label: n.label || 'Reden: ' + n.name }; }
+    if (n.follower) { if (d < fd) { fd = d; fol = { npc: n, label: n.label || _t('Reden: ') + n.name }; } continue; }
+    if (d < bd) { bd = d; best = { npc: n, label: n.label || _t('Reden: ') + n.name }; }
   }
   if (best) return best;
   const ftx = Math.floor(fp.x / TS), fty = Math.floor(fp.y / TS);
@@ -498,7 +498,7 @@ function findInteraction() {
     if (inF || inP) return { trig: t, label: typeof t.label === 'function' ? t.label() : t.label };
   }
   if (fol) return fol;
-  if (G.player.bike) return { label: 'Vom E-Bike steigen', act: () => Story.bikeOff() };
+  if (G.player.bike) return { label: _t('Vom E-Bike steigen'), act: () => Story.bikeOff() };
   return null;
 }
 async function doInteract() {
@@ -572,7 +572,7 @@ function updatePlayer(dt) {
   p.moving = moved && (Math.abs(dx) + Math.abs(dy) > 0.01);
   if (p.moving) {
     p.walkT += dt;
-    if (p.bike) { if (G.S.flags.battery > 0) { G.S.flags.battery = Math.max(0, G.S.flags.battery - dt * 0.45); if (G.S.flags.battery <= 0) { UI.toast('🔋 Akku leer! Jetzt heisst es treten.', 'warn'); achieve('akku'); } } }
+    if (p.bike) { if (G.S.flags.battery > 0) { G.S.flags.battery = Math.max(0, G.S.flags.battery - dt * 0.45); if (G.S.flags.battery <= 0) { UI.toast(_t('🔋 Akku leer! Jetzt heisst es treten.'), 'warn'); achieve('akku'); } } }
     else if (Math.floor(p.walkT * (run ? 10 : 7)) !== Math.floor((p.walkT - dt) * (run ? 10 : 7)) && Math.floor(p.walkT * 7) % 2 === 0) Snd.sfx('step');
   }
 }

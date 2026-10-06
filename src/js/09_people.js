@@ -1,26 +1,26 @@
 /* ============ Die Leute: Reisegruppe, Colba, Backoffice ============ */
 const PEOPLE = {
-  simon: { name: 'Simon', role: 'der Organisator · PO Indurain', team: 'indurain', bg: '#2a4a3a', from: 'Zürich', intro: 'Hat die Agenda, die Hotelbuchung und das Restaurant für den Donnerstag im Kopf.' },
-  luigi: { name: 'Luigi', role: 'der Autofan · PO Meeseeks', team: 'meeseeks', bg: '#5a2a24', from: 'Zürich', intro: 'Redet über PS, wenn andere über Story Points reden. Kartbahn ist Pflicht.' },
-  dominique: { name: 'Dominique', role: 'der Raucher · PO Rocket', team: 'rocket', bg: '#3a3a4a', from: 'Zürich', intro: 'Alle 45 Minuten auf den Balkon. Dort entstehen die besten Ideen.' },
-  robin: { name: 'Robin', role: 'der Chef · zum ersten Mal dabei', team: 'indurain', bg: '#2a2a3a', from: 'Zürich', intro: 'Hält am Dienstag den Business Context – und hat noch nie eine valencianische Klingel gedrückt.' },
-  lukas: { name: 'Lukas', role: 'der Battery-Pass-Spezialist', team: 'rocket', bg: '#6a2a2a', from: 'Bern', intro: 'Kennt die EU-Batterieverordnung auswendig. Jede Zelle bekommt einen Pass.' },
-  pascal: { name: 'Pascal', role: 'der Entwickler · iOS-Spezialist aus Leipzig', team: 'meeseeks', bg: '#2a3a5a', from: 'Leipzig', intro: 'Reist allein aus Leipzig an. SwiftUI im Blut, Club Mate im Rucksack.' },
-  chris: { name: 'Chris', role: 'der Surfer · Product Manager aus Fuerte', team: 'meeseeks', bg: '#2a5a6a', from: 'Fuerteventura', intro: 'Kommt mit Surf-Wax und Roadmap aus Fuerteventura. Morgens Wellen, tagsüber Features.' },
-  danny: { name: 'Danny', role: 'der Boss von Team Indurain · aus Kuba', team: 'indurain', bg: '#3a2a2a' },
-  fran: { name: 'Fran', role: 'der Hardware-Dude · kennt alle CANopen-Indexe', team: 'indurain', bg: '#2a2a2a' },
-  estella: { name: 'Estella', role: 'die Junge, Engagierte', team: 'indurain', bg: '#5a4a2a' },
-  bea: { name: 'Bea', role: 'die ruhige Backend-Entwicklerin · aus Kuba', team: 'indurain', bg: '#2a3a4a' },
-  vicente: { name: 'Vicente', role: 'der DevOps-Guy', team: 'indurain', bg: '#2a4a4a' },
-  juanjo: { name: 'Juanjo', role: 'der Inhaber von Colba · Android', team: 'meeseeks', bg: '#4a3a2a' },
-  oscar: { name: 'Oscar', role: 'der ruhige, genaue Android-Experte', team: 'meeseeks', bg: '#3a3a3a' },
-  pablo: { name: 'Pablo', role: 'Elenas Bruder · iOS', team: 'meeseeks', bg: '#5a3a2a' },
-  guillem: { name: 'Guillem', role: 'der junge iOS-Entwickler', team: 'meeseeks', bg: '#4a2a5a' },
-  elena: { name: 'Elena', role: 'die UX- und UI-Designerin', team: 'meeseeks', bg: '#5a2a4a' },
-  carlos: { name: 'Carlos', role: 'der Software-Architekt und Refactorer · Bassist einer Hardrock-Band', team: 'rocket', bg: '#3a3a2a' },
-  salva: { name: 'Salva', role: 'der Lernwillige', team: 'rocket', bg: '#2a3a5a' },
-  aitor: { name: 'Aitor', role: 'der Radfahrer · lösungsorientiert', team: 'rocket', bg: '#5a4a1a' },
-  isabell: { name: 'Isabell', role: 'leitet das Backoffice · hilft bei der Organisation', team: null, bg: '#2a5a5a' },
+  simon: { name: _t('Simon'), role: _t('der Organisator · PO Indurain'), team: 'indurain', bg: '#2a4a3a', from: _t('Zürich'), intro: _t('Hat die Agenda, die Hotelbuchung und das Restaurant für den Donnerstag im Kopf.') },
+  luigi: { name: _t('Luigi'), role: _t('der Autofan · PO Meeseeks'), team: 'meeseeks', bg: '#5a2a24', from: _t('Zürich'), intro: _t('Redet über PS, wenn andere über Story Points reden. Kartbahn ist Pflicht.') },
+  dominique: { name: _t('Dominique'), role: _t('der Raucher · PO Rocket'), team: 'rocket', bg: '#3a3a4a', from: _t('Zürich'), intro: _t('Alle 45 Minuten auf den Balkon. Dort entstehen die besten Ideen.') },
+  robin: { name: _t('Robin'), role: _t('der Chef · zum ersten Mal dabei'), team: 'indurain', bg: '#2a2a3a', from: _t('Zürich'), intro: _t('Hält am Dienstag den Business Context – und hat noch nie eine valencianische Klingel gedrückt.') },
+  lukas: { name: _t('Lukas'), role: _t('der Battery-Pass-Spezialist'), team: 'rocket', bg: '#6a2a2a', from: _t('Bern'), intro: _t('Kennt die EU-Batterieverordnung auswendig. Jede Zelle bekommt einen Pass.') },
+  pascal: { name: _t('Pascal'), role: _t('der Entwickler · iOS-Spezialist aus Leipzig'), team: 'meeseeks', bg: '#2a3a5a', from: _t('Leipzig'), intro: _t('Reist allein aus Leipzig an. SwiftUI im Blut, Club Mate im Rucksack.') },
+  chris: { name: _t('Chris'), role: _t('der Surfer · Product Manager aus Fuerte'), team: 'meeseeks', bg: '#2a5a6a', from: _t('Fuerteventura'), intro: _t('Kommt mit Surf-Wax und Roadmap aus Fuerteventura. Morgens Wellen, tagsüber Features.') },
+  danny: { name: _t('Danny'), role: _t('der Boss von Team Indurain · aus Kuba'), team: 'indurain', bg: '#3a2a2a' },
+  fran: { name: _t('Fran'), role: _t('der Hardware-Dude · kennt alle CANopen-Indexe'), team: 'indurain', bg: '#2a2a2a' },
+  estella: { name: _t('Estella'), role: _t('die Junge, Engagierte'), team: 'indurain', bg: '#5a4a2a' },
+  bea: { name: _t('Bea'), role: _t('die ruhige Backend-Entwicklerin · aus Kuba'), team: 'indurain', bg: '#2a3a4a' },
+  vicente: { name: _t('Vicente'), role: _t('der DevOps-Guy'), team: 'indurain', bg: '#2a4a4a' },
+  juanjo: { name: _t('Juanjo'), role: _t('der Inhaber von Colba · Android'), team: 'meeseeks', bg: '#4a3a2a' },
+  oscar: { name: _t('Oscar'), role: _t('der ruhige, genaue Android-Experte'), team: 'meeseeks', bg: '#3a3a3a' },
+  pablo: { name: _t('Pablo'), role: _t('Elenas Bruder · iOS'), team: 'meeseeks', bg: '#5a3a2a' },
+  guillem: { name: _t('Guillem'), role: _t('der junge iOS-Entwickler'), team: 'meeseeks', bg: '#4a2a5a' },
+  elena: { name: _t('Elena'), role: _t('die UX- und UI-Designerin'), team: 'meeseeks', bg: '#5a2a4a' },
+  carlos: { name: _t('Carlos'), role: _t('der Software-Architekt und Refactorer · Bassist einer Hardrock-Band'), team: 'rocket', bg: '#3a3a2a' },
+  salva: { name: _t('Salva'), role: _t('der Lernwillige'), team: 'rocket', bg: '#2a3a5a' },
+  aitor: { name: _t('Aitor'), role: _t('der Radfahrer · lösungsorientiert'), team: 'rocket', bg: '#5a4a1a' },
+  isabell: { name: _t('Isabell'), role: _t('leitet das Backoffice · hilft bei der Organisation'), team: null, bg: '#2a5a5a' },
 };
 const TRAVELLERS = ['simon', 'luigi', 'dominique', 'robin', 'lukas', 'pascal', 'chris'];
 const COLBA = ['danny', 'fran', 'estella', 'bea', 'vicente', 'juanjo', 'oscar', 'pablo', 'guillem', 'elena', 'carlos', 'salva', 'aitor'];
@@ -71,14 +71,14 @@ const teamOf = (id) => PEOPLE[id] && PEOPLE[id].team;
 /* Wer führt das Team an, wenn man dessen PO nicht selber ist? */
 function teamLead(team) { const po = TEAMS[team].po; return po === G.S.pid ? ({ indurain: 'danny', meeseeks: 'juanjo', rocket: 'carlos' })[team] : po; }
 const fprom = (id) => (G.S.fprom && G.S.fprom[id]) || 0;
-const listNames = (ids) => { const n = ids.map(fname); return n.length <= 1 ? n.join('') : n.slice(0, -1).join(', ') + ' und ' + n[n.length - 1]; };
+const listNames = (ids) => { const n = ids.map(fname); return n.length <= 1 ? n.join('') : n.slice(0, -1).join(', ') + _t(' und ') + n[n.length - 1]; };
 
 /* Abhängigkeiten zwischen den Teams – werden im Planning verhandelt */
 const DEPS = {
-  d1: { t: 'Battery-SOC-Telemetrie in der App', from: 'indurain', to: 'meeseeks', d: 'Indurain liefert den CANopen-Datenstrom (Index 0x6060), Meeseeks zeigt ihn in Android und iOS an.' },
-  d2: { t: 'Login-SDK für die Web-App', from: 'meeseeks', to: 'rocket', d: 'Meeseeks baut das Auth-SDK, Rocket braucht es für das Händlerportal.' },
-  d3: { t: 'Refactoring des CAN-Parsers', from: 'rocket', to: 'indurain', d: 'Carlos räumt den Parser auf, Indurain baut darauf die Motor-Diagnose.' },
-  d4: { t: 'OTA-Firmware-Update über CANopen', from: 'indurain', to: 'rocket', d: 'Indurain definiert das Update-Protokoll (SDO-Blocktransfer), Rocket baut den Update-Server.' },
-  d5: { t: 'Design-System für Diagnose-Screens', from: 'meeseeks', to: 'indurain', d: 'Elena liefert die Komponenten, Indurain nutzt sie für die Werkstatt-App.' },
-  d6: { t: 'Battery-Pass-API für die Mobile-App', from: 'rocket', to: 'meeseeks', d: 'Rocket baut mit Lukas die Batteriepass-Schnittstelle, Meeseeks zeigt den QR-Code in der App.' },
+  d1: { t: _t('Battery-SOC-Telemetrie in der App'), from: 'indurain', to: 'meeseeks', d: _t('Indurain liefert den CANopen-Datenstrom (Index 0x6060), Meeseeks zeigt ihn in Android und iOS an.') },
+  d2: { t: _t('Login-SDK für die Web-App'), from: 'meeseeks', to: 'rocket', d: _t('Meeseeks baut das Auth-SDK, Rocket braucht es für das Händlerportal.') },
+  d3: { t: _t('Refactoring des CAN-Parsers'), from: 'rocket', to: 'indurain', d: _t('Carlos räumt den Parser auf, Indurain baut darauf die Motor-Diagnose.') },
+  d4: { t: _t('OTA-Firmware-Update über CANopen'), from: 'indurain', to: 'rocket', d: _t('Indurain definiert das Update-Protokoll (SDO-Blocktransfer), Rocket baut den Update-Server.') },
+  d5: { t: _t('Design-System für Diagnose-Screens'), from: 'meeseeks', to: 'indurain', d: _t('Elena liefert die Komponenten, Indurain nutzt sie für die Werkstatt-App.') },
+  d6: { t: _t('Battery-Pass-API für die Mobile-App'), from: 'rocket', to: 'meeseeks', d: _t('Rocket baut mit Lukas die Batteriepass-Schnittstelle, Meeseeks zeigt den QR-Code in der App.') },
 };

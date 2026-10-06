@@ -4,7 +4,7 @@ name: GitHub Pages
 
 on:
   push:
-    branches: [main]
+    branches: [main, claude/scrum-pi-planning-game-ion8x3]
   workflow_dispatch:
 
 permissions:

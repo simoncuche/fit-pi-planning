@@ -370,3 +370,10 @@ body.ov #toasts { top: auto; bottom: calc(env(safe-area-inset-bottom, 0px) + 16p
   #cine .ctitle { font-size: clamp(20px, 5vh, 30px); } #cine .cbar { height: 14%; }
 }
 @media (min-width: 900px) { #toasts { width: min(400px, 36vw); } }
+
+/* Sprachwahl */
+.langs { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; }
+.title-card .langs { margin: 8px 0 2px; }
+.langs .lang { font-family: var(--f-sign); font-size: 13px; letter-spacing: .04em; padding: 5px 10px; border-radius: 999px; border: 1px solid var(--paper-line); background: #fff; color: var(--ink-dim); cursor: pointer; }
+.langs .lang.on { background: var(--sun); border-color: var(--sun); color: #fff; }
+.opt-row .langs .lang { padding: 4px 8px; font-size: 12px; }

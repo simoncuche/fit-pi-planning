@@ -2,7 +2,7 @@
 const Mini = {
   key: null,
   frame(title, sub, inner) {
-    return `<div class="panel mini"><div class="panel-head"><h2>${title}</h2><span class="sub" id="miniSub">${sub || ''}</span><button class="x-btn" id="miniCam" aria-label="Foto machen" title="Foto machen">📷</button><button class="x-btn" id="miniX" aria-label="Abbrechen">×</button></div><div class="panel-body">${inner}</div></div>`;
+    return _t`<div class="panel mini"><div class="panel-head"><h2>${title}</h2><span class="sub" id="miniSub">${sub || ''}</span><button class="x-btn" id="miniCam" aria-label="Foto machen" title="Foto machen">📷</button><button class="x-btn" id="miniX" aria-label="Abbrechen">×</button></div><div class="panel-body">${inner}</div></div>`;
   },
   run(title, sub, inner, W, H, setup) {
     return new Promise((resolve) => {
@@ -26,9 +26,9 @@ const Mini = {
 
   /* ---------- Planning Poker: Features schätzen, Konsens mit dem Team finden ---------- */
   FEATURES: {
-    indurain: [['Motor-Diagnose über CANopen', 'Fehlercodes 0x60A0 auslesen und in der Werkstatt-App anzeigen', 8], ['Battery-SOC-Stream', 'State of Charge alle 500 ms als PDO publizieren', 5], ['OTA-Update-Protokoll', 'SDO-Blocktransfer für Firmware, mit Rollback', 13], ['Heartbeat-Überwachung', 'Node-Guarding, Timeout nach 3 s', 3], ['CAN-Logger im Prüfstand', 'Trace-Dateien aufzeichnen und exportieren', 5], ['Bremslicht-Signal', 'Rücklicht bei Rekuperation ansteuern', 2]],
-    meeseeks: [['Akku-Ring in der App', 'Elenas Design-System: Ring mit SOC und Restreichweite', 5], ['Login-SDK', 'OAuth für Android, iOS und Web, Biometrie', 13], ['Batteriepass-QR', 'QR-Code scannen, Pass anzeigen', 8], ['Bluetooth-Pairing', 'Bike per BLE koppeln, CAN-Bridge', 8], ['Onboarding-Flow', 'Pascals Entwurf aus Frankfurt: fünf Screens', 3], ['Dark Mode', 'Alle Screens, beide Plattformen', 2]],
-    rocket: [['Battery-Pass-API', 'REST und GraphQL, EU-Datenmodell nach Lukas', 13], ['CAN-Parser-Refactoring', 'Carlos: 4000 Zeilen in Module zerlegen', 8], ['Händlerportal', 'Web-App für Bike-Händler, Login über Meeseeks-SDK', 13], ['Update-Server', 'Firmware-Pakete verwalten, OTA ausrollen', 8], ['Monitoring-Dashboard', 'Grafana für Flottendaten', 5], ['Dokumentation', 'Salva schreibt alles auf', 3]],
+    indurain: [[_t('Motor-Diagnose über CANopen'), _t('Fehlercodes 0x60A0 auslesen und in der Werkstatt-App anzeigen'), 8], [_t('Battery-SOC-Stream'), _t('State of Charge alle 500 ms als PDO publizieren'), 5], [_t('OTA-Update-Protokoll'), _t('SDO-Blocktransfer für Firmware, mit Rollback'), 13], [_t('Heartbeat-Überwachung'), _t('Node-Guarding, Timeout nach 3 s'), 3], [_t('CAN-Logger im Prüfstand'), _t('Trace-Dateien aufzeichnen und exportieren'), 5], [_t('Bremslicht-Signal'), _t('Rücklicht bei Rekuperation ansteuern'), 2]],
+    meeseeks: [[_t('Akku-Ring in der App'), _t('Elenas Design-System: Ring mit SOC und Restreichweite'), 5], [_t('Login-SDK'), _t('OAuth für Android, iOS und Web, Biometrie'), 13], [_t('Batteriepass-QR'), _t('QR-Code scannen, Pass anzeigen'), 8], [_t('Bluetooth-Pairing'), _t('Bike per BLE koppeln, CAN-Bridge'), 8], [_t('Onboarding-Flow'), _t('Pascals Entwurf aus Frankfurt: fünf Screens'), 3], [_t('Dark Mode'), _t('Alle Screens, beide Plattformen'), 2]],
+    rocket: [[_t('Battery-Pass-API'), _t('REST und GraphQL, EU-Datenmodell nach Lukas'), 13], [_t('CAN-Parser-Refactoring'), _t('Carlos: 4000 Zeilen in Module zerlegen'), 8], [_t('Händlerportal'), _t('Web-App für Bike-Händler, Login über Meeseeks-SDK'), 13], [_t('Update-Server'), _t('Firmware-Pakete verwalten, OTA ausrollen'), 8], [_t('Monitoring-Dashboard'), _t('Grafana für Flottendaten'), 5], [_t('Dokumentation'), _t('Salva schreibt alles auf'), 3]],
   },
   poker(team) {
     const feats = shuffle(this.FEATURES[team].slice()).slice(0, 4);
@@ -43,13 +43,13 @@ const Mini = {
       UI._ovClose = () => { if (!done) { done = true; resolve(null); } };
       const render = () => {
         const [n, d, ref] = feats[idx];
-        const hint = ref >= 13 ? 'Das Team murmelt: „Das ist gross.“' : ref >= 8 ? 'Danny: „Mittel bis gross.“' : ref >= 5 ? 'Estella: „Machbar in einem Sprint.“' : 'Fran: „Kleinigkeit.“';
-        o.innerHTML = `<div class="panel mini"><div class="panel-head"><h2>Planning Poker</h2><span class="sub">Feature ${idx + 1}/${feats.length} · Konsens ${consensus}</span><button class="x-btn" id="pkX">×</button></div><div class="panel-body">
-          <div class="story-card"><b>${n}</b>${d}<br><small>${round ? hint : 'Jeder schätzt verdeckt in Story Points. Dann aufdecken – bei Ausreissern wird diskutiert und nochmal geschätzt.'}</small></div>
+        const hint = ref >= 13 ? _t('Das Team murmelt: „Das ist gross.“') : ref >= 8 ? _t('Danny: „Mittel bis gross.“') : ref >= 5 ? _t('Estella: „Machbar in einem Sprint.“') : _t('Fran: „Kleinigkeit.“');
+        o.innerHTML = _t`<div class="panel mini"><div class="panel-head"><h2>Planning Poker</h2><span class="sub">Feature ${idx + 1}/${feats.length} · Konsens ${consensus}</span><button class="x-btn" id="pkX">×</button></div><div class="panel-body">
+          <div class="story-card"><b>${n}</b>${d}<br><small>${round ? hint : _t('Jeder schätzt verdeckt in Story Points. Dann aufdecken – bei Ausreissern wird diskutiert und nochmal geschätzt.')}</small></div>
           <div class="cards" id="pkTeam">${members.map((id, i) => `<div><canvas width="96" height="96" style="width:40px;height:40px;image-rendering:pixelated;border-radius:6px;display:block;margin:0 auto 4px" data-p="${id}"></canvas><div class="pcard ${votes ? '' : 'back'}">${votes ? votes[i] : '?'}</div></div>`).join('')}</div>
           <div class="note" style="text-align:center">Deine Schätzung:</div>
           <div class="cards">${CARDS.map((c) => `<button class="pcard ${sel === c ? 'sel' : ''}" data-c="${c}">${c}</button>`).join('')}</div>
-          ${votes ? `<button class="btn primary" id="pkNext">${round >= 2 || votes.every((v) => Math.abs(CARDS.indexOf(v) - CARDS.indexOf(sel)) <= 1) ? 'Nächstes Feature' : 'Diskutieren und neu schätzen'}</button>` : '<button class="btn primary" id="pkReveal" ' + (sel == null ? 'disabled' : '') + '>Aufdecken</button>'}
+          ${votes ? `<button class="btn primary" id="pkNext">${round >= 2 || votes.every((v) => Math.abs(CARDS.indexOf(v) - CARDS.indexOf(sel)) <= 1) ? _t('Nächstes Feature') : _t('Diskutieren und neu schätzen')}</button>` : _t('<button class="btn primary" id="pkReveal" ') + (sel == null ? 'disabled' : '') + '>Aufdecken</button>'}
           </div></div>`;
         o.querySelectorAll('canvas[data-p]').forEach((c) => c.getContext('2d').drawImage(portraitCanvas(personLook(c.dataset.p), PEOPLE[c.dataset.p].bg), 0, 0));
         o.querySelector('#pkX').onclick = () => fin(null);
@@ -71,7 +71,7 @@ const Mini = {
   },
 
   /* ---------- CANopen-Index-Quiz mit Fran ---------- */
-  CAN: [['Heartbeat Producer Time', '0x1017', ['0x1017', '0x1005', '0x6040']], ['Battery State of Charge', '0x6060', ['0x6060', '0x6064', '0x1018']], ['Fahrgeschwindigkeit', '0x6064', ['0x6064', '0x6060', '0x1000']], ['Motortemperatur', '0x6070', ['0x6070', '0x6080', '0x1400']], ['Battery State of Health', '0x6080', ['0x6080', '0x6060', '0x1800']], ['Unterstützungsstufe (Assist Level)', '0x6090', ['0x6090', '0x6040', '0x2000']], ['Fehlercode des Controllers', '0x60A0', ['0x60A0', '0x1001', '0x6064']], ['Identity Object (Hersteller-ID)', '0x1018', ['0x1018', '0x1000', '0x1017']], ['Controlword (Motor ein/aus)', '0x6040', ['0x6040', '0x6041', '0x6090']], ['Device Type', '0x1000', ['0x1000', '0x1001', '0x1018']]],
+  CAN: [[_t('Heartbeat Producer Time'), '0x1017', ['0x1017', '0x1005', '0x6040']], [_t('Battery State of Charge'), '0x6060', ['0x6060', '0x6064', '0x1018']], [_t('Fahrgeschwindigkeit'), '0x6064', ['0x6064', '0x6060', '0x1000']], [_t('Motortemperatur'), '0x6070', ['0x6070', '0x6080', '0x1400']], [_t('Battery State of Health'), '0x6080', ['0x6080', '0x6060', '0x1800']], [_t('Unterstützungsstufe (Assist Level)'), '0x6090', ['0x6090', '0x6040', '0x2000']], [_t('Fehlercode des Controllers'), '0x60A0', ['0x60A0', '0x1001', '0x6064']], [_t('Identity Object (Hersteller-ID)'), '0x1018', ['0x1018', '0x1000', '0x1017']], [_t('Controlword (Motor ein/aus)'), '0x6040', ['0x6040', '0x6041', '0x6090']], [_t('Device Type'), '0x1000', ['0x1000', '0x1001', '0x1018']]],
   canopen() {
     const qs = shuffle(this.CAN.slice()).slice(0, 5);
     let idx = 0, correct = 0, msg = '';
@@ -84,27 +84,27 @@ const Mini = {
         if (idx >= qs.length) { fin({ correct, total: qs.length }); return; }
         const [q, ans, opts] = qs[idx];
         const sh = shuffle(opts.slice());
-        o.innerHTML = `<div class="panel mini"><div class="panel-head"><h2>CANopen-Quiz</h2><span class="sub">Frage ${idx + 1}/${qs.length} · ${correct} richtig</span><button class="x-btn" id="cqX">×</button></div><div class="panel-body">
-          <div class="teamcard"><canvas width="96" height="96" id="cqFran"></canvas><div><div class="n">Fran</div><div class="r">${msg || 'Welcher Index im Objektverzeichnis?'}</div></div></div>
+        o.innerHTML = _t`<div class="panel mini"><div class="panel-head"><h2>CANopen-Quiz</h2><span class="sub">Frage ${idx + 1}/${qs.length} · ${correct} richtig</span><button class="x-btn" id="cqX">×</button></div><div class="panel-body">
+          <div class="teamcard"><canvas width="96" height="96" id="cqFran"></canvas><div><div class="n">Fran</div><div class="r">${msg || _t('Welcher Index im Objektverzeichnis?')}</div></div></div>
           <div class="story-card" style="background:#a8e6a0;border-color:#7ac08a"><b>${q}</b>Index?</div>
           <div class="cards">${sh.map((a) => `<button class="pcard" style="width:92px;font-size:13px" data-a="${a}">${a}</button>`).join('')}</div>
-          ${hasInv('canref') ? '<p class="note">Du hast Frans Spickzettel in der Tasche – aber nachschauen wäre Betrug. Fran schaut.</p>' : ''}
+          ${hasInv('canref') ? _t('<p class="note">Du hast Frans Spickzettel in der Tasche – aber nachschauen wäre Betrug. Fran schaut.</p>') : ''}
           </div></div>`;
         o.querySelector('#cqFran').getContext('2d').drawImage(portraitCanvas(personLook('fran'), PEOPLE.fran.bg), 0, 0);
         o.querySelector('#cqX').onclick = () => fin(null);
-        o.querySelectorAll('.pcard[data-a]').forEach((b) => b.onclick = () => { if (b.dataset.a === ans) { correct++; msg = pick(['¡Eso es!', 'Richtig. Weiter.', 'Du hast zugehört.']); Snd.sfx('ok'); } else { msg = `Nein – ${ans}. ${pick(['Merk dir das.', 'Steht auf dem Prüfstand.', 'Nochmal: Objektverzeichnis.'])}`; Snd.sfx('error'); } idx++; render(); });
+        o.querySelectorAll('.pcard[data-a]').forEach((b) => b.onclick = () => { if (b.dataset.a === ans) { correct++; msg = pick([_t('¡Eso es!'), _t('Richtig. Weiter.'), _t('Du hast zugehört.')]); Snd.sfx('ok'); } else { msg = _t`Nein – ${ans}. ${pick([_t('Merk dir das.'), _t('Steht auf dem Prüfstand.'), _t('Nochmal: Objektverzeichnis.')])}`; Snd.sfx('error'); } idx++; render(); });
       };
       render();
     });
   },
 
   /* ---------- ROAM: Risiken einordnen ---------- */
-  RISKS: [['Fran ist im April zwei Wochen in den Ferien – niemand sonst kennt die Indexe', 'M', 'Mitigated: Spickzettel und Pairing mit Estella'], ['Der Akku-Lieferant ändert das CAN-Protokoll', 'O', 'Owned: Danny klärt es mit dem Lieferanten'], ['Fallas-Woche: halb Valencia ist offline', 'A', 'Accepted: ist jedes Jahr so'], ['Login-SDK von Meeseeks kommt erst in Sprint 3', 'R', 'Resolved: Abhängigkeit im Board geklärt'], ['Carlos’ Refactoring dauert länger als ein Sprint', 'M', 'Mitigated: Feature-Flag, alter Parser bleibt parallel'], ['EU-Batterieverordnung ändert das Datenmodell', 'O', 'Owned: Lukas verfolgt die Verordnung'], ['Robin verspricht dem Händler ein Feature, das nicht im Plan ist', 'A', 'Accepted: passiert. Simon fängt es ab.'], ['Prüfstand fällt aus (Guillem hat ihn rückwärts laufen lassen)', 'R', 'Resolved: Fran hat ihn repariert'], ['Zu wenig iOS-Kapazität im Sommer', 'M', 'Mitigated: Pascal bleibt zwei Sprints länger'], ['Apple lehnt die App wegen Bluetooth-Berechtigung ab', 'O', 'Owned: Oscar und Pablo prüfen die Guidelines']],
+  RISKS: [[_t('Fran ist im April zwei Wochen in den Ferien – niemand sonst kennt die Indexe'), 'M', _t('Mitigated: Spickzettel und Pairing mit Estella')], [_t('Der Akku-Lieferant ändert das CAN-Protokoll'), 'O', _t('Owned: Danny klärt es mit dem Lieferanten')], [_t('Fallas-Woche: halb Valencia ist offline'), 'A', _t('Accepted: ist jedes Jahr so')], [_t('Login-SDK von Meeseeks kommt erst in Sprint 3'), 'R', _t('Resolved: Abhängigkeit im Board geklärt')], [_t('Carlos’ Refactoring dauert länger als ein Sprint'), 'M', _t('Mitigated: Feature-Flag, alter Parser bleibt parallel')], [_t('EU-Batterieverordnung ändert das Datenmodell'), 'O', _t('Owned: Lukas verfolgt die Verordnung')], [_t('Robin verspricht dem Händler ein Feature, das nicht im Plan ist'), 'A', _t('Accepted: passiert. Simon fängt es ab.')], [_t('Prüfstand fällt aus (Guillem hat ihn rückwärts laufen lassen)'), 'R', _t('Resolved: Fran hat ihn repariert')], [_t('Zu wenig iOS-Kapazität im Sommer'), 'M', _t('Mitigated: Pascal bleibt zwei Sprints länger')], [_t('Apple lehnt die App wegen Bluetooth-Berechtigung ab'), 'O', _t('Owned: Oscar und Pablo prüfen die Guidelines')]],
   roam(team) {
     const risks = shuffle(this.RISKS.slice()).slice(0, 5);
     let idx = 0, correct = 0, msg = '';
     const o = UI.overlay('', null);
-    const L = { R: 'Resolved', O: 'Owned', A: 'Accepted', M: 'Mitigated' };
+    const L = { R: _t('Resolved'), O: _t('Owned'), A: _t('Accepted'), M: _t('Mitigated') };
     return new Promise((resolve) => {
       let done = false;
       const fin = (v) => { if (done) return; done = true; UI.closeOverlay(); resolve(v); };
@@ -112,13 +112,13 @@ const Mini = {
       const render = () => {
         if (idx >= risks.length) { fin({ correct, total: risks.length }); return; }
         const [r, ans, why] = risks[idx];
-        o.innerHTML = `<div class="panel mini"><div class="panel-head"><h2>ROAM · Risiken</h2><span class="sub">${idx + 1}/${risks.length} · ${correct} richtig</span><button class="x-btn" id="roX">×</button></div><div class="panel-body">
-          <p class="note">${msg || 'Jedes Risiko bekommt eine Kategorie: <b>R</b>esolved (erledigt), <b>O</b>wned (jemand kümmert sich), <b>A</b>ccepted (leben wir mit), <b>M</b>itigated (abgefedert).'}</p>
+        o.innerHTML = _t`<div class="panel mini"><div class="panel-head"><h2>ROAM · Risiken</h2><span class="sub">${idx + 1}/${risks.length} · ${correct} richtig</span><button class="x-btn" id="roX">×</button></div><div class="panel-body">
+          <p class="note">${msg || _t('Jedes Risiko bekommt eine Kategorie: <b>R</b>esolved (erledigt), <b>O</b>wned (jemand kümmert sich), <b>A</b>ccepted (leben wir mit), <b>M</b>itigated (abgefedert).')}</p>
           <div class="story-card" style="background:#ff9fb0;border-color:#e68a9a"><b>Risiko</b>${r}</div>
           <div class="roam-grid">${['R', 'O', 'A', 'M'].map((k) => `<button data-k="${k}">${L[k]}</button>`).join('')}</div>
           </div></div>`;
         o.querySelector('#roX').onclick = () => fin(null);
-        o.querySelectorAll('.roam-grid button').forEach((b) => b.onclick = () => { const ok = b.dataset.k === ans; if (ok) { correct++; Snd.sfx('ok'); } else Snd.sfx('error'); msg = `${ok ? '✓' : '✗'} ${why}`; idx++; render(); });
+        o.querySelectorAll(_t('.roam-grid button')).forEach((b) => b.onclick = () => { const ok = b.dataset.k === ans; if (ok) { correct++; Snd.sfx('ok'); } else Snd.sfx('error'); msg = `${ok ? '✓' : '✗'} ${why}`; idx++; render(); });
       };
       render();
     });
@@ -137,10 +137,10 @@ const Mini = {
       const load = (i) => feats.filter((f) => f.s === i).reduce((a, f) => a + f.p, 0);
       const render = () => {
         const rest = feats.filter((f) => f.s < 0);
-        o.innerHTML = `<div class="panel mini"><div class="panel-head"><h2>Programm-Board</h2><span class="sub">${rest.length} Features offen</span><button class="x-btn" id="bdX">×</button></div><div class="panel-body">
+        o.innerHTML = _t`<div class="panel mini"><div class="panel-head"><h2>Programm-Board</h2><span class="sub">${rest.length} Features offen</span><button class="x-btn" id="bdX">×</button></div><div class="panel-body">
           <p class="note">Tipp ein Feature an, dann einen Sprint. Kapazität pro Sprint: 10 Punkte, Sprint 6 (IP) nur 6. Kein Sprint darf überlastet sein, keiner leer.</p>
-          <div class="cards">${rest.map((f, i) => `<button class="pcard ${sel === feats.indexOf(f) ? 'sel' : ''}" style="width:auto;padding:0 8px;height:auto;min-height:48px;font-size:11px;font-family:var(--f-sign)" data-f="${feats.indexOf(f)}">${f.n}<br><b>${f.p} SP</b></button>`).join('') || '<span class="note">Alles verteilt.</span>'}</div>
-          <div class="cols">${CAP.map((c, i) => { const l = load(i); return `<div class="col ${l > c ? 'over' : l > 0 ? 'ok' : ''}" data-s="${i}"><b>S${i + 1}</b>${l}/${c}${feats.filter((f) => f.s === i).map((f) => `<i class="${f.p >= 8 ? 'big' : ''}" title="${f.n}" data-f="${feats.indexOf(f)}"></i>`).join('')}</div>`; }).join('')}</div>
+          <div class="cards">${rest.map((f, i) => _t`<button class="pcard ${sel === feats.indexOf(f) ? 'sel' : ''}" style="width:auto;padding:0 8px;height:auto;min-height:48px;font-size:11px;font-family:var(--f-sign)" data-f="${feats.indexOf(f)}">${f.n}<br><b>${f.p} SP</b></button>`).join('') || _t('<span class="note">Alles verteilt.</span>')}</div>
+          <div class="cols">${CAP.map((c, i) => { const l = load(i); return _t`<div class="col ${l > c ? 'over' : l > 0 ? 'ok' : ''}" data-s="${i}"><b>S${i + 1}</b>${l}/${c}${feats.filter((f) => f.s === i).map((f) => `<i class="${f.p >= 8 ? 'big' : ''}" title="${f.n}" data-f="${feats.indexOf(f)}"></i>`).join('')}</div>`; }).join('')}</div>
           <button class="btn primary" id="bdOk" ${rest.length ? 'disabled' : ''}>Board abschliessen</button>
           </div></div>`;
         o.querySelector('#bdX').onclick = () => fin(null);
@@ -161,10 +161,10 @@ const Mini = {
       let done = false;
       const fin = (v) => { if (done) return; done = true; UI.closeOverlay(); resolve(v); };
       UI._ovClose = () => { if (!done) { done = true; resolve(null); } };
-      o.innerHTML = `<div class="panel mini"><div class="panel-head"><h2>Abhängigkeit</h2><span class="sub">${TEAMS[dep.from].n} → ${TEAMS[dep.to].n}</span><button class="x-btn" id="dpX">×</button></div><div class="panel-body">
+      o.innerHTML = _t`<div class="panel mini"><div class="panel-head"><h2>Abhängigkeit</h2><span class="sub">${TEAMS[dep.from].n} → ${TEAMS[dep.to].n}</span><button class="x-btn" id="dpX">×</button></div><div class="panel-body">
         <div class="story-card" style="background:#8ec5ff;border-color:#5a9ad8"><b>${dep.t}</b>${dep.d}</div>
-        <p class="note">${TEAMS[dep.to].n} braucht es <b>spätestens in Sprint ${need + 1}</b>. ${TEAMS[dep.from].n} hat in ${busy.map((s) => 'Sprint ' + (s + 1)).join(' und ')} keine Kapazität. Lieferung muss <b>vor</b> dem Bedarf liegen und in einen freien Sprint fallen.</p>
-        <div class="cols">${[0, 1, 2, 3, 4, 5].map((s) => `<button class="col ${busy.includes(s) ? 'over' : ''}" data-s="${s}" style="min-height:50px"><b>S${s + 1}</b>${busy.includes(s) ? 'voll' : s === need ? 'Bedarf' : 'frei'}</button>`).join('')}</div>
+        <p class="note">${TEAMS[dep.to].n} braucht es <b>spätestens in Sprint ${need + 1}</b>. ${TEAMS[dep.from].n} hat in ${busy.map((s) => _t('Sprint ') + (s + 1)).join(_t(' und '))} keine Kapazität. Lieferung muss <b>vor</b> dem Bedarf liegen und in einen freien Sprint fallen.</p>
+        <div class="cols">${[0, 1, 2, 3, 4, 5].map((s) => _t`<button class="col ${busy.includes(s) ? 'over' : ''}" data-s="${s}" style="min-height:50px"><b>S${s + 1}</b>${busy.includes(s) ? 'voll' : s === need ? _t('Bedarf') : 'frei'}</button>`).join('')}</div>
         </div></div>`;
       o.querySelector('#dpX').onclick = () => fin(null);
       o.querySelectorAll('.col').forEach((b) => b.onclick = () => { const s = +b.dataset.s; const ok = !busy.includes(s) && s < need; Snd.sfx(ok ? 'ok' : 'error'); fin({ ok, sprint: s }); });
@@ -182,10 +182,10 @@ const Mini = {
       const render = () => {
         const votes = mine == null ? null : members.map((id) => clamp(Math.round(plan / 20 + rnd(-0.8, 0.8) + (G.S.aff[id] - 50) / 50), 1, 5));
         const avg = votes ? (votes.reduce((a, b) => a + b, mine) / (votes.length + 1)) : 0;
-        o.innerHTML = `<div class="panel mini"><div class="panel-head"><h2>Confidence Vote</h2><span class="sub">${TEAMS[myTeam()].n} · Plan ${Math.round(plan)} %</span></div><div class="panel-body">
+        o.innerHTML = _t`<div class="panel mini"><div class="panel-head"><h2>Confidence Vote</h2><span class="sub">${TEAMS[myTeam()].n} · Plan ${Math.round(plan)} %</span></div><div class="panel-body">
           <p class="note">Auf drei zeigt jeder mit den Fingern, wie sicher er sich fühlt, dass der Plan hält: 1 = „vergiss es“, 5 = „läuft“. Zuerst du.</p>
           <div class="cards">${[1, 2, 3, 4, 5].map((v) => `<button class="pcard ${mine === v ? 'sel' : ''}" data-v="${v}" ${mine != null ? 'disabled' : ''}>${'✋'.slice(0, 0)}${v}</button>`).join('')}</div>
-          ${votes ? `<div class="cards">${members.map((id, i) => `<div><canvas width="96" height="96" style="width:40px;height:40px;image-rendering:pixelated;border-radius:6px;display:block;margin:0 auto 4px" data-p="${id}"></canvas><div class="pcard">${votes[i]}</div></div>`).join('')}</div><p class="note" style="text-align:center;font-size:16px"><b>Durchschnitt: ${avg.toFixed(1)}</b> ${avg >= 4 ? '🎉' : avg >= 3 ? '👍' : '😬'}</p><button class="btn primary" id="cvOk">Weiter</button>` : ''}
+          ${votes ? _t`<div class="cards">${members.map((id, i) => `<div><canvas width="96" height="96" style="width:40px;height:40px;image-rendering:pixelated;border-radius:6px;display:block;margin:0 auto 4px" data-p="${id}"></canvas><div class="pcard">${votes[i]}</div></div>`).join('')}</div><p class="note" style="text-align:center;font-size:16px"><b>Durchschnitt: ${avg.toFixed(1)}</b> ${avg >= 4 ? '🎉' : avg >= 3 ? '👍' : '😬'}</p><button class="btn primary" id="cvOk">Weiter</button>` : ''}
           </div></div>`;
         o.querySelectorAll('canvas[data-p]').forEach((c) => c.getContext('2d').drawImage(portraitCanvas(personLook(c.dataset.p), PEOPLE[c.dataset.p].bg), 0, 0));
         o.querySelectorAll('.pcard[data-v]').forEach((b) => b.onclick = () => { mine = +b.dataset.v; Snd.sfx('card'); render(); });

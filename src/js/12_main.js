@@ -1,6 +1,6 @@
 /* ============ Start & Hauptschleife ============ */
 G.mode = 'title';
-function isTouch() { return window.matchMedia && (matchMedia('(pointer: coarse)').matches || 'ontouchstart' in window); }
+function isTouch() { return window.matchMedia && (matchMedia(_t('(pointer: coarse)')).matches || 'ontouchstart' in window); }
 
 function boot() {
   View.cv = document.getElementById('screen');
@@ -13,6 +13,7 @@ function boot() {
   Input.touch = isTouch();
   document.body.classList.toggle('touch', Input.touch);
   wireInput();
+  i18nDom();
   showTitle();
   let last = performance.now(), hudT = 0;
   const loop = (now) => {
@@ -32,15 +33,23 @@ function boot() {
   document.addEventListener('visibilitychange', () => { if (document.hidden && G.mode === 'play') saveGame(true); });
 }
 
+/* Feste Texte aus index.html in die gewählte Sprache bringen */
+function i18nDom() {
+  document.documentElement.lang = LANG;
+  document.querySelectorAll('[aria-label]').forEach((el) => { el.setAttribute('aria-label', _t(el.getAttribute('aria-label'))); });
+  const gl = document.getElementById('boardGl'); if (gl) gl.textContent = _t('ZIEL');
+  const hd = document.getElementById('hDay'); if (hd) hd.textContent = _t('Montag');
+  const pl = document.getElementById('hPlanWrap'); if (pl) pl.querySelector('small').textContent = _t('PI-Plan');
+}
 function changelogHtml() {
-  return CHANGELOG.map((e, i) => `<div class="cl-entry${i === 0 ? ' cur' : ''}"><div class="cl-head"><b>Version ${e.v}</b><span>${e.date}${i === 0 ? ' · aktuell' : ''}</span></div><ul>${e.items.map((x) => `<li>${x}</li>`).join('')}</ul></div>`).join('');
+  return CHANGELOG.map((e, i) => _t`<div class="cl-entry${i === 0 ? ' cur' : ''}"><div class="cl-head"><b>Version ${e.v}</b><span>${e.date}${i === 0 ? _t(' · aktuell') : ''}</span></div><ul>${e.items.map((x) => `<li>${x}</li>`).join('')}</ul></div>`).join('');
 }
 const SKYLINE_SVG = `<svg viewBox="0 0 1200 70" preserveAspectRatio="none" aria-hidden="true"><g fill="#0e2a44"><rect x="0" y="40" width="1200" height="30"/><rect x="40" y="22" width="30" height="20"/><rect x="90" y="30" width="60" height="12"/><rect x="170" y="8" width="14" height="34"/><rect x="167" y="4" width="20" height="5"/><rect x="200" y="26" width="50" height="16"/><path d="M280 42 Q330 -10 380 42 Z"/><path d="M300 42 Q330 14 360 42 Z" fill="#1f4a6a"/><rect x="400" y="18" width="22" height="24"/><rect x="430" y="28" width="40" height="14"/><rect x="500" y="12" width="60" height="30"/><rect x="505" y="6" width="50" height="7"/><rect x="590" y="24" width="30" height="18"/><rect x="640" y="30" width="80" height="12"/><path d="M740 42 Q770 0 800 42 Z"/><rect x="820" y="20" width="18" height="22"/><rect x="850" y="30" width="46" height="12"/><rect x="920" y="2" width="16" height="40"/><rect x="950" y="26" width="60" height="16"/><rect x="1030" y="14" width="30" height="28"/><rect x="1080" y="30" width="80" height="12"/></g><g fill="#0e2a44"><path d="M60 42 l-2 -14 l-6 -2 l8 -2 l-2 -8 l6 6 l6 -6 l-2 8 l8 2 l-6 2 l-2 14 Z"/><path d="M1130 42 l-2 -14 l-6 -2 l8 -2 l-2 -8 l6 6 l6 -6 l-2 8 l8 2 l-6 2 l-2 14 Z"/></g></svg>`;
 function showTitle() {
   const t = document.getElementById('title');
   const save = loadSave();
   t.hidden = false;
-  t.innerHTML = `<div class="sunball" aria-hidden="true"></div><div class="skyline" aria-hidden="true">${SKYLINE_SVG}</div><div class="waves" aria-hidden="true"></div>
+  t.innerHTML = _t`<div class="sunball" aria-hidden="true"></div><div class="skyline" aria-hidden="true">${SKYLINE_SVG}</div><div class="waves" aria-hidden="true"></div>
   <div class="title-card"><div class="boarding">
     <div class="bp-head"><span>Boarding Pass · Economy</span><b>PI 2026-03</b></div>
     <div class="bp-body">
@@ -49,19 +58,21 @@ function showTitle() {
       <div class="bp-grid"><div><small>Datum</small><b>16.03.2026</b></div><div><small>Gate</small><b>B42</b></div><div><small>Sitz</small><b>14A</b></div><div><small>Ziel</small><b>Colba, 1. Stock</b></div></div>
       <p class="title-sub">Fünf Tage, drei Teams, ein Plan. Flieg mit den POs nach Valencia, finde den Koffer, das Hotel Kramer und die richtige Klingel am Colba-Hochhaus. Plane mit Indurain, Meeseeks und Rocket das nächste halbe Jahr – und erleb dazwischen Paella, Mascletà, Kartbahn, Segeltörn und E-Bike-Ausfahrten.</p>
       <div class="title-btns">
-        ${save && !save.finished ? `<button class="btn primary" id="tCont">Weiterspielen · ${save.name}, ${dateStr(save.time)} ${clockStr(save.time)}</button>` : ''}
-        ${save && save.finished ? `<p class="title-sub">Letztes Planning abgeschlossen: ${save.name}, ${Object.keys(save.ach || {}).length} Erlebnisse, Plan ${Math.round(save.plan[save.team] || 0)} %.</p>` : ''}
-        <button class="btn ${save && !save.finished ? '' : 'primary'}" id="tNew">${save && !save.finished ? 'Neues Spiel' : 'Boarding'}</button>
+        ${save && !save.finished ? _t`<button class="btn primary" id="tCont">Weiterspielen · ${save.name}, ${dateStr(save.time)} ${clockStr(save.time)}</button>` : ''}
+        ${save && save.finished ? _t`<p class="title-sub">Letztes Planning abgeschlossen: ${save.name}, ${Object.keys(save.ach || {}).length} Erlebnisse, Plan ${Math.round(save.plan[save.team] || 0)} %.</p>` : ''}
+        <button class="btn ${save && !save.finished ? '' : 'primary'}" id="tNew">${save && !save.finished ? _t('Neues Spiel') : _t('Boarding')}</button>
       </div>
     </div>
     <div class="bp-tear"></div>
     <div class="keys">Tastatur: <kbd>WASD</kbd>/<kbd>Pfeile</kbd> gehen · <kbd>Shift</kbd> rennen · <kbd>E</kbd> Aktion · <kbd>M</kbd> Handy · <kbd>P</kbd> Foto. Am Handy: links ziehen zum Gehen, <kbd>A</kbd> für Aktionen. Läuft komplett im Browser, Spielstand bleibt auf diesem Gerät.</div>
     <div class="barcode" aria-hidden="true"></div>
-    <div class="version"><span>Version ${APP_VERSION} · ${APP_VERSION_DATE}${BUILD_VARIANT ? ` · Vorschau ${BUILD_VARIANT}` : ''}</span><button class="link" id="tLog" aria-expanded="false">Was ist neu?</button></div>
+    <div class="version"><span>Version ${APP_VERSION} · ${APP_VERSION_DATE}${BUILD_VARIANT ? _t` · Vorschau ${BUILD_VARIANT}` : ''}</span><button class="link" id="tLog" aria-expanded="false">Was ist neu?</button></div>
     <div class="changelog" id="tChangelog" hidden>${changelogHtml()}</div>
   </div></div>`;
+  t.querySelector('.barcode').insertAdjacentHTML('beforebegin', `<div class="langs" role="group" aria-label="${_t('Sprache')}">${Object.entries(LANGS).map(([k, n]) => `<button class="lang${k === LANG ? ' on' : ''}" data-lang="${k}"${k === LANG ? ' aria-current="true"' : ''}>${n}</button>`).join('')}</div>`);
+  t.querySelectorAll('.lang').forEach((b) => { b.onclick = () => setLang(b.dataset.lang); });
   const logBtn = t.querySelector('#tLog'), logBox = t.querySelector('#tChangelog');
-  logBtn.onclick = () => { const open = logBox.hidden; logBox.hidden = !open; logBtn.textContent = open ? 'Historie schliessen' : 'Was ist neu?'; logBtn.setAttribute('aria-expanded', String(open)); if (open) logBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); };
+  logBtn.onclick = () => { const open = logBox.hidden; logBox.hidden = !open; logBtn.textContent = open ? _t('Historie schliessen') : _t('Was ist neu?'); logBtn.setAttribute('aria-expanded', String(open)); if (open) logBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); };
   const cont = t.querySelector('#tCont');
   if (cont) cont.onclick = () => { Snd.init(); startGame(save); };
   t.querySelector('#tNew').onclick = async () => {
@@ -98,12 +109,12 @@ async function startGame(state, fresh) {
   UI.hud();
   if (fresh) {
     G.busy++;
-    await Scene.play('plane', { ms: 3200, text: 'Anflug auf Valencia …' });
+    await Scene.play('plane', { ms: 3200, text: _t('Anflug auf Valencia …') });
     await UI.fadeIn();
-    await UI.card(`${dateLong()} · ${clockStr()} Uhr · Aeropuerto de València, Ankunft`, 1800);
+    await UI.card(_t`${dateLong()} · ${clockStr()} Uhr · Aeropuerto de València, Ankunft`, 1800);
     await Story.intro();
-    if (Input.touch) await Story.say(null, 'Zieh mit dem Daumen links auf dem Bildschirm, um zu gehen. Weit ziehen heisst rennen. Mit A sprichst du mit Leuten und benutzt Dinge. Oben rechts ist dein Handy.');
-    else await Story.say(null, 'WASD oder Pfeiltasten zum Gehen, Shift zum Rennen, E für Aktionen, M für dein Handy, P für ein Foto.');
+    if (Input.touch) await Story.say(null, _t('Zieh mit dem Daumen links auf dem Bildschirm, um zu gehen. Weit ziehen heisst rennen. Mit A sprichst du mit Leuten und benutzt Dinge. Oben rechts ist dein Handy.'));
+    else await Story.say(null, _t('WASD oder Pfeiltasten zum Gehen, Shift zum Rennen, E für Aktionen, M für dein Handy, P für ein Foto.'));
     G.busy--;
     saveGame(true);
   }
@@ -171,7 +182,7 @@ async function checkUpdate() {
     if (!r.ok) return;
     const j = await r.json();
     if (!j.v || j.v === APP_VERSION) return;
-    const el = UI.toast(`Neue Version ${j.v} verfügbar – hier tippen zum Neuladen.`, 'ach');
+    const el = UI.toast(_t`Neue Version ${j.v} verfügbar – hier tippen zum Neuladen.`, 'ach');
     if (el) { el.addEventListener('pointerdown', () => location.reload(), { once: true }); setTimeout(() => el.classList.remove('out'), 400); }
   } catch (e) { /* offline */ }
 }

@@ -21,16 +21,16 @@ function sceneCity(c, y0, t, off = 0) {
 }
 /* Fassaden der Orte für die Türszenen */
 const FACADES = {
-  hotel_lobby: { name: 'HOTEL KRAMER', wall: '#efe3cc', door: 'glass', sign: ['#2a4a3a', '#f4e8c0'], inner: '#ffe6a8', stars: 4, flags: true, plants: true },
-  bar: { name: 'BAR PEPITA', wall: '#f4d8a0', door: 'wood', doorCol: '#5a3a24', sign: ['#2a1a10', '#ffb53d'], inner: '#ffc870', azulejos: true, neon: 'orange' },
-  jamon: { name: 'JAMONERÍA RAMÓN', wall: '#e8c89a', door: 'wood', doorCol: '#6a3a1a', sign: ['#5a1a10', '#f8e8c8'], inner: '#ffb860', jamones: true },
-  bodega: { name: 'BODEGA LA TINAJA', wall: '#c8b898', door: 'wood', doorCol: '#4a2a14', sign: ['#3a1a10', '#f8e8c8'], inner: '#ffb860', barrels: true, lantern: true },
-  disco: { name: 'MARINA BEACH CLUB', arch: false, wall: '#1a1a2a', door: 'metal', sign: ['#101028', '#7ad0ff'], inner: 'strobe', rope: true, bass: true, bouncer: true },
-  museum: { name: 'MUSEU DE BELLES ARTS', wall: '#f0e8d8', door: 'arch', sign: ['#2a2a3a', '#e8d8a0'], inner: '#fff4d0', columns: true },
-  mercado: { name: 'MERCADO CENTRAL', wall: '#b8603a', door: 'arch', sign: ['#2a1a10', '#f8e8c8'], inner: '#ffe8b0', azulejos: true, dome: true },
-  colba_entry: { name: 'C.B. SOLUCIONES', wall: '#c8ccd0', door: 'glass', sign: ['#1e2a3a', '#7ad0d8'], inner: '#e8f4f8', tower: true },
+  hotel_lobby: { name: _t('HOTEL KRAMER'), wall: '#efe3cc', door: 'glass', sign: ['#2a4a3a', '#f4e8c0'], inner: '#ffe6a8', stars: 4, flags: true, plants: true },
+  bar: { name: _t('BAR PEPITA'), wall: '#f4d8a0', door: 'wood', doorCol: '#5a3a24', sign: ['#2a1a10', '#ffb53d'], inner: '#ffc870', azulejos: true, neon: 'orange' },
+  jamon: { name: _t('JAMONERÍA RAMÓN'), wall: '#e8c89a', door: 'wood', doorCol: '#6a3a1a', sign: ['#5a1a10', '#f8e8c8'], inner: '#ffb860', jamones: true },
+  bodega: { name: _t('BODEGA LA TINAJA'), wall: '#c8b898', door: 'wood', doorCol: '#4a2a14', sign: ['#3a1a10', '#f8e8c8'], inner: '#ffb860', barrels: true, lantern: true },
+  disco: { name: _t('MARINA BEACH CLUB'), arch: false, wall: '#1a1a2a', door: 'metal', sign: ['#101028', '#7ad0ff'], inner: 'strobe', rope: true, bass: true, bouncer: true },
+  museum: { name: _t('MUSEU DE BELLES ARTS'), wall: '#f0e8d8', door: 'arch', sign: ['#2a2a3a', '#e8d8a0'], inner: '#fff4d0', columns: true },
+  mercado: { name: _t('MERCADO CENTRAL'), wall: '#b8603a', door: 'arch', sign: ['#2a1a10', '#f8e8c8'], inner: '#ffe8b0', azulejos: true, dome: true },
+  colba_entry: { name: _t('C.B. SOLUCIONES'), wall: '#c8ccd0', door: 'glass', sign: ['#1e2a3a', '#7ad0d8'], inner: '#e8f4f8', tower: true },
   airport: { name: 'AEROPUERTO', wall: '#d8dce0', door: 'glass', sign: ['#1a3a7a', '#ffffff'], inner: '#eef4fa', station: true },
-  kart: { name: 'KART VALENCIA', wall: '#3a3c42', door: 'metal', sign: ['#1a1a1e', '#ffffff'], inner: '#ffd27a', checker: true },
+  kart: { name: _t('KART VALENCIA'), wall: '#3a3c42', door: 'metal', sign: ['#1a1a1e', '#ffffff'], inner: '#ffd27a', checker: true },
 };
 function facadeFor(id) { return FACADES[id] || { name: '', wall: '#e8c9a0', door: 'wood', sign: ['#3a2a20', '#f4e8c0'], inner: '#f6d890' }; }
 function transitionFor(from, to, spawn, opts = {}) {
@@ -137,7 +137,7 @@ const SCENES = {
     const sheet = getSheet(G.S.look);
     const x = 120 - SPR_W / 2 + p * 60, y = 100 - Math.sin(p * 3.14) * 50 + p * 40;
     c.save(); c.translate(x + SPR_W / 2, y); c.rotate(p * 9); sceneSprite(c, sheet, 'stand', 0, -SPR_W / 2, -SPR_H / 2); c.restore();
-    pxText(c, '¡FUERA!', 60, 20, '#ffffff', 2);
+    pxText(c, _t('¡FUERA!'), 60, 20, '#ffffff', 2);
   },
   /* Lift: Kabine, Etagenanzeige */
   lift(c, t, p, st) {
@@ -161,7 +161,7 @@ const SCENES = {
     const k = st.up ? p * 9 : (1 - p) * 9;
     const x = 120 - SPR_W / 2, y = 128 - k * 10;
     sceneSprite(c, sheet, Math.floor(t * 8) % 2 ? 'walkA' : 'walkB', st.up ? 3 : 0, x, y - SPR_H + 8, 1);
-    pxText(c, st.up ? '1. STOCK' : 'ERDGESCHOSS', 120 - pxTextW(st.up ? '1. STOCK' : 'ERDGESCHOSS') / 2, 8, '#2a2a30');
+    pxText(c, st.up ? _t('1. STOCK') : 'ERDGESCHOSS', 120 - pxTextW(st.up ? _t('1. STOCK') : 'ERDGESCHOSS') / 2, 8, '#2a2a30');
   },
   roomdoor(c, t, p, st) {
     R(c, 0, 0, SCENE_W, SCENE_H, '#efe3cc'); R(c, 0, 110, SCENE_W, 34, '#8e2f34'); R(c, 0, 110, SCENE_W, 2, '#b85a5a');
@@ -227,7 +227,7 @@ const SCENES = {
     const n = Math.floor(t * 20);
     for (let k = 0; k < 8; k++) { if ((n + k) % 3 === 0) { const x = 40 + hash(k, n) * 160, y = 60 + hash(n, k) * 30; E(c, x, y, 4 + hash(k, 5) * 4, 4, k % 2 ? '#ffffff' : '#ffe08a'); } }
     for (let k = 0; k < 20; k++) E(c, 30 + hash(k, 9) * 180, 50 + ((t * 20 + k * 7) % 40) - 10, 10 + k % 5, 6, `rgba(220,220,225,${0.3 + Math.sin(t * 5 + k) * 0.1})`);
-    if (p > 0.85) pxText(c, '¡VISCA VALÈNCIA!', 120 - pxTextW('¡VISCA VALÈNCIA!', 2) / 2, 20, '#c8352d', 2);
+    if (p > 0.85) pxText(c, _t('¡VISCA VALÈNCIA!'), 120 - pxTextW(_t('¡VISCA VALÈNCIA!'), 2) / 2, 20, '#c8352d', 2);
   },
   /* Cremà: Die Falla brennt */
   crema(c, t, p, st) {
@@ -251,7 +251,7 @@ const SCENES = {
     E(c, px, py, 22, 5, '#f4f4f4'); R(c, px - 22, py - 2, 10, 4, '#f4f4f4'); R(c, px - 24, py - 10, 6, 10, '#c8352d'); R(c, px - 8, py - 4, 16, 3, '#c8352d');
     for (let k = -14; k < 14; k += 5) P(c, px + k, py - 2, '#ffe9b0');
     for (let k = 0; k < 20; k++) P(c, px - 30 - k * 3, py + 2 + k, `rgba(255,255,255,${0.6 - k * 0.03})`);
-    pxText(c, 'VLC → ZRH', 160, 128, '#ffffff');
+    pxText(c, _t('VLC → ZRH'), 160, 128, '#ffffff');
   },
   /* Flugzeugkabine: Pascal/Chris allein */
   cabin(c, t, p, st) {

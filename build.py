@@ -33,7 +33,12 @@ version_js = (f"const APP_VERSION = {json.dumps(changelog[0]['v'])};\n"
               f"const CHANGELOG = {json.dumps(changelog, ensure_ascii=False)};\n")
 css = (SRC / "style.css").read_text(encoding="utf-8")
 js_files = sorted((SRC / "js").glob("*.js"))
-js = "/* ---- Version (aus CHANGELOG.md) ---- */\n" + version_js + "\n".join(f"/* ---- {f.name} ---- */\n" + f.read_text(encoding="utf-8") for f in js_files)
+modules = [(f.name, f.read_text(encoding="utf-8")) for f in js_files]
+# Übersetzungen aus i18n/*.json direkt nach 00_i18n.js einbetten (deutscher Text = Schlüssel)
+lang_js = "".join(f"I18N.{lp.stem} = {json.dumps(json.loads(lp.read_text(encoding='utf-8')), ensure_ascii=False)};\n" for lp in sorted((ROOT / "i18n").glob("*.json")))
+idx = next(i for i, (n, _) in enumerate(modules) if n == "00_i18n.js")
+modules.insert(idx + 1, ("00_lang.js (aus i18n/)", lang_js))
+js = "/* ---- Version (aus CHANGELOG.md) ---- */\n" + version_js + "\n".join(f"/* ---- {n} ---- */\n" + t for n, t in modules)
 tpl = (SRC / "index.html").read_text(encoding="utf-8")
 body = tpl.replace("/*CSS*/", css).replace("/*JS*/", js)
 

@@ -11,14 +11,16 @@ python3 tests/smoke_test.py # Playwright-Durchlauf der ganzen Woche (pip install
 ```
 
 `build.py` hängt `src/style.css` und alle `src/js/*.js` **in alphabetischer Reihenfolge** in `src/index.html` ein und bettet
-`APP_VERSION`, `APP_VERSION_DATE`, `BUILD_VARIANT` und `CHANGELOG` aus `CHANGELOG.md` ein. **Bei jeder Änderung einen neuen Eintrag
-`## x.y.z – TT.MM.JJJJ` zuoberst anlegen.** Top-Level-Code darf nur auf Dinge aus Dateien mit kleinerer Nummer (bzw. früherem Namen)
+`APP_VERSION`, `APP_VERSION_DATE`, `BUILD_VARIANT` und `CHANGELOG` aus `CHANGELOG.md` ein (der Changelog wird im Spiel angezeigt und ist deshalb
+**auf Englisch**). **Bei jeder Änderung einen neuen Eintrag `## x.y.z – TT.MM.JJJJ` zuoberst anlegen.** Ausserdem bettet `build.py` die
+Übersetzungen aus `i18n/*.json` direkt nach `00_i18n.js` ein. Top-Level-Code darf nur auf Dinge aus Dateien mit kleinerer Nummer (bzw. früherem Namen)
 zugreifen – sonst TDZ-Fehler bei `const`. Darum heisst die Ereignis-Datei `09_zevents.js` (nach `09_story.js`).
 
 ## Aufbau (`src/js/`)
 
 | Datei | Inhalt |
 |---|---|
+| `00_i18n.js` | Sprachen `LANGS` (en Standard, de, es), `LANG` aus `localStorage`, Übersetzungsfunktion `_t`, `setLang` (lädt neu), `numSep` |
 | `00_util.js` | Hilfsfunktionen, Pixel-Zeichnen (`R`, `P`, `E`, `line`, `ring`), Pixelschrift `pxText`, `TS = 24` |
 | `01_audio.js` | `Snd`: synthetische Soundeffekte und Musik-Loops (`city`, `office`, `bar`, `disco`, `beach`, `lobby`, `market`, `museum`) |
 | `02_look.js` | Merkmale `LOOK_OPTS` (28 Merkmale, inkl. `fem`), `randomLook`, Porträt 96×96 (`drawPortrait`, `portraitCanvas`) |
@@ -38,6 +40,18 @@ zugreifen – sonst TDZ-Fehler bei `const`. Darum heisst die Ereignis-Datei `09_
 | `11_scenes.js` | `Scene.play(kind, opts)`: 240×144-Szenen (`plane`, `taxi`, `door`, `lift`, `stairs`, `roomdoor`, `sleep`, `shower`, `ride`, `boat`, `mascleta`, `crema`, `flight`), Fassaden `FACADES`, `transitionFor` |
 | `12_main.js` | Titel (Bordkarte), Start, Eingabe (Tastatur + Touch-Joystick), Hauptschleife |
 
+## Sprachen (i18n)
+
+- **Alle sichtbaren Texte im Code sind deutsch und mit `_t('…')` bzw. `` _t`…` `` umhüllt.** Der deutsche Text ist der Schlüssel; die
+  Übersetzungen stehen in `i18n/en.json` und `i18n/es.json`. In Template-Literalen werden `${…}` zu Platzhaltern `{0}`, `{1}`, …
+  (Reihenfolge darf in der Übersetzung wechseln). Fehlt ein Schlüssel, erscheint der deutsche Text.
+- Neue Texte: deutsch schreiben, mit `_t` umhüllen (oder `python3 tools/i18n_extract.py wrap` laufen lassen), dann mit
+  `python3 tools/i18n_extract.py` die fehlenden Schlüssel anzeigen und in beiden JSON-Dateien ergänzen. Der Smoke-Test meldet zur Laufzeit
+  fehlende Übersetzungen (`I18N_MISSING`), läuft mit `GAME_LANG=en|de|es`.
+- `_t` wird beim Laden ausgewertet (z. B. in `LOOK_OPTS`, `ITEMS`, `ACH`), darum lädt ein Sprachwechsel die Seite neu.
+- Pixelschrift `pxText` kennt A–Z, Ziffern, ÄÖÜ, ÁÉÍÓÚÀÈÑ, ¿¡ und einige Satzzeichen; Texte für Schilder in Grossbuchstaben halten.
+- Spieldaten in Dateien: `tests/smoke_test.py` prüft nur Flags und IDs, keine Texte.
+
 ## Wichtige Konventionen
 
 - Kachelgrösse `TS = 24`, Sprite 28×40, Porträt 96×96. Spielpixel werden auf ganze Gerätepixel vergrössert (`resizeView`), Ziel ~13 Kacheln Breite.
@@ -50,4 +64,4 @@ zugreifen – sonst TDZ-Fehler bei `const`. Darum heisst die Ereignis-Datei `09_
 - Wo wer ist: `Story.schedule(id)` → Ortskürzel, `Story.LOC` → Text/Karte/Koordinaten, `Story.populate(m)` platziert Leute beim Betreten.
 - Datum: Tag 0 ist Montag, 16. März 2026 (`START_DATE`, `DAYS`). Werktage `isWorkday()` sind Di–Fr (Tag 1–4), Samstag Heimflug (`Story.goHome`).
 - Spielstand: `localStorage` unter `pi-valencia-v1` (Schnappschüsse unter `…-snaps`). Bei Strukturänderungen `v` in `newState` und `SAVE_KEY` erhöhen.
-- Texte auf Deutsch mit Schweizer Färbung (ss statt ß). Fakten zu Sehenswürdigkeiten sind recherchiert – bei neuen Fakten prüfen.
+- Deutsche Quelltexte mit Schweizer Färbung (ss statt ß); Englisch ist die Standardsprache im Spiel. Fakten zu Sehenswürdigkeiten sind recherchiert – bei neuen Fakten prüfen.
