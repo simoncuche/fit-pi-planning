@@ -184,7 +184,7 @@ MAP_BUILDERS.colba = () => {
   m.fill(56, 18, 2, 4, T.BALCONY); m.set(57, 22, T.TILE, 1);
   m.decal((c) => { R(c, 56 * TS, 18 * TS, 2 * TS, 4 * TS, '#c8b8a0'); for (let k = 0; k < 2 * TS; k += 4) R(c, 56 * TS + k, 18 * TS, 2, 6, '#5a5048'); R(c, 56 * TS, 18 * TS + 6, 2 * TS, 1, '#5a5048'); });
   m.add(objAshtray(56, 19)); m.trig(56, 19, 1, 1, { label: _t('Balkon: Eine rauchen'), act: () => Story.balcony() });
-  m.add(objPlanter(57, 21, '#e8402e'));
+  m.add(objPlanter(56, 21, '#e8402e'));
   /* E-Bike-Raum (direkt unter dem Aufenthaltsraum, durch dessen Tür erreichbar): Diagnose-PCs am Kabel, Prüfstand, Test-Bikes */
   roomBox(46, 17, 10, 10, 2, T.TILE, 0);
   for (const yy of [17, 18, 19]) { m.set(52, yy, T.TILE, 1); m.set(53, yy, T.TILE, 1); }
@@ -195,7 +195,7 @@ MAP_BUILDERS.colba = () => {
     R(c, 46 * TS, 23 * TS, TS, 2 * TS, '#e4e8ec'); R(c, 46 * TS + 2, 23 * TS + 2, TS - 4, 2 * TS - 4, '#8a9098');
   });
   m.add(objBikeRig(47, 20, '#e2554a')); m.trig(47, 20, 3, 1, { label: _t('Diagnose-PC · Bike 1'), act: () => Story.bikeComputer(0) });
-  m.add(objBikeRig(51, 20, '#2fa0d8')); m.trig(51, 20, 3, 1, { label: _t('Diagnose-PC · Bike 2'), act: () => Story.bikeComputer(1) });
+  m.add(objBikeRig(52, 21, '#2fa0d8')); m.trig(52, 21, 3, 1, { label: _t('Diagnose-PC · Bike 2'), act: () => Story.bikeComputer(1) });
   m.add(objBikeStand(49, 23, 3)); m.trig(49, 23, 2, 1, { label: _t('Test-E-Bikes'), act: () => Story.officeBikes() });
   m.add(objTestBench(53, 23)); m.trig(53, 23, 2, 1, { label: _t('CANopen-Prüfstand'), act: () => Story.testBench() });
   m.add(objEbike(48, 25, '#f0a23a')); m.add(objEbike(54, 25, '#2a9aa0', true));

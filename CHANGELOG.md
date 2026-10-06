@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.6.2 – 06.10.2026
+- The lounge is reachable again: the second diagnostics rig in the bike lab no longer blocks the passage between the lab door and the lounge door, and the planter no longer blocks the way onto the balcony.
+
 ## 2.6.1 – 06.10.2026
 - Signs in the city are twice as big where they fit on the building, signposts are bigger too, and the phone map is larger with outlined, staggered labels and opens near the hotel.
 
