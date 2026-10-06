@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.8.3 – 06.10.2026
+- Update check: the "new version available" hint now also appears every five minutes and when you return to the game, and tapping it reloads with the version in the address so no browser or CDN cache can serve the old page.
+
 ## 2.8.2 – 06.10.2026
 - Lounge: the big screen is reachable even when the whole company is in the room. Nobody stands in front of it or in the walkways any more (standing guests keep to the fridge, sofa and left wall), and standing people in the lounge and at Bar Pepita no longer block you – you can squeeze past them.
 

@@ -192,8 +192,12 @@ async function checkUpdate() {
     if (!r.ok) return;
     const j = await r.json();
     if (!j.v || j.v === APP_VERSION) return;
+    if (checkUpdate.seen === j.v) return; checkUpdate.seen = j.v;
     const el = UI.toast(_t`Neue Version ${j.v} verfügbar – hier tippen zum Neuladen.`, 'ach');
-    if (el) { el.addEventListener('pointerdown', () => location.reload(), { once: true }); setTimeout(() => el.classList.remove('out'), 400); }
+    /* Neu laden mit Versionsnummer in der URL, damit weder Browser- noch CDN-Cache die alte index.html liefern */
+    if (el) { el.addEventListener('pointerdown', () => { location.href = location.pathname + '?v=' + encodeURIComponent(j.v); }, { once: true }); setTimeout(() => el.classList.remove('out'), 400); }
   } catch (e) { /* offline */ }
 }
 window.addEventListener('load', () => setTimeout(checkUpdate, 2500));
+setInterval(checkUpdate, 5 * 60000);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) setTimeout(checkUpdate, 800); });
