@@ -94,7 +94,7 @@ const Story = {
       case 'hotel': return _t('Finde das Hotel Kramer – Gasse westlich der Plaza del Ayuntamiento');
       case 'checkin': return _t('Check bei Marta an der Rezeption ein');
       case 'zimmer': return _t('Lift in den 4. Stock: Zimmer 412 beziehen, Koffer auspacken');
-      case 'bar': return h < 19 ? _t('Freier Nachmittag · 19:00 Treffpunkt Bar Pepita (Plaza de la Virgen)') : _t('Bar Pepita, Plaza de la Virgen: alle treffen');
+      case 'bar': return h < 17 ? _t('Freier Nachmittag · 17:00 Treffpunkt Bar Pepita (Plaza de la Virgen)') : _t('Bar Pepita, Plaza de la Virgen: alle treffen');
       default: {
         if (d === 0) return _t('Montagabend: Agua de Valencia · Morgen 9:30 Kickoff bei Colba (Hochhaus im Osten)');
         if (d >= 5) return f.finished ? _t('Heimflug') : _t('Samstag: Taxi zum Flughafen – Heimflug um 10:00');
@@ -164,9 +164,9 @@ const Story = {
     const swiss = SWISS.includes(id), colba = COLBA.includes(id);
     if (f.sick && f.sick[id] === dayOf(G.S.time - 300)) return 'hotel';
     if (d === 0) {
-      if (swiss) { if (!this.stageAt('taxi')) return 'airport'; if (!this.stageAt('bar')) return 'hotel'; if (h >= 19 && h < 24) return 'bar'; return h < 19 ? 'hotel' : 'hotel'; }
-      if (id === 'pascal' || id === 'chris') { if (h >= 19 && h < 24) return 'bar'; return h < 19 ? 'travel' : 'hotel'; }
-      if (id === 'juanjo') return h >= 19.5 && h < 23.5 ? 'bar' : 'home';
+      if (swiss) { if (!this.stageAt('taxi')) return 'airport'; if (!this.stageAt('bar')) return 'hotel'; if (h >= 17 && h < 24) return 'bar'; return 'hotel'; }
+      if (id === 'pascal' || id === 'chris') { if (h >= 17 && h < 24) return 'bar'; return h < 17 ? 'travel' : 'hotel'; }
+      if (id === 'juanjo') return h >= 17.5 && h < 23.5 ? 'bar' : 'home';
       return 'home';
     }
     if (d >= 5) { if (swiss || id === 'pascal' || id === 'chris') return h < 9 ? 'hotel' : 'airport'; return 'home'; }
@@ -266,7 +266,7 @@ const Story = {
     const f = G.S.flags;
     if (m.id === 'hotel_lobby' && G.S.stage === 'hotel') this.setStage('checkin');
     if (m.id === 'colba') { if (!f.colbaVisited) { f.colbaVisited = 1; achieve('lift'); } f.lastOffice = G.S.time; }
-    if (m.id === 'bar' && G.S.stage === 'bar' && hourOf(G.S.time) >= 19) setTimeout(() => this.barMeet(), 400);
+    if (m.id === 'bar' && G.S.stage === 'bar' && hourOf(G.S.time) >= 17) setTimeout(() => this.barMeet(), 400);
     if (m.id === 'danny_house' && !f.asado) setTimeout(() => this.asadoWelcome(), 400);
     if (m.id === 'city' && f.pendingTaxiArrive) { f.pendingTaxiArrive = 0; }
   },
@@ -337,7 +337,7 @@ const Story = {
       await this.say(_t('Marta'), _t`¡Bienvenidos al Hotel Kramer! Reservierung Colba, ${this.isSwiss() ? _t('fünf') : 'sieben'} Zimmer, vier Nächte. ${G.S.name}: Zimmer 412, vierter Stock. Frühstück 7 bis 10:30. Der Lift ist links – und bitte nicht alle fünf auf einmal, der ist aus den Sechzigern.`);
       await this.say(_t('Robin'), _t('Ich hab Zimmer 414. Wer von euch kennt sich mit diesen Kartenschlössern aus?'));
       f.key = 412; achieve('checkin'); this.setStage('zimmer');
-      await this.say(null, _t('Zimmer 412 im 4. Stock: Koffer abstellen, auspacken, durchatmen. Um 19:00 treffen sich alle in der Bar Pepita an der Plaza de la Virgen – auch Pascal, Chris und Juanjo.'));
+      await this.say(null, _t('Zimmer 412 im 4. Stock: Koffer abstellen, auspacken, durchatmen. Um 17:00 treffen sich alle in der Bar Pepita an der Plaza de la Virgen – auch Pascal, Chris und Juanjo.'));
       return;
     }
     const o = await this.ask(_t('Marta'), _t('Buenos días. Was kann ich für Sie tun?'), [_t('Wo sind die anderen?'), _t('Tipp für den Abend'), _t('Weckruf für 7:30'), _t('Nichts, danke')]);
@@ -360,7 +360,7 @@ const Story = {
       if (G.S.pid === 'dominique') addInv('zigaretten');
       if (G.S.pid === 'chris') addInv('surfwax');
       if (G.S.pid === 'lukas') addInv('batterypass');
-      if (G.S.stage === 'zimmer') { this.setStage('bar'); await this.say(null, _t('Erledigt. Der Nachmittag gehört dir: Plaza, Mercado, Strand – oder einfach ein Cortado. Um 19:00: Bar Pepita, Plaza de la Virgen.')); }
+      if (G.S.stage === 'zimmer') { this.setStage('bar'); await this.say(null, _t('Erledigt. Der Nachmittag gehört dir: Plaza, Mercado, Strand – oder einfach ein Cortado. Um 17:00: Bar Pepita, Plaza de la Virgen.')); }
       return;
     }
     await this.say(null, _t('Alles ausgepackt. Der Koffer dient jetzt als Nachttisch.'));
@@ -980,7 +980,7 @@ const Story = {
     if (isWorkday() && h >= 9.5 && h < 17.5 && f.kickoff) {
       for (const k of Object.keys(TEAMS)) { if (k === myTeam()) { if (!isPO()) planAdd(k, 1.6 / 60); } else planAdd(k, 2.6 / 60); }
     }
-    if (G.S.stage === 'bar' && h >= 19 && h < 19.02 && G.map.id !== 'bar') UI.toast(_t('19:00 – die anderen sind in der Bar Pepita (Plaza de la Virgen).'));
+    if (G.S.stage === 'bar' && h >= 17 && h < 17.02 && G.map.id !== 'bar') UI.toast(_t('17:00 – die anderen sind in der Bar Pepita (Plaza de la Virgen).'));
     if (isWorkday() && h >= 9.25 && h < 9.27 && !f.kickoff && d === 1) UI.toast(_t('9:15 – Kickoff in 15 Minuten im Aufenthaltsraum bei Colba!'), 'warn');
     if (isWorkday() && h >= 12.9 && h < 12.92 && LUNCH[d] && d !== 4) UI.toast(_t`Gleich Mittag: ${LUNCH[d][1]} im Aufenthaltsraum.`);
     if (d === 4 && h >= 14.4 && h < 14.42 && !f.final) UI.toast(_t('Final-Präsentation um 15:00 im Aufenthaltsraum!'), 'warn');
@@ -1063,8 +1063,8 @@ const Story = {
     if (f.finished) return;
     G.busy++;
     const colba = this.isColba();
-    if (auto) { await UI.fadeOut(colba ? _t('Samstag, 8:15 – Taxi zum Flughafen …') : _t('Samstag, 10:00 – Boarding …')); await sleep(800); }
-    await Scene.play('taxi', { ms: 2200, text: colba ? _t('Die Schweizer zum Flughafen bringen …') : _t('Zum Flughafen …'), heads: TRAVELLERS.filter((id) => id !== G.S.pid).slice(0, 4).map((id) => getSheet(personLook(id))) });
+    if (auto) { await UI.fadeOut(''); await sleep(500); }
+    await Scene.play('taxi', { ms: 2600, text: colba ? _t('Samstag, 8:15 – die Schweizer zum Flughafen bringen …') : _t('Samstag, 10:00 – zum Flughafen …'), heads: TRAVELLERS.filter((id) => id !== G.S.pid).slice(0, 4).map((id) => getSheet(personLook(id))) });
     if (!colba) await Scene.play('flight', { ms: 2800, text: _t('VLC → ZRH') });
     f.finished = 1; G.S.finished = 1; achieve('heimflug');
     Track.event('ende', colba ? 'Verabschiedung am Flughafen' : 'Heimflug', true);

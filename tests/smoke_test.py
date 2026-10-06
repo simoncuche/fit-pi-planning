@@ -61,7 +61,7 @@ with sync_playwright() as p:
     run("await warpTo('hotel_room', 'entry'); G.busy++; await Story.unpack(); G.busy--;", 3.0)
     assert state()["stage"] == "bar", state()
     shot("04_room")
-    run("G.S.time = 19 * 60 + 5; await warpTo('bar', 'entry');", 5.0)
+    run("G.S.time = 17 * 60 + 5; await warpTo('bar', 'entry');", 5.0)
     assert state()["stage"] == "free", state()
     shot("05_bar")
     # Dienstag: Klingel, Office, Kickoff

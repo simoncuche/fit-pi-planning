@@ -9,7 +9,7 @@ const Trailer = {
     this.cv = document.createElement('canvas'); el.appendChild(this.cv);
     const vb = document.createElement('button'); vb.className = 'btn intro-trailer'; vb.type = 'button'; vb.textContent = '▶ ' + _t('Trailer'); vb.setAttribute('aria-label', _t('Trailer ansehen'));
     vb.addEventListener('pointerdown', (e) => e.stopPropagation()); vb.addEventListener('click', (e) => { e.stopPropagation(); Trailer.showVideo(); }); el.appendChild(vb);
-    document.body.appendChild(el); this.el = el;
+    (document.getElementById('app') || document.body).appendChild(el); this.el = el;
     this.x = this.cv.getContext('2d');
     this.resize = () => this._resize(); this._resize(); window.addEventListener('resize', this.resize);
     this.onTap = (e) => { if (document.getElementById('trailerVid')) return; if (e.type === 'keydown' && (e.key === 'Tab' || e.altKey || e.ctrlKey || e.metaKey)) return; e.preventDefault(); this.tap(); };
@@ -43,7 +43,7 @@ const Trailer = {
     if (this.scene !== fi) { this.jump = this.before(fi); this.t0 = performance.now(); }
   },
   _resize() {
-    const iw = innerWidth, ih = innerHeight, dpr = Math.min(2, devicePixelRatio || 1);
+    const app = document.getElementById('app'), iw = (app && app.clientWidth) || innerWidth, ih = (app && app.clientHeight) || innerHeight, dpr = Math.min(2, devicePixelRatio || 1);
     this.port = ih >= iw;
     if (this.port) { this.LW = 540; this.LH = Math.round(540 * ih / iw); this.k = 1; }
     else { this.LH = 640; this.LW = Math.round(640 * iw / ih); this.k = 1.15; }

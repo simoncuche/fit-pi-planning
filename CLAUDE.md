@@ -65,6 +65,7 @@ zugreifen – sonst TDZ-Fehler bei `const`. Darum heisst die Ereignis-Datei `09_
 
 ## Wichtige Konventionen
 
+- Am PC (kein Touch, Fenster ≥ 860×560) läuft das Spiel in einem 4:3-Rahmen (`frameSize()` in `07_engine.js`, `body.framed`, `#app` max. 1180 px breit); sonst füllt es das Fenster. `resizeView` und der Trailer messen `#app`, nicht das Fenster.
 - Kachelgrösse `TS = 24`, Sprite 28×48 (Figur 40 px, Füsse unten), Porträt 96×96. Spielpixel werden auf ganze Gerätepixel vergrössert (`resizeView`), Ziel ~13 Kacheln Breite.
 - Karten werden programmatisch gebaut (`m.fill`, `m.add(obj)`, `m.trig`, `m.warp`, `m.spawn`, `m.room`). Objekte haben Fussabdruck in Kacheln plus `drawH` Pixel nach oben.
 - Trigger: `m.trig(x, y, w, h, { label, act, here, cond })`; `m.warp(...)` ist ein automatischer Trigger mit optionalem `guard`.

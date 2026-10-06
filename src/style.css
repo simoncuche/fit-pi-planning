@@ -29,6 +29,9 @@ body { font-family: var(--f-body); font-size: 15px; -webkit-user-select: none; u
 button { font-family: var(--f-sign); color: inherit; cursor: pointer; }
 button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--sun); outline-offset: 2px; }
 #app { position: fixed; inset: 0; overflow: hidden; }
+/* PC: Spiel im Rahmen (Grösse setzt frameSize() in 07_engine.js) */
+body.framed { background: radial-gradient(1200px 700px at 50% 40%, #243052 0%, #0e1116 70%) fixed; }
+body.framed #app { inset: auto; left: 50%; top: 50%; transform: translate(-50%, -50%); border-radius: 22px; border: 12px solid #2a2e36; box-shadow: 0 0 0 2px #4a5060, 0 30px 80px rgba(0,0,0,.6), inset 0 0 0 1px rgba(255,255,255,.08); background: #0e1116; }
 #screen { position: absolute; left: 0; top: 0; image-rendering: pixelated; image-rendering: crisp-edges; }
 
 /* ---------- HUD: Badge am Lanyard, Post-it mit dem Ziel, Werte ---------- */
@@ -297,7 +300,7 @@ body.stick-on #stickHint { opacity: .2; }
 .cl-entry ul { margin: 0; padding-left: 18px; font-size: 13px; line-height: 1.45; color: var(--ink); }
 
 /* ---------- Ereignis-Ankündigung ---------- */
-#intro { position: fixed; inset: 0; z-index: 60; background: #141a2e; cursor: pointer; touch-action: none; }
+#intro { position: absolute; inset: 0; z-index: 60; background: #141a2e; cursor: pointer; touch-action: none; }
 #intro canvas { display: block; }
 #intro .intro-trailer { position: absolute; left: 12px; top: 12px; padding: 6px 12px; font-size: 14px; background: rgba(20, 26, 46, .75); color: #f2c84a; border: 1px solid rgba(255,255,255,.3); }
 #trailerVid { position: fixed; inset: 0; z-index: 70; background: rgba(0,0,0,.92); display: grid; place-items: center; padding: 16px; }

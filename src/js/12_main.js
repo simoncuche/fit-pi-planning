@@ -7,11 +7,11 @@ function boot() {
   View.ctx = View.cv.getContext('2d');
   [View.wcv, View.wctx] = canvas(480, 270);
   [View.lcv, View.lctx] = canvas(480, 270);
+  Input.touch = isTouch();
+  document.body.classList.toggle('touch', Input.touch);
   resizeView();
   window.addEventListener('resize', resizeView);
   UI.init();
-  Input.touch = isTouch();
-  document.body.classList.toggle('touch', Input.touch);
   wireInput();
   i18nDom();
   let skipIntro = false; try { skipIntro = sessionStorage.getItem('pi-skip-intro') === '1'; sessionStorage.removeItem('pi-skip-intro'); } catch (e) {}

@@ -269,7 +269,9 @@ const Scene = {
     x.imageSmoothingEnabled = false;
     const st = Object.assign({ night: isNight(), t0: G.S.time }, o);
     UI.els.fade.classList.add('scene');
-    UI.els.fadeText.textContent = o.text || '';
+    /* Der Text erscheint erst, wenn die Szene sichtbar ist – nicht schon über dem alten Ort */
+    UI.els.fadeText.textContent = '';
+    const tt = setTimeout(() => { UI.els.fadeText.textContent = o.text || ''; }, 380);
     UI.els.fade.classList.add('on');
     const ms = o.ms || 1500;
     const start = performance.now();
@@ -282,6 +284,7 @@ const Scene = {
       };
       requestAnimationFrame(step);
     });
+    clearTimeout(tt); UI.els.fadeText.textContent = o.text || '';
     if (!o.keep) await UI.fadeIn();
   },
 };

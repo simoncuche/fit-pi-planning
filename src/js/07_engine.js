@@ -106,9 +106,20 @@ const Input = {
 /* ============ Kamera & Ansicht ============
    Die Spielpixel werden auf ganze Gerätepixel vergrössert (DPR-bewusst): scharf auf dem Handy, nicht zu gross am Computer. */
 const View = { cv: null, ctx: null, wcv: null, wctx: null, lcv: null, lctx: null, w: 480, h: 270, scale: 3, dpr: 1, hudPad: 0 };
+/* Am PC (kein Touch, genug Platz) läuft das Spiel in einem Rahmen im Seitenverhältnis 4:3, sonst füllt es das Fenster */
+function frameSize() {
+  const W = window.innerWidth, H = window.innerHeight;
+  const framed = !document.body.classList.contains('touch') && W >= 860 && H >= 560;
+  document.body.classList.toggle('framed', framed);
+  const app = document.getElementById('app');
+  if (!framed) { if (app) { app.style.width = ''; app.style.height = ''; } return [W, H]; }
+  const fw = Math.min(W - 56, Math.round((H - 56) * 4 / 3), 1180), fh = Math.round(fw * 3 / 4);
+  if (app) { app.style.width = fw + 'px'; app.style.height = fh + 'px'; }
+  return [fw, fh];
+}
 function resizeView() {
   const dpr = window.devicePixelRatio || 1;
-  const W = window.innerWidth, H = window.innerHeight;
+  const [W, H] = frameSize();
   const Wp = W * dpr, Hp = H * dpr;
   const sp = clamp(Math.round(Math.min(Wp, Hp * 1.15) / (TS * 13)), 2, 8);
   View.dpr = dpr; View.scale = sp / dpr;

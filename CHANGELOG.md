@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.5.4 – 06.10.2026
+- Transfer captions (taxi, lift, flight …) now appear on the transfer scene itself instead of over the place you are leaving.
+- On a PC (no touch, window at least 860×560) the game runs in a 4:3 frame with a bezel in the middle of the window instead of filling it.
+- Monday: the meeting at Bar Pepita is at 17:00 instead of 19:00, so the free afternoon after check-in is shorter.
+
 ## 2.5.3 – 06.10.2026
 - Tall characters with hats or big hair no longer lose the top of their head: the sprite frame got 8 px of headroom.
 - The A button's reach is smaller again: things count when they are in front of you or within about half a tile, not behind you.
