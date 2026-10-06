@@ -2149,5 +2149,7 @@
 "20 MINISPIELE": "20 MINIJUEGOS",
 "TIPPEN ZUM STARTEN": "TOCA PARA EMPEZAR",
 "TASTE DRÜCKEN": "PULSA UNA TECLA",
-"Mittwoch: Kartbahn. Keine Diskussion.": "Miércoles: karting. Sin discusión."
+"Mittwoch: Kartbahn. Keine Diskussion.": "Miércoles: karting. Sin discusión.",
+"Alle anderen spielen als Kolleginnen und Kollegen mit. Wer einen PO spielt, plant mit dessen Team; alle anderen helfen ihrem Team.": "Los demás participan como compañeras y compañeros. Si juegas como PO, planificas con su equipo; los demás ayudan a su equipo.",
+"<div class=\"shop-sec\">Weitere</div><div class=\"list\">{0}</div>": "<div class=\"shop-sec\">Otros</div><div class=\"list\">{0}</div>"
 }

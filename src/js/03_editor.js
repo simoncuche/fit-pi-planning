@@ -40,9 +40,7 @@ const Editor = {
         list.innerHTML = '';
         requestAnimationFrame(() => { list.scrollTop = keep; });
         if (tab === _t('Wer bist du?')) {
-          const groupsOf = [[_t('Reisegruppe'), TRAVELLERS], [_t('Colba'), COLBA.concat(['isabell'])]];
-          for (const [label, ids] of groupsOf) {
-            const h = document.createElement('div'); h.className = 'shop-sec'; h.textContent = label; list.appendChild(h);
+          for (const ids of [CREW.map((c) => c.id)]) {
             const grid = document.createElement('div');
             grid.className = 'crew-grid';
             for (const id of ids) {
@@ -65,7 +63,7 @@ const Editor = {
           }
           const n = document.createElement('p');
           n.className = 'note';
-          n.textContent = _t('Alle anderen spielen als Kolleginnen und Kollegen mit. Wer einen PO spielt, plant mit dessen Team; alle anderen helfen ihrem Team. Die Reisegruppe landet am Flughafen, die Colba-Leute holen sie dort ab.');
+          n.textContent = _t('Alle anderen spielen als Kolleginnen und Kollegen mit. Wer einen PO spielt, plant mit dessen Team; alle anderen helfen ihrem Team.');
           list.appendChild(n);
           return;
         }

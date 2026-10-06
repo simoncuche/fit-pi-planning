@@ -330,9 +330,9 @@ const Phone = {
   team(b) {
     let html = '';
     const card = (id) => { const p = PEOPLE[id]; const w = Story.whereIs(id); return `<div class="teamcard"><canvas width="96" height="96" data-p="${id}"></canvas><div><div class="n">${p.name}${id === G.S.pid ? _t(' (du)') : ''}</div><div class="r">${p.role}</div></div><div class="w">${id === G.S.pid ? 'hier' : w.t}</div></div>`; };
-    html += _t`<div class="shop-sec">Reisegruppe</div><div class="list">${TRAVELLERS.map(card).join('')}</div>`;
-    for (const [k, t] of Object.entries(TEAMS)) html += _t`<div class="teamhead"><i style="background:${t.col}"></i><span>${t.n} · PO ${PEOPLE[t.po].name}</span></div><div class="list">${t.members.filter((m) => !TRAVELLERS.includes(m)).map(card).join('')}</div>`;
-    html += _t`<div class="shop-sec">Backoffice</div><div class="list">${card('isabell')}</div>`;
+    const inTeam = new Set();
+    for (const [k, t] of Object.entries(TEAMS)) { const ids = [t.po].concat(t.members); ids.forEach((m) => inTeam.add(m)); html += _t`<div class="teamhead"><i style="background:${t.col}"></i><span>${t.n} · PO ${PEOPLE[t.po].name}</span></div><div class="list">${ids.map(card).join('')}</div>`; }
+    html += _t`<div class="shop-sec">Weitere</div><div class="list">${Object.keys(PEOPLE).filter((id) => !inTeam.has(id)).map(card).join('')}</div>`;
     b.innerHTML = html;
     b.querySelectorAll('canvas[data-p]').forEach((c) => c.getContext('2d').drawImage(portraitCanvas(personLook(c.dataset.p), PEOPLE[c.dataset.p].bg || '#2a3a52'), 0, 0));
   },

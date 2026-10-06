@@ -172,17 +172,5 @@ const Trailer = {
   },
 };
 const TR_FONT_SIGN = "'Oswald', 'Arial Narrow', Impact, sans-serif", TR_FONT_BODY = "'Nunito', 'Helvetica Neue', Arial, sans-serif";
-Trailer.S = [
-  [2.4, Trailer.intro],
-  [2.3, function (u) { this.panel('luigi', _t('Mittwoch: Kartbahn. Keine Diskussion.'), '#2a9aa0', '#23848a', 'VROOM!', '#f2c84a', u); }],
-  [1.9, function (u) { this.words(_t('MONTAG'), [[_t('KOFFER WEG?'), [0.4, 0.34, -0.12], [0.3, 0.42, -0.12]], [_t('GEPÄCKBAND 3'), [0.6, 0.46, 0.08], [0.6, 0.46, 0.08]], ['TAXI!', [0.35, 0.58, -0.2], [0.78, 0.66, -0.2]], ['HOTEL KRAMER', [0.55, 0.7, 0.1], [0.4, 0.74, 0.1]]], '#e2554a', '#c9483e', u); }],
-  [2.3, function (u) { this.panel('robin', _t('Wo ist denn diese Klingel?!'), '#3f8e4b', '#357a41', 'RRRING?', '#fbfbf4', u); }],
-  [2.3, function (u) { this.panel('isabell', _t('Lift links oder rechts, die Treppe ist in der Mitte.'), '#6a4a9c', '#5a3e86', 'DING!', '#f2c84a', u); }],
-  [2.6, Trailer.plan],
-  [2.3, function (u) { this.panel('danny', _t('¡Oye, asere! Asado bei mir im Garten. Keine Ausreden.'), '#f0a23a', '#d88f2e', '¡SABROSO!', '#fbfbf4', u); }],
-  [2.1, function (u) { this.words('HIGHLIGHTS', [['PAELLA', [0.32, 0.34, -0.1], [0.25, 0.42, -0.1]], ['MESTALLA', [0.65, 0.42, 0.06], [0.5, 0.4, 0.06]], [_t('KARTBAHN'), [0.4, 0.52, -0.08], [0.75, 0.46, -0.08]], ['E-BIKE', [0.68, 0.6, 0.12], [0.3, 0.68, 0.12]], ['PADEL', [0.35, 0.7, -0.06], [0.52, 0.72, -0.06]], ['BUÑUELOS', [0.62, 0.78, 0.1], [0.76, 0.7, 0.1]]], '#2fa0d8', '#2889b8', u, '#fbfbf4'); }],
-  [2.3, function (u) { this.panel('daniel', _t('Hast du das dokumentiert? Mit Screenshot?'), '#2a2e36', '#1f2329', _t('KLICK!'), '#7ad0d8', u); }],
-  [2.3, function (u) { this.panel('carlos', _t('Der Parser kommt. Gleich nach dem Riff.'), '#e2554a', '#c9483e', 'BZZZT!', '#f2c84a', u); }],
-  [2.4, Trailer.hunger],
-  [600, Trailer.final],
-];
+/* Im Spiel läuft nur die Schlussszene (Titelkarte); die ganze Sequenz gibt es als Video. */
+Trailer.S = [[600, Trailer.final]];

@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.4.1 – 06.10.2026
+- The start screen shows only the trailer's final title card (crew lineup, key numbers, tap to start); the full fast-cut sequence lives in the trailer video instead.
+- Character selection and the phone's team tab no longer separate the travel group from the Colba people: one list of everyone, and the team tab groups by team (PO first) plus "Others".
+
 ## 2.4.0 – 06.10.2026
 - New start screen: a fast-cut comic-style trailer plays before the boarding pass – close-ups of the Colba crew with their one-liners, the Monday chaos, the PI plan bars, the highlights of the week, the hunger gag and finally "FIT PI PLANNING – THE GAME" with the key numbers (22 characters, 5 days, 20 minigames). Works in portrait on the phone and in landscape; tap or press a key to skip to the ending, tap again to start. A language switch skips it.
 
