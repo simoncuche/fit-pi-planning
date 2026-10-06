@@ -976,6 +976,8 @@ const Story = {
     const f = G.S.flags, h = hourOf(G.S.time), d = today(), mn = Math.floor(G.S.time) % 60;
     const hour = Math.floor(h);
     if (hour !== this._lastHour) { this._lastHour = hour; this.hourly(); }
+    /* Montag: wer schon vor 17:00 in der Bar sitzt, bekommt das Treffen trotzdem – die anderen kommen herein */
+    if (G.map && G.map.id === 'bar' && G.S.stage === 'bar' && h >= 17 && !G.busy && !f.barMeetWait) { f.barMeetWait = 1; (async () => { await UI.card(_t('17:00 – die Tür geht auf, die anderen kommen herein.'), 1400); if (G.map.id === 'bar' && G.S.stage === 'bar') enterMap('bar', { x: G.player.x, y: G.player.y, dir: G.player.dir }); })(); }
     /* Fremde Teams planen selbst; das eigene Team ohne PO-Spieler auch ein bisschen */
     if (isWorkday() && h >= 9.5 && h < 17.5 && f.kickoff) {
       for (const k of Object.keys(TEAMS)) { if (k === myTeam()) { if (!isPO()) planAdd(k, 1.6 / 60); } else planAdd(k, 2.6 / 60); }

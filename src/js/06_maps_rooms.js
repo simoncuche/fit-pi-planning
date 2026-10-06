@@ -364,3 +364,97 @@ MAP_BUILDERS.danny_house = () => {
   m.spawn('entry', 15, 18, 3);
   return m;
 };
+
+/* ----------- Läden an der Calle Colón, Souvenirs an der Marina, Veles e Vents ----------- */
+function shopKeeper(m, id, name, tx, ty, seed, look, act) {
+  m.npcDefs.push({ id, name, x: tx * TS + 12, y: ty * TS + 22, dir: 0, look: npcLook(seed, look), talk: act, keepDir: true, bubbleRand: ['dots'] });
+}
+MAP_BUILDERS.moda = () => {
+  const m = new GMap('moda', 16, 11, { name: _t('Moda Valencia'), indoor: true, bg: '#0e1116', wallStyle: { cap: '#4a3a5a' }, music: 'lobby', ambient: 0.1 });
+  m.room(0, 0, 16, 11, 8, T.TILE, 2);
+  m.decal((c) => { DECAL.logo(c, 6 * TS + 4, TS + 6, 'MODA', '#9a5ae0'); DECAL.mirror(c, 2 * TS + 4, TS + 4); DECAL.mirror(c, 12 * TS + 4, TS + 4); DECAL.picture(c, 4 * TS, TS + 8, '#e86ab0'); DECAL.picture(c, 10 * TS, TS + 8, '#2a9aa0'); });
+  m.add(objCounter(6, 4, 4, 1, { top: '#f4f0e6', front: '#3a2a4a', reg: true })); m.trig(6, 4, 4, 1, { label: _t('Kasse: Kleider'), act: () => Story.shop('moda') });
+  shopKeeper(m, 'lola', _t('Lola (Boutique)'), 8, 3, 801, { fem: 1, hair: 13, hairCol: 1, top: 11, topCol: 9, pants: 5, pantsCol: 0, jewel: 1 }, () => Story.shop('moda'));
+  m.add(objClothesRack(1, 4, 4)); m.add(objClothesRack(11, 4, 4));
+  m.add(objClothesRack(1, 7, 3)); m.add(objClothesRack(12, 7, 3));
+  m.add(objMannequin(5, 7, '#e2554a', true)); m.add(objMannequin(10, 7, '#2f6fb8'));
+  m.add(objChangingRoom(13, 1, '#9a5ae0')); m.trig(13, 1, 2, 1, { label: _t('Umkleide: anprobieren'), act: () => Story.shop('moda') });
+  m.add(objPlant(1, 9)); m.add(objPlant(14, 9));
+  m.light(8 * TS, 3 * TS, 90, '#fff0d0');
+  doorBottom(m, 7, 2, 'city', 'moda', _t('Auf die Strasse'));
+  m.spawn('entry', 8, 9, 3);
+  return m;
+};
+MAP_BUILDERS.super = () => {
+  const m = new GMap('super', 18, 12, { name: _t('Supermercado'), indoor: true, bg: '#0e1116', wallStyle: { cap: '#2a6a3a' }, music: 'market', ambient: 0.05 });
+  m.room(0, 0, 18, 12, 2, T.TILE, 0);
+  m.decal((c) => { DECAL.logo(c, 6 * TS, TS + 6, 'SUPERMERCADO', '#2a6a3a'); DECAL.poster(c, 14 * TS, TS + 4, '#e2554a', 'OFERTA'); DECAL.poster(c, 15 * TS + 12, TS + 4, '#f2c84a', '2x1'); });
+  m.add(objFridgeRow(1, 3, 6)); m.trig(1, 3, 6, 1, { label: _t('Kühlregal: Getränke'), act: () => Story.shop('super') });
+  m.add(objShelfRack(2, 6, 5, 'super')); m.add(objShelfRack(9, 6, 5, 'super')); m.add(objShelfRack(2, 9, 5, 'super')); m.add(objShelfRack(9, 9, 5, 'super'));
+  for (const [x, y] of [[2, 6], [9, 6], [2, 9], [9, 9]]) m.trig(x, y, 5, 1, { label: _t('Regal'), act: () => Story.shop('super') });
+  m.add(objCounter(12, 3, 4, 1, { top: '#e8e4dc', front: '#2a6a3a', reg: true })); m.trig(12, 3, 4, 1, { label: _t('Kasse'), act: () => Story.shop('super') });
+  shopKeeper(m, 'maricarmen', _t('Mari Carmen (Kasse)'), 14, 2, 802, { fem: 1, hair: 12, hairCol: 2, top: 2, topCol: 7, pants: 0, pantsCol: 2, glasses: 1 }, () => Story.shop('super'));
+  m.add(objPlant(16, 9));
+  m.light(5 * TS, 5 * TS, 90, '#ffffff'); m.light(12 * TS, 8 * TS, 90, '#ffffff');
+  doorBottom(m, 16, 1, 'city', 'super', _t('Auf die Strasse'));
+  m.spawn('entry', 16, 10, 3);
+  return m;
+};
+MAP_BUILDERS.farmacia = () => {
+  const m = new GMap('farmacia', 14, 10, { name: _t('Farmacia'), indoor: true, bg: '#0e1116', wallStyle: { cap: '#2a7a4a' }, music: 'lobby', ambient: 0.05 });
+  m.room(0, 0, 14, 10, 8, T.MARBLE);
+  m.decal((c) => { R(c, 6 * TS + 6, TS + 4, 12, 4, '#2fa04a'); R(c, 6 * TS + 10, TS, 4, 12, '#2fa04a'); DECAL.logo(c, 7 * TS + 2, TS + 6, 'FARMACIA', '#2a7a4a'); DECAL.clock(c, 11 * TS, TS + 6); DECAL.poster(c, 2 * TS, TS + 4, '#2f6fb8', 'SPF 50'); });
+  m.add(objShelfRack(1, 3, 4, 'farmacia')); m.add(objShelfRack(9, 3, 4, 'farmacia'));
+  m.trig(1, 3, 4, 1, { label: _t('Regal: Sonnencreme & Co.'), act: () => Story.shop('farmacia') }); m.trig(9, 3, 4, 1, { label: _t('Regal: Sonnencreme & Co.'), act: () => Story.shop('farmacia') });
+  m.add(objCounter(5, 4, 4, 1, { top: '#f8f8f8', front: '#2a7a4a', reg: true })); m.trig(5, 4, 4, 1, { label: _t('Theke: Apotheke'), act: () => Story.shop('farmacia') });
+  shopKeeper(m, 'pilar', _t('Dra. Pilar (Apothekerin)'), 7, 3, 803, { fem: 1, hair: 3, hairCol: 2, top: 1, topCol: 17, pants: 0, pantsCol: 2, glasses: 2 }, () => Story.shop('farmacia'));
+  m.add(objChair(2, 7, 0, '#2a7a4a')); m.add(objChair(3, 7, 0, '#2a7a4a')); m.add(objPlant(12, 7)); m.add(objWaterCooler(11, 7)); m.trig(11, 7, 1, 1, { label: _t('Wasserspender'), act: () => Story.water() });
+  m.light(7 * TS, 3 * TS, 80, '#e8fff0');
+  doorBottom(m, 6, 2, 'city', 'farmacia', _t('Auf die Strasse'));
+  m.spawn('entry', 7, 8, 3);
+  return m;
+};
+MAP_BUILDERS.estanco = () => {
+  const m = new GMap('estanco', 12, 9, { name: _t('Estanco'), indoor: true, bg: '#0e1116', wallStyle: { cap: '#5a3a1a' }, music: 'lobby', ambient: 0.25 });
+  m.room(0, 0, 12, 9, 10, T.WOOD, 1);
+  m.decal((c) => { DECAL.logo(c, 2 * TS, TS + 6, 'TABACOS', '#8a1a1a'); DECAL.logo(c, 7 * TS + 4, TS + 6, 'LOTERÍA', '#1a3a6a'); DECAL.clock(c, 10 * TS + 2, TS + 6); });
+  m.add(objShelfRack(1, 3, 10, 'estanco')); m.trig(1, 3, 10, 1, { label: _t('Regal: Tabak, Lose, Briefmarken'), act: () => Story.shop('estanco') });
+  m.add(objCounter(3, 5, 6, 1, { top: '#8a5e3a', front: '#4a2c18', reg: true })); m.trig(3, 5, 6, 1, { label: _t('Theke: Estanco'), act: () => Story.shop('estanco') });
+  shopKeeper(m, 'paco', _t('Paco (Estanquero)'), 6, 4, 804, { hair: 2, hairCol: 9, beard: 3, beardCol: 9, top: 4, topCol: 5, pants: 0, pantsCol: 2, glasses: 1, build: 2 }, () => Story.shop('estanco'));
+  m.add(objShelfRack(1, 7, 2, 'estanco')); m.add(objAshtray ? objAshtray(10, 7) : objPlant(10, 7));
+  m.light(6 * TS, 3 * TS, 70, '#ffd090');
+  doorBottom(m, 5, 2, 'city', 'estanco', _t('Auf die Strasse'));
+  m.spawn('entry', 6, 7, 3);
+  return m;
+};
+MAP_BUILDERS.souvenir = () => {
+  const m = new GMap('souvenir', 14, 10, { name: _t('Souvenirs València'), indoor: true, bg: '#0e1116', wallStyle: { cap: '#2f6fb8' }, music: 'market', ambient: 0.1 });
+  m.room(0, 0, 14, 10, 8, T.TILE, 1);
+  m.decal((c) => { DECAL.azulejos(c, TS, TS + 24, 12 * TS, 16); DECAL.logo(c, 5 * TS + 2, TS + 4, 'SOUVENIRS', '#2f6fb8'); DECAL.flag(c, 11 * TS, TS + 8); });
+  m.add(objShelfRack(1, 3, 4, 'souvenir')); m.add(objShelfRack(9, 3, 4, 'souvenir'));
+  m.trig(1, 3, 4, 1, { label: _t('Regal: Fächer, Magnete, Falleras'), act: () => Story.shop('souvenir') }); m.trig(9, 3, 4, 1, { label: _t('Regal: Fächer, Magnete, Falleras'), act: () => Story.shop('souvenir') });
+  m.add(objCounter(5, 4, 4, 1, { top: '#f4f0e6', front: '#2f6fb8', reg: true })); m.trig(5, 4, 4, 1, { label: _t('Kasse: Souvenirs'), act: () => Story.shop('souvenir') });
+  shopKeeper(m, 'yolanda', _t('Yolanda (Souvenirs)'), 7, 3, 805, { fem: 1, hair: 12, hairCol: 0, top: 0, topCol: 6, print: 4, pants: 3, pantsCol: 8 }, () => Story.shop('souvenir'));
+  m.add(objPostcardStand(3, 7)); m.add(objPostcardStand(10, 7)); m.trig(3, 7, 1, 1, { label: _t('Postkarten'), act: () => Story.shop('souvenir') }); m.trig(10, 7, 1, 1, { label: _t('Postkarten'), act: () => Story.shop('souvenir') });
+  m.add(objMannequin(12, 7, '#e2554a', true));
+  m.light(7 * TS, 3 * TS, 80, '#fff4d0');
+  doorBottom(m, 6, 2, 'city', 'souvenir', _t('Auf die Strasse'));
+  m.spawn('entry', 7, 8, 3);
+  return m;
+};
+MAP_BUILDERS.veles = () => {
+  const m = new GMap('veles', 18, 12, { name: _t('Veles e Vents'), indoor: true, bg: '#0e1116', wallStyle: { cap: '#1a3a6a' }, music: 'beach', ambient: 0.15 });
+  m.room(0, 0, 18, 12, 8, T.WOOD, 0);
+  m.decal((c) => { for (let k = 0; k < 4; k++) DECAL.seaWindow(c, (2 + k * 4) * TS, TS + 2); DECAL.logo(c, 5 * TS + 8, 2 * TS + 4, 'VELES E VENTS', '#1a3a6a'); });
+  m.add(objCounter(3, 4, 8, 1, { top: '#e8e4dc', front: '#1a3a6a', taps: 2, glasses: true })); m.trig(3, 4, 8, 1, { label: _t('Theke: Veles e Vents'), act: () => Story.shop('veles') });
+  m.add(objShelfRack(12, 3, 4, 'bottles'));
+  shopKeeper(m, 'toni', _t('Toni (Barkeeper)'), 7, 3, 806, { hair: 1, hairCol: 0, beard: 1, top: 1, topCol: 17, pants: 0, pantsCol: 2, acc: 0 }, () => Story.shop('veles'));
+  for (const x of [4, 6, 8, 10]) m.add(objStool(x, 5, '#1a3a6a'));
+  for (const [x, y] of [[2, 8], [7, 8], [12, 8]]) { m.add(objTable(x, y, 2, 1, { col: '#e8e4dc', cloth: '#2f6fb8' })); m.add(objChair(x, y - 1, 0, '#1a3a6a')); m.add(objChair(x + 1, y - 1, 0, '#1a3a6a')); m.add(objChair(x, y + 1, 3, '#1a3a6a')); m.add(objChair(x + 1, y + 1, 3, '#1a3a6a')); }
+  m.pedZones.push({ x: 12, y: 7, w: 2, h: 3, n: 2, sit: true });
+  m.add(objPlant(1, 9)); m.add(objPlant(16, 9));
+  m.light(7 * TS, 3 * TS, 90, '#fff0d0'); m.light(12 * TS, 8 * TS, 60, '#fff0d0');
+  doorBottom(m, 8, 2, 'city', 'veles', _t('Zur Marina'));
+  m.spawn('entry', 9, 10, 3);
+  return m;
+};

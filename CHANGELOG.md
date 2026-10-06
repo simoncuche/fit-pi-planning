@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.6.0 – 06.10.2026
+- The shops are walkable: Moda Valencia, Supermercado, Farmacia, Estanco, Souvenirs València and the Veles e Vents bar are rooms you enter from the street, each furnished for its trade (clothes racks, mannequins and a fitting room; drinks fridge and grocery shelves; pharmacy counter with green cross; tobacco and lottery shelves; souvenir shelves and postcard stands; a sea-view bar) with their own shopkeepers.
+- Kart track: a proper circuit with red-and-white curbs, start/finish checkers and grid boxes, skid marks, tyre barriers, five parked karts in the pit lane and one kart lapping the track.
+- Padel: both players hold a paddle and swing it; the scoring works now (a ball past the baseline is a point) and the opponent can be beaten.
+- The ATM next to the Jamonería is a real cash machine instead of a sign.
+- Monday: if you are already in Bar Pepita at 17:00, the others come in and the meeting starts; no need to leave and re-enter.
+
 ## 2.5.4 – 06.10.2026
 - Transfer captions (taxi, lift, flight …) now appear on the transfer scene itself instead of over the place you are leaving.
 - On a PC (no touch, window at least 860×560) the game runs in a 4:3 frame with a bezel in the middle of the window instead of filling it.

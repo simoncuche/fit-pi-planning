@@ -704,6 +704,101 @@ function objAshtray(x, y) { return mkObj(x, y, 1, 1, 18, (c, W, H) => { R(c, 8, 
 function objOrangeCart(x, y) { return mkObj(x, y, 2, 1, 20, (c, W, H) => { R(c, 2, 8, W - 4, 10, '#8a5e3a'); R(c, 2, 8, W - 4, 2, '#a87a50'); for (let k = 0; k < 10; k++) E(c, 6 + (k % 5) * 8, 6 + Math.floor(k / 5) * 4, 2.5, 2.5, '#ff8c1a'); ring(c, 8, H - 4, 4, '#2a2a2e'); ring(c, W - 8, H - 4, 4, '#2a2a2e'); R(c, W / 2 - 14, 0, 28, 6, '#3f8e4b'); pxText(c, 'ZUMO', W / 2 - 7, 1, '#ffffff'); }, { solid: true }); }
 
 /* --- Wandschmuck (direkt in den Boden-Layer gemalt) --- */
+/* --- Ladeneinrichtung: Regale je nach Sortiment, Kleiderständer, Schaufensterpuppe, Kühlregal, Umkleide, Postkartenständer --- */
+function objShelfRack(x, y, w = 3, kind = 'super') {
+  const W = w * TS;
+  const goods = {
+    super: ['#3f8e4b', '#e2554a', '#f2c84a', '#2f6fb8', '#f8f4ec', '#a86a4a', '#9a5ae0', '#ff8c1a'],
+    farmacia: ['#f8f8f8', '#e8f4ec', '#d8e8f8', '#f8f8f8', '#cfe8d8', '#f0f0f0', '#e8e0f8', '#f8f8f8'],
+    estanco: ['#8a1a1a', '#d8b040', '#1a3a6a', '#f8f4ec', '#e86ab0', '#2a2a2e', '#c8352d', '#f2c84a'],
+    souvenir: ['#2f6fb8', '#f8f4ec', '#e8c23a', '#c8352d', '#ff8c1a', '#2a9aa0', '#f8f4ec', '#9a5ae0'],
+    bottles: ['#2f7a3a', '#a8401e', '#d8b040', '#4a2a6a', '#e0e0e0', '#7a3a1a', '#2f7a3a', '#c8352d'],
+  }[kind] || ['#888'];
+  const frame = kind === 'estanco' ? '#5a3a24' : kind === 'farmacia' ? '#e4e8ec' : '#8a8e94';
+  return mkObj(x, y, w, 1, 28, (c, W2, H) => {
+    R(c, 0, 0, W, H, frame); R(c, 2, 2, W - 4, H - 6, shade(frame, -0.35));
+    for (let row = 0; row < 3; row++) {
+      const ry = 3 + row * 8;
+      R(c, 2, ry + 6, W - 4, 1, shade(frame, 0.2));
+      for (let k = 3; k < W - 5; k += 5) {
+        const g = goods[(Math.floor(k / 5) + row * 3 + x) % goods.length];
+        if (kind === 'souvenir' && row === 0) { c.fillStyle = g; c.beginPath(); c.arc(k + 2, ry + 5, 3, Math.PI, 0); c.fill(); R(c, k + 2, ry + 5, 1, 2, '#5a3a24'); }
+        else if (kind === 'souvenir' && row === 2) { R(c, k, ry + 1, 4, 5, g); R(c, k + 1, ry, 2, 1, '#f4d8c0'); }
+        else if (kind === 'estanco' && row === 2) { R(c, k, ry + 1, 4, 5, '#f8f4ec'); R(c, k + 1, ry + 2, 2, 1, g); R(c, k + 1, ry + 4, 2, 1, g); }
+        else if (kind === 'bottles') { R(c, k + 1, ry, 2, 2, shade(g, -0.2)); R(c, k, ry + 2, 4, 4, g); }
+        else if (kind === 'farmacia') { R(c, k, ry + 1, 4, 5, g); R(c, k, ry + 1, 4, 1, ['#3f8e4b', '#2f6fb8', '#e2554a'][(Math.floor(k / 5) + row) % 3]); }
+        else { R(c, k, ry + 1, 4, 5, g); R(c, k + 1, ry + 2, 2, 1, shade(g, 0.35)); }
+      }
+    }
+    R(c, 0, H - 4, W, 4, shade(frame, -0.5));
+  }, { solid: true });
+}
+function objClothesRack(x, y, w = 3) {
+  const W = w * TS, cols = ['#e2554a', '#2f6fb8', '#f8f4ec', '#2a9aa0', '#f2c84a', '#9a5ae0', '#1e1e22', '#ff8c1a', '#3f8e4b', '#e86ab0'];
+  return mkObj(x, y, w, 1, 30, (c, W2, H) => {
+    R(c, 3, 0, 2, H - 2, '#8a8e94'); R(c, W - 5, 0, 2, H - 2, '#8a8e94'); R(c, 2, 2, W - 4, 2, '#c6ccd2');
+    for (let k = 7; k < W - 8; k += 6) { const g = cols[(Math.floor(k / 6) + x + y) % cols.length]; R(c, k + 1, 4, 1, 2, '#6a7076'); R(c, k, 6, 5, 14, g); R(c, k, 6, 5, 1, shade(g, 0.3)); R(c, k - 1, 6, 1, 5, g); R(c, k + 5, 6, 1, 5, g); }
+    R(c, 1, H - 3, 6, 3, '#6a7076'); R(c, W - 7, H - 3, 6, 3, '#6a7076');
+  }, { solid: true });
+}
+function objMannequin(x, y, col = '#e2554a', dress = false) {
+  return mkObj(x, y, 1, 1, 34, (c, W, H) => {
+    E(c, 12, H - 2, 7, 2, 'rgba(0,0,0,0.25)'); R(c, 8, H - 5, 8, 3, '#8a8e94'); R(c, 11, H - 14, 2, 10, '#8a8e94');
+    R(c, 9, 0, 6, 6, '#e8d8c8'); R(c, 11, 6, 2, 2, '#e8d8c8');
+    if (dress) { R(c, 7, 8, 10, 8, col); c.fillStyle = col; c.beginPath(); c.moveTo(7, 16); c.lineTo(17, 16); c.lineTo(20, 26); c.lineTo(4, 26); c.closePath(); c.fill(); R(c, 4, 26, 16, 1, shade(col, -0.25)); }
+    else { R(c, 6, 8, 12, 12, col); R(c, 4, 8, 3, 6, col); R(c, 17, 8, 3, 6, col); R(c, 6, 8, 12, 1, shade(col, 0.3)); R(c, 7, 20, 10, 6, '#3a3a5a'); }
+  }, { solid: true });
+}
+function objFridgeRow(x, y, w = 4) {
+  const W = w * TS;
+  return mkObj(x, y, w, 1, 32, (c, W2, H) => {
+    R(c, 0, 0, W, H, '#c6ccd2'); R(c, 0, 0, W, 4, '#2f6fb8'); R(c, 0, H - 4, W, 4, '#8a8e94');
+    for (let d = 0; d < w; d++) { const dx = d * TS; R(c, dx + 2, 5, TS - 4, H - 10, '#9ad0e8'); R(c, dx + 2, 5, TS - 4, 1, '#e8f8ff'); for (let row = 0; row < 3; row++) for (let k = 0; k < 4; k++) { const g = ['#f2c84a', '#e2554a', '#2f7a3a', '#f8f4ec', '#ff8c1a'][(k + row + d) % 5]; R(c, dx + 4 + k * 5, 8 + row * 7, 3, 5, g); R(c, dx + 5 + k * 5, 7 + row * 7, 1, 1, shade(g, -0.3)); } R(c, dx + TS - 5, 10, 1, 8, '#4a5060'); }
+  }, { solid: true });
+}
+function objChangingRoom(x, y, col = '#9a5ae0') {
+  return mkObj(x, y, 2, 1, 38, (c, W, H) => {
+    R(c, 0, 0, W, 3, '#8a8e94'); R(c, 1, 3, 2, H - 4, '#8a8e94'); R(c, W - 3, 3, 2, H - 4, '#8a8e94');
+    for (let k = 3; k < W - 3; k += 6) { R(c, k, 3, 5, H - 6, (k / 6) % 2 ? col : shade(col, -0.18)); }
+    R(c, 3, 3, W - 6, 1, shade(col, 0.3)); R(c, 3, H - 4, W - 6, 1, shade(col, -0.4));
+  }, { solid: true });
+}
+function objPostcardStand(x, y) {
+  return mkObj(x, y, 1, 1, 34, (c, W, H) => {
+    E(c, 12, H - 2, 8, 2, 'rgba(0,0,0,0.25)'); R(c, 11, 4, 2, H - 6, '#8a8e94'); R(c, 7, H - 5, 10, 3, '#6a7076');
+    for (let row = 0; row < 3; row++) for (let k = 0; k < 3; k++) { const g = ['#2f6fb8', '#ff8c1a', '#2a9aa0', '#e8c23a', '#c8352d'][(k + row) % 5]; R(c, 3 + k * 7, 2 + row * 9, 6, 7, '#f8f4ec'); R(c, 4 + k * 7, 3 + row * 9, 4, 4, g); }
+  }, { solid: true });
+}
+/* --- Bankomat (Cajero) auf dem Trottoir --- */
+function objAtm(x, y) {
+  return mkObj(x, y, 1, 1, 34, (c, W, H) => {
+    R(c, 3, 2, 18, H - 4, '#1e3a6a'); R(c, 3, 2, 18, 1, '#5a7ab0'); R(c, 1, H - 3, 22, 3, '#4a5060');
+    R(c, 5, 6, 14, 9, '#1a1a1e'); R(c, 6, 7, 12, 7, '#7ad0f0'); R(c, 7, 9, 10, 1, '#1e3a6a'); R(c, 7, 11, 6, 1, '#1e3a6a');
+    for (let r = 0; r < 3; r++) for (let k = 0; k < 3; k++) R(c, 6 + k * 3, 17 + r * 3, 2, 2, '#c6ccd2');
+    R(c, 15, 18, 4, 2, '#1a1a1e'); R(c, 15, 22, 4, 1, '#f2c84a');
+    R(c, 0, 0, 24, 7, '#f2c84a'); pxText(c, 'CAJERO', 1, 1, '#1e3a6a');
+  }, { solid: true, light: { dx: 12, dy: 10, r: 26, c: '#7ad0f0' }, emit: (c) => R(c, 6, 7, 12, 7, '#9ae0ff') });
+}
+/* --- Kartbahn: parkierte Karts, Reifenstapel --- */
+function objParkedKart(x, y, col = '#c8352d', dir = 'h', num = 1) {
+  return mkObj(x, y, 1, 1, 10, (c, W, H) => {
+    E(c, 12, H - 2, 10, 2, 'rgba(0,0,0,0.3)');
+    if (dir === 'h') {
+      R(c, 2, H - 8, 4, 5, '#1a1a1e'); R(c, 18, H - 8, 4, 5, '#1a1a1e'); R(c, 2, H - 16, 4, 5, '#1a1a1e'); R(c, 18, H - 16, 4, 5, '#1a1a1e');
+      R(c, 5, H - 14, 14, 10, col); R(c, 5, H - 14, 14, 1, shade(col, 0.3)); R(c, 9, H - 12, 6, 6, '#2a2a2e'); R(c, 10, H - 11, 4, 2, '#4a4a52');
+      R(c, 17, H - 13, 3, 8, shade(col, -0.3)); R(c, 3, H - 11, 3, 4, '#f2c84a'); pxText(c, String(num), 11, H - 18, '#f8f4ec');
+    } else {
+      R(c, 4, H - 6, 5, 4, '#1a1a1e'); R(c, 15, H - 6, 5, 4, '#1a1a1e'); R(c, 4, H - 18, 5, 4, '#1a1a1e'); R(c, 15, H - 18, 5, 4, '#1a1a1e');
+      R(c, 7, H - 18, 10, 14, col); R(c, 7, H - 18, 10, 1, shade(col, 0.3)); R(c, 9, H - 14, 6, 6, '#2a2a2e'); R(c, 10, H - 13, 4, 2, '#4a4a52'); R(c, 8, H - 6, 8, 2, shade(col, -0.3));
+    }
+  }, { solid: true });
+}
+function objTyres(x, y, n = 3, horiz = true) {
+  return mkObj(x, y, horiz ? n : 1, horiz ? 1 : n, 14, (c, W, H) => {
+    for (let i = 0; i < n; i++) { const px = horiz ? i * TS + 4 : 4, py = horiz ? H - 14 : H - (n - i) * TS + 10; const col = i % 2 ? '#e8e4dc' : '#c8352d'; R(c, px, py + 2, 16, 10, '#1a1a1e'); R(c, px + 2, py, 12, 10, '#1a1a1e'); R(c, px + 4, py + 3, 8, 3, col); R(c, px + 4, py + 7, 8, 1, col); E(c, px + 8, py + 1, 4, 1, '#3a3a40'); }
+  }, { solid: true });
+}
+
 const DECAL = {
   window: (c, px, py, w = 20, h = 18, night) => { R(c, px - 1, py - 1, w + 2, h + 2, '#e8e4dc'); R(c, px, py, w, h, '#8ec3e6'); R(c, px, py + h - 6, w, 6, '#e8d8a0'); R(c, px + 3, py + h - 12, 6, 6, '#6d8a9e'); R(c, px + 11, py + h - 13, 7, 7, '#5e7a8e'); R(c, px + w / 2, py, 1, h, '#e8e4dc'); R(c, px, py + h / 2, w, 1, '#e8e4dc'); R(c, px - 2, py + h + 1, w + 4, 2, '#cfc8bc'); },
   seaWindow: (c, px, py, w = 20, h = 18) => { R(c, px - 1, py - 1, w + 2, h + 2, '#e8e4dc'); R(c, px, py, w, h, '#8ec3e6'); R(c, px, py + h - 7, w, 7, '#3a9ac8'); R(c, px + 2, py + h - 7, 4, 1, '#e8f4f8'); R(c, px + w / 2, py, 1, h, '#e8e4dc'); },

@@ -243,7 +243,9 @@ Object.assign(Mini, {
     return this.run(_t('Padel'), _t`gegen ${fname(oppId)}`, _t`<canvas aria-label="Padel"></canvas><div class="mini-bar"><span id="pdInfo">◀ ▶ bewegen – der Ball kommt auch von der Glaswand zurück. Bis 5 Punkte.</span><b id="pdS">0 : 0</b></div><div class="lanes" style="grid-template-columns:1fr 1fr"><button data-b="l">◀</button><button data-b="r">▶</button></div>`, W, H, (api) => {
       const me = { x: 120, w: 30 }, op = { x: 120, w: 30 };
       const ball = { x: 120, y: 75, vx: 60, vy: 90 };
-      const keys = { l: 0, r: 0 }; let sm = 0, so = 0, t = 0, msg = '';
+      const keys = { l: 0, r: 0 }; let sm = 0, so = 0, t = 0, msg = '', hitMe = 0, hitOp = 0, lazy = 0;
+      /* Padel-Schläger in der Hand: Griff vom Handgelenk, Schlagfläche mit Löchern; beim Schlag nach oben geschwungen */
+      const racket = (x, y, swing, flip) => { c2 = api.ctx; c2.save(); c2.translate(x, y); if (flip) c2.scale(-1, 1); c2.rotate(swing ? -0.9 : 0.35); R(c2, -1, 0, 2, 6, '#5a3a24'); E(c2, 0, -6, 4, 6, '#1a1a1e'); E(c2, 0, -6, 3, 5, '#e2554a'); for (const [dx, dy] of [[-1, -8], [1, -5], [-1, -3]]) P(c2, dx, dy, '#f4a090'); c2.restore(); }; let c2;
       api.o.querySelectorAll('.lanes button').forEach((bt) => { bt.addEventListener('pointerdown', (e) => { e.preventDefault(); keys[bt.dataset.b] = 1; }); bt.addEventListener('pointerup', () => { keys[bt.dataset.b] = 0; }); bt.addEventListener('pointerleave', () => { keys[bt.dataset.b] = 0; }); });
       const down = {}; Mini.key = (k) => { down[k] = 1; }; const onUp = (e) => { down[e.code] = 0; }; window.addEventListener('keyup', onUp);
       api.cv.addEventListener('pointermove', (e) => { const r = api.cv.getBoundingClientRect(); me.x = (e.clientX - r.left) / r.width * W; });
@@ -254,18 +256,20 @@ Object.assign(Mini, {
         const c = api.ctx;
         const steer = (keys.r || down.ArrowRight || down.KeyD ? 1 : 0) - (keys.l || down.ArrowLeft || down.KeyA ? 1 : 0);
         me.x = clamp(me.x + steer * 160 * dt, 20, W - 20);
-        op.x += clamp(ball.x - op.x, -1, 1) * 95 * dt * (ball.vy < 0 ? 1 : 0.4);
+        /* Gegner: läuft dem Ball nach, aber nicht perfekt – ab und zu zu träge, schnelle Querbälle schafft er nicht */
+        if (ball.vy < 0 && ball.y < 60 && lazy <= 0 && Math.random() < dt * 0.6) lazy = rnd(0.25, 0.5); if (lazy > 0) lazy -= dt;
+        op.x += clamp(ball.x - op.x, -1, 1) * (lazy > 0 ? 30 : 80) * dt * (ball.vy < 0 ? 1 : 0.4); op.x = clamp(op.x, 20, W - 20);
         ball.x += ball.vx * dt; ball.y += ball.vy * dt;
         if (ball.x < 6 || ball.x > W - 6) { ball.vx *= -1; ball.x = clamp(ball.x, 6, W - 6); Snd.sfx('bounce'); }
-        if (ball.y > 130 && ball.y < 136 && Math.abs(ball.x - me.x) < me.w / 2 + 4 && ball.vy > 0) { ball.vy = -Math.abs(ball.vy) * 1.04; ball.vx += (ball.x - me.x) * 4; Snd.sfx('kick'); }
-        if (ball.y < 22 && ball.y > 16 && Math.abs(ball.x - op.x) < op.w / 2 + 4 && ball.vy < 0) { ball.vy = Math.abs(ball.vy) * 1.02; ball.vx += (ball.x - op.x) * 3 + rnd(-30, 30); Snd.sfx('kick'); }
-        /* Glaswand hinter den Spielern: Ball kommt mit Verlust zurück, zweite Berührung = Punkt */
-        if (ball.y > H - 4) { if (ball.wall === 'me') { so++; msg = _t`${fname(oppId)} punktet`; Snd.sfx('lose'); reset(1); ball.wall = null; } else { ball.wall = 'me'; ball.vy = -Math.abs(ball.vy) * 0.6; ball.y = H - 4; Snd.sfx('bounce'); } }
-        else if (ball.y < 4) { if (ball.wall === 'op') { sm++; msg = _t('Punkt für dich!'); Snd.sfx('ok'); reset(-1); ball.wall = null; } else { ball.wall = 'op'; ball.vy = Math.abs(ball.vy) * 0.6; ball.y = 4; Snd.sfx('bounce'); } }
-        else if (ball.y > 40 && ball.y < 110) ball.wall = null;
+        if (ball.y > 126 && ball.y < 138 && Math.abs(ball.x - me.x) < me.w / 2 + 6 && ball.vy > 0) { ball.vy = -Math.min(170, Math.abs(ball.vy) * 1.05); ball.vx = clamp(ball.vx + (ball.x - me.x) * 4, -130, 130); hitMe = 0.25; Snd.sfx('kick'); }
+        if (ball.y < 26 && ball.y > 14 && Math.abs(ball.x - op.x) < op.w / 2 + 4 && ball.vy < 0) { ball.vy = Math.min(160, Math.abs(ball.vy) * 1.02); ball.vx = clamp(ball.vx + (ball.x - op.x) * 3 + rnd(-30, 30), -130, 130); hitOp = 0.25; Snd.sfx('kick'); }
+        hitMe = Math.max(0, hitMe - dt); hitOp = Math.max(0, hitOp - dt);
+        /* Ball hinter der Grundlinie = Punkt für die andere Seite */
+        if (ball.y > H - 2) { so++; msg = _t`${fname(oppId)} punktet`; Snd.sfx('lose'); reset(1); }
+        else if (ball.y < 2) { sm++; msg = _t('Punkt für dich!'); Snd.sfx('ok'); reset(-1); }
         R(c, 0, 0, W, H, '#2f6fb8'); R(c, 0, 73, W, 4, '#f4f0e6'); R(c, 0, 0, W, 3, 'rgba(200,230,255,0.5)'); R(c, 0, H - 3, W, 3, 'rgba(200,230,255,0.5)'); R(c, 0, 0, 3, H, 'rgba(200,230,255,0.5)'); R(c, W - 3, 0, 3, H, 'rgba(200,230,255,0.5)');
-        sceneSprite(c, opSheet, ball.vy < 0 && Math.abs(ball.x - op.x) < 30 ? 'danceB' : 'stand', 0, op.x - SPR_W / 2, 36 - SPR_H + 10);
-        sceneSprite(c, mySheet, ball.vy > 0 && Math.abs(ball.x - me.x) < 30 ? 'danceB' : 'stand', 3, me.x - SPR_W / 2, 150 - SPR_H + 4);
+        sceneSprite(c, opSheet, hitOp > 0 ? 'danceB' : 'stand', 0, op.x - SPR_W / 2, 36 - SPR_H + 10); racket(op.x - 12, 28, hitOp > 0, true);
+        sceneSprite(c, mySheet, hitMe > 0 ? 'danceB' : 'stand', 3, me.x - SPR_W / 2, 150 - SPR_H + 4); racket(me.x + 12, 134, hitMe > 0, false);
         E(c, ball.x, ball.y, 3, 3, '#e8f040');
         api.o.querySelector('#pdS').textContent = `${sm} : ${so}`;
         api.o.querySelector('#pdInfo').textContent = msg || _t('Spiel läuft');

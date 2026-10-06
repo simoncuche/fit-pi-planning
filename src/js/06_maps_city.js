@@ -97,11 +97,11 @@ MAP_BUILDERS.city = () => {
   cityBlock(m, 50, 27, 19, 4, r, { allShop: false });
   cityBlock(m, 50, 32, 8, 5, r);
   m.add(objBuilding(59, 32, 10, 5, { floors: 3, wall: '#e8e4dc', roof: '#8a8e94', roofType: 'flat', balcony: false, doors: [{ dx: 4, type: 'glass' }], shopWins: [0, 1, 2, 3, 6, 7, 8, 9], goods: ['#2f5fb8', '#f4f0e6', '#e8c23a'], sign: { text: _t('MODA VALENCIA'), bg: '#2a2a3a', fg: '#ffffff' }, seed: 44, awning: { cols: [0, 1, 2, 3, 6, 7, 8, 9], col: '#2f5fb8' } }));
-  m.trig(63, 36, 1, 1, { label: _t('Moda Valencia (Kleider)'), act: () => Story.shop('moda') });
+  m.warp(63, 36, 'moda', 'entry', { label: _t('Moda Valencia (Kleider)'), guard: () => Story.openGuard('moda') }); m.spawn('moda', 63, 37, 0);
   m.add(objBuilding(50, 38, 19, 5, { floors: 3, wall: '#f0b8a0', roof: '#b85a3a', roofType: 'gable', shutter: '#5a3a24', doors: [{ dx: 3, type: 'glass' }, { dx: 10, type: 'door' }, { dx: 15, type: 'glass' }], shopWins: [1, 2, 4, 5, 13, 14, 16, 17], goods: ['#3f8e4b', '#e8c23a', '#f4f0e6'], seed: 45, awning: { cols: [1, 2, 4, 5], col: '#3f8e4b' }, special: (c, W, H) => { R(c, 10, H - 34, 70, 9, '#1e5a2a'); pxText(c, 'SUPERMERCADO', 13, H - 32, '#ffffff'); R(c, 15 * 24 - 10, H - 34, 60, 9, '#2f6fb8'); pxText(c, 'FARMACIA', 15 * 24 - 2, H - 32, '#ffffff'); R(c, 15 * 24 + 20, H - 44, 14, 4, '#3f9a4b'); R(c, 15 * 24 + 25, H - 49, 4, 14, '#3f9a4b'); } }));
-  m.trig(53, 42, 1, 1, { label: _t('Supermercado'), act: () => Story.shop('super') });
-  m.trig(65, 42, 1, 1, { label: _t('Farmacia'), act: () => Story.shop('farmacia') });
-  m.trig(60, 42, 1, 1, { label: _t('Estanco (Tabak)'), act: () => Story.shop('estanco') });
+  m.warp(53, 42, 'super', 'entry', { label: _t('Supermercado'), guard: () => Story.openGuard('super') }); m.spawn('super', 53, 43, 0);
+  m.warp(65, 42, 'farmacia', 'entry', { label: _t('Farmacia'), guard: () => Story.openGuard('farmacia') }); m.spawn('farmacia', 65, 43, 0);
+  m.warp(60, 42, 'estanco', 'entry', { label: _t('Estanco (Tabak)'), guard: () => Story.openGuard('estanco') }); m.spawn('estanco', 60, 43, 0);
   /* ---- Colba-Viertel (Osten): Hochhaus, moderne Blöcke ---- */
   m.fill(72, 14, 10, 11, T.PLAZA, 1);
   cityBlock(m, 72, 14, 10, 4, r, { roofType: 'flat', wall: '#d8dce0', balcony: false });
@@ -132,7 +132,7 @@ MAP_BUILDERS.city = () => {
   m.add(objBuilding(CITY.bodega.x, CITY.bodega.y, CITY.bodega.w, CITY.bodega.h, { floors: 2, wall: '#c8b898', roof: '#8a6a4a', roofType: 'gable', balcony: false, doors: [{ dx: 2, type: 'arch' }], shopWins: [], sign: { text: 'BODEGA', bg: '#3a1a10', fg: '#f8e8c8' }, seed: 53, special: (c, W, H) => { for (const bx of [6, W - 20]) { R(c, bx, H - 24, 14, 18, '#8a5a32'); R(c, bx, H - 20, 14, 2, '#3a3a3e'); R(c, bx, H - 10, 14, 2, '#3a3a3e'); } } }));
   m.warp(CITY.bodega.x + 2, CITY.bodega.y + CITY.bodega.h - 1, 'bodega', 'entry', { label: _t('Bodega La Tinaja'), guard: () => Story.openGuard('bodega') });
   m.add(objBuilding(37, 46, 6, 4, { floors: 3, wall: '#f8e8c8', roof: '#b85a3a', roofType: 'gable', doors: [{ dx: 2, type: 'glass' }], shopWins: [0, 1, 3, 4, 5], goods: ['#e8c23a', '#c8352d', '#2f6fb8'], sign: { text: 'SOUVENIRS', bg: '#2f6fb8', fg: '#ffffff' }, seed: 54, awning: { cols: [0, 1, 3, 4, 5], col: '#e8c23a' } }));
-  m.trig(39, 49, 1, 1, { label: _t('Souvenirs València'), act: () => Story.shop('souvenir') });
+  m.warp(39, 49, 'souvenir', 'entry', { label: _t('Souvenirs València'), guard: () => Story.openGuard('souvenir') }); m.spawn('souvenir', 39, 50, 0);
   m.add(objBuilding(43, 46, 5, 4, { floors: 3, wall: '#d8e0c0', roof: '#a86a4a', roofType: 'flat', doors: [{ dx: 2, type: 'glass' }], shopWins: [0, 4], goods: ['#2a9aa0', '#1e1e22'], sign: { text: _t('BICI RENT'), bg: '#2a9aa0', fg: '#ffffff' }, seed: 55 }));
   m.trig(45, 49, 1, 1, { label: _t('Bici Rent: E-Bike mieten'), act: () => Story.bikeRental('rent') });
   m.add(objBikeStand(43, 50, 3));
@@ -141,7 +141,7 @@ MAP_BUILDERS.city = () => {
   m.trig(50, 50, 10, 1, { here: true, label: _t('Foto: Mercado de Colón'), act: () => Story.photo('colon'), cond: () => !G.S.photos.colon });
   cityBlock(m, 61, 46, 8, 5, r);
   cityBlock(m, 72, 46, 10, 5, r);
-  m.add(objSignpost(21, 50, 'BANKOMAT', '#1e3a6a')); m.trig(21, 50, 1, 1, { label: _t('Bankomat'), act: () => Story.atm() });
+  m.add(objAtm(21, 50)); m.trig(21, 50, 1, 1, { label: _t('Bankomat'), act: () => Story.atm() });
   m.fill(21, 50, 1, 1, T.PAVE);
   /* ---- Süden: Estación del Norte, Kartbahn, Padel, Disco ---- */
   m.add(objBuilding(CITY.estacion.x, CITY.estacion.y, CITY.estacion.w, CITY.estacion.h, { floors: 3, wall: '#e8c89a', roof: '#8a9aa0', roofType: 'flat', balcony: false, wins: 'arch', doors: [{ dx: 6, type: 'arch' }, { dx: 7, type: 'arch' }], shopWins: [], sign: { text: _t('ESTACIÓ DEL NORD'), bg: '#2a2a3a', fg: '#ff8c1a' }, seed: 61, special: (c, W, H, fy0) => { for (let k = 0; k < 10; k++) { E(c, 14 + k * 32, fy0 + 10, 4, 4, '#ff8c1a'); P(c, 14 + k * 32, fy0 + 5, '#3f8e4b'); } R(c, W / 2 - 16, fy0 - 10, 32, 10, '#d8ccb0'); E(c, W / 2, fy0 - 5, 4, 4, '#f4f2ea'); } }));
@@ -154,8 +154,7 @@ MAP_BUILDERS.city = () => {
   m.pedZones.push({ x: 22, y: 60, w: 26, h: 8, n: 6 });
   cityBlock(m, 1, 54, 18, 4, r);
   m.fill(1, 59, 18, 9, T.GRAVEL);
-  m.fill(CITY.kart.x, CITY.kart.y, CITY.kart.w, CITY.kart.h, T.TRACK, (x, y) => ((y === CITY.kart.y + 3 && x > CITY.kart.x + 2 && x < CITY.kart.x + 6) ? 1 : 0));
-  m.fill(CITY.kart.x + 3, CITY.kart.y + 2, CITY.kart.w - 6, CITY.kart.h - 4, T.GRASS, 2);
+  kartTrack(m, CITY.kart);
   m.add(objKartSign(8, 59)); m.trig(8, 60, 3, 1, { label: _t('Kart Valencia: Rezeption'), act: () => Story.kart() });
   m.npcDefs.push({ id: 'nico', name: _t('Nico (Kart-Marshal)'), x: 11 * TS + 12, y: 61 * TS + 20, dir: 0, look: npcLook(401, { top: 9, topCol: 0, pants: 2, pantsCol: 2, hat: 1, hatCol: 0, beard: 1 }), talk: () => Story.kart(), keepDir: true, bubbleRand: ['car', 'dots'] });
   for (const [x, y] of [[20, 55], [20, 62]]) { }
@@ -205,7 +204,7 @@ MAP_BUILDERS.city = () => {
   m.trig(89, 72, 1, 4, { label: _t('Segelschule: Segeltörn'), act: () => Story.sail(), here: true });
   m.npcDefs.push({ id: 'marina', name: _t('Marina (Segellehrerin)'), x: 88 * TS + 12, y: 74 * TS + 20, dir: 2, look: npcLook(404, { fem: 1, hair: 12, hairCol: 5, top: 2, topCol: 14, pants: 3, pantsCol: 8, shoes: 4, glasses: 3, hat: 1, hatCol: 2 }), talk: () => Story.sail(), keepDir: true, bubbleRand: ['wave'] });
   m.add(objBuilding(84, 66, 5, 3, { floors: 2, wall: '#e8e4dc', roof: '#2f5fb8', roofType: 'flat', balcony: false, doors: [{ dx: 2, type: 'glass' }], shopWins: [0, 4], goods: ['#2f5fb8', '#f4f0e6'], sign: { text: _t('VELES E VENTS'), bg: '#1a3a6a', fg: '#ffffff' }, seed: 81 }));
-  m.trig(86, 68, 1, 1, { label: _t('Veles e Vents: Bar'), act: () => Story.shop('veles') });
+  m.warp(86, 68, 'veles', 'entry', { label: _t('Veles e Vents: Bar'), guard: () => Story.openGuard('veles') }); m.spawn('veles', 86, 69, 0);
   m.trig(86, 70, 4, 2, { here: true, label: _t('Foto: La Marina'), act: () => Story.photo('marina'), cond: () => !G.S.photos.marina });
   for (const [x, y] of [[85, 72], [85, 80]]) m.add(objLamp(x, y, 'modern'));
   m.pedZones.push({ x: 84, y: 66, w: 6, h: 16, n: 4 });
@@ -248,6 +247,48 @@ function waterAnim(c, cx, cy, t) {
   }
 }
 /* Fahrendes Auto auf einer waagrechten Strasse (Spur y, Richtung dir) */
+/* Kartbahn: Rundkurs mit Curbs, Start/Ziel, Reifenstapeln, parkierten Karts und einem Kart, das seine Runden dreht */
+function kartTrack(m, k) {
+  const { x, y, w, h } = k;
+  m.fill(x, y, w, h, T.TRACK, 0);
+  m.fill(x + 3, y + 2, w - 6, h - 4, T.GRASS, 2);
+  m.decal((c) => {
+    const curb = (px, py, len, horiz) => { for (let i = 0; i < len; i += 6) R(c, horiz ? px + i : px, horiz ? py : py + i, horiz ? 6 : 3, horiz ? 3 : 6, (i / 6) % 2 ? '#e8e4dc' : '#c8352d'); };
+    /* Innenrand (ums Gras) und Aussenrand */
+    const ix = (x + 3) * TS, iy = (y + 2) * TS, iw = (w - 6) * TS, ih = (h - 4) * TS;
+    curb(ix - 3, iy - 3, iw + 6, true); curb(ix - 3, iy + ih, iw + 6, true); curb(ix - 3, iy, ih, false); curb(ix + iw, iy, ih, false);
+    const ox = x * TS, oy = y * TS, ow = w * TS, oh = h * TS;
+    curb(ox, oy, ow, true); curb(ox, oy + oh - 3, ow, true); curb(ox, oy, oh, false); curb(ox + ow - 3, oy, oh, false);
+    /* Start/Ziel auf der unteren Geraden, Startboxen daneben */
+    const sx = (x + w - 4) * TS;
+    for (let j = 0; j < 2 * TS; j += 4) for (let i = 0; i < 8; i += 4) R(c, sx + i, (y + h - 2) * TS + j, 4, 4, ((i + j) / 4) % 2 ? '#1a1a1e' : '#ffffff');
+    for (let n = 0; n < 3; n++) R(c, sx - 14 - n * 12, (y + h - 2) * TS + 6 + (n % 2) * 24, 8, 2, '#f2c84a');
+    /* Bremsspuren in den Kurven */
+    c.fillStyle = 'rgba(0,0,0,0.25)';
+    for (const [cx, cy] of [[x + 1, y + 1], [x + w - 3, y + 1], [x + 1, y + h - 2], [x + w - 3, y + h - 2]]) for (let i = 0; i < 5; i++) c.fillRect(cx * TS + i * 6, cy * TS + 4 + i * 3, 10, 2);
+  });
+  for (const [tx, ty] of [[x - 1, y - 1], [x + w - 2, y - 1], [x - 1, y + h], [x + w - 2, y + h]]) m.add(objTyres(tx, ty, 3, true));
+  m.add(objTyres(x + w, y + 1, 3, false)); m.add(objTyres(x + w, y + h - 4, 3, false));
+  /* Boxengasse links: parkierte Karts */
+  const cols = ['#c8352d', '#2a9aa0', '#f0a23a', '#2f5fb8', '#3f8e4b'];
+  [[x - 4, y + 1], [x - 4, y + 3], [x - 4, y + 5], [x - 2, y + 2], [x - 2, y + 4]].forEach(([kx, ky], i) => m.add(objParkedKart(kx, ky, cols[i % cols.length], 'h', i + 2)));
+  /* Ein Kart dreht Runden auf der Mittellinie */
+  const [hcv, hx] = canvas(24, 24); objParkedKart(0, 0, '#f2c84a', 'h', 7).paint(hx, 24, 24);
+  const [vcv, vx] = canvas(24, 24); objParkedKart(0, 0, '#f2c84a', 'v', 7).paint(vx, 24, 24);
+  const pts = [[x + 1.5, y + 1], [x + w - 1.5, y + 1], [x + w - 1.5, y + h - 1], [x + 1.5, y + h - 1]].map(([a, b]) => [a * TS, b * TS]);
+  const kart = { seg: 0, t: 0, x: pts[0][0], y: pts[0][1], sp: 60, sortY() { return this.y + 8; }, update(dt) {
+    const a = pts[this.seg], b = pts[(this.seg + 1) % 4], len = Math.hypot(b[0] - a[0], b[1] - a[1]);
+    this.t += this.sp * dt / len; if (this.t >= 1) { this.t = 0; this.seg = (this.seg + 1) % 4; }
+    const a2 = pts[this.seg], b2 = pts[(this.seg + 1) % 4]; this.x = a2[0] + (b2[0] - a2[0]) * this.t; this.y = a2[1] + (b2[1] - a2[1]) * this.t;
+  }, draw(c, cx, cy) {
+    const px = Math.round(this.x - cx) - 12, py = Math.round(this.y - cy) - 14;
+    if (this.seg === 0) c.drawImage(hcv, px, py);
+    else if (this.seg === 2) { c.save(); c.translate(px + 24, py); c.scale(-1, 1); c.drawImage(hcv, 0, 0); c.restore(); }
+    else if (this.seg === 1) c.drawImage(vcv, px, py);
+    else { c.save(); c.translate(px, py + 24); c.scale(1, -1); c.drawImage(vcv, 0, 0); c.restore(); }
+  } };
+  m.vehicles.push(kart);
+}
 function cityCar(m, laneY, dir, col, off) {
   const [cv, x] = canvas(48, 36);
   const o = objCar(0, 0, col, 'h'); o.paint(x, 48, 36, o);
