@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.3.1 – 06.10.2026
+- Suitcase minigame fixed: the grab zone now matches the yellow marker in front of you, the suitcase in reach is highlighted, the belt runs a little slower and a tap on the belt works too.
+- Tapping the screen now triggers the nearby action (same as the A button), so belts, counters and people can be used by tapping at them.
+- Airport rebuilt: glass front with a view of the apron, arrivals board, two proper baggage carousels (belt 4 is now reachable from all sides), pillars, information desk, car-rental counter with posters, a real café with counter, espresso machine, display case and tables, seating area, luggage trolleys and a yellow floor line to the taxi exit.
+
 ## 2.3.0 – 06.10.2026
 - The PI planning now takes place from Monday 2 to Friday 6 November 2026. The Fallas (a March festival) are gone: instead there are buñuelos stands after Todos los Santos, Valencia CF's Thursday match on the big screen at Bar Pepita, marathon training in the Turia park (Valencia Marathon on 6 December), November sea temperatures and the autumn rain as a planning risk.
 - New sight: Mercado de Colón on Calle Colón (modernist market hall from 1916, now cafés) replaces the falla monument; a fountain stands on Plaza del Ayuntamiento.

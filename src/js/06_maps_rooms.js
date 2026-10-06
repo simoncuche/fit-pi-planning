@@ -11,31 +11,56 @@ function placePerson(m, id, tx, ty, dir, o = {}) {
 /* ----------- Flughafen Valencia: Ankunftshalle ----------- */
 MAP_BUILDERS.airport = () => {
   const m = new GMap('airport', 44, 24, { name: _t('Aeropuerto de València'), indoor: true, bg: '#0e1116', wallStyle: { cap: '#4a4e54' }, music: 'lobby' });
-  m.room(0, 0, 44, 24, 5, T.CONCRETE);
-  m.decal((c) => { DECAL.gateSign(c, 2 * TS, TS + 6, _t('LLEGADAS · ARRIVALS')); DECAL.gateSign(c, 30 * TS, TS + 6, _t('SALIDA · TAXI ↓')); DECAL.gateSign(c, 16 * TS, TS + 6, _t('RECOGIDA DE EQUIPAJES')); DECAL.clock(c, 26 * TS, TS + 4); for (let k = 0; k < 4; k++) DECAL.poster(c, (36 + k * 2) * TS, TS + 2, ['#ff8c1a', '#2f8fd8', '#3f8e4b', '#e8c23a'][k]); });
+  m.room(0, 0, 44, 24, 5, T.TILE, 2);
+  /* Glasfront oben mit Blick aufs Vorfeld, Schilder, Uhr */
+  m.decal((c) => {
+    for (let k = 0; k < 11; k++) { const px = (7 + k * 3) * TS + 2; if (k === 3 || k === 4 || k === 5) continue; DECAL.window(c, px, TS + 4, 2 * TS + 16, 2 * TS - 6); }
+    DECAL.gateSign(c, 2 * TS, TS + 6, _t('LLEGADAS · ARRIVALS')); DECAL.gateSign(c, 30 * TS, TS + 6, _t('SALIDA · TAXI ↓')); DECAL.gateSign(c, 8 * TS, 3 * TS + 2, _t('RECOGIDA DE EQUIPAJES')); DECAL.clock(c, 27 * TS, TS + 4);
+    /* Bodenleitlinie zum Taxi */
+    for (let yy = 4; yy < 22; yy++) R(c, 35 * TS + 11, yy * TS + 4, 2, TS - 8, '#f0d040');
+    for (let xx = 22; xx < 35; xx++) R(c, xx * TS + 4, 21 * TS + 11, TS - 8, 2, '#f0d040');
+    pxText(c, 'TAXI', 36 * TS + 2, 20 * TS + 8, '#b89a20'); pxText(c, 'WC', 1 * TS + 6, 12 * TS + 4, '#2a2a30');
+  });
   /* Gate-Tür oben: Ankunft */
   m.fill(3, 1, 3, 2, T.TILE, 2); m.decal((c) => { R(c, 3 * TS, TS, 3 * TS, 2 * TS, '#5a7086'); R(c, 3 * TS + 4, TS + 4, 3 * TS - 8, 2 * TS - 6, '#8ab8d8'); R(c, 4 * TS + 11, TS + 4, 2, 2 * TS - 6, '#2e3a46'); });
-  /* Gepäckbänder */
-  m.add(objBelt(8, 6, 14)); m.add(objBelt(8, 10, 14));
-  m.decal((c) => { R(c, 8 * TS, 7 * TS, 14 * TS, 3 * TS, '#b0b4b8'); R(c, 8 * TS + 2, 7 * TS, 14 * TS - 4, 1, '#d0d4d8'); });
-  m.fill(8, 7, 14, 3, T.CONCRETE); m.solid(8, 7, 14, 3, 1);
+  m.add(objFlightBoard(16, 2, 8));
+  /* Gepäckkarussell 3 (Zürich): oben und unten ein Band, runde Enden, Insel in der Mitte */
+  m.add(objBelt(8, 6, 14)); m.add(objBelt(8, 10, 14)); m.add(objBeltEnd(7, 7, 3)); m.add(objBeltEnd(22, 7, 3, true));
+  m.decal((c) => { R(c, 8 * TS, 7 * TS, 14 * TS, 3 * TS, '#aeb2b8'); R(c, 8 * TS + 2, 7 * TS, 14 * TS - 4, 1, '#d0d4d8'); R(c, 13 * TS, 7 * TS + 6, 4 * TS, 2 * TS + 8, '#6a6e74'); R(c, 13 * TS + 4, 7 * TS + 10, 4 * TS - 8, 2 * TS, '#3a3c40'); for (let k = 0; k < 5; k++) R(c, 13 * TS + 6 + k * 18, 7 * TS + 12, 2, 2 * TS - 4, '#4a4c50'); });
+  m.solid(8, 7, 14, 3, 1);
   m.trig(8, 11, 14, 1, { label: _t('Gepäckband 3: Koffer suchen'), act: () => Story.baggage() });
   m.trig(8, 5, 14, 1, { label: _t('Gepäckband 3: Koffer suchen'), act: () => Story.baggage() });
+  m.trig(6, 6, 1, 5, { label: _t('Gepäckband 3: Koffer suchen'), act: () => Story.baggage() });
+  m.trig(23, 6, 1, 5, { label: _t('Gepäckband 3: Koffer suchen'), act: () => Story.baggage() });
   m.add(objSignpost(15, 4, _t('BAND 3 · ZRH'), '#1a3a7a'));
-  m.add(objSignpost(30, 12, _t('BAND 4 · LEJ'), '#1a3a7a'));
-  m.add(objBelt(26, 13, 10)); m.fill(26, 14, 10, 2, T.CONCRETE); m.solid(26, 14, 10, 2, 1);
-  /* Sitzreihen, Automaten, Café, Mietwagen-Schalter */
-  for (const [x, y] of [[2, 14], [2, 17], [6, 14], [6, 17]]) m.add(objSeats(x, y, 3));
+  /* Gepäckkarussell 4 (Leipzig) */
+  m.add(objBelt(26, 13, 10)); m.add(objBelt(26, 16, 10)); m.add(objBeltEnd(25, 14, 2)); m.add(objBeltEnd(36, 14, 2, true));
+  m.decal((c) => { R(c, 26 * TS, 14 * TS, 10 * TS, 2 * TS, '#aeb2b8'); R(c, 26 * TS + 2, 14 * TS, 10 * TS - 4, 1, '#d0d4d8'); R(c, 30 * TS, 14 * TS + 4, 2 * TS, TS + 16, '#6a6e74'); R(c, 30 * TS + 4, 14 * TS + 8, 2 * TS - 8, TS + 8, '#3a3c40'); });
+  m.solid(26, 14, 10, 2, 1);
+  m.trig(26, 12, 10, 1, { label: _t('Gepäckband 4 · Leipzig'), act: () => Story.say(null, _t('Band 4: Leipzig – Frankfurt – Valencia. Hier kommt Pascals Koffer. Deiner läuft auf Band 3.')) });
+  m.trig(26, 17, 10, 1, { label: _t('Gepäckband 4 · Leipzig'), act: () => Story.say(null, _t('Band 4: Leipzig – Frankfurt – Valencia. Hier kommt Pascals Koffer. Deiner läuft auf Band 3.')) });
+  m.add(objSignpost(30, 11, _t('BAND 4 · LEJ'), '#1a3a7a'));
+  /* Säulen */
+  for (const [x, y] of [[24, 5], [24, 9], [12, 14], [12, 20]]) m.add(objPillar(x, y));
+  /* Wartezone links: Sitzreihen, Automaten, Abfall, Pflanzen */
+  for (const [x, y] of [[2, 14], [6, 14], [2, 19], [6, 19]]) m.add(objSeats(x, y, 3));
   m.add(objVending(1, 9)); m.trig(1, 9, 1, 1, { label: _t('Automat'), act: () => Story.shop('automat') });
-  m.add(objVending(2, 9));
-  m.add(objCounter(36, 6, 6, 1, { top: '#2a2a2e', front: '#f0d040', reg: true })); m.decal((c) => DECAL.logo(c, 36 * TS + 8, 3 * TS + 2, _t('RENT A CAR'), '#f0d040'));
+  m.add(objVending(2, 9)); m.add(objBin(4, 9)); m.add(objPlant(1, 22)); m.add(objPlant(9, 17));
+  /* Mietwagen-Schalter und Informationsschalter rechts */
+  m.add(objCounter(36, 6, 6, 1, { top: '#2a2a2e', front: '#f0d040', reg: true })); m.decal((c) => { DECAL.logo(c, 36 * TS + 8, 3 * TS + 2, _t('RENT A CAR'), '#f0d040'); DECAL.poster(c, 38 * TS, 2 * TS + 2, '#c8352d', 'SEAT'); DECAL.poster(c, 40 * TS, 2 * TS + 2, '#2a2a2e', 'CUPRA'); });
   m.trig(36, 6, 6, 1, { label: _t('Mietwagen-Schalter'), act: () => Story.carRental() });
-  m.add(objCounter(24, 19, 6, 1, { top: '#8a5e3a', front: '#4a2c18', glasses: true })); m.decal((c) => DECAL.logo(c, 24 * TS + 10, 16 * TS + 12, 'CAFÉ', '#ff8c1a'));
-  m.trig(24, 19, 6, 1, { label: _t('Flughafen-Café'), act: () => Story.shop('aircafe') });
+  m.add(objReception(38, 10, 4)); m.decal((c) => DECAL.logo(c, 38 * TS + 6, 7 * TS + 12, _t('INFORMACIÓN'), '#2a9aa0'));
+  m.trig(38, 10, 4, 1, { label: _t('Informationsschalter'), act: () => Story.say(_t('Information'), pick([_t('¿Taxi? Ausgang unten, gelbe Linie folgen. ¿Hotel Kramer? Zwanzig Minuten, zehn Euro, der Fahrer heisst meistens Paco.'), _t('Band 3 ist Zürich, Band 4 Leipzig. Wenn der Koffer nicht kommt: Formular, Stempel, Geduld.'), _t('Metro in die Stadt: Linie 3 oder 5, 25 Minuten. Mit fünf Koffern empfehle ich das Taxi.')])) });
+  /* Café mit Theke, Kaffeemaschine, Vitrine und zwei Tischen */
+  m.add(objKiosk(26, 17, 'CAFÉ', '#8a4a2a'));
+  m.add(objCounter(24, 19, 6, 1, { top: '#8a5e3a', front: '#4a2c18', glasses: true, reg: true })); m.add(objCoffee(30, 19));
+  m.decal((c) => { R(c, 24 * TS + 4, 19 * TS - 10, 20, 10, '#f4ead8'); for (let k = 0; k < 4; k++) R(c, 24 * TS + 6 + k * 4, 19 * TS - 8, 3, 3, ['#e8c23a', '#c8352d', '#8a4a2a', '#f4f0e6'][k]); DECAL.menu && DECAL.menu(c, 28 * TS, 17 * TS); });
+  m.trig(24, 19, 7, 1, { label: _t('Flughafen-Café'), act: () => Story.shop('aircafe') });
   m.npcDefs.push({ id: 'aircafe', name: _t('Barista'), x: 27 * TS + 12, y: 18 * TS + 20, dir: 0, look: npcLook(501, { top: 2, topCol: 17, hat: 1, hatCol: 0 }), talk: () => Story.shop('aircafe'), keepDir: true, bubbleRand: ['coffee'] });
-  m.add(objPlant(23, 22, true)); m.add(objPlant(41, 22, true)); m.add(objPlant(1, 22));
-  m.add(objSignpost(34, 20, _t('TAXI ↓'), '#f0d040'));
-  m.add(objLuggage(31, 14)); m.add(objSuitcase(5, 20, '#c8352d')); m.add(objSuitcase(38, 15, '#3f8e4b'));
+  for (const [x, y] of [[21, 21], [31, 21]]) { m.add(objTable(x, y, 1, 1, { col: '#e8e4dc' })); m.add(objStool(x - 1, y, '#8a4a2a')); m.add(objStool(x + 1, y, '#8a4a2a')); }
+  m.add(objPlant(23, 22, true)); m.add(objPlant(41, 22, true));
+  m.add(objSignpost(37, 20, _t('TAXI ↓'), '#f0d040'));
+  m.add(objLuggage(39, 13)); m.add(objLuggage(40, 13)); m.add(objSuitcase(5, 21, '#c8352d')); m.add(objSuitcase(38, 16, '#3f8e4b'));
   /* Ausgang zum Taxistand */
   doorBottom(m, 34, 3, 'city', 'taxi', _t('Ausgang: Taxistand'), { guard: () => Story.leaveAirport() });
   m.pedZones.push({ x: 2, y: 4, w: 40, h: 17, n: 10 });

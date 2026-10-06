@@ -595,6 +595,27 @@ function objPaellaStand(x, y) {
     R(c, 2, H - 4, W - 4, 4, '#8a7a60');
   }, { solid: true, anim: (c, t, px, py) => { for (let k = 0; k < 3; k++) { const ph = (t * 0.4 + k / 3) % 1; c.fillStyle = `rgba(255,255,255,${0.35 * (1 - ph)})`; c.fillRect(px + 14 + k * 8 + Math.sin(t * 2 + k) * 2, py + 4 - ph * 10, 2, 2); } } });
 }
+/* Flug-Anzeigetafel (Ankünfte) */
+function objFlightBoard(x, y, w = 8) {
+  const rows = [['ZRH', '11:55', 'LLEGADO', '#7aff6a'], ['LEJ', '12:20', 'LLEGADO', '#7aff6a'], ['FRA', '12:40', 'RETRASO', '#ffd23d'], ['FUE', '13:05', 'EN HORA', '#7ad0f0'], ['MAD', '13:30', 'EN HORA', '#7ad0f0']];
+  return mkObj(x, y, w, 1, 44, (c, W, H) => {
+    R(c, 0, 0, W, H - 6, '#1a1c22'); R(c, 2, 2, W - 4, H - 10, '#0c0e14'); R(c, 0, 0, W, 3, '#3a3e48');
+    pxText(c, 'LLEGADAS', 6, 5, '#ffd23d'); pxText(c, 'ARRIVALS', W - pxTextW('ARRIVALS') - 6, 5, '#ffd23d');
+    rows.forEach(([f, tm, st, col], i) => { const yy = 13 + i * 6; pxText(c, f, 6, yy, '#f4f0e6'); pxText(c, tm, 26, yy, '#f4f0e6'); pxText(c, st, W - pxTextW(st) - 6, yy, col); });
+    R(c, W / 2 - 3, H - 6, 6, 6, '#3a3e48');
+  }, { solid: true, emit: (c, W, H) => R(c, 2, 2, W - 4, H - 10, 'rgba(120,200,255,0.25)') });
+}
+/* Terminal-Säule */
+function objPillar(x, y) { return mkObj(x, y, 1, 1, 46, (c, W, H) => { E(c, 12, H - 2, 9, 3, 'rgba(0,0,0,0.25)'); R(c, 5, 0, 14, H - 2, '#c8ccd2'); R(c, 5, 0, 3, H - 2, '#e4e8ec'); R(c, 16, 0, 3, H - 2, '#9aa0a8'); R(c, 4, 0, 16, 3, '#8a9098'); R(c, 4, H - 6, 16, 4, '#8a9098'); }, { solid: true }); }
+/* Rundes Endstück eines Gepäck-Karussells (links oder rechts) */
+function objBeltEnd(x, y, h, right = false) {
+  return mkObj(x, y, 1, h, 10, (c, W, H) => {
+    const r = W / 2;
+    c.fillStyle = '#8a8e94'; c.beginPath(); if (right) c.arc(0, H / 2 - 5, r, -Math.PI / 2, Math.PI / 2); else c.arc(W, H / 2 - 5, r, Math.PI / 2, Math.PI * 1.5); c.lineTo(right ? 0 : W, H / 2 - 5 - r); c.fill();
+    c.fillStyle = '#3a3c40'; c.beginPath(); if (right) c.arc(0, H / 2 - 5, r - 4, -Math.PI / 2, Math.PI / 2); else c.arc(W, H / 2 - 5, r - 4, Math.PI / 2, Math.PI * 1.5); c.fill();
+    R(c, 0, H - 6, W, 6, '#6a6e74');
+  }, { solid: true });
+}
 function objBelt(x, y, w) {
   return mkObj(x, y, w, 1, 10, (c, W, H) => { R(c, 0, 0, W, H, '#8a8e94'); R(c, 0, 0, W, 3, '#a8acb2'); R(c, 2, 4, W - 4, H - 10, '#3a3c40'); for (let k = 0; k < W; k += 6) R(c, k + 2, 4, 1, H - 10, '#4a4c50'); R(c, 0, H - 6, W, 6, '#6a6e74'); }, { solid: true });
 }

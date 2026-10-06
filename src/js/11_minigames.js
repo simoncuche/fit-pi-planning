@@ -7,19 +7,19 @@ Object.assign(Mini, {
     const mineCol = '#2a9aa0';
     const cases = [];
     for (let i = 0; i < 9; i++) cases.push({ x: i * 60, col: i === 4 ? mineCol : pick(cols.filter((c) => c !== mineCol)), tag: i === 4 ? 'me' : i === 2 ? 'robin' : null });
-    let grabbed = null, msg = _t('Das Band läuft. Drück A oder tipp, wenn DEIN Koffer (türkis, mit deinem Namen) vor dir ist.');
+    let grabbed = null, msg = _t('Das Band läuft. Drück A, tipp aufs Band oder auf den Knopf, wenn DEIN Koffer (türkis, mit deinem Namen) im gelben Feld vor dir ist.');
     return this.run(_t('Gepäckband 3'), _t('Zürich – Valencia'), _t`<canvas aria-label="Gepäckband"></canvas><div class="mini-bar"><span id="scInfo">${msg}</span></div><button class="btn primary" id="scGrab" style="height:56px;font-size:18px">Koffer greifen!</button>`, W, H, (api) => {
       const sheet = getSheet(G.S.look);
-      const grab = () => { if (grabbed) return; const c = cases.find((k) => Math.abs(((k.x % 540) + 540) % 540 - 120) < 22 && k.y === undefined); if (!c) { api.o.querySelector('#scInfo').textContent = _t('Daneben gegriffen – kein Koffer vor dir.'); Snd.sfx('error'); return; } grabbed = c; Snd.sfx('ok'); };
+      const grab = () => { if (grabbed) return; const c = cases.find((k) => Math.abs(((k.x % 540) + 540) % 540 - 60 + 18 - 120) < 26); if (!c) { api.o.querySelector('#scInfo').textContent = _t('Daneben gegriffen – kein Koffer vor dir.'); Snd.sfx('error'); return; } grabbed = c; Snd.sfx('ok'); };
       api.o.querySelector('#scGrab').onclick = grab; api.cv.addEventListener('pointerdown', grab);
       Mini.key = (k) => { if (['Space', 'Enter', 'KeyE'].includes(k)) grab(); };
       let t = 0, endT = 0;
       return (dt) => {
         t += dt;
         const c = api.ctx;
-        R(c, 0, 0, W, H, '#c9cbcc'); R(c, 0, 30, W, 40, '#8a8e94'); R(c, 0, 34, W, 32, '#3a3c40'); for (let k = 0; k < W; k += 8) R(c, ((k - t * 50) % W + W) % W, 34, 1, 32, '#4a4c50');
-        for (const k of cases) { if (k === grabbed) continue; k.x -= 50 * dt; const x = ((k.x % 540) + 540) % 540 - 60; if (x < -40 || x > W) continue; R(c, x, 38, 36, 24, k.col); R(c, x, 38, 36, 2, shade(k.col, 0.3)); R(c, x + 14, 34, 8, 4, '#2a2a2e'); if (k.tag) { R(c, x + 4, 54, 28, 7, '#f4f0e6'); pxText(c, k.tag === 'me' ? G.S.name.slice(0, 6) : 'ROBIN', x + 6, 55, '#1a1a1a'); } }
-        R(c, 110, 60, 20, 10, 'rgba(255,255,255,0.15)'); R(c, 108, 58, 24, 1, '#ffd23d'); R(c, 108, 70, 24, 1, '#ffd23d');
+        R(c, 0, 0, W, H, '#c9cbcc'); R(c, 0, 30, W, 40, '#8a8e94'); R(c, 0, 34, W, 32, '#3a3c40'); for (let k = 0; k < W; k += 8) R(c, ((k - t * 42) % W + W) % W, 34, 1, 32, '#4a4c50');
+        for (const k of cases) { if (k === grabbed) continue; k.x -= 42 * dt; const x = ((k.x % 540) + 540) % 540 - 60; if (x < -40 || x > W) continue; if (Math.abs(x + 18 - 120) < 26) { R(c, x - 3, 35, 42, 30, '#ffd23d'); } R(c, x, 38, 36, 24, k.col); R(c, x, 38, 36, 2, shade(k.col, 0.3)); R(c, x + 14, 34, 8, 4, '#2a2a2e'); if (k.tag) { R(c, x + 4, 54, 28, 7, '#f4f0e6'); pxText(c, k.tag === 'me' ? G.S.name.slice(0, 6) : 'ROBIN', x + 6, 55, '#1a1a1a'); } }
+        R(c, 96, 30, 48, 40, 'rgba(255,210,61,0.12)'); R(c, 96, 30, 1, 40, '#ffd23d'); R(c, 143, 30, 1, 40, '#ffd23d'); for (let k = 0; k < 3; k++) R(c, 118 + k, 24 - k, 4 - k * 0, 1, '#ffd23d'); R(c, 119, 20, 2, 6, '#ffd23d');
         sceneSprite(c, sheet, 'stand', 3, 120 - SPR_W / 2, 110 - SPR_H);
         if (grabbed) { endT += dt; R(c, 102, 72, 36, 24, grabbed.col); if (endT > 0.6) api.finish({ wrong: grabbed.tag !== 'me' ? true : false, ok: grabbed.tag === 'me' }); }
         if (t > 40) api.finish(null);
