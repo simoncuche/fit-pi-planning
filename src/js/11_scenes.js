@@ -285,4 +285,4 @@ const Scene = {
     if (!o.keep) await UI.fadeIn();
   },
 };
-function sceneHead(c, sheet, x, y, s = 1, dir = 0) { c.drawImage(sheet, 0, dir * SPR_H, SPR_W, 16, Math.round(x), Math.round(y), SPR_W * s, 16 * s); }
+function sceneHead(c, sheet, x, y, s = 1, dir = 0) { c.drawImage(sheet, 0, dir * SPR_H + SPR_TOP, SPR_W, 16, Math.round(x), Math.round(y), SPR_W * s, 16 * s); }

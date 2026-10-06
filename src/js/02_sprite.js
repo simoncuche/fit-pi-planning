@@ -1,5 +1,5 @@
-/* ============ Spielfigur: Sprite 28×40, 4 Richtungen, 9 Posen ============ */
-const SPR_W = 28, SPR_H = 40;
+/* ============ Spielfigur: Sprite 28×48 (40 px Figur plus 8 px Luft für Hüte und hohe Frisuren), 4 Richtungen, 11 Posen ============ */
+const SPR_W = 28, SPR_H = 48, SPR_TOP = 8;
 const POSES = ['stand', 'walkA', 'walkB', 'sit', 'drink', 'danceA', 'danceB', 'bend', 'ride', 'rub', 'rubB'];
 const POSE_I = Object.fromEntries(POSES.map((p, i) => [p, i]));
 const _sprCache = new Map();
@@ -12,6 +12,7 @@ function getSheet(L) {
     for (let p = 0; p < POSES.length; p++) {
       const [fc, fx] = canvas(SPR_W, SPR_H);
       const dir = d === 2 ? 1 : d;
+      fx.translate(0, SPR_TOP);
       drawSprite(fx, L, dir, POSES[p]);
       outlineCanvas(fc, fx);
       if (d === 2) { x.save(); x.translate(p * SPR_W + SPR_W, d * SPR_H); x.scale(-1, 1); x.drawImage(fc, 0, 0); x.restore(); }

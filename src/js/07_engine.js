@@ -482,10 +482,10 @@ function vignette(c, w, h, a, rgb) {
 /* ============ Aktualisieren ============ */
 function facingPoint(dist = 18) { const p = G.player, d = DIRV[p.dir]; return { x: p.x + d[0] * dist, y: p.y - 6 + d[1] * dist }; }
 function findInteraction() {
-  /* Grosszügig: Blickpunkt vor der Figur, die Figur selbst und ein Umkreis von knapp einer Kachel zählen. */
+  /* Blickpunkt vor der Figur, die Figur selbst und ein kleiner Umkreis (gut eine halbe Kachel) zählen. */
   const p = G.player, m = G.map, dv = DIRV[p.dir];
   const fp = facingPoint(18), px = p.x, py = p.y - 6;
-  let best = null, bd = 40, fol = null, fd = 30;
+  let best = null, bd = 30, fol = null, fd = 24;
   for (const n of G.npcs) {
     if (n.hidden || !n.talk) continue;
     const d = Math.min(Math.hypot(n.x - fp.x, n.y - 6 - fp.y), Math.hypot(n.x - px, n.y - 6 - py) + 8);
@@ -498,13 +498,13 @@ function findInteraction() {
   let near = null, nd = 1e9;
   for (const t of m.trigs) {
     if (t.auto || (t.cond && !t.cond())) continue;
-    if (inside(t, fp.x, fp.y, 6) || (t.here && inside(t, px, py + 3))) return lbl(t);
-    /* Umkreis: nächster Punkt des Trigger-Rechtecks höchstens 30 px entfernt und nicht entgegen der Blickrichtung */
+    if (inside(t, fp.x, fp.y, 3) || (t.here && inside(t, px, py + 3))) return lbl(t);
+    /* Umkreis: nächster Punkt des Trigger-Rechtecks höchstens 20 px entfernt und nicht hinter der Figur */
     const cx = clamp(px, t.x * TS, (t.x + t.w) * TS), cy = clamp(py, t.y * TS, (t.y + t.h) * TS);
     const dx = cx - px, dy = cy - py, d = Math.hypot(dx, dy);
-    if (d > 30) continue;
-    const dot = d < 12 ? 1 : (dx * dv[0] + dy * dv[1]) / d;
-    if (dot < -0.3) continue;
+    if (d > 20) continue;
+    const dot = d < 8 ? 1 : (dx * dv[0] + dy * dv[1]) / d;
+    if (dot < 0) continue;
     const score = d - dot * 6;
     if (score < nd) { nd = score; near = t; }
   }

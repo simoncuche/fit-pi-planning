@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.5.3 – 06.10.2026
+- Tall characters with hats or big hair no longer lose the top of their head: the sprite frame got 8 px of headroom.
+- The A button's reach is smaller again: things count when they are in front of you or within about half a tile, not behind you.
+- Lukas is German and no longer wears the Swiss-cross T-shirt (stripes instead).
+
 ## 2.5.2 – 06.10.2026
 - The trailer video ships with the game: a "▶ Trailer" button on the start screen and a link on the boarding pass play it in an overlay.
 

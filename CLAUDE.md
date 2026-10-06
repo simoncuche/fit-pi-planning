@@ -24,7 +24,7 @@ zugreifen – sonst TDZ-Fehler bei `const`. Darum heisst die Ereignis-Datei `09_
 | `00_util.js` | Hilfsfunktionen, Pixel-Zeichnen (`R`, `P`, `E`, `line`, `ring`), Pixelschrift `pxText`, `TS = 24` |
 | `01_audio.js` | `Snd`: synthetische Soundeffekte und Musik-Loops (`city`, `office`, `bar`, `disco`, `beach`, `lobby`, `market`, `museum`) |
 | `02_look.js` | Merkmale `LOOK_OPTS` (28 Merkmale, inkl. `fem`), `randomLook`, Porträt 96×96 (`drawPortrait`, `portraitCanvas`) |
-| `02_sprite.js` | Spielfigur 28×40, 4 Richtungen, 9 Posen (`POSES`, `getSheet`, `drawSprite`) |
+| `02_sprite.js` | Spielfigur 28×48 (`SPR_H`, davon `SPR_TOP = 8` px Luft oben für Hüte), 4 Richtungen, 11 Posen (`POSES`, `getSheet`, `drawSprite`) |
 | `03_editor.js` | Charakter-Editor (`Editor.open({mode})`: `new`, `clothes`, `hair`, `beard`), Auswahl aus allen `PEOPLE` (Porträt, Name und lustige Kurzbeschreibung `tag`) |
 | `04_track.js` | `Track`: Fortschritt pro Gerät an Firebase Realtime Database per REST (`PATCH pi/devices/<Gerät>.json`, Mehrpfad mit `games/<gameId>/s` und `games/<gameId>/log/<id>`), Drosselung 45 s, Pause nach Fehlern, Opt-out `pi-track-off`; `EV_TITLES` für die Tracker-Seite; Hooks in `saveGame`, `achieve`, `Story.setStage`, `Story.goHome`, `UI.gameOver`, `startGame` |
 | `04_state.js` | Spielzustand `G`, `newState`, `ITEMS`, `SIGHTS`, `ACH`, `TEAMS`, Werte-Logik (`consume`, `tickStats`), `planAdd`, Speichern (`SAVE_KEY`) |
@@ -65,7 +65,7 @@ zugreifen – sonst TDZ-Fehler bei `const`. Darum heisst die Ereignis-Datei `09_
 
 ## Wichtige Konventionen
 
-- Kachelgrösse `TS = 24`, Sprite 28×40, Porträt 96×96. Spielpixel werden auf ganze Gerätepixel vergrössert (`resizeView`), Ziel ~13 Kacheln Breite.
+- Kachelgrösse `TS = 24`, Sprite 28×48 (Figur 40 px, Füsse unten), Porträt 96×96. Spielpixel werden auf ganze Gerätepixel vergrössert (`resizeView`), Ziel ~13 Kacheln Breite.
 - Karten werden programmatisch gebaut (`m.fill`, `m.add(obj)`, `m.trig`, `m.warp`, `m.spawn`, `m.room`). Objekte haben Fussabdruck in Kacheln plus `drawH` Pixel nach oben.
 - Trigger: `m.trig(x, y, w, h, { label, act, here, cond })`; `m.warp(...)` ist ein automatischer Trigger mit optionalem `guard`.
 - Alle Interaktionen sind `async` und laufen innerhalb von `G.busy`. Dialoge immer über `Story.say/ask`; Sprecher-Ids aus `PEOPLE` liefern Porträts.

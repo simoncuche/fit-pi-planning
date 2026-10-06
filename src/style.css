@@ -219,7 +219,7 @@ body.stick-on #stickHint { opacity: .2; }
 .ed-preview { padding: 14px; display: grid; gap: 10px; align-content: start; border-right: 1px solid var(--paper-line); background: linear-gradient(#cfe6f2, var(--paper-2)); }
 .ed-figs { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: end; }
 .ed-figs canvas { image-rendering: pixelated; width: 100%; border-radius: 10px; border: 2px solid var(--paper-line); background: #2a3a52; }
-#edBody { width: 84px; height: 120px; border: none !important; background: transparent !important; }
+#edBody { width: 84px; height: 144px; border: none !important; background: transparent !important; }
 .ed-rot { display: flex; gap: 4px; justify-content: center; }
 .ed-rot button { width: 34px; height: 30px; border-radius: 6px; border: 1px solid var(--paper-line); background: #fff; font-size: 14px; }
 .ed-name .ed-input { width: 100%; max-width: 220px; font-family: var(--f-body); font-size: 16px; padding: 7px 10px; border: 1px solid var(--paper-line); border-radius: 8px; background: #fff; color: var(--ink); margin-top: 4px; }
