@@ -21,6 +21,7 @@ with sync_playwright() as p:
     pg = browser.new_page(viewport={"width": 390, "height": 844}, has_touch=True, is_mobile=True, device_scale_factor=3)
     pg.on("pageerror", lambda e: errors.append(str(e)))
     pg.on("console", lambda m: errors.append("console: " + m.text) if m.type == "error" and "Failed to load resource" not in m.text else None)
+    pg.route("**/firebasedatabase.app/**", lambda r: r.abort())  # kein Tracking aus Tests
     pg.route("**/fonts.googleapis.com/**", lambda r: r.abort())
     pg.route("**/fonts.gstatic.com/**", lambda r: r.abort())
     LANG = os.environ.get("GAME_LANG", "en")

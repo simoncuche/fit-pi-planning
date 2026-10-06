@@ -10,7 +10,7 @@ const Track = {
   OFF_KEY: 'pi-track-off',
   MIN_GAP: 45000,
   _last: 0, _blockUntil: 0, _backoff: 60000, _busy: false, _timer: 0, _log: {}, _n: 0,
-  enabled() { return !!(typeof TRACK_DB === 'string' && TRACK_DB) && !this.optOut(); },
+  enabled() { return !!(typeof TRACK_DB === 'string' && TRACK_DB) && !this.optOut() && !(typeof navigator !== 'undefined' && navigator.webdriver); },
   optOut() { try { return localStorage.getItem(this.OFF_KEY) === '1'; } catch (e) { return false; } },
   setOptOut(off) { try { if (off) localStorage.setItem(this.OFF_KEY, '1'); else localStorage.removeItem(this.OFF_KEY); } catch (e) {} if (!off) this.send('optin', true); },
   device() {

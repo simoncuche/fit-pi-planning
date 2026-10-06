@@ -176,11 +176,12 @@ const Trailer = {
     const y2 = ty + ts * (two ? 14 : 7) + 10 * k;
     if (u > 0.5) { const s2 = this.slam(u - 0.5, 0.18); x.save(); x.translate(LW / 2, y2); x.scale(s2, s2); this.px3('THE GAME', 0, 0, '#f0a23a', '#1a1a1e', Math.max(3, Math.round(ts * 0.75)), 'c'); x.restore(); }
     const y3 = y2 + ts * 0.75 * 5 + 24 * k;
-    if (u > 1.1) this.px(_t('2.-6. NOVEMBER 2026') + ' - COLBA - VALENCIA', LW / 2, y3, '#cfd6dd', Math.max(2, Math.round(2.5 * k)), 'c');
+    const dl = _t('2.-6. NOVEMBER 2026') + ' - COLBA - VALENCIA', ds = Math.max(1, Math.min(Math.round(2.5 * k), Math.floor((LW - 30) / (dl.length * 6))));
+    if (u > 1.1) this.px(dl, LW / 2, y3, '#cfd6dd', ds, 'c');
     const stats = [[_t('22 FIGUREN'), '#2a9aa0'], [_t('5 TAGE'), '#f0a23a'], [_t('20 MINISPIELE'), '#e2554a']];
     const y4 = y3 + 60 * k;
     stats.forEach((st, i) => { const t0 = 1.4 + i * 0.18; if (u < t0) return; const s3 = this.slam(u - t0, 0.14); const cx = port ? LW / 2 : LW / 2 + (i - 1) * LW * 0.26, cy = port ? y4 + i * 54 * k : y4; this.chip(st[0], cx, cy, (i - 1) * 0.05, s3, st[1], Math.round(22 * k)); });
-    const cast = ['luigi', 'robin', 'isabell', 'danny', 'daniel', 'carlos'], cs = Math.max(2, Math.round(3 * k)), cw = SPR_W * cs + 10 * k, cy0 = LH - 150 * k;
+    const cast = ['luigi', 'robin', 'isabell', 'danny', 'daniel', 'carlos'], cs = Math.max(2, Math.round(3 * k)), cw = SPR_W * cs + 10 * k, cy0 = LH - 185 * k;
     cast.forEach((id, i) => { const t0 = 2 + i * 0.12; if (u < t0) return; const b = Math.abs(Math.sin((u - t0) * 6)) * (u - t0 < 1.2 ? 24 : 7) * k; this.spr(id, LW / 2 - cast.length * cw / 2 + i * cw, cy0 - b, cs); });
     if (u > 3 && Math.floor(u * 2) % 2) this.px(Input.touch ? _t('TIPPEN ZUM STARTEN') : _t('TASTE DRÜCKEN'), LW / 2, LH - 40 * k, '#f2c84a', Math.max(2, Math.round(3 * k)), 'c');
   },

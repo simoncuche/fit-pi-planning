@@ -450,8 +450,8 @@ const Snap = {
     const [c, x] = canvas(Math.min(cv.width, 360), Math.min(cv.height, 480));
     const sx = Math.max(0, (cv.width - c.width) / 2), sy = Math.max(0, (cv.height - c.height) / 2);
     x.drawImage(cv, sx, sy, c.width, c.height, 0, 0, c.width, c.height);
-    R(x, 4, c.height - 12, pxTextW(`${dateStr()} ${clockStr()}`) + 4, 9, 'rgba(0,0,0,0.5)');
-    pxText(x, `${dateStr()} ${clockStr()}`, 6, c.height - 10, '#ffffff');
+    R(x, 4, c.height - 13, pxTextW(`${dateStr()} ${clockStr()}`) + 4, 11, 'rgba(0,0,0,0.5)');
+    pxText(x, `${dateStr()} ${clockStr()}`, 6, c.height - 11, '#ffffff');
     const fl = document.createElement('div'); fl.className = 'cam-flash'; document.getElementById('app').appendChild(fl); setTimeout(() => fl.remove(), 500);
     Snd.sfx('shutter');
     const list = this.list();

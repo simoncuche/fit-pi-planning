@@ -155,7 +155,7 @@ MAP_BUILDERS.city = () => {
   cityBlock(m, 1, 54, 18, 4, r);
   m.fill(1, 59, 18, 9, T.GRAVEL);
   kartTrack(m, CITY.kart);
-  m.add(objKartSign(8, 59)); m.trig(8, 60, 3, 1, { label: _t('Kart Valencia: Rezeption'), act: () => Story.kart() });
+  m.add(objKartSign(8, 59)); m.trig(8, 60, 4, 1, { label: _t('Kart Valencia: Rezeption'), act: () => Story.kart() });
   m.npcDefs.push({ id: 'nico', name: _t('Nico (Kart-Marshal)'), x: 11 * TS + 12, y: 61 * TS + 20, dir: 0, look: npcLook(401, { top: 9, topCol: 0, pants: 2, pantsCol: 2, hat: 1, hatCol: 0, beard: 1 }), talk: () => Story.kart(), keepDir: true, bubbleRand: ['car', 'dots'] });
   for (const [x, y] of [[20, 55], [20, 62]]) { }
   m.add(objPadelCourt(CITY.padel.x, CITY.padel.y));

@@ -113,7 +113,7 @@ const SCENES = {
     const bump = Math.sin(t * 9) * 1;
     const cx = 110, cy = 112 + bump;
     R(c, cx - 36, cy - 12, 72, 22, '#f0d040'); R(c, cx - 36, cy - 12, 72, 1, '#fff4a0'); R(c, cx - 22, cy - 26, 44, 15, '#e8c830'); R(c, cx - 19, cy - 24, 16, 10, '#7fb4e2'); R(c, cx + 3, cy - 24, 16, 10, '#7fb4e2');
-    R(c, cx - 14, cy - 31, 28, 5, '#1a1a1e'); pxText(c, 'TAXI', cx - 7, cy - 31, '#f0d040');
+    R(c, cx - 15, cy - 34, 30, 9, '#1a1a1e'); pxText(c, 'TAXI', cx - 11, cy - 33, '#f0d040');
     R(c, cx - 36, cy - 2, 72, 3, '#1a1a1a'); E(c, cx - 22, cy + 10, 7, 7, '#1a1a1e'); E(c, cx + 22, cy + 10, 7, 7, '#1a1a1e'); P(c, cx - 22 + Math.cos(t * 20) * 3, cy + 10 + Math.sin(t * 20) * 3, '#8a8e94'); P(c, cx + 22 + Math.cos(t * 20) * 3, cy + 10 + Math.sin(t * 20) * 3, '#8a8e94');
     if (st.night) { R(c, cx + 36, cy - 8, 20, 4, 'rgba(255,240,180,0.5)'); }
     const heads = st.heads || [];
@@ -168,7 +168,7 @@ const SCENES = {
     const open = p < 0.4 ? p / 0.4 : p > 0.8 ? 1 - (p - 0.8) / 0.2 : 1;
     R(c, 90, 26, 60, 86, '#3a2a1c'); R(c, 94, 30, 52, 82, '#ffe6a8');
     const pw = Math.round(52 * (1 - open * 0.9)); if (pw > 0) { R(c, 94, 30, pw, 82, '#6a4428'); if (pw > 10) { R(c, 98, 36, pw - 8, 30, '#7a5232'); R(c, 98, 72, pw - 8, 30, '#7a5232'); R(c, 94 + pw - 8, 70, 3, 4, '#e8c84a'); } }
-    R(c, 104, 14, 32, 10, '#c9a65a'); pxText(c, '412', 112, 16, '#2a1a10', 1);
+    R(c, 104, 14, 32, 11, '#c9a65a'); pxText(c, '412', 112, 16, '#2a1a10', 1);
     const sheet = getSheet(G.S.look);
     if (!st.exit) { const y = 130 - p * 40; if (p < 0.92) inRect(c, 0, 0, SCENE_W, 112, () => sceneSprite(c, sheet, Math.floor(t * 8) % 2 ? 'walkA' : 'walkB', 3, 120 - SPR_W / 2, y - SPR_H + 8, 1, p > 0.75 ? 1 - (p - 0.75) / 0.17 : 1)); }
     else { const y = 90 + p * 40; sceneSprite(c, sheet, Math.floor(t * 8) % 2 ? 'walkA' : 'walkB', 0, 120 - SPR_W / 2, y - SPR_H + 8, 1, p < 0.2 ? p / 0.2 : 1); }

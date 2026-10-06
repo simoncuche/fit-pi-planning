@@ -74,7 +74,7 @@ MAP_BUILDERS.airport = () => {
 MAP_BUILDERS.hotel_lobby = () => {
   const m = new GMap('hotel_lobby', 24, 14, { name: _t('Hotel Kramer · Lobby'), indoor: true, bg: '#0e1116', wallStyle: { cap: '#3a2e22' }, music: 'lobby' });
   m.room(0, 0, 24, 14, 0, T.MARBLE);
-  m.decal((c) => { DECAL.lift(c, 3 * TS + 6, TS + 2, '4'); DECAL.picture(c, 9 * TS, TS + 8, '#3a9ac8'); DECAL.picture(c, 11 * TS, TS + 8, '#e8b040'); DECAL.clock(c, 13 * TS, TS + 6); DECAL.logo(c, 14 * TS + 4, TS + 30, 'KRAMER', '#2a4a3a'); DECAL.flag(c, 20 * TS, TS + 10); DECAL.carpetRun(c, 10 * TS, 4 * TS, 4 * TS, 9 * TS, '#8e2f34'); });
+  m.decal((c) => { DECAL.lift(c, 3 * TS + 6, TS + 2, '4'); DECAL.picture(c, 9 * TS, TS + 8, '#3a9ac8'); DECAL.picture(c, 11 * TS, TS + 8, '#e8b040'); DECAL.clock(c, 13 * TS, TS + 6); DECAL.logo(c, 14 * TS + 4, TS + 6, 'KRAMER', '#2a4a3a'); DECAL.flag(c, 20 * TS, TS + 10); DECAL.carpetRun(c, 10 * TS, 4 * TS, 4 * TS, 9 * TS, '#8e2f34'); });
   m.warp(4, 3, 'hotel_floor', 'lift', { w: 1, label: _t('Lift'), guard: () => Story.liftGuard() });
   m.fill(20, 1, 2, 2, T.STAIRS, 0); m.warp(20, 2, 'hotel_floor', 'stairs', { w: 2, label: _t('Treppe'), guard: () => Story.liftGuard() });
   m.add(objReception(13, 3, 5)); m.trig(13, 3, 5, 1, { label: _t('Rezeption'), act: () => Story.reception() });

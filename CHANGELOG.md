@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.6.3 – 06.10.2026
+- New 5×7 pixel font for every sign, board, poster, flight board, title and caption: letters are twice as detailed as the old 3×5 font, with proper umlauts and accents. Boxes and boards grew to fit.
+- Automated test runs no longer appear in the tracker.
+
 ## 2.6.2 – 06.10.2026
 - The lounge is reachable again: the second diagnostics rig in the bike lab no longer blocks the passage between the lab door and the lounge door, and the planter no longer blocks the way onto the balcony.
 
