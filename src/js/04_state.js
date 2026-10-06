@@ -1,6 +1,6 @@
 /* ============ Spielzustand, Werte, Gegenstände ============ */
-const DAYS = [_t('Mo'), _t('Di'), _t('Mi'), _t('Do'), _t('Fr'), _t('Sa'), _t('So')]; /* Tag 0 = Montag, 16. März 2026 (Fallas-Woche) */
-const START_DATE = { d: 16, m: 3, y: 2026 };
+const DAYS = [_t('Mo'), _t('Di'), _t('Mi'), _t('Do'), _t('Fr'), _t('Sa'), _t('So')]; /* Tag 0 = Montag, 2. November 2026 */
+const START_DATE = { d: 2, m: 11, y: 2026 };
 const DAY_NAMES = [_t('Montag'), _t('Dienstag'), _t('Mittwoch'), _t('Donnerstag'), _t('Freitag'), _t('Samstag'), _t('Sonntag')]; /* Index wie DAYS */
 const MONTH_NAMES = [_t('Januar'), _t('Februar'), _t('März'), _t('April'), _t('Mai'), _t('Juni'), _t('Juli'), _t('August'), _t('September'), _t('Oktober'), _t('November'), _t('Dezember')];
 const G = {
@@ -43,6 +43,7 @@ const ITEMS = {
   burger: { n: _t('Smash Burger'), t: 'food', food: 60, mood: 9, nau: -14, icon: 'burger', burger: 1 },
   pizza: { n: _t('Pizza-Stück'), t: 'food', food: 30, mood: 5, nau: -8, icon: 'pizza' },
   churros: { n: _t('Churros con Chocolate'), t: 'food', food: 25, mood: 9, nau: -4, icon: 'churros' },
+  bunyols: { n: _t('Buñuelos de calabaza'), t: 'food', food: 22, mood: 8, nau: -3, icon: 'churros' },
   fartons: { n: _t('Fartons'), t: 'food', food: 12, mood: 4, nau: -2, icon: 'fartons', inv: true },
   naranja: { n: _t('Orange (valencianisch)'), t: 'food', food: 10, en: 4, nau: -5, icon: 'orange', inv: true, bird: 1 },
   fruta: { n: _t('Obstbecher'), t: 'food', food: 15, en: 5, nau: -6, mood: 3, icon: 'orange', inv: true },
@@ -94,7 +95,7 @@ const SIGHTS = {
   ayuntamiento: { n: _t('Plaza del Ayuntamiento'), f: _t('Während der Fallas (1.–19. März) knallt hier jeden Tag um 14 Uhr die Mascletà: Minuten lang Böller, bis der Boden bebt.') },
   museum: { n: _t('Museu de Belles Arts'), f: _t('Eines der bedeutendsten Kunstmuseen Spaniens: Sorolla, Goya, El Greco und ein Selbstporträt von Velázquez hängen hier.') },
   estacion: { n: _t('Estación del Norte'), f: _t('Modernistischer Bahnhof von 1917, verziert mit Orangen, Azulejos und Mosaiken – Valencias schönste Visitenkarte.') },
-  falla: { n: _t('Falla-Monument'), f: _t('Die riesigen Figuren aus Holz und Pappmaché werden monatelang gebaut – und in der Nacht des 19. März bei der Cremà verbrannt. Nur ein Ninot wird jedes Jahr begnadigt.') },
+  colon: { n: _t('Mercado de Colón'), f: _t('Die modernistische Markthalle von 1916 (Architekt Francisco Mora) an der Calle Colón: Eisen, Glas und Keramik. Heute keine Marktstände mehr, sondern Cafés, Horchaterías und Tapas unter dem Dach.') },
   colba: { n: _t('Colba-Hochhaus'), f: _t('Im ersten Stock entwickelt Colba die E-Bike-Apps. Die Klingel ist angeschrieben – trotzdem weiss niemand, welche die richtige ist.') },
 };
 
@@ -119,8 +120,8 @@ const ACH = {
   burgerday: [_t('Burger-Mittwoch'), _t('Smash Burger im Office verdrückt')],
   bocata: [_t('Bocadillo-Donnerstag'), _t('Spanische Sandwiches zum Zmittag')],
   healthy: [_t('Healthy Friday'), _t('Mit einer Bowl in den letzten Tag gestartet')],
-  mascleta: [_t('Mascletà'), _t('Um 14 Uhr auf der Plaza del Ayuntamiento den Boden beben gespürt')],
-  crema: [_t('Cremà'), _t('Die Fallas brennen gesehen')],
+  bunyols: [_t('Buñuelos'), _t('Buñuelos de calabaza mit Schokolade gegessen – die Woche nach Todos los Santos')],
+  mestalla: [_t('Amunt!'), _t('Das Valencia-Spiel am Donnerstagabend in der Bar Pepita gesehen')],
   tribunal: [_t('Wassergericht'), _t('Das Tribunal de las Aguas am Donnerstag erlebt')],
   gota: [_t('Gota fría'), _t('Von einem valencianischen Platzregen erwischt')],
   moewe: [_t('Möwenalarm'), _t('Am Strand von einer Möwe beklaut worden')],

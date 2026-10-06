@@ -416,12 +416,12 @@ const Phone = {
 function drawSightCard(x, id) {
   R(x, 0, 0, 96, 64, '#8ec3e6'); R(x, 0, 44, 96, 20, '#d8cfbf');
   for (let i = 0; i < 20; i++) P(x, Math.floor(hash(i, 5) * 96), Math.floor(hash(i, 6) * 30), '#ffffff');
-  const col = { ciudad: '#e8ecf0', micalet: '#d8c8a8', lonja: '#c8b898', serranos: '#c8b898', mercado: '#b8603a', turia: '#7aa84c', malvarrosa: '#efe0b8', marina: '#3a9ac8', virgen: '#dccfb8', ayuntamiento: '#dccfb8', museum: '#f4f0e8', estacion: '#e8c89a', falla: '#e8b040', colba: '#c8ccd0' }[id] || '#c8c0b0';
+  const col = { ciudad: '#e8ecf0', micalet: '#d8c8a8', lonja: '#c8b898', serranos: '#c8b898', mercado: '#b8603a', turia: '#7aa84c', malvarrosa: '#efe0b8', marina: '#3a9ac8', virgen: '#dccfb8', ayuntamiento: '#dccfb8', museum: '#f4f0e8', estacion: '#e8c89a', colon: '#d8c8b0', colba: '#c8ccd0' }[id] || '#c8c0b0';
   if (id === 'ciudad') { for (let k = 0; k < 60; k++) { const t = (k - 30) / 30; R(x, 18 + k, 44 - Math.sqrt(1 - t * t) * 24, 1, Math.sqrt(1 - t * t) * 24, k % 6 ? col : '#9ab0b8'); } }
   else if (id === 'micalet') { R(x, 40, 8, 16, 36, col); R(x, 38, 6, 20, 3, '#a89878'); R(x, 46, 20, 4, 8, '#5a4a3a'); }
   else if (id === 'malvarrosa' || id === 'marina') { R(x, 0, 24, 96, 20, '#3a9ac8'); R(x, 0, 44, 96, 20, col); if (id === 'marina') { R(x, 50, 14, 2, 20, '#6a4a2a'); for (let k = 0; k < 16; k++) R(x, 52, 16 + k, k * 0.6, 1, '#ffffff'); } else { R(x, 30, 36, 8, 6, '#2f8fd8'); R(x, 34, 20, 1, 16, '#e8e4dc'); } }
   else if (id === 'turia') { R(x, 0, 30, 96, 14, '#6f9c44'); for (let k = 0; k < 5; k++) { R(x, 10 + k * 18, 22, 4, 12, '#6a4a2c'); E(x, 12 + k * 18, 20, 7, 6, '#3f7a36'); } }
-  else if (id === 'falla') { R(x, 38, 14, 20, 30, col); E(x, 48, 10, 7, 7, '#f4c8a0'); R(x, 30, 30, 8, 14, '#c8352d'); }
+  else if (id === 'colon') { E(x, 48, 24, 34, 12, '#8a4a2a'); R(x, 16, 24, 64, 20, col); for (let k = 0; k < 5; k++) R(x, 22 + k * 12, 30, 6, 10, '#3e4c5e'); R(x, 14, 22, 68, 3, '#5a3a2a'); }
   else if (id === 'colba') { R(x, 36, 2, 24, 42, col); for (let f = 0; f < 6; f++) for (let k = 0; k < 2; k++) R(x, 40 + k * 10, 6 + f * 6, 6, 4, f === 4 ? '#2a9aa0' : '#4a6a8a'); }
   else { R(x, 20, 16, 56, 28, col); for (let k = 0; k < 4; k++) R(x, 26 + k * 12, 24, 6, 8, '#3e4c5e'); R(x, 18, 12, 60, 5, shade(col, -0.3)); }
   E(x, 80, 10, 5, 5, '#ffe28a');

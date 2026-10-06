@@ -6,7 +6,7 @@
 
 **Sprachen:** Das Spiel läuft standardmässig auf Englisch; Deutsch und Spanisch sind auf dem Titelbildschirm und im Handy unter Optionen wählbar. Die Übersetzungen liegen in `i18n/en.json` und `i18n/es.json` (deutscher Text = Schlüssel).
 
-*Fünf Tage, drei Teams, ein Plan · Montag, 16. März 2026 (Fallas-Woche)*
+*Fünf Tage, drei Teams, ein Plan · Montag, 2. November 2026 bis Freitag, 6. November 2026*
 
 Ein Pixel-Rollenspiel für den Browser: Die Product Owner Simon, Luigi und Dominique fliegen mit ihrem Chef Robin und
 Battery-Pass-Spezialist Lukas von Zürich nach Valencia zum PI Planning bei Colba. Pascal (iOS, aus Leipzig) und Chris
@@ -30,14 +30,14 @@ Kein Server, keine Installation. Funktioniert am Handy und am Computer.
 - **Workshops im Aufenthaltsraum:** Di 16:00 UX mit Elena, Mi 11:00 Softwarearchitektur mit Carlos, Do 11:00 Roadmap mit Chris (Meilensteine und Releases auf sechs Sprints), Fr 11:00 PI-Retrospektive – alles als Minispiele am grossen Bildschirm.
 - **Mittagessen im Aufenthaltsraum:** Dienstag Paella, Mittwoch Smash Burger, Donnerstag Bocadillos, Freitag Healthy Breakfast.
 - **E-Bikes:** Test-Bikes bei Colba oder Miete bei Bici Rent, Akku-Anzeige, Radweg im Turia-Park. Donnerstag Team-Ausfahrt mit Aitor bis zum Strand.
-- **Valencia:** Plaza de la Virgen mit Micalet und Turia-Brunnen, Mercado Central, Lonja, Torres de Serranos, Plaza del Ayuntamiento mit Falla,
+- **Valencia:** Plaza de la Virgen mit Micalet und Turia-Brunnen, Mercado Central, Lonja, Torres de Serranos, Plaza del Ayuntamiento mit Brunnen, Mercado de Colón,
   Museu de Belles Arts, Estación del Norte, Ciudad de las Artes, Strand der Malvarrosa, Marina.
 - **Freizeit:** Segeltörn im Hafen, Shopping (Moda Valencia, Souvenirs), Jamón Ibérico bei Ramón, Bars, Kartbahn (gegen Luigi), Paella-Kochwettbewerb,
   Weindegustation in der Bodega, Museum, Strandfussball, Marina Beach Club (Disco), Padel-Turnier, Fischmarkt.
 - **Asado bei Danny:** Mittwochabend lädt Danny (aus Kuba, wie Bea) in sein Haus im Vorort ein – Garten mit Pool, Hängematte und BBQ-Grill.
   Chorizo, Pollo und Maiskolben vom Grill, Beas Ropa Vieja, Mojito cubano und ein Bass-Solo von Carlos (Hardrock-Band „Stack Overflow“).
-- **Valencia-Ereignisse:** Mascletà täglich um 14 Uhr, Cremà am Donnerstagabend, Wassergericht am Donnerstag um 12, Falleras-Umzug, Gota fría,
-  Möwen am Strand, Peloton im Turia-Park, Valencia-CF-Fans, Horchata-Verkäufer.
+- **Valencia-Ereignisse:** Buñuelos-Stände nach Todos los Santos, Valencia-Spiel am Donnerstagabend in der Bar Pepita, Wassergericht am Donnerstag um 12, Marathon-Training im Turia-Park, Gota fría,
+  Möwen am Strand, Peloton im Turia-Park, Valencia-CF-Fans, Horchata-Verkäufer, Orangenernte.
 - **Körper:** Energie, Hunger, Laune, Promille, Übelkeit, Sonne. Wer trinkt, ohne zu essen und zu schlafen, muss sich übergeben. Zu viel → Filmriss.
 
 ## Steuerung

@@ -1,7 +1,8 @@
 /* ============ Ereignisse in Valencia ============ */
 Story.EVENTS = [
   { id: 'gota', cond: () => hourOf(G.S.time) > 8 && hourOf(G.S.time) < 20 },
-  { id: 'fallera', cond: () => hourOf(G.S.time) > 10 && hourOf(G.S.time) < 21 && today() <= 3 },
+  { id: 'marathon', cond: () => G.player.y < 12 * TS && hourOf(G.S.time) > 7 && hourOf(G.S.time) < 20 },
+  { id: 'bunyols', cond: () => G.player.x > 20 * TS && G.player.x < 50 * TS && G.player.y > 26 * TS && G.player.y < 46 * TS && hourOf(G.S.time) > 10 && hourOf(G.S.time) < 21 },
   { id: 'horchata', cond: () => hourOf(G.S.time) > 10 && hourOf(G.S.time) < 19 },
   { id: 'moewe', cond: () => G.player.x > 86 * TS && G.player.y > 30 * TS && G.player.y < 66 * TS && hourOf(G.S.time) > 8 },
   { id: 'orange', cond: () => hourOf(G.S.time) > 7 },
@@ -10,27 +11,23 @@ Story.EVENTS = [
   { id: 'tourist', cond: () => hourOf(G.S.time) > 9 && hourOf(G.S.time) < 20 },
 ];
 Object.assign(Story, {
-  async ev_mascleta() {
+  async ev_bunyols() {
     G.busy++;
-    await UI.announce(_t('14:00 · Plaza del Ayuntamiento'), _t('Mascletà'), _t('Ohren zu!'));
-    Snd.sfx('boom'); G.fx.shake = 1;
-    await Scene.play('mascleta', { ms: 3200, text: _t('Boom. Boom. BOOM.') });
-    G.fx.shake = 1.2; Snd.sfx('boom'); Snd.sfx('crack');
-    for (let k = 0; k < 20; k++) addPart({ x: G.player.x + rnd(-80, 80), y: G.player.y - rnd(0, 60), vy: -20, life: 2, kind: 'smoke' });
-    achieve('mascleta'); mood(6); energy(4);
-    await this.say(null, pick([_t('Fünf Minuten Böller, 120 Dezibel, der Boden bebt. Die Valencianer stehen mit offenem Mund da – damit die Ohren den Druck ausgleichen. Jetzt weisst du es auch.'), _t('Mascletà! Eine Mutter hält ihrem Baby die Ohren zu, ein Opa lächelt selig. Der Rauch riecht nach Schiesspulver und Churros.')]));
-    if (this.isHere('robin', 'city') || Math.random() < 0.5) await this.say(_t('Robin'), _t('Ist das … normal hier? Jeden Tag? Ich dachte, das Hochhaus stürzt ein.'));
+    const a = tempActor({ x: G.player.x + 44, y: G.player.y, look: npcLook(925, { fem: 1, top: 0, topCol: 14, hat: 4, hatCol: 6, pants: 1, pantsCol: 5, acc: 0 }), dir: 1, name: _t('Buñuelos-Verkäuferin') });
+    const o = await this.ask(_t('Buñuelos-Verkäuferin'), _t('¡Buñuelos de calabaza, calentitos! Zwei Euro, mit Schokolade dreifünfzig. Todos los Santos war am Sonntag – der Stand bleibt die ganze Woche.'), [{ t: _t('Buñuelos mit Schokolade'), r: '3.50 €' }, { t: _t('Nur Buñuelos'), r: '2 €' }, _t('Gracias, no')]);
+    if (o === 0 && pay(3.5)) { consume('bunyols'); consume('churros'); achieve('bunyols'); mood(3); await this.say(null, _t('Kürbisteig, frittiert, Zucker drauf, dazu dicke Schokolade. Die Valencianer essen das zu Todos los Santos – und danach, solange die Stände stehen.')); }
+    else if (o === 1 && pay(2)) { consume('bunyols'); achieve('bunyols'); await this.say(null, _t('Warm, luftig, nach Kürbis. Ohne Schokolade ist es fast gesund. Fast.')); }
+    dropActor(a);
     G.busy--;
   },
-  async ev_crema() {
+  async ev_mestalla() {
     G.busy++;
-    await UI.announce(_t('Donnerstag 22:00'), _t('La Cremà'), _t('Die Fallas brennen'));
-    await Scene.play('crema', { ms: 4200, text: _t('Feuer, Funken, Blaskapelle.') });
-    achieve('crema'); mood(10);
-    const falla = G.map.objs.find((o) => o.cv && o.h === 2 && o.w === 3 && o.x === 33);
-    if (falla) falla.gone = true;
-    await this.say(null, _t('Um Mitternacht brennt die grosse Falla auf der Plaza del Ayuntamiento. Monate Arbeit, in zwanzig Minuten Asche – die Feuerwehr spritzt die Fassaden nass, die Kapelle spielt, und alle weinen ein bisschen. Morgen früh ist der Platz gefegt, als wäre nichts gewesen.'));
-    await this.say(pick(['juanjo', 'dominique', 'estella']), pick([_t('Das ist Valencia: bauen, feiern, verbrennen, von vorne.'), _t('Nächstes Jahr kommt ihr wieder. Zur ganzen Woche.'), _t('Jetzt Churros. Und dann ins Bett – morgen ist Final.')]));
+    await UI.announce(_t('Donnerstag 21:00'), _t('Mestalla'), _t('Valencia CF spielt – Grossleinwand in der Bar Pepita'));
+    Snd.sfx('brass'); G.fx.shake = 0.4;
+    for (const n of G.npcs) if (n.id && n.pose !== 'sit') n.danceIdle = true;
+    achieve('mestalla'); mood(10);
+    await this.say(null, _t('Pepita hat die Leinwand aufgehängt, Juanjo verteilt Schals. Neunzig Minuten „¡Amunt!“, Agua de Valencia – und ein Tor in der Nachspielzeit. Für Valencia. Die Bar explodiert.'));
+    await this.say(pick(['juanjo', 'dominique', 'estella']), pick([_t('Das ist Valencia: leiden, hoffen, jubeln, von vorne.'), _t('Nächstes Jahr kommt ihr ins Mestalla. Echte Tribüne, echte Hymne.'), _t('Jetzt Churros. Und dann ins Bett – morgen ist Final.')]));
     G.busy--;
   },
   async ev_robin() {
@@ -57,20 +54,19 @@ Object.assign(Story, {
     await this.say(null, _t('Von null auf Wolkenbruch in dreissig Sekunden. Die Valencianer rennen unter die Arkaden, die Touristen fotografieren. Du wirst nass. Sehr nass.'));
     G.busy--;
   },
-  async ev_fallera() {
+  async ev_marathon() {
     G.busy++;
-    await UI.announce(_t('Fallas'), _t('Ofrenda-Umzug'), _t('Falleras und Blaskapelle'));
-    Snd.sfx('brass');
+    await UI.announce(_t('Turia-Park'), _t('Marathon-Training'), _t('Valencia-Marathon am 6. Dezember'));
     const y = G.player.y + 60;
     const acts = [];
-    for (let i = 0; i < 7; i++) {
-      const look = i < 4 ? npcLook(900 + i, { fem: 1, hair: 12, hairCol: 0, top: 11, topCol: [13, 4, 9, 14][i], pants: 8, pantsCol: [11, 12, 1, 10][i], jewel: 3, hat: 0 }) : npcLook(910 + i, { top: 7, topCol: 11, pants: 5, pantsCol: 2, hat: 1, hatCol: 2 });
-      const a = tempActor({ x: G.cam.x - 40 - i * 34, y: y + (i % 2) * 10, look, dir: 2, name: i < 4 ? _t('Fallera') : _t('Musiker'), speed: 55, bubble: i >= 4 ? 'note' : null, bubbleT: 1e9 });
+    for (let i = 0; i < 6; i++) {
+      const look = i === 0 && G.S.pid !== 'aitor' ? Object.assign(personLook('aitor'), { top: 5, topCol: 2, pants: 3, pantsCol: 2, shoes: 5, hat: 7, hatCol: 0 }) : npcLook(940 + i, { top: 5, topCol: [4, 8, 10, 12, 0, 6][i], pants: 3, pantsCol: [2, 8, 3, 2, 10, 2][i], shoes: 5, shoesCol: [9, 0, 4, 5, 1, 8][i], hat: 7, hatCol: [0, 1, 6, 2, 9, 7][i] });
+      const a = tempActor({ x: G.cam.x - 40 - i * 30, y: y + (i % 2) * 10, look, dir: 2, name: i === 0 && G.S.pid !== 'aitor' ? _t('Aitor') : _t('Läufer'), speed: 95 });
       acts.push(a);
       a.path = [{ x: G.cam.x + View.w + 80, y: a.y }]; a.onArrive = (b) => dropActor(b);
     }
-    mood(5);
-    await this.say(null, _t('Eine Falla-Kommission zieht vorbei: Falleras in Seide, Brokat und mit Haarschnecken, dahinter die Blaskapelle mit „Paquito el Chocolatero“. Jede Falla bringt Blumen zur Virgen – 20 Tonnen in zwei Tagen.'));
+    mood(3);
+    await this.say(null, _t('Eine Laufgruppe zieht vorbei: Training für den Valencia-Marathon am 6. Dezember – die flachste Strecke Europas, sagt Aitor. Er läuft natürlich mit. Nach 60 Kilometern Velo.'));
     G.busy--;
   },
   async ev_horchata() {

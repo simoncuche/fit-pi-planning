@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.3.0 – 06.10.2026
+- The PI planning now takes place from Monday 2 to Friday 6 November 2026. The Fallas (a March festival) are gone: instead there are buñuelos stands after Todos los Santos, Valencia CF's Thursday match on the big screen at Bar Pepita, marathon training in the Turia park (Valencia Marathon on 6 December), November sea temperatures and the autumn rain as a planning risk.
+- New sight: Mercado de Colón on Calle Colón (modernist market hall from 1916, now cafés) replaces the falla monument; a fountain stands on Plaza del Ayuntamiento.
+
 ## 2.2.0 – 06.10.2026
 - The game is now called "Fit PI Planning – The Game".
 - Four workshops in the lounge, each a minigame: UX workshop with Elena (Tue 16:00), architecture workshop with Carlos (Wed 11:00, place components into layers), roadmap workshop with Chris (Thu 11:00, milestones and releases on six sprints with prerequisites) and the PI retrospective with Simon (Fri 11:00, Keep/Stop/Start). Everyone gathers in the lounge, reminders 15 minutes before, new achievements.

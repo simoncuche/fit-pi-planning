@@ -127,8 +127,10 @@ with sync_playwright() as p:
         time.sleep(0.5)
     assert pg.evaluate("() => window.__dpd === 1"), "Dependency nicht beendet"
     # Freizeit: Mascletà, Strand, Kart (Minispiele abbrechen lassen)
-    run("await warpTo('city', 'hotel'); G.S.time = 1440 + 14 * 60; Story.minute();", 9.0)
-    assert pg.evaluate("() => !!G.S.ach.mascleta"), "Mascletà fehlt"
+    run("await warpTo('city', 'hotel'); G.S.time = 1440 + 14 * 60; G.busy++; await Story.ev_bunyols(); G.busy--;", 2.0, q=[0])
+    assert pg.evaluate("() => !!G.S.ach.bunyols"), "Buñuelos fehlen"
+    run("G.busy++; await Story.ev_mestalla(); G.busy--;", 2.0)
+    assert pg.evaluate("() => !!G.S.ach.mestalla"), "Mestalla fehlt"
     shot("08_city_day")
     run("G.busy++; await Story.ev_gota(); G.busy--;", 1.0)
     run("G.busy++; Story.bikeOn(100); G.busy--;", 0.5)

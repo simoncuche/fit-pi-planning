@@ -82,11 +82,10 @@ MAP_BUILDERS.city = () => {
   cityBlock(m, 1, 33, 18, 4, r);
   cityBlock(m, 1, 38, 18, 5, r);
   cityBlock(m, 9, 19, 10, 4, r);
-  /* ---- Plaza del Ayuntamiento: Rathaus, Falla ---- */
+  /* ---- Plaza del Ayuntamiento: Rathaus, Brunnen ---- */
   m.fill(22, 27, 26, 17, T.PLAZA, (x, y) => ((x * 3 + y) % 4 === 0 ? 1 : 0));
   m.add(objBuilding(22, 27, 26, 5, { floors: 4, wall: '#e8dcc6', roof: '#6a6a70', roofType: 'flat', balcony: true, wins: 'arch', doors: [{ dx: 12, type: 'arch' }, { dx: 13, type: 'arch' }], shopWins: [], sign: { text: 'AJUNTAMENT', bg: '#2a2a3a', fg: '#f4e8c0' }, seed: 21, special: (c, W, H, fy0) => { R(c, W / 2 - 10, fy0 - 26, 20, 26, '#d8ccb0'); R(c, W / 2 - 12, fy0 - 28, 24, 3, '#b8a888'); E(c, W / 2, fy0 - 20, 5, 5, '#f4f2ea'); for (const fx of [W / 2 - 30, W / 2 + 26]) { R(c, fx, fy0 - 14, 1, 14, '#5a5e64'); R(c, fx + 1, fy0 - 13, 7, 2, '#c8a020'); R(c, fx + 1, fy0 - 11, 7, 2, '#c8352d'); R(c, fx + 1, fy0 - 9, 7, 2, '#c8a020'); } } }));
-  m.add(objFalla(33, 36));
-  m.trig(32, 38, 5, 2, { here: true, label: _t('Foto: Falla'), act: () => Story.photo('falla'), cond: () => !G.S.photos.falla });
+  m.add(objFountain(33, 36));
   m.trig(26, 33, 18, 3, { here: true, label: _t('Foto: Plaza del Ayuntamiento'), act: () => Story.photo('ayuntamiento'), cond: () => !G.S.photos.ayuntamiento });
   for (const [x, y] of [[24, 34], [45, 34], [24, 41], [45, 41]]) m.add(objPalm(x, y, 46));
   for (const [x, y] of [[28, 36], [41, 36]]) m.add(objLamp(x, y, 'old'));
@@ -137,7 +136,10 @@ MAP_BUILDERS.city = () => {
   m.add(objBuilding(43, 46, 5, 4, { floors: 3, wall: '#d8e0c0', roof: '#a86a4a', roofType: 'flat', doors: [{ dx: 2, type: 'glass' }], shopWins: [0, 4], goods: ['#2a9aa0', '#1e1e22'], sign: { text: _t('BICI RENT'), bg: '#2a9aa0', fg: '#ffffff' }, seed: 55 }));
   m.trig(45, 49, 1, 1, { label: _t('Bici Rent: E-Bike mieten'), act: () => Story.bikeRental('rent') });
   m.add(objBikeStand(43, 50, 3));
-  cityBlock(m, 50, 46, 19, 5, r);
+  /* Mercado de Colón (modernistische Markthalle, 1916) */
+  m.add(objBuilding(50, 46, 10, 4, { floors: 2, wall: '#e8d8c0', roof: '#7a6a5a', roofType: 'gable', balcony: false, wins: 'arch', doors: [{ dx: 4, type: 'arch' }, { dx: 5, type: 'arch' }], shopWins: [], sign: { text: _t('MERCADO DE COLÓN'), bg: '#8a4a2a' } }));
+  m.trig(50, 50, 10, 1, { here: true, label: _t('Foto: Mercado de Colón'), act: () => Story.photo('colon'), cond: () => !G.S.photos.colon });
+  cityBlock(m, 61, 46, 8, 5, r);
   cityBlock(m, 72, 46, 10, 5, r);
   m.add(objSignpost(21, 50, 'BANKOMAT', '#1e3a6a')); m.trig(21, 50, 1, 1, { label: _t('Bankomat'), act: () => Story.atm() });
   m.fill(21, 50, 1, 1, T.PAVE);

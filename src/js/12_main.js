@@ -51,12 +51,12 @@ function showTitle() {
   t.hidden = false;
   t.innerHTML = _t`<div class="sunball" aria-hidden="true"></div><div class="skyline" aria-hidden="true">${SKYLINE_SVG}</div><div class="waves" aria-hidden="true"></div>
   <div class="title-card"><div class="boarding">
-    <div class="bp-head"><span>Boarding Pass · Economy</span><b>PI 2026-03</b></div>
+    <div class="bp-head"><span>Boarding Pass · Economy</span><b>PI 2026-11</b></div>
     <div class="bp-body">
       <h1 class="title-name">Fit PI Planning <span>The Game</span></h1>
       <div class="bp-route"><div><small>Von</small><b>ZRH</b></div><span class="plane">✈</span><div><small>Nach</small><b>VLC</b></div></div>
-      <div class="bp-grid"><div><small>Datum</small><b>16.03.2026</b></div><div><small>Gate</small><b>B42</b></div><div><small>Sitz</small><b>14A</b></div><div><small>Ziel</small><b>Colba, 1. Stock</b></div></div>
-      <p class="title-sub">Fünf Tage, drei Teams, ein Plan. Flieg mit den POs nach Valencia, finde den Koffer, das Hotel Kramer und die richtige Klingel am Colba-Hochhaus. Plane mit Indurain, Meeseeks und Rocket das nächste halbe Jahr – und erleb dazwischen Paella, Mascletà, Kartbahn, Segeltörn und E-Bike-Ausfahrten.</p>
+      <div class="bp-grid"><div><small>Datum</small><b>02.11.2026</b></div><div><small>Gate</small><b>B42</b></div><div><small>Sitz</small><b>14A</b></div><div><small>Ziel</small><b>Colba, 1. Stock</b></div></div>
+      <p class="title-sub">Fünf Tage, drei Teams, ein Plan. Flieg mit den POs nach Valencia, finde den Koffer, das Hotel Kramer und die richtige Klingel am Colba-Hochhaus. Plane mit Indurain, Meeseeks und Rocket das nächste halbe Jahr – und erleb dazwischen Paella, Mestalla, Kartbahn, Segeltörn und E-Bike-Ausfahrten.</p>
       <div class="title-btns">
         ${save && !save.finished ? _t`<button class="btn primary" id="tCont">Weiterspielen · ${save.name}, ${dateStr(save.time)} ${clockStr(save.time)}</button>` : ''}
         ${save && save.finished ? _t`<p class="title-sub">Letztes Planning abgeschlossen: ${save.name}, ${Object.keys(save.ach || {}).length} Erlebnisse, Plan ${Math.round(save.plan[save.team] || 0)} %.</p>` : ''}

@@ -34,7 +34,7 @@ zugreifen – sonst TDZ-Fehler bei `const`. Darum heisst die Ereignis-Datei `09_
 | `08_ui.js` | HUD (Badge, Post-it mit Ziel, PI-Plan-Balken), Dialoge (`UI.say/ask`), Läden `UI.shop`, Overlays, Ankündigung `UI.announce`, Handy `Phone` (Sprint, Team, Karte, Tasche, Fotos, Status, Optionen), Schnappschüsse `Snap`, Postkarten `drawSightCard` |
 | `09_people.js` | `PEOPLE` (7 Reisende, 14 Colba-Leute inkl. Daniel, Isabel; `tag` = lustige Kurzbeschreibung), `PEOPLE_LOOKS`, `TRAVELLERS`, `SWISS`, `COLBA`, `personLook`, `buildFriends`, `myTeam`, `isPO`, `teamLead`, Abhängigkeiten `DEPS` |
 | `09_story.js` | Stufen `STAGES` (`koffer → sammeln → taxi → hotel → checkin → zimmer → bar → free`), Öffnungszeiten `OPEN`, Läden `SHOPS`, Mittagsplan `LUNCH`, `Story.*` (Ziele, Zeitplan `schedule`/`whereIs`/`populate`, Flughafen, Hotel, Klingel, Kickoff, Planning-Aktivitäten, Ausfahrt, Final, Aktivitäten in der Stadt, Gespräche `lines`, Körper, Heimflug), `Ending` |
-| `09_zevents.js` | Ereignisse: Mascletà (14:00, Mo–Do), Cremà (Do 22:00), Robin verirrt sich, Gota fría, Falleras-Umzug, Horchata, Möwe, Orange, Peloton, CF-Fans, Tourist |
+| `09_zevents.js` | Ereignisse: Valencia-Spiel in der Bar (Do 21:00), Buñuelos-Stand auf der Plaza, Marathon-Training im Turia-Park, Robin verirrt sich, Gota fría, Horchata, Möwe, Orange, Peloton, CF-Fans, Tourist |
 | `10_planning.js` | `Mini.run` (Rahmen) und Planning-Minispiele: `poker`, `canopen`, `roam`, `board`, `deps`, `confidence` |
 | `10_workshops.js` | Workshops als Minispiele (`Mini.ux`, `Mini.arch`, `Mini.roadmap`, `Mini.retro`) mit den Rahmen `quizCards`, `sortCards`, `placeBoard`; Zeitplan in `Story.WORKSHOPS` |
 | `11_minigames.js` | Freizeit: `suitcase`, `bell`, `kart`, `sail`, `paella`, `wine`, `soccer`, `dance`, `padel`, `ride` |
@@ -66,6 +66,6 @@ zugreifen – sonst TDZ-Fehler bei `const`. Darum heisst die Ereignis-Datei `09_
   Hotelzimmer von Juanjo, Samstag Verabschiedung statt Flug). `Story.isHere(pid)` ist wahr, `UI.speaker` zeigt die Spielfigur, wenn eine
   Script-Zeile ihren Namen oder ihre Id als Sprecher hat. Rollen in `PEOPLE` sind neutrale Berufsbezeichnungen.
 - Wo wer ist: `Story.schedule(id)` → Ortskürzel, `Story.LOC` → Text/Karte/Koordinaten, `Story.populate(m)` platziert Leute beim Betreten.
-- Datum: Tag 0 ist Montag, 16. März 2026 (`START_DATE`, `DAYS`). Werktage `isWorkday()` sind Di–Fr (Tag 1–4), Samstag Heimflug (`Story.goHome`).
+- Datum: Tag 0 ist Montag, 2. November 2026 (`START_DATE`, `DAYS`). Werktage `isWorkday()` sind Di–Fr (Tag 1–4), Samstag Heimflug (`Story.goHome`).
 - Spielstand: `localStorage` unter `pi-valencia-v1` (Schnappschüsse unter `…-snaps`). Bei Strukturänderungen `v` in `newState` und `SAVE_KEY` erhöhen.
 - Deutsche Quelltexte mit Schweizer Färbung (ss statt ß); Englisch ist die Standardsprache im Spiel. Fakten zu Sehenswürdigkeiten sind recherchiert – bei neuen Fakten prüfen.
