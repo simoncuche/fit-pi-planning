@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.3.3 – 06.10.2026
+- The action button is more forgiving: people and objects count when you stand next to them or slightly diagonal, not only when a point right in front of you hits them.
+
 ## 2.3.2 – 06.10.2026
 - Suitcases now ride on the baggage carousels (top belt to the right, bottom belt to the left) and the belt slats move.
 - The camera lets the top edge of a map appear below the HUD, so the airport's glass front, signs and arrivals board are visible.

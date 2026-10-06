@@ -481,24 +481,33 @@ function vignette(c, w, h, a, rgb) {
 /* ============ Aktualisieren ============ */
 function facingPoint(dist = 18) { const p = G.player, d = DIRV[p.dir]; return { x: p.x + d[0] * dist, y: p.y - 6 + d[1] * dist }; }
 function findInteraction() {
-  const p = G.player, m = G.map;
-  const fp = facingPoint(18);
-  let best = null, bd = 26, fol = null, fd = 18;
+  /* Grosszügig: Blickpunkt vor der Figur, die Figur selbst und ein Umkreis von knapp einer Kachel zählen. */
+  const p = G.player, m = G.map, dv = DIRV[p.dir];
+  const fp = facingPoint(18), px = p.x, py = p.y - 6;
+  let best = null, bd = 40, fol = null, fd = 30;
   for (const n of G.npcs) {
     if (n.hidden || !n.talk) continue;
-    const d = Math.hypot(n.x - fp.x, n.y - 6 - fp.y);
+    const d = Math.min(Math.hypot(n.x - fp.x, n.y - 6 - fp.y), Math.hypot(n.x - px, n.y - 6 - py) + 8);
     if (n.follower) { if (d < fd) { fd = d; fol = { npc: n, label: n.label || _t('Reden: ') + n.name }; } continue; }
     if (d < bd) { bd = d; best = { npc: n, label: n.label || _t('Reden: ') + n.name }; }
   }
   if (best) return best;
-  const ftx = Math.floor(fp.x / TS), fty = Math.floor(fp.y / TS);
-  const ptx = Math.floor(p.x / TS), pty = Math.floor((p.y - 3) / TS);
+  const lbl = (t) => ({ trig: t, label: typeof t.label === 'function' ? t.label() : t.label });
+  const inside = (t, x, y, pad = 0) => x >= t.x * TS - pad && x < (t.x + t.w) * TS + pad && y >= t.y * TS - pad && y < (t.y + t.h) * TS + pad;
+  let near = null, nd = 1e9;
   for (const t of m.trigs) {
     if (t.auto || (t.cond && !t.cond())) continue;
-    const inF = ftx >= t.x && ftx < t.x + t.w && fty >= t.y && fty < t.y + t.h;
-    const inP = t.here && ptx >= t.x && ptx < t.x + t.w && pty >= t.y && pty < t.y + t.h;
-    if (inF || inP) return { trig: t, label: typeof t.label === 'function' ? t.label() : t.label };
+    if (inside(t, fp.x, fp.y, 6) || (t.here && inside(t, px, py + 3))) return lbl(t);
+    /* Umkreis: nächster Punkt des Trigger-Rechtecks höchstens 30 px entfernt und nicht entgegen der Blickrichtung */
+    const cx = clamp(px, t.x * TS, (t.x + t.w) * TS), cy = clamp(py, t.y * TS, (t.y + t.h) * TS);
+    const dx = cx - px, dy = cy - py, d = Math.hypot(dx, dy);
+    if (d > 30) continue;
+    const dot = d < 12 ? 1 : (dx * dv[0] + dy * dv[1]) / d;
+    if (dot < -0.3) continue;
+    const score = d - dot * 6;
+    if (score < nd) { nd = score; near = t; }
   }
+  if (near) return lbl(near);
   if (fol) return fol;
   if (G.player.bike) return { label: _t('Vom E-Bike steigen'), act: () => Story.bikeOff() };
   return null;
