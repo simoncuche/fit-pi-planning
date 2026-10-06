@@ -26,12 +26,19 @@ const Mini = {
 
   /* ---------- Planning Poker: Features schätzen, Konsens mit dem Team finden ---------- */
   FEATURES: {
-    indurain: [[_t('Motor-Diagnose über CANopen'), _t('Fehlercodes 0x60A0 auslesen und in der Werkstatt-App anzeigen'), 8], [_t('Battery-SOC-Stream'), _t('State of Charge alle 500 ms als PDO publizieren'), 5], [_t('OTA-Update-Protokoll'), _t('SDO-Blocktransfer für Firmware, mit Rollback'), 13], [_t('Heartbeat-Überwachung'), _t('Node-Guarding, Timeout nach 3 s'), 3], [_t('CAN-Logger im Prüfstand'), _t('Trace-Dateien aufzeichnen und exportieren'), 5], [_t('Bremslicht-Signal'), _t('Rücklicht bei Rekuperation ansteuern'), 2]],
-    meeseeks: [[_t('Akku-Ring in der App'), _t('Elenas Design-System: Ring mit SOC und Restreichweite'), 5], [_t('Login-SDK'), _t('OAuth für Android, iOS und Web, Biometrie'), 13], [_t('Batteriepass-QR'), _t('QR-Code scannen, Pass anzeigen'), 8], [_t('Bluetooth-Pairing'), _t('Bike per BLE koppeln, CAN-Bridge'), 8], [_t('Onboarding-Flow'), _t('Pascals Entwurf aus Frankfurt: fünf Screens'), 3], [_t('Dark Mode'), _t('Alle Screens, beide Plattformen'), 2]],
-    rocket: [[_t('Battery-Pass-API'), _t('REST und GraphQL, EU-Datenmodell nach Lukas'), 13], [_t('CAN-Parser-Refactoring'), _t('Carlos: 4000 Zeilen in Module zerlegen'), 8], [_t('Händlerportal'), _t('Web-App für Bike-Händler, Login über Meeseeks-SDK'), 13], [_t('Update-Server'), _t('Firmware-Pakete verwalten, OTA ausrollen'), 8], [_t('Monitoring-Dashboard'), _t('Grafana für Flottendaten'), 5], [_t('Dokumentation'), _t('Salva schreibt alles auf'), 3]],
+    indurain: [[_t('Motor-Diagnose über CANopen'), _t('Fehlercodes 0x60A0 auslesen und in der Werkstatt-App anzeigen'), 8], [_t('Battery-SOC-Stream'), _t('State of Charge alle 500 ms als PDO publizieren'), 5], [_t('OTA-Update-Protokoll'), _t('SDO-Blocktransfer für Firmware, mit Rollback'), 13], [_t('Heartbeat-Überwachung'), _t('Node-Guarding, Timeout nach 3 s'), 3], [_t('CAN-Logger im Prüfstand'), _t('Trace-Dateien aufzeichnen und exportieren'), 5], [_t('Bremslicht-Signal'), _t('Rücklicht bei Rekuperation ansteuern'), 2], [_t('Rekuperations-Kennlinie'), _t('Energierückgewinnung beim Bremsen abstimmen, drei Stufen'), 5], [_t('Schiebehilfe'), _t('Walk-Assist bis 6 km/h über den Controller'), 3], [_t('Lichtsteuerung über CAN'), _t('Front- und Rücklicht als CANopen-Objekt 0x2010'), 3], [_t('Diebstahlschutz-Modus'), _t('Motor sperren, wenn das Bike per App gesperrt ist'), 8], [_t('Temperatur-Derating'), _t('Leistung drosseln, wenn der Motor über 80 °C kommt'), 5], [_t('Tretsensor-Kalibrierung'), _t('Drehmomentsensor im Prüfstand automatisch abgleichen'), 8], [_t('Fehlerspeicher löschen'), _t('Service-Funktion für die Werkstatt, mit Protokoll'), 2], [_t('Zweitakku-Umschaltung'), _t('Range-Extender nahtlos zuschalten'), 13], [_t('Bootloader-Signatur'), _t('Firmware nur mit gültiger Signatur flashen'), 8], [_t('Reifendruck-Sensor'), _t('BLE-Sensor einbinden und auf dem Display zeigen'), 5], [_t('Display-Protokoll v2'), _t('Neues Bedienteil mit höherer Baudrate anbinden'), 8], [_t('Standby-Stromverbrauch'), _t('Sleep-Mode unter 1 mA bringen'), 5]],
+    meeseeks: [[_t('Akku-Ring in der App'), _t('Elenas Design-System: Ring mit SOC und Restreichweite'), 5], [_t('Login-SDK'), _t('OAuth für Android, iOS und Web, Biometrie'), 13], [_t('Batteriepass-QR'), _t('QR-Code scannen, Pass anzeigen'), 8], [_t('Bluetooth-Pairing'), _t('Bike per BLE koppeln, CAN-Bridge'), 8], [_t('Onboarding-Flow'), _t('Pascals Entwurf aus Frankfurt: fünf Screens'), 3], [_t('Dark Mode'), _t('Alle Screens, beide Plattformen'), 2], [_t('Routenplaner'), _t('Reichweite auf der Karte einzeichnen, mit Höhenprofil'), 13], [_t('Push-Benachrichtigungen'), _t('Akku voll, Service fällig, Bike bewegt sich'), 5], [_t('Fahrtenbuch'), _t('Alle Fahrten mit Strecke, Höhenmetern und Verbrauch'), 8], [_t('Diebstahlalarm'), _t('Bewegung ohne entsperrte App meldet sich aufs Handy'), 8], [_t('Widget für den Homescreen'), _t('Akkustand sehen, ohne die App zu öffnen'), 3], [_t('Mehrere Bikes verwalten'), _t('Familienkonto mit bis zu fünf Bikes'), 5], [_t('Service-Erinnerung'), _t('Nach 1000 km die Werkstatt vorschlagen'), 2], [_t('Sprachen ES und IT'), _t('Lokalisierung für Spanien und Italien'), 3], [_t('Offline-Karten'), _t('Kartenkacheln für die Tour vorab laden'), 8], [_t('Fitness-Export'), _t('Fahrten an Strava und Apple Health übergeben'), 5], [_t('Barrierefreiheit'), _t('Screenreader und grosse Schrift auf allen Screens'), 5], [_t('Release-Pipeline für die Stores'), _t('Automatisch bauen, testen und einreichen'), 8]],
+    rocket: [[_t('Battery-Pass-API'), _t('REST und GraphQL, EU-Datenmodell nach Lukas'), 13], [_t('CAN-Parser-Refactoring'), _t('Carlos: 4000 Zeilen in Module zerlegen'), 8], [_t('Händlerportal'), _t('Web-App für Bike-Händler, Login über Meeseeks-SDK'), 13], [_t('Update-Server'), _t('Firmware-Pakete verwalten, OTA ausrollen'), 8], [_t('Monitoring-Dashboard'), _t('Grafana für Flottendaten'), 5], [_t('Dokumentation'), _t('Salva schreibt alles auf'), 3], [_t('Flotten-Export'), _t('CSV und PDF für Händler und Verleiher'), 3], [_t('Garantie-Workflow'), _t('Garantiefall erfassen, prüfen, freigeben'), 8], [_t('Rechte und Rollen'), _t('Händler, Werkstatt, Admin mit Berechtigungen'), 5], [_t('Audit-Log'), _t('Jede Änderung nachvollziehbar speichern'), 5], [_t('Firmware-Freigabestufen'), _t('Beta, Pilot, Alle – mit Rollback'), 8], [_t('Datenlöschung nach DSGVO'), _t('Konto und Fahrdaten auf Wunsch löschen'), 5], [_t('Zweite Region'), _t('Failover nach Frankfurt, Lastverteilung'), 13], [_t('Händler-Onboarding'), _t('Einladung, Vertrag, erster Login'), 5], [_t('Reporting-API'), _t('Kennzahlen pro Flotte als Endpunkt'), 5], [_t('Ersatzteil-Katalog'), _t('Teile pro Bike-Modell mit Lagerbestand'), 8], [_t('Alarmierung'), _t('Pager, wenn der Update-Server ausfällt'), 3], [_t('Testdaten-Generator'), _t('Tausend Bikes für die Lasttests'), 2]],
+  },
+  /* Schon geschätzte Features merken (Flags est[team]), damit nichts zweimal geschätzt wird */
+  pickFresh(list, key, n, name) {
+    const f = G.S.flags, seen = (f[key] = f[key] || {});
+    let pool = list.filter((e) => !seen[name(e)]);
+    if (pool.length < n) { for (const k of Object.keys(seen)) delete seen[k]; pool = list.slice(); }
+    return { feats: shuffle(pool).slice(0, n), mark: (e) => { seen[name(e)] = 1; } };
   },
   poker(team) {
-    const feats = shuffle(this.FEATURES[team].slice()).slice(0, 4);
+    const { feats, mark } = this.pickFresh(this.FEATURES[team], 'est_' + team, 4, (e) => e[0]);
     const CARDS = [1, 2, 3, 5, 8, 13, 20];
     const members = TEAMS[team].members.filter((id) => id !== G.S.pid).slice(0, 4);
     const names = members.map(fname);
@@ -61,7 +68,7 @@ const Mini = {
         };
         const nx = o.querySelector('#pkNext'); if (nx) nx.onclick = () => {
           const agree = votes.every((v) => Math.abs(CARDS.indexOf(v) - CARDS.indexOf(sel)) <= 1);
-          if (agree || round >= 2) { if (agree && Math.abs(CARDS.indexOf(sel) - CARDS.indexOf(ref)) <= 1) consensus++; else if (agree) consensus += 0.5; idx++; round = 0; votes = null; sel = null; if (idx >= feats.length) { fin({ consensus: Math.round(consensus), total: feats.length }); return; } }
+          if (agree || round >= 2) { if (agree && Math.abs(CARDS.indexOf(sel) - CARDS.indexOf(ref)) <= 1) consensus++; else if (agree) consensus += 0.5; mark(feats[idx]); idx++; round = 0; votes = null; sel = null; if (idx >= feats.length) { fin({ consensus: Math.round(consensus), total: feats.length }); return; } }
           else { round++; votes = null; sel = null; }
           render();
         };
@@ -73,7 +80,7 @@ const Mini = {
   /* ---------- CANopen-Index-Quiz mit Fran ---------- */
   CAN: [[_t('Heartbeat Producer Time'), '0x1017', ['0x1017', '0x1005', '0x6040']], [_t('Battery State of Charge'), '0x6060', ['0x6060', '0x6064', '0x1018']], [_t('Fahrgeschwindigkeit'), '0x6064', ['0x6064', '0x6060', '0x1000']], [_t('Motortemperatur'), '0x6070', ['0x6070', '0x6080', '0x1400']], [_t('Battery State of Health'), '0x6080', ['0x6080', '0x6060', '0x1800']], [_t('Unterstützungsstufe (Assist Level)'), '0x6090', ['0x6090', '0x6040', '0x2000']], [_t('Fehlercode des Controllers'), '0x60A0', ['0x60A0', '0x1001', '0x6064']], [_t('Identity Object (Hersteller-ID)'), '0x1018', ['0x1018', '0x1000', '0x1017']], [_t('Controlword (Motor ein/aus)'), '0x6040', ['0x6040', '0x6041', '0x6090']], [_t('Device Type'), '0x1000', ['0x1000', '0x1001', '0x1018']]],
   canopen() {
-    const qs = shuffle(this.CAN.slice()).slice(0, 5);
+    const { feats: qs, mark } = this.pickFresh(this.CAN, 'can_seen', 5, (e) => e[1]);
     let idx = 0, correct = 0, msg = '';
     const o = UI.overlay('', null);
     return new Promise((resolve) => {
@@ -92,7 +99,7 @@ const Mini = {
           </div></div>`;
         o.querySelector('#cqFran').getContext('2d').drawImage(portraitCanvas(personLook('fran'), PEOPLE.fran.bg), 0, 0);
         o.querySelector('#cqX').onclick = () => fin(null);
-        o.querySelectorAll('.pcard[data-a]').forEach((b) => b.onclick = () => { if (b.dataset.a === ans) { correct++; msg = pick([_t('¡Eso es!'), _t('Richtig. Weiter.'), _t('Du hast zugehört.')]); Snd.sfx('ok'); } else { msg = _t`Nein – ${ans}. ${pick([_t('Merk dir das.'), _t('Steht auf dem Prüfstand.'), _t('Nochmal: Objektverzeichnis.')])}`; Snd.sfx('error'); } idx++; render(); });
+        o.querySelectorAll('.pcard[data-a]').forEach((b) => b.onclick = () => { if (b.dataset.a === ans) { correct++; msg = pick([_t('¡Eso es!'), _t('Richtig. Weiter.'), _t('Du hast zugehört.')]); Snd.sfx('ok'); } else { msg = _t`Nein – ${ans}. ${pick([_t('Merk dir das.'), _t('Steht auf dem Prüfstand.'), _t('Nochmal: Objektverzeichnis.')])}`; Snd.sfx('error'); } mark(qs[idx]); idx++; render(); });
       };
       render();
     });

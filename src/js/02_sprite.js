@@ -289,7 +289,7 @@ function drawSprite(x, L, dir, pose) {
     const hs = L.hair, hd = hairD;
     const W0 = 8 - (L.head === 5 ? 1 : 0), W1 = 19 + (L.head === 5 ? 1 : 0);
     const backHair = (y0, y1, x0 = W0, x1 = W1) => { r(x0, y0, x1 - x0 + 1, y1 - y0 + 1, hair); r(x1 - 1, y0, 2, y1 - y0 + 1, hd); };
-    if (hs === 1) for (let yy = hy; yy <= hy + 6; yy++) for (let xx = W0; xx <= W1; xx++) if ((xx + yy) % 2 === 0) p(xx, yy, mix(hair, skin, 0.4));
+    if (hs === 1) { for (let yy = hy; yy <= hy + 6; yy++) for (let xx = W0; xx <= W1; xx++) if ((xx + yy) % 2 === 0) p(xx, yy, mix(hair, skin, 0.4)); }
     else if (hs === 10) { backHair(hy + 2, hy + 7); }
     else if (hs === 7) { E(x, 13.5, hy + 2, 9, 8, hair); r(W0 - 2, hy + 1, 2, 9, hair); r(W1 + 1, hy + 1, 2, 9, hd); }
     else if (hs === 9 || hs === 14) { backHair(hy - 2, hy + (hs === 14 ? 20 : 14), W0 - 1, W1 + 1); }

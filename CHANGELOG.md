@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.7.1 – 06.10.2026
+- Seen from behind, every figure now shows their hairstyle: a stray `else` meant that from the back only stubble was drawn and everyone else looked bald.
+- Planning Poker no longer repeats stories: each team has 18 features now, the game remembers which ones were already estimated and deals only fresh ones. The CANopen quiz prefers questions Fran has not asked yet.
+
 ## 2.7.0 – 06.10.2026
 - Appointments count: Bar Pepita on Monday, the kickoff, the four workshops, the team ride and the final presentation must be reached at most one hour late. Reminders come 30 minutes before, at the time and 15 minutes before the deadline. Miss one and the game stops with "Appointment missed": restart two hours before the appointment (a checkpoint) or end the game.
 - At the office the people move to the right room when the schedule changes: when the kickoff, a workshop, the team ride or the final starts, everyone gathers there even if you were already in the building.
