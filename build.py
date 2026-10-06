@@ -86,6 +86,10 @@ full = f"""<!doctype html>
 </html>
 """
 (DIST / "index.html").write_text(full, encoding="utf-8")
+# Trailer-Video (media/trailer.mp4) mit ausliefern
+import shutil
+if (ROOT / "media" / "trailer.mp4").exists():
+    shutil.copyfile(ROOT / "media" / "trailer.mp4", DIST / "trailer.mp4")
 
 # ---- App-Icon (Pixel-Orange mit Blatt auf Meerblau), Manifest und Versionsdatei ----
 ICON = [

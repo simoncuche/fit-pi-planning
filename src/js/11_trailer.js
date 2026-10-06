@@ -6,15 +6,29 @@ const Trailer = {
     if (this.done) return this.done.promise;
     let resolve; const promise = new Promise((r) => { resolve = r; }); this.done = { promise, resolve };
     const el = document.createElement('div'); el.id = 'intro'; el.setAttribute('role', 'button'); el.setAttribute('aria-label', _t('Trailer – tippen zum Überspringen'));
-    this.cv = document.createElement('canvas'); el.appendChild(this.cv); document.body.appendChild(el); this.el = el;
+    this.cv = document.createElement('canvas'); el.appendChild(this.cv);
+    const vb = document.createElement('button'); vb.className = 'btn intro-trailer'; vb.type = 'button'; vb.textContent = '▶ ' + _t('Trailer'); vb.setAttribute('aria-label', _t('Trailer ansehen'));
+    vb.addEventListener('pointerdown', (e) => e.stopPropagation()); vb.addEventListener('click', (e) => { e.stopPropagation(); Trailer.showVideo(); }); el.appendChild(vb);
+    document.body.appendChild(el); this.el = el;
     this.x = this.cv.getContext('2d');
     this.resize = () => this._resize(); this._resize(); window.addEventListener('resize', this.resize);
-    this.onTap = (e) => { if (e.type === 'keydown' && (e.key === 'Tab' || e.altKey || e.ctrlKey || e.metaKey)) return; e.preventDefault(); this.tap(); };
+    this.onTap = (e) => { if (document.getElementById('trailerVid')) return; if (e.type === 'keydown' && (e.key === 'Tab' || e.altKey || e.ctrlKey || e.metaKey)) return; e.preventDefault(); this.tap(); };
     el.addEventListener('pointerdown', this.onTap); window.addEventListener('keydown', this.onTap);
     this.t0 = null; this.jump = 0;
     const loop = (ts) => { if (!this.done) return; this.frame(ts); this.raf = requestAnimationFrame(loop); };
     this.raf = requestAnimationFrame(loop);
     return promise;
+  },
+  /* Trailer-Video (dist/trailer.mp4) im Overlay abspielen; auch von der Bordkarte aus */
+  showVideo() {
+    if (document.getElementById('trailerVid')) return;
+    const o = document.createElement('div'); o.id = 'trailerVid'; o.setAttribute('role', 'dialog'); o.setAttribute('aria-label', _t('Trailer'));
+    o.innerHTML = `<video src="trailer.mp4" controls autoplay playsinline preload="metadata"></video><button class="btn vid-close" type="button" aria-label="${_t('Schliessen')}">✕</button>`;
+    const close = () => { const v = o.querySelector('video'); try { v.pause(); } catch (e) {} o.remove(); window.removeEventListener('keydown', esc); };
+    const esc = (e) => { if (e.key === 'Escape') close(); };
+    o.querySelector('.vid-close').onclick = close; o.addEventListener('click', (e) => { if (e.target === o) close(); }); o.addEventListener('pointerdown', (e) => e.stopPropagation());
+    window.addEventListener('keydown', esc); document.body.appendChild(o);
+    Snd.init(); const v = o.querySelector('video'); v.play && v.play().catch(() => {});
   },
   stop() {
     if (!this.done) return;

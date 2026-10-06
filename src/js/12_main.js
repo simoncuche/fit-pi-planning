@@ -73,6 +73,8 @@ function showTitle() {
   t.querySelector('.barcode').insertAdjacentHTML('beforebegin', `<div class="langs" role="group" aria-label="${_t('Sprache')}">${Object.entries(LANGS).map(([k, n]) => `<button class="lang${k === LANG ? ' on' : ''}" data-lang="${k}"${k === LANG ? ' aria-current="true"' : ''}>${n}</button>`).join('')}</div>`);
   t.querySelectorAll('.lang').forEach((b) => { b.onclick = () => setLang(b.dataset.lang); });
   const logBtn = t.querySelector('#tLog'), logBox = t.querySelector('#tChangelog');
+  logBtn.insertAdjacentHTML('beforebegin', `<button class="link" id="tTrailer" type="button">▶ ${_t('Trailer')}</button>`);
+  t.querySelector('#tTrailer').onclick = () => Trailer.showVideo();
   logBtn.onclick = () => { const open = logBox.hidden; logBox.hidden = !open; logBtn.textContent = open ? _t('Historie schliessen') : _t('Was ist neu?'); logBtn.setAttribute('aria-expanded', String(open)); if (open) logBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); };
   const cont = t.querySelector('#tCont');
   if (cont) cont.onclick = () => { Snd.init(); startGame(save); };

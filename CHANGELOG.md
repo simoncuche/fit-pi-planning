@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.5.2 – 06.10.2026
+- The trailer video ships with the game: a "▶ Trailer" button on the start screen and a link on the boarding pass play it in an overlay.
+
 ## 2.5.1 – 06.10.2026
 - Tracking is on: games report to the shared Firebase database (branch `pi`), the tracker page shows live data.
 
