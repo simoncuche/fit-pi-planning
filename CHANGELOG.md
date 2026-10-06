@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.5.0 – 06.10.2026
+- Boarding asks for your own name: a required name field next to the chosen character; the name shows up in the game and in the tracker.
+- Tracker page like the Wiehnachtsreisli: `tracker.html` lists every device with progress, PI plan of all teams, stats, achievements, events, workshops and records, with leaderboards and finished games. Games send their state to a Firebase Realtime Database (URL in `tracking.json` or repo variable `TRACK_DB`; empty = off). Players can switch "Share progress" off in the options.
+
 ## 2.4.1 – 06.10.2026
 - The start screen shows only the trailer's final title card (crew lineup, key numbers, tap to start); the full fast-cut sequence lives in the trailer video instead.
 - Character selection and the phone's team tab no longer separate the travel group from the Colba people: one list of everyone, and the team tab groups by team (PO first) plus "Others".

@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#141a2e">
+<meta name="robots" content="noindex">
+<title>Fit PI Planning · Tracker</title>
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Oswald:wght@500;600;700&family=Pixelify+Sans:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --board: #141a2e; --board-2: #1b2340; --board-3: #222c4e; --line: #2e3a60;
+  --ink: #f4f0e6; --dim: #aab3c6; --amber: #f0a23a; --teal: #2a9aa0; --ok: #6cc46f; --warn: #f0a23a; --bad: #e2554a; --blue: #7ad0d8;
+  --f-pixel: 'Pixelify Sans', ui-monospace, monospace; --f-sign: 'Oswald', 'Arial Narrow', sans-serif; --f-body: 'Nunito', 'Helvetica Neue', Arial, sans-serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: #0e1116; color: var(--ink); font-family: var(--f-body); font-size: 15px; }
+body { min-height: 100vh; background: radial-gradient(1200px 500px at 50% -200px, #2a3a6a 0%, #0e1116 70%) fixed; }
+.wrap { max-width: 1240px; margin: 0 auto; padding: 20px 16px 48px; }
+header { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px 20px; margin-bottom: 18px; }
+h1 { font-family: var(--f-pixel); font-weight: 700; font-size: 28px; margin: 0; color: var(--amber); letter-spacing: 0.5px; line-height: 1.1; }
+h1 small { display: block; font-family: var(--f-sign); font-weight: 500; font-size: 15px; color: var(--dim); letter-spacing: 0.3px; margin-top: 4px; }
+.head-r { margin-left: auto; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.pill { font-family: var(--f-sign); font-size: 14px; padding: 6px 12px; border-radius: 999px; background: var(--board-2); border: 1px solid var(--line); color: var(--dim); display: inline-flex; align-items: center; gap: 8px; }
+.pill i { width: 8px; height: 8px; border-radius: 50%; background: var(--dim); display: inline-block; }
+.pill.live i { background: var(--ok); animation: pulse 2s infinite; }
+.pill.err i { background: var(--bad); }
+@keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(108, 196, 111, 0.55); } 70% { box-shadow: 0 0 0 8px rgba(108, 196, 111, 0); } 100% { box-shadow: 0 0 0 0 rgba(108, 196, 111, 0); } }
+button { font-family: var(--f-sign); font-weight: 600; font-size: 14px; color: var(--ink); background: var(--board-3); border: 1px solid var(--line); border-radius: 8px; padding: 7px 12px; cursor: pointer; }
+button:hover { border-color: var(--amber); }
+button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+select, input { font-family: var(--f-body); font-size: 14px; color: var(--ink); background: var(--board-2); border: 1px solid var(--line); border-radius: 8px; padding: 7px 10px; }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 18px; }
+.tile { background: var(--board); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; }
+.tile small { display: block; font-family: var(--f-sign); color: var(--dim); font-size: 13px; text-transform: uppercase; letter-spacing: 0.6px; }
+.tile b { font-family: var(--f-pixel); font-size: 26px; color: var(--ink); font-weight: 700; }
+.tile b em { font-style: normal; font-size: 15px; color: var(--dim); margin-left: 4px; }
+h2 { font-family: var(--f-sign); font-weight: 700; font-size: 18px; text-transform: uppercase; letter-spacing: 1px; color: var(--amber); margin: 26px 0 10px; display: flex; align-items: center; gap: 10px; }
+h2 .tools { margin-left: auto; display: flex; gap: 8px; text-transform: none; letter-spacing: 0; font-weight: 500; }
+.boards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
+.board { background: var(--board); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; }
+.board h3 { margin: 0 0 8px; font-family: var(--f-sign); font-size: 14px; font-weight: 600; color: var(--dim); text-transform: uppercase; letter-spacing: 0.6px; }
+.board ol { margin: 0; padding: 0; list-style: none; counter-reset: r; }
+.board li { display: flex; align-items: center; gap: 8px; padding: 4px 0; border-top: 1px dashed #26305a; font-size: 14px; }
+.board li:first-child { border-top: 0; }
+.board li::before { counter-increment: r; content: counter(r); font-family: var(--f-pixel); color: var(--amber); width: 16px; }
+.board li span { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.board li b { font-family: var(--f-pixel); font-weight: 500; }
+.board .empty { color: var(--dim); font-size: 14px; }
+.h2note { font-family: var(--f-body); font-size: 13px; font-weight: 500; color: var(--dim); text-transform: none; letter-spacing: 0; }
+.devtag { display: inline-block; margin-left: 6px; padding: 1px 6px; border-radius: 5px; font-size: 12px; font-weight: 600; vertical-align: 1px; background: #2c3a66; color: #d4e2f8; }
+.devtag.os { background: none; color: var(--dim); font-weight: 400; padding: 0; }
+.ended { display: flex; flex-direction: column; gap: 8px; }
+.endrow { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 12px; align-items: center; background: var(--board); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; }
+.por.sm { width: 44px; height: 44px; border-radius: 8px; }
+.endwho b { font-family: var(--f-pixel); font-size: 17px; font-weight: 700; }
+.endres { display: flex; align-items: center; gap: 8px; margin-top: 4px; flex-wrap: wrap; }
+.endres small { color: var(--dim); font-size: 12.5px; }
+.endnums { display: grid; grid-template-columns: repeat(5, minmax(64px, auto)); gap: 6px; text-align: center; }
+.endnums span { background: #10162a; border: 1px solid #26305a; border-radius: 8px; padding: 4px 6px; }
+.endnums b { display: block; font-family: var(--f-pixel); font-size: 14px; font-weight: 700; white-space: nowrap; }
+.endnums small { color: var(--dim); font-size: 11px; white-space: nowrap; }
+@media (max-width: 640px) { .endrow { grid-template-columns: auto minmax(0, 1fr); } .endnums { grid-column: 1 / -1; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; } .endnums span { min-width: 0; padding: 4px 2px; } .endnums b { font-size: 13px; overflow: hidden; text-overflow: ellipsis; } .endnums small { display: block; font-size: 10.5px; overflow: hidden; text-overflow: ellipsis; } }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 14px; }
+.card { background: linear-gradient(180deg, var(--board-2), var(--board)); border: 1px solid var(--line); border-radius: 14px; padding: 14px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.card.on { border-color: #3c6a48; }
+.top { display: flex; gap: 12px; align-items: center; }
+.por { width: 72px; height: 72px; border-radius: 10px; background: #2a3a52; flex: none; image-rendering: pixelated; border: 2px solid var(--line); }
+.who { min-width: 0; flex: 1; }
+.who b { font-family: var(--f-pixel); font-size: 20px; font-weight: 700; display: block; line-height: 1.15; }
+.who .role { color: var(--dim); font-size: 13px; }
+.dev { font-size: 13px; color: var(--dim); margin-top: 4px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: #56627a; display: inline-block; flex: none; }
+.dot.on { background: var(--ok); }
+.lbl { color: var(--ink); font-weight: 600; }
+.edit { background: none; border: 0; padding: 0 2px; color: var(--dim); font-size: 13px; }
+.edit:hover { color: var(--amber); }
+.badges { display: flex; gap: 6px; flex-wrap: wrap; }
+.badge { font-family: var(--f-sign); font-size: 12.5px; font-weight: 600; padding: 3px 8px; border-radius: 6px; background: var(--board-3); border: 1px solid var(--line); color: var(--dim); }
+.badge.fin { color: #141a2e; background: var(--ok); border-color: var(--ok); }
+.badge.over { color: #fff; background: #6a2028; border-color: var(--bad); }
+.badge.team { color: #fff; }
+.prog { display: flex; flex-direction: column; gap: 6px; }
+.track { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; }
+.track span { height: 6px; border-radius: 3px; background: #26305a; }
+.track span.done { background: var(--amber); }
+.track span.cur { background: linear-gradient(90deg, var(--amber), #ffe08a); box-shadow: 0 0 8px rgba(240, 162, 58, 0.6); }
+.prog .where { display: flex; justify-content: space-between; gap: 8px; font-size: 13.5px; }
+.prog .where b { font-family: var(--f-sign); font-weight: 600; font-size: 15px; }
+.prog .where small { color: var(--dim); text-align: right; }
+.days { display: flex; gap: 3px; }
+.days i { flex: 1; height: 14px; border-radius: 3px; background: #1a2240; border: 1px solid #26305a; font-style: normal; font-size: 9px; text-align: center; line-height: 12px; color: #55639a; font-family: var(--f-pixel); }
+.days i.done { background: #2f4a3a; border-color: #3c6a48; color: #a8d8aa; }
+.days i.cur { background: var(--amber); border-color: var(--amber); color: #141a2e; }
+.bars { display: grid; grid-template-columns: auto 1fr auto; gap: 5px 8px; align-items: center; font-size: 13px; }
+.bars small { color: var(--dim); }
+.bar { height: 7px; border-radius: 4px; background: #26305a; overflow: hidden; }
+.bar i { display: block; height: 100%; border-radius: 4px; }
+.bars b { font-family: var(--f-pixel); font-weight: 500; font-size: 13px; text-align: right; min-width: 44px; }
+.nums { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+.num { background: #10162a; border: 1px solid #26305a; border-radius: 8px; padding: 6px 4px; text-align: center; min-width: 0; }
+.num b { display: block; font-family: var(--f-pixel); font-size: 17px; font-weight: 700; }
+.num small { color: var(--dim); font-size: 11.5px; white-space: nowrap; }
+.evs { display: flex; flex-direction: column; gap: 6px; }
+.evhead { display: flex; justify-content: space-between; align-items: baseline; font-size: 13px; }
+.evhead b { font-family: var(--f-sign); font-weight: 600; font-size: 14px; color: var(--dim); }
+.evhead small { color: var(--dim); }
+.evgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 4px; }
+.ev { position: relative; display: flex; align-items: center; gap: 5px; min-width: 0; padding: 4px 6px; border-radius: 7px; background: #10162a; border: 1px solid #1f2848; opacity: 0.45; filter: grayscale(1); }
+.ev.on { opacity: 1; filter: none; background: #2a2a18; border-color: #6a5a24; }
+.ev i { font-style: normal; font-size: 14px; flex: none; }
+.ev em { font-style: normal; font-size: 11.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ev sup { position: absolute; top: -6px; right: -3px; font-size: 10px; font-family: var(--f-pixel); background: var(--amber); color: #141a2e; border-radius: 6px; padding: 0 4px; }
+details { border-top: 1px solid #26305a; padding-top: 8px; }
+summary { cursor: pointer; font-family: var(--f-sign); font-weight: 600; color: var(--dim); font-size: 14px; }
+summary:hover { color: var(--ink); }
+.log { list-style: none; margin: 8px 0 0; padding: 0; font-size: 13px; max-height: 220px; overflow: auto; }
+.log li { display: grid; grid-template-columns: 92px 1fr; gap: 8px; padding: 3px 0; border-top: 1px dashed #26305a; }
+.log li small { color: var(--dim); }
+.chips { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
+.chips span { font-size: 12px; padding: 2px 7px; border-radius: 5px; background: #26305a; }
+.games { margin: 8px 0 0; padding: 0; list-style: none; font-size: 13px; }
+.games li { padding: 3px 0; border-top: 1px dashed #26305a; display: flex; justify-content: space-between; gap: 8px; }
+.games li small { color: var(--dim); }
+.setup { background: var(--board); border: 1px solid var(--line); border-radius: 14px; padding: 18px; max-width: 760px; }
+.setup p, .setup li { color: var(--dim); line-height: 1.5; }
+.setup code, .setup pre { font-family: ui-monospace, Menlo, monospace; font-size: 13px; color: var(--ink); background: #0a0e1a; border-radius: 6px; }
+.setup code { padding: 1px 5px; }
+.setup pre { padding: 10px 12px; overflow: auto; }
+.setup form { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+.setup input { flex: 1; min-width: 240px; }
+.msg { color: var(--dim); padding: 30px 0; text-align: center; }
+@media (max-width: 420px) { .grid { grid-template-columns: 1fr; } h1 { font-size: 23px; } .nums { grid-template-columns: repeat(4, 1fr); } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Fit PI Planning · Tracker<small>Wer ist wie weit? Spielstände, PI-Plan und Werte aller Geräte</small></h1>
+    <div class="head-r">
+      <span class="pill" id="status"><i></i><span>Verbinde …</span></span>
+      <button id="reload" type="button">Aktualisieren</button>
+    </div>
+  </header>
+  <main id="main"><p class="msg">Lade Spielstände …</p></main>
+</div>
+<script>
+/*CONFIG*/
+/*LOOK*/
+(() => {
+  const STAGES = [['koffer', 'Koffer am Flughafen'], ['sammeln', 'Gruppe sammeln'], ['taxi', 'Taxi in die Stadt'], ['hotel', 'Hotel Kramer suchen'], ['checkin', 'Check-in'], ['zimmer', 'Hotelzimmer'], ['bar', 'Bar Pepita'], ['free', 'Valencia frei']];
+  const STAGE_N = Object.fromEntries(STAGES);
+  const TEAM_COL = { indurain: '#e2554a', meeseeks: '#2fa0d8', rocket: '#f0a23a' };
+  const TEAM_N = { indurain: 'Indurain', meeseeks: 'Meeseeks', rocket: 'Rocket' };
+  const WS = [['ux', '🎨 UX'], ['arch', '🏗️ Architektur'], ['roadmap', '🗺️ Roadmap'], ['retro', '🔁 Retro']];
+  /* Ereignisse: Titel aus dem Spielcode (EV_TITLES, von build.py eingesetzt), Symbole nur für die Anzeige */
+  const EV_ICON = { bunyols: '🍩', mestalla: '⚽', robin: '🧭', gota: '🌧️', marathon: '🏃', horchata: '🥤', moewe: '🐦', orange: '🍊', peloton: '🚴', cffans: '🦇', tourist: '📸' };
+  const EV_IDS = Object.keys(EV_TITLES);
+  const evDone = (s) => EV_IDS.filter((id) => s.ev && s.ev[id] > 0).length;
+  const evTotal = (s) => s.evTotal || EV_IDS.length;
+  /* Fünf Abschnitte für die Fortschrittsleiste */
+  const PHASES = [['Flughafen', ['koffer', 'sammeln']], ['Taxi', ['taxi']], ['Hotel', ['hotel', 'checkin', 'zimmer']], ['Bar', ['bar']], ['Valencia', ['free']]];
+  const DAY_N = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
+  const TRIP_DAYS = 6; /* Montag Anreise bis Samstag Heimflug */
+  const ONLINE_MS = 3 * 60000;
+  const $ = (s) => document.querySelector(s);
+  const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const qs = new URLSearchParams(location.search);
+  if (qs.get('db')) try { localStorage.setItem('pi-tracker-db', qs.get('db')); } catch (e) {}
+  let DB = qs.get('db') || (() => { try { return localStorage.getItem('pi-tracker-db'); } catch (e) { return ''; } })() || TRACK_DB || '';
+  DB = DB.replace(/\/+$/, '');
+  const ROOT = typeof TRACK_ROOT === 'string' ? TRACK_ROOT : 'pi';
+  let data = null, lastOk = 0, sortBy = 'seen', timer = 0;
+  try { sortBy = localStorage.getItem('pi-tracker-sort') || 'seen'; } catch (e) {}
+
+  const ago = (ts) => {
+    if (!ts) return 'nie';
+    const s = Math.max(0, (Date.now() - ts) / 1000);
+    if (s < 60) return 'gerade eben';
+    if (s < 3600) return `vor ${Math.floor(s / 60)} Min.`;
+    if (s < 86400) return `vor ${Math.floor(s / 3600)} Std.`;
+    const d = Math.floor(s / 86400); return d === 1 ? 'gestern' : `vor ${d} Tagen`;
+  };
+  const clock = (ts) => ts ? new Date(ts).toLocaleString('de-CH', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : '';
+  const money = (v) => `${(v || 0).toLocaleString('de-CH', { minimumFractionDigits: 0, maximumFractionDigits: 0 })} €`;
+  const prom = (v) => `${(v || 0).toFixed(2).replace('.', ',')} ‰`;
+  const ownPlan = (s) => (s.plan && s.team && s.plan[s.team]) || 0;
+  const dayN = (s) => Math.min(s.day || 0, TRIP_DAYS - 1);
+  /* Fortschritt 0–100: Anreise bis zur Bar 15 %, danach die Tage in Valencia */
+  const progress = (s) => {
+    if (!s) return 0;
+    if (s.finished) return 100;
+    const i = Math.max(0, s.stageIdx == null ? STAGES.findIndex((x) => x[0] === s.stage) : s.stageIdx);
+    if (s.stage !== 'free') return Math.round(i / 7 * 15);
+    return Math.min(99, Math.round(15 + dayN(s) / (TRIP_DAYS - 1) * 84));
+  };
+  const portraits = {};
+  const portrait = (look, key) => {
+    if (!look || typeof portraitCanvas !== 'function') return '';
+    const k = key + JSON.stringify(look).length;
+    if (!portraits[k]) { try { portraits[k] = portraitCanvas(look, '#2a3a52').toDataURL(); } catch (e) { portraits[k] = ''; } }
+    return portraits[k];
+  };
+
+  /* Pro Gerät das aktuelle Spiel (oder das zuletzt aktualisierte) */
+  function rows() {
+    const out = [];
+    for (const [id, d] of Object.entries(data || {})) {
+      if (!d || typeof d !== 'object') continue;
+      const games = Object.entries(d.games || {}).map(([gid, g]) => ({ gid, ...g })).filter((g) => g.s);
+      games.sort((a, b) => (b.s.at || 0) - (a.s.at || 0));
+      const cur = games.find((g) => g.gid === d.current) || games[0];
+      if (!cur) continue;
+      out.push({ id, d, games, cur, s: cur.s, seen: d.lastSeen || cur.s.at || 0 });
+    }
+    const by = { seen: (a, b) => b.seen - a.seen, prog: (a, b) => progress(b.s) - progress(a.s) || b.seen - a.seen, name: (a, b) => String(a.s.name).localeCompare(String(b.s.name), 'de'), plan: (a, b) => ownPlan(b.s) - ownPlan(a.s), beer: (a, b) => (b.s.beers || 0) - (a.s.beers || 0) };
+    return out.sort(by[sortBy] || by.seen);
+  }
+  function tiles(rs) {
+    const on = rs.filter((r) => Date.now() - r.seen < ONLINE_MS).length;
+    const games = rs.reduce((n, r) => n + r.games.length, 0);
+    const fin = rs.reduce((n, r) => n + r.games.filter((g) => g.s.finished).length, 0);
+    const beers = rs.reduce((n, r) => n + r.games.reduce((m, g) => m + (g.s.beers || 0), 0), 0);
+    const open = rs.filter((r) => !ended(r.s));
+    const avgPlan = open.length ? Math.round(open.reduce((n, r) => n + ownPlan(r.s), 0) / open.length) : 0;
+    return `<section class="tiles" aria-label="Übersicht">
+      <div class="tile"><small>Geräte</small><b>${rs.length}</b></div>
+      <div class="tile"><small>Gerade aktiv</small><b>${on}<em>${on === 1 ? 'Gerät' : 'Geräte'}</em></b></div>
+      <div class="tile"><small>Spiele</small><b>${games}</b></div>
+      <div class="tile"><small>Heimflug geschafft</small><b>${fin}</b></div>
+      <div class="tile"><small>PI-Plan im Schnitt</small><b>${avgPlan}<em>%</em></b></div>
+      <div class="tile"><small>Biere total</small><b>${beers}<em>🍺</em></b></div>
+    </section>`;
+  }
+  /* Gerätename als Marke; ohne eingetragenen Namen das Gerät (z. B. iPhone · Safari) zur Unterscheidung */
+  const devTag = (d) => d.label ? `<small class="devtag" title="Gerät">📱 ${esc(d.label)}</small>` : d.info && d.info.os ? `<small class="devtag os">${esc([d.info.os, d.info.browser].filter(Boolean).join(' · '))}</small>` : '';
+  const ended = (s) => !!(s.finished || s.over);
+  const allGames = (rs) => rs.flatMap((r) => r.games.map((g) => ({ r, g, s: g.s, cur: g === r.cur })));
+  const teamBadge = (s) => s.team ? `<span class="badge team" style="background:${TEAM_COL[s.team] || '#555'};border-color:${TEAM_COL[s.team] || '#555'}">${esc(TEAM_N[s.team] || s.team)}${s.po ? ' · PO' : ''}</span>` : '';
+  /* Ranglisten zählen nur offene Spiele: das aktuelle Spiel eines Geräts, weder Heimflug noch Game Over */
+  function boards(rs) {
+    const open = allGames(rs).filter((x) => x.cur && !ended(x.s));
+    const top = (title, val, fmt) => {
+      const l = open.filter((x) => val(x.s) > 0).sort((a, b) => val(b.s) - val(a.s)).slice(0, 5);
+      return `<div class="board"><h3>${title}</h3>${l.length ? `<ol>${l.map((x) => `<li><span>${esc(x.s.name)}${devTag(x.r.d)}</span><b>${fmt(val(x.s), x.s)}</b></li>`).join('')}</ol>` : `<p class="empty">${open.length ? 'Noch niemand.' : 'Gerade läuft kein Spiel.'}</p>`}</div>`;
+    };
+    return `<h2>Ranglisten <small class="h2note">nur offene Spiele</small></h2><section class="boards">
+      ${top('Am weitesten', (s) => progress(s) * 100000 + (s.time || 0) + 1, (v, s) => s.stage === 'free' ? `${DAY_N[dayN(s)]} · Tag ${dayN(s) + 1}` : STAGE_N[s.stage] || '')}
+      ${top('PI-Plan des Teams', (s) => ownPlan(s), (v, s) => `${v} % ${TEAM_N[s.team] || ''}`)}
+      ${top('Meiste Erlebnisse', (s) => (s.ach || []).length, (v, s) => `${v}/${s.achTotal || '?'}`)}
+      ${top('Meiste Ereignisse', (s) => evDone(s), (v, s) => `${v}/${evTotal(s)}`)}
+      ${top('Meiste Biere', (s) => s.beers || 0, (v) => `${v} 🍺`)}
+      ${top('Schnellste Kart-Runde', (s) => (s.rec && s.rec.kart ? 10000 - s.rec.kart * 10 : 0), (v, s) => `${s.rec.kart.toFixed(1).replace('.', ',')} s`)}
+    </section>`;
+  }
+  /* Beendete Spiele separat: Heimflug, Game Over – neueste zuerst */
+  function endedList(rs) {
+    const l = allGames(rs).filter((x) => ended(x.s)).sort((a, b) => (b.s.at || 0) - (a.s.at || 0));
+    if (!l.length) return '';
+    const res = (s) => s.finished ? '<span class="badge fin">🏁 Heimflug</span>' : '<span class="badge over">💀 Game Over</span>';
+    return `<h2>Beendete Spiele <small class="h2note">${l.length}</small></h2><section class="ended">${l.map((x) => {
+      const s = x.s, img = portrait(s.look, x.r.id + x.g.gid);
+      return `<div class="endrow">
+        ${img ? `<img class="por sm" src="${img}" alt="">` : '<div class="por sm"></div>'}
+        <div class="endwho"><b>${esc(s.name)}</b>${devTag(x.r.d)}<div class="endres">${res(s)}${teamBadge(s)}<small>${esc(clock(s.at))}</small></div></div>
+        <div class="endnums">
+          <span><b>${ownPlan(s)} %</b><small>📋 PI-Plan</small></span>
+          <span><b>${(s.ach || []).length}/${s.achTotal || '?'}</b><small>⭐ Erlebnisse</small></span>
+          <span><b>${evDone(s)}/${evTotal(s)}</b><small>🎬 Ereignisse</small></span>
+          <span><b>${s.beers || 0}</b><small>🍺 Biere</small></span>
+          <span><b>${WS.filter(([k]) => s.ws && s.ws[k]).length}/${WS.length}</b><small>🧑‍🏫 Workshops</small></span>
+        </div>
+      </div>`;
+    }).join('')}</section>`;
+  }
+  function bar(label, v, max, col, txt) {
+    const p = Math.max(0, Math.min(100, (v || 0) / max * 100));
+    return `<small>${label}</small><div class="bar" role="img" aria-label="${label} ${Math.round(p)} %"><i style="width:${p}%;background:${col}"></i></div><b>${txt}</b>`;
+  }
+  const lvl = (v) => (v > 60 ? 'var(--ok)' : v > 30 ? 'var(--warn)' : 'var(--bad)');
+  const EV = { start: 'Neues Spiel', stage: 'Abschnitt', ach: 'Erlebnis', ev: 'Ereignis', ende: 'Spielende', gameover: 'Game Over', optin: 'Tracking an' };
+  function card(r) {
+    const s = r.s, st = s.st || {}, d = r.d, info = d.info || {};
+    const on = Date.now() - r.seen < ONLINE_MS;
+    const pi = PHASES.findIndex((p) => p[1].includes(s.stage));
+    const done = !!s.finished;
+    const track = PHASES.map((p, i) => `<span class="${done || i < pi ? 'done' : i === pi ? 'cur' : ''}" title="${p[0]}"></span>`).join('');
+    const days = s.stage === 'free' || done ? `<div class="days" aria-label="Tag ${dayN(s) + 1} von ${TRIP_DAYS}">${DAY_N.map((n, i) => `<i class="${done || i < dayN(s) ? 'done' : i === dayN(s) ? 'cur' : ''}">${n}</i>`).join('')}</div>` : '';
+    const badges = [
+      s.finished ? '<span class="badge fin">🏁 Heimflug</span>' : '',
+      s.over && !s.finished ? '<span class="badge over">Game Over</span>' : '',
+      teamBadge(s),
+      `<span class="badge">${progress(s)} %</span>`,
+      s.lang ? `<span class="badge">${esc(s.lang.toUpperCase())}</span>` : '',
+      s.v ? `<span class="badge">v${esc(s.v)}</span>` : '',
+    ].join('');
+    const plans = Object.keys(TEAM_N).map((k) => bar(TEAM_N[k], s.plan && s.plan[k], 100, TEAM_COL[k], `${(s.plan && s.plan[k]) || 0} %`)).join('');
+    const log = Object.values((r.cur && r.cur.log) || {}).sort((a, b) => (b.at || 0) - (a.at || 0)).slice(0, 30);
+    const others = r.games.filter((g) => g !== r.cur);
+    const devTxt = [info.os, info.browser, info.app ? 'Homescreen-App' : ''].filter(Boolean).join(' · ');
+    const img = portrait(s.look, r.id + r.cur.gid);
+    return `<article class="card ${on ? 'on' : ''}">
+      <div class="top">
+        ${img ? `<img class="por" src="${img}" alt="Avatar von ${esc(s.name)}">` : '<div class="por"></div>'}
+        <div class="who">
+          <b>${esc(s.name)}</b>
+          <span class="role">${esc(s.who && s.who !== s.name ? `spielt ${s.who} · ` : '')}${esc(s.role || '')}</span>
+          <div class="dev"><span class="dot ${on ? 'on' : ''}"></span>${on ? 'spielt gerade' : esc(ago(r.seen))}${d.label ? ` · <span class="lbl">${esc(d.label)}</span>` : ''}${devTxt ? ` · ${esc(devTxt)}` : ''}
+            <button class="edit" type="button" data-label="${esc(r.id)}" title="Gerät benennen" aria-label="Gerät benennen">✎</button></div>
+        </div>
+      </div>
+      <div class="badges">${badges}</div>
+      <div class="prog">
+        <div class="track" aria-label="Fortschritt">${track}</div>
+        <div class="where"><b>${done ? 'Zurück in Zürich' : esc(STAGE_N[s.stage] || s.stage)}${s.stage === 'free' && !done ? ` · ${DAY_N[dayN(s)]}, Tag ${dayN(s) + 1}` : ''}</b><small>${esc(s.when || '')}<br>${esc(s.map || '')}</small></div>
+        ${days}
+      </div>
+      <div class="bars" aria-label="PI-Plan der Teams">${plans}</div>
+      <div class="bars">
+        ${bar('Energie', st.energy, 100, lvl(st.energy), Math.round(st.energy || 0))}
+        ${bar('Sattheit', st.food, 100, lvl(st.food), Math.round(st.food || 0))}
+        ${bar('Laune', st.mood, 100, lvl(st.mood), Math.round(st.mood || 0))}
+        ${bar('Promille', st.prom, 3, st.prom > 1.8 ? 'var(--bad)' : st.prom > 0.8 ? 'var(--warn)' : 'var(--blue)', prom(st.prom))}
+        ${bar('Übelkeit', st.nau, 140, st.nau > 90 ? 'var(--bad)' : st.nau > 50 ? 'var(--warn)' : 'var(--ok)', Math.round(st.nau || 0))}
+        ${st.hang ? bar('Kater', st.hang, 100, 'var(--warn)', Math.round(st.hang)) : ''}
+        ${st.sun ? bar('Sonnenbrand', st.sun, 100, 'var(--bad)', Math.round(st.sun)) : ''}
+      </div>
+      <div class="nums">
+        <div class="num"><b>${(s.ach || []).length}</b><small>⭐ Erlebnisse</small></div>
+        <div class="num"><b>${s.sights || 0}</b><small>📸 Fotos</small></div>
+        <div class="num"><b>${s.deps || 0}</b><small>🔗 Abhängigkeiten</small></div>
+        <div class="num"><b>${WS.filter(([k]) => s.ws && s.ws[k]).length}/${WS.length}</b><small>🧑‍🏫 Workshops</small></div>
+        <div class="num"><b>${s.beers || 0}</b><small>🍺 Biere</small></div>
+        <div class="num"><b>${s.coffees || 0}</b><small>☕ Kaffees</small></div>
+        <div class="num"><b>${money(s.money && s.money.eur)}</b><small>Euro</small></div>
+        <div class="num"><b>${s.rec && s.rec.kart ? s.rec.kart.toFixed(1).replace('.', ',') + ' s' : '–'}</b><small>🏎️ Kart</small></div>
+      </div>
+      <div class="evs" aria-label="Ereignisse ${evDone(s)} von ${evTotal(s)}">
+        <div class="evhead"><b>Ereignisse</b><small>${evDone(s)}/${evTotal(s)} erlebt</small></div>
+        <div class="evgrid">${EV_IDS.map((id) => { const n = (s.ev && s.ev[id]) || 0; return `<span class="ev ${n ? 'on' : ''}" title="${esc(EV_TITLES[id])}${n ? ` – ${n}× erlebt` : ' – noch nicht erlebt'}"><i>${EV_ICON[id] || '❔'}</i><em>${esc(EV_TITLES[id])}</em>${n > 1 ? `<sup>${n}×</sup>` : ''}</span>`; }).join('')}</div>
+      </div>
+      <details data-k="${esc(r.id)}-log"><summary>Verlauf (${log.length})</summary>${log.length ? `<ul class="log">${log.map((e) => `<li><small>${esc(clock(e.at))}</small><span>${esc(EV[e.e] || e.e)}: ${esc(e.e === 'stage' ? STAGE_N[e.v] || e.v : e.v)}${e.when ? ` <small>· im Spiel ${esc(e.when)}</small>` : ''}</span></li>`).join('')}</ul>` : '<p class="empty" style="color:var(--dim);font-size:13px">Noch keine Einträge.</p>'}</details>
+      ${(s.ach || []).length ? `<details data-k="${esc(r.id)}-ach"><summary>Erlebnisse (${s.ach.length}/${s.achTotal || '?'})</summary><div class="chips">${s.ach.map((a) => `<span>${esc(a)}</span>`).join('')}</div></details>` : ''}
+      ${others.length ? `<details data-k="${esc(r.id)}-games"><summary>Frühere Spiele auf diesem Gerät (${others.length})</summary><ul class="games">${others.map((g) => `<li><span>${esc(g.s.name)} · ${g.s.finished ? 'Heimflug' : esc(STAGE_N[g.s.stage] || g.s.stage)}${g.s.stage === 'free' ? `, Tag ${dayN(g.s) + 1}` : ''}</span><small>${esc(clock(g.s.at))}</small></li>`).join('')}</ul></details>` : ''}
+    </article>`;
+  }
+  function setStatus(kind, text) { const el = $('#status'); el.className = 'pill ' + kind; el.querySelector('span').textContent = text; }
+  function render() {
+    const rs = rows();
+    const open = new Set([...document.querySelectorAll('details[open]')].map((d) => d.dataset.k));
+    const sortSel = `<label class="tools"><span class="sr" style="position:absolute;left:-9999px">Sortieren</span><select id="sort" aria-label="Sortieren">
+      ${[['seen', 'Zuletzt aktiv'], ['prog', 'Fortschritt'], ['plan', 'PI-Plan'], ['beer', 'Biere'], ['name', 'Name']].map(([k, n]) => `<option value="${k}" ${k === sortBy ? 'selected' : ''}>${n}</option>`).join('')}</select></label>`;
+    $('#main').innerHTML = rs.length
+      ? `${tiles(rs)}${boards(rs)}<h2>Spieler und Geräte ${sortSel}</h2><section class="grid">${rs.map(card).join('')}</section>${endedList(rs)}`
+      : '<p class="msg">Noch keine Spielstände. Sobald jemand spielt, erscheint er hier.</p>';
+    const ss = $('#sort'); if (ss) ss.onchange = () => { sortBy = ss.value; try { localStorage.setItem('pi-tracker-sort', sortBy); } catch (e) {} render(); };
+    for (const b of document.querySelectorAll('[data-label]')) b.onclick = () => rename(b.dataset.label);
+    for (const d of document.querySelectorAll('details[data-k]')) if (open.has(d.dataset.k)) d.open = true;
+  }
+  async function rename(id) {
+    const cur = (data[id] && data[id].label) || '';
+    const v = prompt('Name für dieses Gerät (z. B. „Simons iPhone“):', cur);
+    if (v == null) return;
+    try {
+      const r = await fetch(`${DB}/${ROOT}/devices/${encodeURIComponent(id)}.json`, { method: 'PATCH', body: JSON.stringify({ label: v.trim().slice(0, 40) }) });
+      if (!r.ok) throw new Error(r.status);
+      await load();
+    } catch (e) { alert('Speichern nicht möglich: ' + e.message); }
+  }
+  async function load() {
+    clearTimeout(timer);
+    try {
+      const ctl = new AbortController(); const to = setTimeout(() => ctl.abort(), 9000);
+      const r = await fetch(`${DB}/${ROOT}/devices.json`, { signal: ctl.signal, cache: 'no-store' });
+      clearTimeout(to);
+      if (r.status === 401 || r.status === 403) throw new Error('Kein Lesezugriff – Regeln der Datenbank prüfen');
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      data = (await r.json()) || {};
+      lastOk = Date.now();
+      setStatus('live', `Live · ${new Date().toLocaleTimeString('de-CH')}`);
+      render();
+    } catch (e) {
+      setStatus('err', `Datenbank nicht erreichbar${e && e.message && !/abort/i.test(e.message) ? ` (${e.message})` : ''}${lastOk ? ` · Stand ${new Date(lastOk).toLocaleTimeString('de-CH')}` : ''}`);
+      if (!data) $('#main').innerHTML = `<p class="msg">Die Datenbank ist gerade nicht erreichbar. Neuer Versuch in 20 Sekunden.</p>`;
+    }
+    timer = setTimeout(load, 20000);
+  }
+  function setup() {
+    setStatus('err', 'Keine Datenbank eingerichtet');
+    $('#main').innerHTML = `<section class="setup">
+      <h2 style="margin-top:0">Firebase einrichten</h2>
+      <ol>
+        <li>In der <a href="https://console.firebase.google.com/" style="color:var(--amber)">Firebase-Konsole</a> ein Projekt anlegen (oder das bestehende vom Wiehnachtsreisli nehmen) und unter <b>Build → Realtime Database</b> eine Datenbank erstellen (Standort z. B. <code>europe-west1</code>).</li>
+        <li>Unter <b>Regeln</b> diesen Zweig ergänzen und veröffentlichen (andere Zweige bleiben, wie sie sind):
+<pre>{
+  "rules": {
+    "${ROOT}": {
+      "devices": {
+        ".read": true,
+        "$device": { ".write": true, ".validate": "$device.length &lt; 40" }
+      }
+    }
+  }
+}</pre></li>
+        <li>Die Datenbank-URL (z. B. <code>https://mein-projekt-default-rtdb.europe-west1.firebasedatabase.app</code>) in <code>tracking.json</code> im Repo eintragen oder als Repo-Variable <code>TRACK_DB</code> setzen und neu bauen. Danach senden alle Spiele ihren Stand.</li>
+      </ol>
+      <p>Zum Ausprobieren kannst du die URL auch nur hier im Browser eintragen:</p>
+      <form id="dbForm"><input id="dbIn" type="url" placeholder="https://…firebasedatabase.app" required aria-label="Datenbank-URL"><button type="submit">Verbinden</button></form>
+    </section>`;
+    $('#dbForm').onsubmit = (e) => { e.preventDefault(); DB = $('#dbIn').value.trim().replace(/\/+$/, ''); try { localStorage.setItem('pi-tracker-db', DB); } catch (er) {} load(); };
+  }
+  $('#reload').onclick = () => (DB ? load() : setup());
+  setInterval(() => { if (data) render(); }, 30000);
+  if (DB) load(); else setup();
+})();
+</script>
+</body>
+</html>

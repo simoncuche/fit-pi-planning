@@ -222,7 +222,10 @@ body.stick-on #stickHint { opacity: .2; }
 #edBody { width: 84px; height: 120px; border: none !important; background: transparent !important; }
 .ed-rot { display: flex; gap: 4px; justify-content: center; }
 .ed-rot button { width: 34px; height: 30px; border-radius: 6px; border: 1px solid var(--paper-line); background: #fff; font-size: 14px; }
+.ed-name .ed-input { width: 100%; max-width: 220px; font-family: var(--f-body); font-size: 16px; padding: 7px 10px; border: 1px solid var(--paper-line); border-radius: 8px; background: #fff; color: var(--ink); margin-top: 4px; }
+.ed-name .ed-input:focus { outline: 2px solid var(--sun); outline-offset: 1px; }
 .ed-name label { font-family: var(--f-sign); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-dim); display: block; margin-bottom: 4px; }
+.ed-name label + label { margin-top: 10px; }
 .ed-controls { min-height: 0; display: grid; grid-template-rows: auto 1fr; }
 .ed-tabs { display: flex; gap: 4px; padding: 8px 10px 0; border-bottom: 1px solid var(--paper-line); overflow-x: auto; background: var(--paper-2); }
 .ed-list { overflow: auto; padding: 10px 14px 14px; display: grid; gap: 8px; align-content: start; touch-action: pan-y; }

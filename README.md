@@ -45,6 +45,12 @@ Kein Server, keine Installation. Funktioniert am Handy und am Computer.
 - **Handy:** links auf den Bildschirm tippen und ziehen = gehen (weit ziehen = rennen), **A** = Aktion, oben rechts = Handy und Kamera.
 - **Tastatur:** WASD/Pfeile gehen, Shift rennen, E/Leertaste Aktion, M Handy, P Foto.
 
+## Tracker
+
+`dist/tracker.html` zeigt live, wer wie weit ist: Spielstände, PI-Plan, Werte, Erlebnisse und Ereignisse aller Geräte. Die Spiele senden ihren Stand
+an eine Firebase Realtime Database (URL in `tracking.json` oder als Repo-Variable `TRACK_DB`; leer = kein Tracking). Die Daten liegen unter dem Zweig
+`pi/`, die nötigen Regeln stehen auf der Tracker-Seite, solange keine Datenbank eingetragen ist. Spieler können das Teilen in den Optionen abschalten.
+
 ## Entwickeln
 
 ```bash

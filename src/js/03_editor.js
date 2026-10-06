@@ -12,24 +12,29 @@ const Editor = {
       const groups = mode === 'new' ? [_t('Wer bist du?'), ...LOOK_GROUPS] : [_t('Auswahl')];
       let tab = groups[0];
       let dir = 0, walk = 0;
+      let savedName = ''; try { savedName = localStorage.getItem('pi-player-name') || ''; } catch (e) {}
+      const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
       const title = { new: _t('Wer spielt mit?'), clothes: _t('Kleiderschrank'), hair: _t('Frisur'), beard: _t('Bart') }[mode];
       el.innerHTML = _t`<div class="ed-head"><h1>${title}</h1><div class="cnt">${mode === 'new' ? _t`${LOOK_OPTS.length} Merkmale<br>${LOOK_COUNT} Varianten` : ''}</div></div>
         <div class="ed-main"><div class="ed-preview"><div class="ed-figs"><canvas id="edPortrait" width="96" height="96" aria-label="Porträt"></canvas><div><canvas id="edBody" width="28" height="40" aria-label="Spielfigur"></canvas><div class="ed-rot"><button id="edL" aria-label="Drehen links">◀</button><button id="edR" aria-label="Drehen rechts">▶</button></div></div></div>
-        <div class="ed-name"><label>Spieler</label><div id="edWho" style="font-family:var(--f-sign);font-size:20px;font-weight:600">${pid ? PEOPLE[pid].name : _t('<span style="color:var(--ink-dim)">noch niemand gewählt</span>')}</div></div></div>
+        <div class="ed-name"><label>${mode === 'new' ? _t('Spielst als') : _t('Spieler')}</label><div id="edWho" style="font-family:var(--f-sign);font-size:20px;font-weight:600">${pid ? PEOPLE[pid].name : _t('<span style="color:var(--ink-dim)">noch niemand gewählt</span>')}</div>${mode === 'new' ? `<label for="edName">${_t('Dein Name')}</label><input id="edName" class="ed-input" type="text" maxlength="20" autocomplete="given-name" placeholder="${_t('Wie heisst du?')}" value="${esc(savedName)}">` : ''}</div></div>
         <div class="ed-controls"><div class="ed-tabs" role="tablist">${groups.map((g) => `<button class="tab ${g === tab ? 'on' : ''}" data-g="${g}">${g}</button>`).join('')}</div><div class="ed-list" id="edList"></div></div></div>
-        <div class="ed-foot"><span class="grow" id="edHint">${mode === 'new' ? _t`Vorschlag: ${PEOPLE[pid].name}. Tipp auf einen anderen Namen oder gestalte dein Aussehen – dann Boarding!` : _t('Änderungen werden sofort übernommen.')}</span>${mode === 'new' ? _t('<button class="btn" id="edRnd">Zufall</button>') : _t('<button class="btn" id="edCancel">Abbrechen</button>')}<button class="btn primary" id="edOk">${mode === 'new' ? _t('Boarding!') : _t('Fertig')}</button></div>`;
+        <div class="ed-foot"><span class="grow" id="edHint">${mode === 'new' ? _t`Vorschlag: ${PEOPLE[pid].name}. Tipp auf eine andere Figur, trag deinen Namen ein oder gestalte dein Aussehen – dann Boarding!` : _t('Änderungen werden sofort übernommen.')}</span>${mode === 'new' ? _t('<button class="btn" id="edRnd">Zufall</button>') : _t('<button class="btn" id="edCancel">Abbrechen</button>')}<button class="btn primary" id="edOk">${mode === 'new' ? _t('Boarding!') : _t('Fertig')}</button></div>`;
       el.hidden = false;
       const pcv = el.querySelector('#edPortrait'), pcx = pcv.getContext('2d');
       const bcv = el.querySelector('#edBody'), bcx = bcv.getContext('2d');
       pcx.imageSmoothingEnabled = false; bcx.imageSmoothingEnabled = false;
       const okBtn = el.querySelector('#edOk');
+      const nameIn = el.querySelector('#edName');
+      const playerName = () => (nameIn ? nameIn.value.trim().slice(0, 20) : '');
+      if (nameIn) nameIn.addEventListener('input', () => { okBtn.disabled = !pid || !playerName(); });
       const draw = () => {
         pcx.clearRect(0, 0, PW, PW); drawPortrait(pcx, L, { bg: '#2a3a52' });
         bcx.clearRect(0, 0, SPR_W, SPR_H);
         const sheet = getSheet(L);
         const f = [0, 1, 0, 2][Math.floor(walk) % 4];
         bcx.drawImage(sheet, f * SPR_W, dir * SPR_H, SPR_W, SPR_H, 0, 0, SPR_W, SPR_H);
-        if (mode === 'new') okBtn.disabled = !pid;
+        if (mode === 'new') okBtn.disabled = !pid || !playerName();
       };
       const iv = setInterval(() => { walk += 0.5; draw(); }, 160);
       el.querySelector('#edL').onclick = () => { dir = [1, 3, 0, 2][dir]; draw(); };
@@ -107,9 +112,11 @@ const Editor = {
       const close = (val) => { clearInterval(iv); el.hidden = true; el.innerHTML = ''; resolve(val); };
       okBtn.onclick = () => {
         if (mode === 'new' && !pid) { el.querySelector('#edHint').textContent = _t('Wähle zuerst, wer du bist!'); Snd.sfx('error'); return; }
+        if (mode === 'new' && !playerName()) { el.querySelector('#edHint').textContent = _t('Bitte gib deinen Namen ein!'); nameIn.focus(); Snd.sfx('error'); return; }
+        if (mode === 'new') { try { localStorage.setItem('pi-player-name', playerName()); } catch (e) {} }
         if (mode !== 'new' && G.S) { Object.assign(G.S.look, L); if (G.player) G.player.look = G.S.look; }
         Snd.sfx('ok');
-        close({ look: L, pid });
+        close({ look: L, pid, name: playerName() });
       };
       const rb = el.querySelector('#edRnd');
       if (rb) rb.onclick = () => { Object.assign(L, randomLook(Math.random, unlocked, { fem: L.fem })); renderList(); draw(); Snd.sfx('blip'); };

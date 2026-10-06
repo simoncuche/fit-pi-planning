@@ -2151,5 +2151,12 @@
 "TASTE DRÜCKEN": "PULSA UNA TECLA",
 "Mittwoch: Kartbahn. Keine Diskussion.": "Miércoles: karting. Sin discusión.",
 "Alle anderen spielen als Kolleginnen und Kollegen mit. Wer einen PO spielt, plant mit dessen Team; alle anderen helfen ihrem Team.": "Los demás participan como compañeras y compañeros. Si juegas como PO, planificas con su equipo; los demás ayudan a su equipo.",
-"<div class=\"shop-sec\">Weitere</div><div class=\"list\">{0}</div>": "<div class=\"shop-sec\">Otros</div><div class=\"list\">{0}</div>"
+"<div class=\"shop-sec\">Weitere</div><div class=\"list\">{0}</div>": "<div class=\"shop-sec\">Otros</div><div class=\"list\">{0}</div>",
+"Spielst als": "Juegas como",
+"Dein Name": "Tu nombre",
+"Wie heisst du?": "¿Cómo te llamas?",
+"Bitte gib deinen Namen ein!": "¡Escribe tu nombre!",
+"Vorschlag: {0}. Tipp auf eine andere Figur, trag deinen Namen ein oder gestalte dein Aussehen – dann Boarding!": "Sugerencia: {0}. Toca otro personaje, escribe tu nombre o personaliza tu aspecto. ¡Y a embarcar!",
+"Spieler": "Jugador",
+"Fortschritt teilen": "Compartir progreso"
 }

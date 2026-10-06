@@ -26,6 +26,7 @@ zugreifen – sonst TDZ-Fehler bei `const`. Darum heisst die Ereignis-Datei `09_
 | `02_look.js` | Merkmale `LOOK_OPTS` (28 Merkmale, inkl. `fem`), `randomLook`, Porträt 96×96 (`drawPortrait`, `portraitCanvas`) |
 | `02_sprite.js` | Spielfigur 28×40, 4 Richtungen, 9 Posen (`POSES`, `getSheet`, `drawSprite`) |
 | `03_editor.js` | Charakter-Editor (`Editor.open({mode})`: `new`, `clothes`, `hair`, `beard`), Auswahl aus allen `PEOPLE` (Porträt, Name und lustige Kurzbeschreibung `tag`) |
+| `04_track.js` | `Track`: Fortschritt pro Gerät an Firebase Realtime Database per REST (`PATCH pi/devices/<Gerät>.json`, Mehrpfad mit `games/<gameId>/s` und `games/<gameId>/log/<id>`), Drosselung 45 s, Pause nach Fehlern, Opt-out `pi-track-off`; `EV_TITLES` für die Tracker-Seite; Hooks in `saveGame`, `achieve`, `Story.setStage`, `Story.goHome`, `UI.gameOver`, `startGame` |
 | `04_state.js` | Spielzustand `G`, `newState`, `ITEMS`, `SIGHTS`, `ACH`, `TEAMS`, Werte-Logik (`consume`, `tickStats`), `planAdd`, Speichern (`SAVE_KEY`) |
 | `05_tiles.js` | Bodenkacheln `T`/`TILE_PAINT` (24 px), Wandstile `paintWallFace`, Objekte (Orangenbaum, Palme, Gebäude `objBuilding`, Hochhaus `objTower`, Möbel, Marktstände, Falla, Micalet …), `DECAL` |
 | `06_maps_city.js` | Karte `city` (100×84): Turia-Park, Plaza de la Virgen, Mercado, Hotel Kramer, Plaza del Ayuntamiento, Colba-Hochhaus, Museum, Calle Colón, Kartbahn, Padel, Disco, Estación, Ciudad de las Artes, Strand, Marina; Autos `cityCar`; Koordinaten in `CITY` |
@@ -40,6 +41,15 @@ zugreifen – sonst TDZ-Fehler bei `const`. Darum heisst die Ereignis-Datei `09_
 | `11_minigames.js` | Freizeit: `suitcase`, `bell`, `kart`, `sail`, `paella`, `wine`, `soccer`, `dance`, `padel`, `ride` |
 | `11_scenes.js` | `Scene.play(kind, opts)`: 240×144-Szenen (`plane`, `taxi`, `door`, `lift`, `stairs`, `roomdoor`, `sleep`, `shower`, `ride`, `boat`, `mascleta`, `crema`, `flight`), Fassaden `FACADES`, `transitionFor` |
 | `12_main.js` | Titel (Bordkarte), Start, Eingabe (Tastatur + Touch-Joystick), Hauptschleife |
+
+## Tracking und Tracker-Seite
+
+- Datenbank-URL in `tracking.json` (`databaseURL`) oder Umgebungsvariable `TRACK_DB` (im Workflow aus der Repo-Variable `vars.TRACK_DB`). Leer = kein Tracking. `build.py` bettet sie als `TRACK_DB` ein; `NO_TRACK=1` schaltet das Tracking beim Bauen aus.
+- Alle Daten liegen unter dem Zweig `pi/` (`TRACK_ROOT`), damit dieselbe Firebase-Datenbank wie beim Wiehnachtsreisli genutzt werden kann. Firebase-Regeln: `pi/devices` lesbar, `pi/devices/$device` beschreibbar.
+- `src/tracker.html` wird zu `dist/tracker.html` (mit `00_i18n.js`, den Übersetzungen, `00_util.js` und `02_look.js` für die Porträts). URL-Parameter `?db=` überschreibt die Datenbank zum Testen.
+- Ereignisse: `Track.init()` umhüllt jede `Story.ev_<id>()` und zählt Aufrufe in `flags.evSeen`; `EV_TITLES` in `04_track.js` liefert die Titel, `build.py` übernimmt sie in die Tracker-Seite.
+- Ranglisten zählen nur offene Spiele (aktuelles Spiel des Geräts, ohne `finished`/`over`); beendete Spiele stehen separat. Fehler beim Senden dürfen das Spiel nie stören.
+- Spielername: beim Boarding Pflichtfeld (`#edName`, zuletzt verwendeter Name in `localStorage` `pi-player-name`); `G.S.name` ist der eingegebene Name, `G.S.pid` die gespielte Figur.
 
 ## Sprachen (i18n)
 

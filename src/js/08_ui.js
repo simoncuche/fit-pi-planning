@@ -204,6 +204,7 @@ const UI = {
     const o = this.overlay(html, null);
     o.querySelector('#goRestart').addEventListener('click', () => { clearSave(); try { localStorage.removeItem(SAVE_KEY + '-img'); } catch (e) {} location.reload(); });
     G.mode = 'over';
+    Track.event('gameover', title, true);
   },
   overlay(html, onClose) {
     const o = this.els.overlay;
@@ -408,6 +409,9 @@ const Phone = {
     b.querySelector('#oSfx').addEventListener('click', (e) => { Snd.on = !Snd.on; e.target.textContent = Snd.on ? _t('An') : _t('Aus'); });
     b.querySelector('#oMus').addEventListener('click', (e) => { Snd.musicOn = !Snd.musicOn; e.target.textContent = Snd.musicOn ? _t('An') : _t('Aus'); });
     b.querySelector('#oSave').addEventListener('click', () => saveGame(false));
+    if (TRACK_DB) b.querySelector('#oSave').closest('.opt-row').insertAdjacentHTML('afterend', `<div class="opt-row"><span>${_t('Fortschritt teilen')}</span><button class="btn" id="oTrack">${Track.optOut() ? _t('Aus') : _t('An')}</button></div>`);
+    const tb = b.querySelector('#oTrack');
+    if (tb) tb.addEventListener('click', () => { const off = !Track.optOut(); Track.setOptOut(off); tb.textContent = off ? _t('Aus') : _t('An'); });
     b.querySelector('#oSave').closest('.opt-row').insertAdjacentHTML('beforebegin', `<div class="opt-row"><span>${_t('Sprache')}</span><span class="langs">${Object.entries(LANGS).map(([k, n]) => `<button class="btn lang${k === LANG ? ' on' : ''}" data-lang="${k}">${n}</button>`).join('')}</span></div>`);
     b.querySelectorAll('.lang').forEach((el) => el.addEventListener('click', () => { saveGame(true); setLang(el.dataset.lang); }));
     b.querySelector('#oReset').addEventListener('click', () => { if (confirm(_t('Spielstand wirklich löschen?'))) { clearSave(); try { localStorage.removeItem(SAVE_KEY + '-img'); } catch (e) {} location.reload(); } });

@@ -2151,5 +2151,12 @@
 "TASTE DRÜCKEN": "PRESS ANY KEY",
 "Mittwoch: Kartbahn. Keine Diskussion.": "Wednesday: kart track. No discussion.",
 "Alle anderen spielen als Kolleginnen und Kollegen mit. Wer einen PO spielt, plant mit dessen Team; alle anderen helfen ihrem Team.": "Everyone else plays along as colleagues. If you play a PO, you plan with their team; everyone else helps their team.",
-"<div class=\"shop-sec\">Weitere</div><div class=\"list\">{0}</div>": "<div class=\"shop-sec\">Others</div><div class=\"list\">{0}</div>"
+"<div class=\"shop-sec\">Weitere</div><div class=\"list\">{0}</div>": "<div class=\"shop-sec\">Others</div><div class=\"list\">{0}</div>",
+"Spielst als": "Playing as",
+"Dein Name": "Your name",
+"Wie heisst du?": "What is your name?",
+"Bitte gib deinen Namen ein!": "Please enter your name!",
+"Vorschlag: {0}. Tipp auf eine andere Figur, trag deinen Namen ein oder gestalte dein Aussehen – dann Boarding!": "Suggestion: {0}. Tap another character, enter your name or customise your look – then boarding!",
+"Spieler": "Player",
+"Fortschritt teilen": "Share progress"
 }

@@ -82,7 +82,7 @@ function showTitle() {
     const res = await Editor.open({ mode: 'new' });
     if (!res) { showTitle(); return; }
     const crew = CREW.find((c) => c.id === res.pid);
-    const S2 = newState(res.look, crew.name);
+    const S2 = newState(res.look, res.name || crew.name);
     S2.pid = res.pid;
     S2.team = crew.team;
     clearSave();
@@ -109,6 +109,8 @@ async function startGame(state, fresh) {
   G.mode = 'play';
   Story.ready = true;
   UI.hud();
+  Track.init();
+  if (fresh) Track.event('start', G.S.name, true); else Track.send('resume', true);
   if (fresh) {
     G.busy++;
     await Scene.play('plane', { ms: 3200, text: _t('Anflug auf Valencia …') });

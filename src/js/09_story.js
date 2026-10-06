@@ -57,7 +57,7 @@ const Story = {
   say(sp, text) { return UI.say(sp, text); },
   ask(sp, text, opts) { return UI.ask(sp, text, opts); },
   stageAt(s) { return STAGES.indexOf(G.S.stage) >= STAGES.indexOf(s); },
-  setStage(s) { G.S.stage = s; UI.hud(); },
+  setStage(s) { G.S.stage = s; UI.hud(); Track.event('stage', s, true); },
   isSwiss() { return SWISS.includes(G.S.pid); },
   isColba() { return COLBA.includes(G.S.pid) || G.S.pid === 'isabell'; },
   /* Wen muss man am Flughafen einsammeln? */
@@ -1067,6 +1067,7 @@ const Story = {
     await Scene.play('taxi', { ms: 2200, text: colba ? _t('Die Schweizer zum Flughafen bringen …') : _t('Zum Flughafen …'), heads: TRAVELLERS.filter((id) => id !== G.S.pid).slice(0, 4).map((id) => getSheet(personLook(id))) });
     if (!colba) await Scene.play('flight', { ms: 2800, text: _t('VLC → ZRH') });
     f.finished = 1; G.S.finished = 1; achieve('heimflug');
+    Track.event('ende', colba ? 'Verabschiedung am Flughafen' : 'Heimflug', true);
     saveGame(true);
     G.busy--;
     Ending.show();

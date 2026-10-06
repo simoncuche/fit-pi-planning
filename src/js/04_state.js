@@ -216,6 +216,7 @@ function achieve(id) {
   G.S.ach[id] = G.S.time;
   Snd.sfx('win');
   UI.toast(_t`<b>Erlebnis:</b> ${ACH[id][0]}`, 'ach');
+  Track.event('ach', ACH[id][0]);
 }
 function addPhoto(id) {
   if (G.S.photos[id]) { UI.toast(_t('Davon hast du schon ein Foto.')); return false; }
@@ -326,6 +327,7 @@ const SAVE_KEY = 'pi-valencia-v1' + (BUILD_VARIANT ? '-' + BUILD_VARIANT : '');
 function saveGame(silent) {
   if (!G.S || !G.player) return;
   G.S.map = G.map.id; G.S.x = Math.round(G.player.x); G.S.y = Math.round(G.player.y); G.S.dir = G.player.dir;
+  Track.send('save');
   try { localStorage.setItem(SAVE_KEY, JSON.stringify(G.S)); if (!silent) UI.toast(_t('Spielstand gespeichert.')); return true; }
   catch (e) { if (!silent) UI.toast(_t('Speichern ist in diesem Browser nicht möglich.'), 'warn'); return false; }
 }
