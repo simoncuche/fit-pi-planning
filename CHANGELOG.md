@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.3.4 – 06.10.2026
+- The Colba office is more compact: the corridor in front of the team rooms is four tiles instead of seven, the lounge is a little shorter, and everything below (bike lab, balcony, back office, WC, lift) moved up accordingly.
+
 ## 2.3.3 – 06.10.2026
 - The action button is more forgiving: people and objects count when you stand next to them or slightly diagonal, not only when a point right in front of you hits them.
 

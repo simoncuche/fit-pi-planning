@@ -428,10 +428,10 @@ body:not(.touch) #actLabel { bottom: calc(env(safe-area-inset-bottom, 0px) + 18p
 </div>
 <script>
 /* ---- Version (aus CHANGELOG.md) ---- */
-const APP_VERSION = "2.3.3";
+const APP_VERSION = "2.3.4";
 const BUILD_VARIANT = "";
 const APP_VERSION_DATE = "06.10.2026";
-const CHANGELOG = [{"v": "2.3.3", "date": "06.10.2026", "items": ["The action button is more forgiving: people and objects count when you stand next to them or slightly diagonal, not only when a point right in front of you hits them."]}, {"v": "2.3.2", "date": "06.10.2026", "items": ["Suitcases now ride on the baggage carousels (top belt to the right, bottom belt to the left) and the belt slats move.", "The camera lets the top edge of a map appear below the HUD, so the airport's glass front, signs and arrivals board are visible."]}, {"v": "2.3.1", "date": "06.10.2026", "items": ["Suitcase minigame fixed: the grab zone now matches the yellow marker in front of you, the suitcase in reach is highlighted, the belt runs a little slower and a tap on the belt works too.", "Tapping the screen now triggers the nearby action (same as the A button), so belts, counters and people can be used by tapping at them.", "Airport rebuilt: glass front with a view of the apron, arrivals board, two proper baggage carousels (belt 4 is now reachable from all sides), pillars, information desk, car-rental counter with posters, a real café with counter, espresso machine, display case and tables, seating area, luggage trolleys and a yellow floor line to the taxi exit."]}, {"v": "2.3.0", "date": "06.10.2026", "items": ["The PI planning now takes place from Monday 2 to Friday 6 November 2026. The Fallas (a March festival) are gone: instead there are buñuelos stands after Todos los Santos, Valencia CF's Thursday match on the big screen at Bar Pepita, marathon training in the Turia park (Valencia Marathon on 6 December), November sea temperatures and the autumn rain as a planning risk.", "New sight: Mercado de Colón on Calle Colón (modernist market hall from 1916, now cafés) replaces the falla monument; a fountain stands on Plaza del Ayuntamiento."]}, {"v": "2.2.0", "date": "06.10.2026", "items": ["The game is now called \"Fit PI Planning – The Game\".", "Four workshops in the lounge, each a minigame: UX workshop with Elena (Tue 16:00), architecture workshop with Carlos (Wed 11:00, place components into layers), roadmap workshop with Chris (Thu 11:00, milestones and releases on six sprints with prerequisites) and the PI retrospective with Simon (Fri 11:00, Keep/Stop/Start). Everyone gathers in the lounge, reminders 15 minutes before, new achievements.", "New character Daniel, the tester: black hair, stubble, documents everything, tests everything. Member of Team Rocket.", "Character selection shows a short, friendly one-liner for every character again.", "Isabel is spelled with one L."]}, {"v": "2.1.1", "date": "06.10.2026", "items": ["Looks: Lukas with very short black hair, Robin with round glasses and brown hair, Chris with longer hair, Pascal a shade blonder.", "New conversation topics: Luigi plays tennis (and padel as a stand-in), Dominique goes boxing, Pascal joins Fridays for Future demonstrations."]}, {"v": "2.1.0", "date": "06.10.2026", "items": ["All 21 characters are playable, including the Colba team and Isabel. Colba players pick the Swiss crew up at the airport on Monday and stay at Hotel Kramer for the PI week; on Saturday they see the guests off instead of flying.", "Character selection shows portraits and names only, grouped into travel group and Colba. Role descriptions are now neutral job titles.", "Scripted lines of the character you play are spoken by you (your name and portrait)."]}, {"v": "2.0.0", "date": "06.10.2026", "items": ["The game is now in English by default. German and Spanish can be selected on the title screen and in the phone's Options tab (the choice is remembered on this device).", "All texts – dialogues, items, sights, achievements, menus, minigames and scenes – are translated; names and places stay Spanish.", "Pixel font with accented letters for Spanish signs. Currency uses a point in English (12.50 €) and a comma in German and Spanish.", "GitHub Pages workflow deploys from the development branch as well, publishing the build to the gh-pages branch."]}, {"v": "1.2.0", "date": "06.10.2026", "items": ["All characters reworked to match their descriptions: Fran (long beard, sturdy), Danny (short black hair, stubble), Vicente (thin, tall, big grin), Bea (long black hair, red top), Estella (long red hair), Juanjo (glasses, blue T-shirt), Luigi (black polo), Oscar (pointed nose, darker complexion), Pablo (beard), Pascal (long light-brown hair, green T-shirt), Chris (long brown curls, boardshorts), Dominique (polo, black trousers), Simon (white shirt), Salva (subtle glasses), Aitor (muscular, big nose), Carlos (slim, tall, dressed in black), Isabel (long brown hair), Elena (light make-up, black hair).", "New e-bike room right next to the lounge (reachable through its door): two diagnostic PCs connected to e-bikes on work stands via CAN cable, CANopen test bench and test bikes. At the PC: read telemetry (achievement \"Telemetry\"), flash firmware via OTA (safe with Fran, risky alone), clear the error memory.", "Isabel's back office moved to the bottom left next to the lift."]}, {"v": "1.1.0", "date": "06.10.2026", "items": ["Danny and Bea are from Cuba: new conversation topics, ropa vieja and Cuban mojito, achievement \"Havana vibes\".", "Carlos plays bass in the hard rock band \"Stack Overflow\": amp in the Rocket room, bass solo with its own rock loop, achievement \"Hard rock\".", "New map \"Danny's house\" in the suburbs: garden with pool, hammock, orange trees and barbecue. On Wednesday evening Danny invites everyone to an asado (taxi option \"To Danny's\"); grilling (chorizo, pollo, corn), achievements \"Asado\" and \"Grill master\"."]}, {"v": "1.0.0", "date": "06.10.2026", "items": ["First version: PI planning in Valencia – arrival by plane, Hotel Kramer, Colba tower with doorbell puzzle, three teams (Indurain, Meeseeks, Rocket), five planning days, lunch in the lounge, Valencia leisure (sailing, karts, paella, wine, museum, beach football, disco, padel, fish market), e-bike rides and Fallas events."]}];
+const CHANGELOG = [{"v": "2.3.4", "date": "06.10.2026", "items": ["The Colba office is more compact: the corridor in front of the team rooms is four tiles instead of seven, the lounge is a little shorter, and everything below (bike lab, balcony, back office, WC, lift) moved up accordingly."]}, {"v": "2.3.3", "date": "06.10.2026", "items": ["The action button is more forgiving: people and objects count when you stand next to them or slightly diagonal, not only when a point right in front of you hits them."]}, {"v": "2.3.2", "date": "06.10.2026", "items": ["Suitcases now ride on the baggage carousels (top belt to the right, bottom belt to the left) and the belt slats move.", "The camera lets the top edge of a map appear below the HUD, so the airport's glass front, signs and arrivals board are visible."]}, {"v": "2.3.1", "date": "06.10.2026", "items": ["Suitcase minigame fixed: the grab zone now matches the yellow marker in front of you, the suitcase in reach is highlighted, the belt runs a little slower and a tap on the belt works too.", "Tapping the screen now triggers the nearby action (same as the A button), so belts, counters and people can be used by tapping at them.", "Airport rebuilt: glass front with a view of the apron, arrivals board, two proper baggage carousels (belt 4 is now reachable from all sides), pillars, information desk, car-rental counter with posters, a real café with counter, espresso machine, display case and tables, seating area, luggage trolleys and a yellow floor line to the taxi exit."]}, {"v": "2.3.0", "date": "06.10.2026", "items": ["The PI planning now takes place from Monday 2 to Friday 6 November 2026. The Fallas (a March festival) are gone: instead there are buñuelos stands after Todos los Santos, Valencia CF's Thursday match on the big screen at Bar Pepita, marathon training in the Turia park (Valencia Marathon on 6 December), November sea temperatures and the autumn rain as a planning risk.", "New sight: Mercado de Colón on Calle Colón (modernist market hall from 1916, now cafés) replaces the falla monument; a fountain stands on Plaza del Ayuntamiento."]}, {"v": "2.2.0", "date": "06.10.2026", "items": ["The game is now called \"Fit PI Planning – The Game\".", "Four workshops in the lounge, each a minigame: UX workshop with Elena (Tue 16:00), architecture workshop with Carlos (Wed 11:00, place components into layers), roadmap workshop with Chris (Thu 11:00, milestones and releases on six sprints with prerequisites) and the PI retrospective with Simon (Fri 11:00, Keep/Stop/Start). Everyone gathers in the lounge, reminders 15 minutes before, new achievements.", "New character Daniel, the tester: black hair, stubble, documents everything, tests everything. Member of Team Rocket.", "Character selection shows a short, friendly one-liner for every character again.", "Isabel is spelled with one L."]}, {"v": "2.1.1", "date": "06.10.2026", "items": ["Looks: Lukas with very short black hair, Robin with round glasses and brown hair, Chris with longer hair, Pascal a shade blonder.", "New conversation topics: Luigi plays tennis (and padel as a stand-in), Dominique goes boxing, Pascal joins Fridays for Future demonstrations."]}, {"v": "2.1.0", "date": "06.10.2026", "items": ["All 21 characters are playable, including the Colba team and Isabel. Colba players pick the Swiss crew up at the airport on Monday and stay at Hotel Kramer for the PI week; on Saturday they see the guests off instead of flying.", "Character selection shows portraits and names only, grouped into travel group and Colba. Role descriptions are now neutral job titles.", "Scripted lines of the character you play are spoken by you (your name and portrait)."]}, {"v": "2.0.0", "date": "06.10.2026", "items": ["The game is now in English by default. German and Spanish can be selected on the title screen and in the phone's Options tab (the choice is remembered on this device).", "All texts – dialogues, items, sights, achievements, menus, minigames and scenes – are translated; names and places stay Spanish.", "Pixel font with accented letters for Spanish signs. Currency uses a point in English (12.50 €) and a comma in German and Spanish.", "GitHub Pages workflow deploys from the development branch as well, publishing the build to the gh-pages branch."]}, {"v": "1.2.0", "date": "06.10.2026", "items": ["All characters reworked to match their descriptions: Fran (long beard, sturdy), Danny (short black hair, stubble), Vicente (thin, tall, big grin), Bea (long black hair, red top), Estella (long red hair), Juanjo (glasses, blue T-shirt), Luigi (black polo), Oscar (pointed nose, darker complexion), Pablo (beard), Pascal (long light-brown hair, green T-shirt), Chris (long brown curls, boardshorts), Dominique (polo, black trousers), Simon (white shirt), Salva (subtle glasses), Aitor (muscular, big nose), Carlos (slim, tall, dressed in black), Isabel (long brown hair), Elena (light make-up, black hair).", "New e-bike room right next to the lounge (reachable through its door): two diagnostic PCs connected to e-bikes on work stands via CAN cable, CANopen test bench and test bikes. At the PC: read telemetry (achievement \"Telemetry\"), flash firmware via OTA (safe with Fran, risky alone), clear the error memory.", "Isabel's back office moved to the bottom left next to the lift."]}, {"v": "1.1.0", "date": "06.10.2026", "items": ["Danny and Bea are from Cuba: new conversation topics, ropa vieja and Cuban mojito, achievement \"Havana vibes\".", "Carlos plays bass in the hard rock band \"Stack Overflow\": amp in the Rocket room, bass solo with its own rock loop, achievement \"Hard rock\".", "New map \"Danny's house\" in the suburbs: garden with pool, hammock, orange trees and barbecue. On Wednesday evening Danny invites everyone to an asado (taxi option \"To Danny's\"); grilling (chorizo, pollo, corn), achievements \"Asado\" and \"Grill master\"."]}, {"v": "1.0.0", "date": "06.10.2026", "items": ["First version: PI planning in Valencia – arrival by plane, Hotel Kramer, Colba tower with doorbell puzzle, three teams (Indurain, Meeseeks, Rocket), five planning days, lunch in the lounge, Valencia leisure (sailing, karts, paella, wine, museum, beach football, disco, padel, fish market), e-bike rides and Fallas events."]}];
 /* ---- 00_i18n.js ---- */
 /* ---- Sprachen: Englisch (Standard), Deutsch, Spanisch ----
    Alle sichtbaren Texte im Code sind deutsch und mit _t('…') bzw. _t`…` umhüllt. Der deutsche Text ist der Schlüssel;
@@ -3225,8 +3225,8 @@ MAP_BUILDERS.colba_entry = () => {
   return m;
 };
 MAP_BUILDERS.colba = () => {
-  const m = new GMap('colba', 60, 30, { name: _t('Colba · 1. Stock'), indoor: true, bg: '#0e1116', wallStyle: { cap: '#3a3e44' }, music: 'office' });
-  m.room(0, 0, 60, 30, 2, T.TILE, 1);
+  const m = new GMap('colba', 60, 27, { name: _t('Colba · 1. Stock'), indoor: true, bg: '#0e1116', wallStyle: { cap: '#3a3e44' }, music: 'office' });
+  m.room(0, 0, 60, 27, 2, T.TILE, 1);
   /* Flur in der Mitte (y 14..17), Teamräume oben, Aufenthaltsraum rechts, Lift/Treppe unten links */
   const roomBox = (x, y, w, h, style, floor, fv) => { m.fill(x, y, w, h, floor, fv); m.fill(x, y, w, 1, T.WALL); m.fill(x, y + 1, w, 2, T.WALLF, style); for (let yy = y; yy < y + h; yy++) { m.set(x, yy, T.WALL); m.set(x + w - 1, yy, T.WALL); } m.fill(x, y + h - 1, w, 1, T.WALL); };
   /* Teamräume */
@@ -3249,7 +3249,7 @@ MAP_BUILDERS.colba = () => {
     m.spawn('room_' + team, p.x + 7, p.y + 11, 3);
   }
   /* Aufenthaltsraum (rechts) */
-  roomBox(46, 1, 13, 20, 2, T.WOOD, 4);
+  roomBox(46, 1, 13, 17, 2, T.WOOD, 4);
   m.decal((c) => { DECAL.logo(c, 47 * TS + 6, TS + 20, 'LOUNGE', '#ff8c1a'); DECAL.window(c, 50 * TS, TS + 6, 48, 30); DECAL.window(c, 54 * TS, TS + 6, 48, 30); DECAL.clock(c, 47 * TS + 4, TS + 4); });
   m.add(objScreen(52, 1, 4)); m.trig(52, 3, 4, 1, { label: _t('Grosser Bildschirm'), act: () => Story.loungeScreen() });
   m.add(objKitchen(47, 4, 4)); m.add(objCoffee(51, 4)); m.trig(51, 4, 1, 1, { label: _t('Kaffeemaschine'), act: () => Story.coffee() });
@@ -3257,56 +3257,56 @@ MAP_BUILDERS.colba = () => {
   m.add(objWaterCooler(57, 4)); m.trig(57, 4, 1, 1, { label: _t('Wasserspender'), act: () => Story.water() });
   m.add(objTable(48, 9, 9, 3, { col: '#a87a4a', items: (c, W, H) => { for (let k = 0; k < 6; k++) { const px = 14 + k * 32, py = 8 + (k % 2) * 36; E(c, px, py, 7, 4, '#f4f0e6'); E(c, px, py, 5, 2.5, '#e8b040'); R(c, px + 10, py - 4, 3, 7, 'rgba(230,240,245,0.85)'); } E(c, W / 2, H / 2 - 4, 18, 8, '#2a2a2e'); E(c, W / 2, H / 2 - 5, 16, 6, '#e8b040'); for (let k = 0; k < 10; k++) P(c, W / 2 - 12 + Math.floor(hash(k, 1) * 24), H / 2 - 8 + Math.floor(hash(1, k) * 6), ['#c8352d', '#3f8e4b', '#f4f0e6'][k % 3]); } })); m.trig(48, 9, 9, 3, { label: _t('Grosser Tisch'), act: () => Story.loungeTable() });
   for (const dx of [48, 51, 54]) { m.add(objChair(dx, 8, 0, '#2a2a30')); m.add(objChair(dx, 12, 3, '#2a2a30')); }
-  m.add(objSofa(47, 16, 3, '#2a9aa0')); m.add(objSofa(53, 16, 3, '#ff8c1a')); m.add(objTable(50, 16, 2, 1, { col: '#e8e4dc' }));
-  m.trig(47, 16, 3, 1, { label: _t('Sofa: Kurz hinsetzen'), act: () => Story.sofa() });
-  m.add(objPlant(57, 18, true)); m.add(objVending(57, 12)); m.trig(57, 12, 1, 1, { label: _t('Snack-Automat'), act: () => Story.shop('automat') });
-  m.set(52, 20, T.TILE, 1); m.set(53, 20, T.TILE, 1); m.decal((c) => { R(c, 52 * TS, 20 * TS, 2 * TS, TS, '#e4e8ec'); R(c, 52 * TS + 2, 20 * TS + 2, 2 * TS - 4, 10, '#8a9098'); });
-  m.spawn('lounge', 52, 19, 3);
-  /* Balkon (oben rechts, über den Aufenthaltsraum erreichbar) */
-  m.fill(56, 21, 3, 4, T.BALCONY); m.fill(56, 21, 3, 1, T.WALL); m.fill(58, 21, 1, 4, T.WALL); m.set(56, 20, T.WALL);
-  m.fill(46, 21, 13, 9, T.TILE, 1);
-  m.fill(55, 21, 1, 9, T.WALL); m.fill(55, 25, 4, 1, T.WALL); m.fill(56, 25, 2, 5, T.TILE, 1);
-  m.set(55, 27, T.TILE, 1); m.decal((c) => { R(c, 55 * TS, 27 * TS, TS, TS, '#e4e8ec'); R(c, 55 * TS + 2, 27 * TS + 2, 8, TS - 4, '#8a9098'); pxText(c, 'BALKON', 56 * TS + 2, 25 * TS + 6, '#2a9aa0'); });
-  m.fill(56, 21, 2, 4, T.BALCONY); m.set(57, 25, T.TILE, 1);
-  m.decal((c) => { R(c, 56 * TS, 21 * TS, 2 * TS, 4 * TS, '#c8b8a0'); for (let k = 0; k < 2 * TS; k += 4) R(c, 56 * TS + k, 21 * TS, 2, 6, '#5a5048'); R(c, 56 * TS, 21 * TS + 6, 2 * TS, 1, '#5a5048'); });
-  m.add(objAshtray(56, 22)); m.trig(56, 22, 1, 1, { label: _t('Balkon: Eine rauchen'), act: () => Story.balcony() });
-  m.add(objPlanter(57, 24, '#e8402e'));
+  m.add(objSofa(47, 14, 3, '#2a9aa0')); m.add(objSofa(53, 14, 3, '#ff8c1a')); m.add(objTable(50, 14, 2, 1, { col: '#e8e4dc' }));
+  m.trig(47, 14, 3, 1, { label: _t('Sofa: Kurz hinsetzen'), act: () => Story.sofa() });
+  m.add(objPlant(57, 15, true)); m.add(objVending(57, 12)); m.trig(57, 12, 1, 1, { label: _t('Snack-Automat'), act: () => Story.shop('automat') });
+  m.set(52, 17, T.TILE, 1); m.set(53, 17, T.TILE, 1); m.decal((c) => { R(c, 52 * TS, 17 * TS, 2 * TS, TS, '#e4e8ec'); R(c, 52 * TS + 2, 17 * TS + 2, 2 * TS - 4, 10, '#8a9098'); });
+  m.spawn('lounge', 52, 16, 3);
+  /* Balkon (rechts, über den E-Bike-Raum erreichbar) */
+  m.fill(56, 18, 3, 4, T.BALCONY); m.fill(56, 18, 3, 1, T.WALL); m.fill(58, 18, 1, 4, T.WALL); m.set(56, 17, T.WALL);
+  m.fill(46, 18, 13, 9, T.TILE, 1);
+  m.fill(55, 18, 1, 9, T.WALL); m.fill(55, 22, 4, 1, T.WALL); m.fill(56, 22, 2, 5, T.TILE, 1);
+  m.set(55, 24, T.TILE, 1); m.decal((c) => { R(c, 55 * TS, 24 * TS, TS, TS, '#e4e8ec'); R(c, 55 * TS + 2, 24 * TS + 2, 8, TS - 4, '#8a9098'); pxText(c, 'BALKON', 56 * TS + 2, 22 * TS + 6, '#2a9aa0'); });
+  m.fill(56, 18, 2, 4, T.BALCONY); m.set(57, 22, T.TILE, 1);
+  m.decal((c) => { R(c, 56 * TS, 18 * TS, 2 * TS, 4 * TS, '#c8b8a0'); for (let k = 0; k < 2 * TS; k += 4) R(c, 56 * TS + k, 18 * TS, 2, 6, '#5a5048'); R(c, 56 * TS, 18 * TS + 6, 2 * TS, 1, '#5a5048'); });
+  m.add(objAshtray(56, 19)); m.trig(56, 19, 1, 1, { label: _t('Balkon: Eine rauchen'), act: () => Story.balcony() });
+  m.add(objPlanter(57, 21, '#e8402e'));
   /* E-Bike-Raum (direkt unter dem Aufenthaltsraum, durch dessen Tür erreichbar): Diagnose-PCs am Kabel, Prüfstand, Test-Bikes */
-  roomBox(46, 20, 10, 10, 2, T.TILE, 0);
-  for (const yy of [20, 21, 22]) { m.set(52, yy, T.TILE, 1); m.set(53, yy, T.TILE, 1); }
-  m.set(46, 26, T.TILE, 1); m.set(46, 27, T.TILE, 1); m.set(55, 27, T.TILE, 1);
+  roomBox(46, 17, 10, 10, 2, T.TILE, 0);
+  for (const yy of [17, 18, 19]) { m.set(52, yy, T.TILE, 1); m.set(53, yy, T.TILE, 1); }
+  m.set(46, 23, T.TILE, 1); m.set(46, 24, T.TILE, 1); m.set(55, 24, T.TILE, 1);
   m.decal((c) => {
-    R(c, 52 * TS, 20 * TS, 2 * TS, 3 * TS, '#e4e8ec'); R(c, 52 * TS + 2, 20 * TS, 2 * TS - 4, 3 * TS, '#8a9098'); R(c, 52 * TS + 4, 20 * TS, 2 * TS - 8, 3 * TS, '#b4bcc4');
-    DECAL.logo(c, 47 * TS, 21 * TS + 8, _t('BIKE LAB'), '#e2554a'); DECAL.poster(c, 51 * TS + 4, 21 * TS + 4, '#2a9aa0', 'CAN'); DECAL.poster(c, 54 * TS + 4, 21 * TS + 4, '#e2554a', 'OTA');
-    R(c, 46 * TS, 26 * TS, TS, 2 * TS, '#e4e8ec'); R(c, 46 * TS + 2, 26 * TS + 2, TS - 4, 2 * TS - 4, '#8a9098');
+    R(c, 52 * TS, 17 * TS, 2 * TS, 3 * TS, '#e4e8ec'); R(c, 52 * TS + 2, 17 * TS, 2 * TS - 4, 3 * TS, '#8a9098'); R(c, 52 * TS + 4, 17 * TS, 2 * TS - 8, 3 * TS, '#b4bcc4');
+    DECAL.logo(c, 47 * TS, 18 * TS + 8, _t('BIKE LAB'), '#e2554a'); DECAL.poster(c, 51 * TS + 4, 18 * TS + 4, '#2a9aa0', 'CAN'); DECAL.poster(c, 54 * TS + 4, 18 * TS + 4, '#e2554a', 'OTA');
+    R(c, 46 * TS, 23 * TS, TS, 2 * TS, '#e4e8ec'); R(c, 46 * TS + 2, 23 * TS + 2, TS - 4, 2 * TS - 4, '#8a9098');
   });
-  m.add(objBikeRig(47, 23, '#e2554a')); m.trig(47, 23, 3, 1, { label: _t('Diagnose-PC · Bike 1'), act: () => Story.bikeComputer(0) });
-  m.add(objBikeRig(51, 23, '#2fa0d8')); m.trig(51, 23, 3, 1, { label: _t('Diagnose-PC · Bike 2'), act: () => Story.bikeComputer(1) });
-  m.add(objBikeStand(49, 26, 3)); m.trig(49, 26, 2, 1, { label: _t('Test-E-Bikes'), act: () => Story.officeBikes() });
-  m.add(objTestBench(53, 26)); m.trig(53, 26, 2, 1, { label: _t('CANopen-Prüfstand'), act: () => Story.testBench() });
-  m.add(objEbike(48, 28, '#f0a23a')); m.add(objEbike(54, 28, '#2a9aa0', true));
-  m.spawn('lab', 50, 25, 0);
+  m.add(objBikeRig(47, 20, '#e2554a')); m.trig(47, 20, 3, 1, { label: _t('Diagnose-PC · Bike 1'), act: () => Story.bikeComputer(0) });
+  m.add(objBikeRig(51, 20, '#2fa0d8')); m.trig(51, 20, 3, 1, { label: _t('Diagnose-PC · Bike 2'), act: () => Story.bikeComputer(1) });
+  m.add(objBikeStand(49, 23, 3)); m.trig(49, 23, 2, 1, { label: _t('Test-E-Bikes'), act: () => Story.officeBikes() });
+  m.add(objTestBench(53, 23)); m.trig(53, 23, 2, 1, { label: _t('CANopen-Prüfstand'), act: () => Story.testBench() });
+  m.add(objEbike(48, 25, '#f0a23a')); m.add(objEbike(54, 25, '#2a9aa0', true));
+  m.spawn('lab', 50, 22, 0);
   /* Backoffice Isabel (unten links beim Lift) */
-  m.add(objDesk(9, 23, 3, { coffee: true })); m.trig(9, 23, 3, 1, { label: _t('Backoffice: Isabel'), act: () => Story.isabellDesk() });
-  m.add(objOfficeChair(10, 24)); m.decal((c) => { DECAL.logo(c, 8 * TS, 21 * TS + 8, 'BACKOFFICE', '#2a9aa0'); DECAL.shelf(c, 12 * TS + 6, 21 * TS + 4, 40); });
-  m.add(objPlant(13, 23)); m.add(objPlant(5, 23));
+  m.add(objDesk(9, 20, 3, { coffee: true })); m.trig(9, 20, 3, 1, { label: _t('Backoffice: Isabel'), act: () => Story.isabellDesk() });
+  m.add(objOfficeChair(10, 21)); m.decal((c) => { DECAL.logo(c, 8 * TS, 18 * TS + 8, 'BACKOFFICE', '#2a9aa0'); DECAL.shelf(c, 12 * TS + 6, 18 * TS + 4, 40); });
+  m.add(objPlant(13, 20)); m.add(objPlant(5, 20));
   /* WC */
-  m.fill(16, 21, 6, 1, T.WALL); m.fill(21, 21, 1, 5, T.WALL); m.fill(16, 25, 6, 1, T.WALL); m.fill(17, 22, 4, 3, T.TILE, 0); m.set(18, 25, T.TILE, 1);
-  m.decal((c) => { R(c, 18 * TS, 25 * TS, TS, TS, '#e4e8ec'); R(c, 18 * TS + 2, 25 * TS + 2, TS - 4, 10, '#8a9098'); pxText(c, 'WC', 18 * TS + 6, 22 * TS - 6, '#2a2a30'); });
-  m.add(mkObj(19, 22, 1, 1, 6, (c, W, H) => { R(c, 4, 0, 14, 8, '#f4f6f8'); E(c, 11, 15, 6, 6, '#f4f6f8'); E(c, 11, 15, 4, 4, '#c9dce6'); }, { solid: true }));
-  m.trig(19, 22, 1, 1, { label: 'WC', act: () => Story.wc() });
+  m.fill(16, 18, 6, 1, T.WALL); m.fill(21, 18, 1, 5, T.WALL); m.fill(16, 22, 6, 1, T.WALL); m.fill(17, 19, 4, 3, T.TILE, 0); m.set(18, 22, T.TILE, 1);
+  m.decal((c) => { R(c, 18 * TS, 22 * TS, TS, TS, '#e4e8ec'); R(c, 18 * TS + 2, 22 * TS + 2, TS - 4, 10, '#8a9098'); pxText(c, 'WC', 18 * TS + 6, 19 * TS - 6, '#2a2a30'); });
+  m.add(mkObj(19, 19, 1, 1, 6, (c, W, H) => { R(c, 4, 0, 14, 8, '#f4f6f8'); E(c, 11, 15, 6, 6, '#f4f6f8'); E(c, 11, 15, 4, 4, '#c9dce6'); }, { solid: true }));
+  m.trig(19, 19, 1, 1, { label: 'WC', act: () => Story.wc() });
   /* Flur-Deko */
-  m.decal((c) => { for (let k = 0; k < 6; k++) DECAL.poster(c, (24 + k * 3) * TS, 21 * TS + 4, ['#2a9aa0', '#e2554a', '#f0a23a', '#2fa0d8', '#3f8e4b', '#6a4a9c'][k], ['SAFE', 'PI', 'OKR', 'CAN', 'BIKE', 'DEV'][k]); });
-  m.add(objPlant(30, 24)); m.add(objPlant(44, 24)); m.add(objWaterCooler(40, 24));
-  m.trig(40, 24, 1, 1, { label: _t('Wasserspender'), act: () => Story.water() });
+  m.decal((c) => { for (let k = 0; k < 6; k++) DECAL.poster(c, (24 + k * 3) * TS, 18 * TS + 4, ['#2a9aa0', '#e2554a', '#f0a23a', '#2fa0d8', '#3f8e4b', '#6a4a9c'][k], ['SAFE', 'PI', 'OKR', 'CAN', 'BIKE', 'DEV'][k]); });
+  m.add(objPlant(30, 21)); m.add(objPlant(44, 21)); m.add(objWaterCooler(40, 21));
+  m.trig(40, 21, 1, 1, { label: _t('Wasserspender'), act: () => Story.water() });
   /* Lift & Treppe unten links */
-  m.decal((c) => { DECAL.lift(c, 2 * TS + 6, 26 * TS - 40, '1'); });
-  m.fill(1, 27, 3, 2, T.TILE, 2); m.warp(2, 28, 'colba_entry', 'lift', { w: 1, label: _t('Lift') });
-  m.fill(6, 27, 3, 2, T.STAIRS, 0); m.warp(6, 28, 'colba_entry', 'stairs', { w: 3, label: _t('Treppe'), opts: { stairs: true } });
-  m.decal((c) => { R(c, 1 * TS, 27 * TS, 3 * TS, 2 * TS, '#c6ccd2'); R(c, 2 * TS + 10, 27 * TS, 4, 2 * TS, '#7a8086'); R(c, 6 * TS, 27 * TS, 3 * TS, 1, '#8a8e94'); });
-  m.add(objSignpost(10, 27, _t('COLBA 1º'), '#2a9aa0'));
-  m.spawn('lift', 2, 26, 3); m.spawn('stairs', 7, 26, 3);
-  m.pedZones.push({ x: 24, y: 22, w: 20, h: 6, n: 0 });
+  m.decal((c) => { DECAL.lift(c, 2 * TS + 6, 23 * TS - 40, '1'); });
+  m.fill(1, 24, 3, 2, T.TILE, 2); m.warp(2, 25, 'colba_entry', 'lift', { w: 1, label: _t('Lift') });
+  m.fill(6, 24, 3, 2, T.STAIRS, 0); m.warp(6, 25, 'colba_entry', 'stairs', { w: 3, label: _t('Treppe'), opts: { stairs: true } });
+  m.decal((c) => { R(c, 1 * TS, 24 * TS, 3 * TS, 2 * TS, '#c6ccd2'); R(c, 2 * TS + 10, 24 * TS, 4, 2 * TS, '#7a8086'); R(c, 6 * TS, 24 * TS, 3 * TS, 1, '#8a8e94'); });
+  m.add(objSignpost(10, 24, _t('COLBA 1º'), '#2a9aa0'));
+  m.spawn('lift', 2, 23, 3); m.spawn('stairs', 7, 23, 3);
+  m.pedZones.push({ x: 24, y: 19, w: 20, h: 6, n: 0 });
   return m;
 };
 
@@ -4911,12 +4911,12 @@ const Story = {
       const roomSeats = (team) => { const x0 = TR[team]; return [[x0 + 3, 5, 0], [x0 + 6, 5, 0], [x0 + 9, 5, 0], [x0 + 3, 9, 3], [x0 + 6, 9, 3], [x0 + 9, 9, 3], [x0 + 11, 7, 1], [x0 + 2, 7, 2]]; };
       const cnt = { indurain: 0, meeseeks: 0, rocket: 0 };
       (byLoc.room || []).forEach((id) => { const tm = teamOf(id) || 'indurain'; const s = free(roomSeats(tm), cnt[tm]++); put(id, s[0], s[1], s[2], { pose: s[2] === 1 || s[2] === 2 ? 'stand' : 'sit', sitIdle: true, sortAdd: s[2] === 0 ? 0 : 3 }); });
-      const lseats = [[48, 8, 0], [51, 8, 0], [54, 8, 0], [48, 12, 3], [51, 12, 3], [54, 12, 3], [49, 15, 0], [50, 15, 0], [55, 15, 0], [56, 15, 0], [50, 6, 0], [52, 6, 0], [54, 6, 0], [56, 6, 0], [49, 18, 0], [52, 18, 0], [55, 18, 0]];
-      (byLoc.lounge || []).forEach((id, i) => { const s = free(lseats, i); const sit = i < 6; put(id, s[0], s[1], s[2], { pose: sit ? 'sit' : 'stand', drinkIdle: !sit, sitIdle: sit, sortAdd: sit && s[2] === 0 ? 0 : 3, wander: sit ? null : { x: 47, y: 5, w: 11, h: 15 } }); });
-      (byLoc.balcony || []).forEach((id) => put(id, 57, 23, 3, { smokeIdle: true }));
-      (byLoc.backoffice || []).forEach((id) => put(id, 10, 24, 0, { pose: 'sit', sitIdle: true, sortAdd: 2 }));
-      (byLoc.lab || []).forEach((id, i) => put(id, 47 + (i % 4) * 2, 25 + Math.floor(i / 4) * 3, 0, { bubble: 'bike', bubbleT: 1e9 }));
-      (byLoc.lost || []).forEach((id) => put(id, 30 + rint(0, 12), 23, rint(0, 3), { wander: { x: 24, y: 22, w: 20, h: 5 }, bubble: '?', bubbleT: 1e9 }));
+      const lseats = [[48, 8, 0], [51, 8, 0], [54, 8, 0], [48, 12, 3], [51, 12, 3], [54, 12, 3], [49, 13, 0], [50, 13, 0], [55, 13, 0], [56, 13, 0], [50, 6, 0], [52, 6, 0], [54, 6, 0], [56, 6, 0], [49, 16, 0], [52, 16, 0], [55, 16, 0]];
+      (byLoc.lounge || []).forEach((id, i) => { const s = free(lseats, i); const sit = i < 6; put(id, s[0], s[1], s[2], { pose: sit ? 'sit' : 'stand', drinkIdle: !sit, sitIdle: sit, sortAdd: sit && s[2] === 0 ? 0 : 3, wander: sit ? null : { x: 47, y: 5, w: 11, h: 11 } }); });
+      (byLoc.balcony || []).forEach((id) => put(id, 57, 20, 3, { smokeIdle: true }));
+      (byLoc.backoffice || []).forEach((id) => put(id, 10, 21, 0, { pose: 'sit', sitIdle: true, sortAdd: 2 }));
+      (byLoc.lab || []).forEach((id, i) => put(id, 47 + (i % 4) * 2, 22 + Math.floor(i / 4) * 3, 0, { bubble: 'bike', bubbleT: 1e9 }));
+      (byLoc.lost || []).forEach((id) => put(id, 30 + rint(0, 12), 20, rint(0, 3), { wander: { x: 24, y: 19, w: 20, h: 5 }, bubble: '?', bubbleT: 1e9 }));
       return;
     }
   },

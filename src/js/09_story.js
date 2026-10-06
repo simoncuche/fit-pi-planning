@@ -253,12 +253,12 @@ const Story = {
       const roomSeats = (team) => { const x0 = TR[team]; return [[x0 + 3, 5, 0], [x0 + 6, 5, 0], [x0 + 9, 5, 0], [x0 + 3, 9, 3], [x0 + 6, 9, 3], [x0 + 9, 9, 3], [x0 + 11, 7, 1], [x0 + 2, 7, 2]]; };
       const cnt = { indurain: 0, meeseeks: 0, rocket: 0 };
       (byLoc.room || []).forEach((id) => { const tm = teamOf(id) || 'indurain'; const s = free(roomSeats(tm), cnt[tm]++); put(id, s[0], s[1], s[2], { pose: s[2] === 1 || s[2] === 2 ? 'stand' : 'sit', sitIdle: true, sortAdd: s[2] === 0 ? 0 : 3 }); });
-      const lseats = [[48, 8, 0], [51, 8, 0], [54, 8, 0], [48, 12, 3], [51, 12, 3], [54, 12, 3], [49, 15, 0], [50, 15, 0], [55, 15, 0], [56, 15, 0], [50, 6, 0], [52, 6, 0], [54, 6, 0], [56, 6, 0], [49, 18, 0], [52, 18, 0], [55, 18, 0]];
-      (byLoc.lounge || []).forEach((id, i) => { const s = free(lseats, i); const sit = i < 6; put(id, s[0], s[1], s[2], { pose: sit ? 'sit' : 'stand', drinkIdle: !sit, sitIdle: sit, sortAdd: sit && s[2] === 0 ? 0 : 3, wander: sit ? null : { x: 47, y: 5, w: 11, h: 15 } }); });
-      (byLoc.balcony || []).forEach((id) => put(id, 57, 23, 3, { smokeIdle: true }));
-      (byLoc.backoffice || []).forEach((id) => put(id, 10, 24, 0, { pose: 'sit', sitIdle: true, sortAdd: 2 }));
-      (byLoc.lab || []).forEach((id, i) => put(id, 47 + (i % 4) * 2, 25 + Math.floor(i / 4) * 3, 0, { bubble: 'bike', bubbleT: 1e9 }));
-      (byLoc.lost || []).forEach((id) => put(id, 30 + rint(0, 12), 23, rint(0, 3), { wander: { x: 24, y: 22, w: 20, h: 5 }, bubble: '?', bubbleT: 1e9 }));
+      const lseats = [[48, 8, 0], [51, 8, 0], [54, 8, 0], [48, 12, 3], [51, 12, 3], [54, 12, 3], [49, 13, 0], [50, 13, 0], [55, 13, 0], [56, 13, 0], [50, 6, 0], [52, 6, 0], [54, 6, 0], [56, 6, 0], [49, 16, 0], [52, 16, 0], [55, 16, 0]];
+      (byLoc.lounge || []).forEach((id, i) => { const s = free(lseats, i); const sit = i < 6; put(id, s[0], s[1], s[2], { pose: sit ? 'sit' : 'stand', drinkIdle: !sit, sitIdle: sit, sortAdd: sit && s[2] === 0 ? 0 : 3, wander: sit ? null : { x: 47, y: 5, w: 11, h: 11 } }); });
+      (byLoc.balcony || []).forEach((id) => put(id, 57, 20, 3, { smokeIdle: true }));
+      (byLoc.backoffice || []).forEach((id) => put(id, 10, 21, 0, { pose: 'sit', sitIdle: true, sortAdd: 2 }));
+      (byLoc.lab || []).forEach((id, i) => put(id, 47 + (i % 4) * 2, 22 + Math.floor(i / 4) * 3, 0, { bubble: 'bike', bubbleT: 1e9 }));
+      (byLoc.lost || []).forEach((id) => put(id, 30 + rint(0, 12), 20, rint(0, 3), { wander: { x: 24, y: 19, w: 20, h: 5 }, bubble: '?', bubbleT: 1e9 }));
       return;
     }
   },

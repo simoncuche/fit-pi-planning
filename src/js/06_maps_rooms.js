@@ -139,8 +139,8 @@ MAP_BUILDERS.colba_entry = () => {
   return m;
 };
 MAP_BUILDERS.colba = () => {
-  const m = new GMap('colba', 60, 30, { name: _t('Colba · 1. Stock'), indoor: true, bg: '#0e1116', wallStyle: { cap: '#3a3e44' }, music: 'office' });
-  m.room(0, 0, 60, 30, 2, T.TILE, 1);
+  const m = new GMap('colba', 60, 27, { name: _t('Colba · 1. Stock'), indoor: true, bg: '#0e1116', wallStyle: { cap: '#3a3e44' }, music: 'office' });
+  m.room(0, 0, 60, 27, 2, T.TILE, 1);
   /* Flur in der Mitte (y 14..17), Teamräume oben, Aufenthaltsraum rechts, Lift/Treppe unten links */
   const roomBox = (x, y, w, h, style, floor, fv) => { m.fill(x, y, w, h, floor, fv); m.fill(x, y, w, 1, T.WALL); m.fill(x, y + 1, w, 2, T.WALLF, style); for (let yy = y; yy < y + h; yy++) { m.set(x, yy, T.WALL); m.set(x + w - 1, yy, T.WALL); } m.fill(x, y + h - 1, w, 1, T.WALL); };
   /* Teamräume */
@@ -163,7 +163,7 @@ MAP_BUILDERS.colba = () => {
     m.spawn('room_' + team, p.x + 7, p.y + 11, 3);
   }
   /* Aufenthaltsraum (rechts) */
-  roomBox(46, 1, 13, 20, 2, T.WOOD, 4);
+  roomBox(46, 1, 13, 17, 2, T.WOOD, 4);
   m.decal((c) => { DECAL.logo(c, 47 * TS + 6, TS + 20, 'LOUNGE', '#ff8c1a'); DECAL.window(c, 50 * TS, TS + 6, 48, 30); DECAL.window(c, 54 * TS, TS + 6, 48, 30); DECAL.clock(c, 47 * TS + 4, TS + 4); });
   m.add(objScreen(52, 1, 4)); m.trig(52, 3, 4, 1, { label: _t('Grosser Bildschirm'), act: () => Story.loungeScreen() });
   m.add(objKitchen(47, 4, 4)); m.add(objCoffee(51, 4)); m.trig(51, 4, 1, 1, { label: _t('Kaffeemaschine'), act: () => Story.coffee() });
@@ -171,56 +171,56 @@ MAP_BUILDERS.colba = () => {
   m.add(objWaterCooler(57, 4)); m.trig(57, 4, 1, 1, { label: _t('Wasserspender'), act: () => Story.water() });
   m.add(objTable(48, 9, 9, 3, { col: '#a87a4a', items: (c, W, H) => { for (let k = 0; k < 6; k++) { const px = 14 + k * 32, py = 8 + (k % 2) * 36; E(c, px, py, 7, 4, '#f4f0e6'); E(c, px, py, 5, 2.5, '#e8b040'); R(c, px + 10, py - 4, 3, 7, 'rgba(230,240,245,0.85)'); } E(c, W / 2, H / 2 - 4, 18, 8, '#2a2a2e'); E(c, W / 2, H / 2 - 5, 16, 6, '#e8b040'); for (let k = 0; k < 10; k++) P(c, W / 2 - 12 + Math.floor(hash(k, 1) * 24), H / 2 - 8 + Math.floor(hash(1, k) * 6), ['#c8352d', '#3f8e4b', '#f4f0e6'][k % 3]); } })); m.trig(48, 9, 9, 3, { label: _t('Grosser Tisch'), act: () => Story.loungeTable() });
   for (const dx of [48, 51, 54]) { m.add(objChair(dx, 8, 0, '#2a2a30')); m.add(objChair(dx, 12, 3, '#2a2a30')); }
-  m.add(objSofa(47, 16, 3, '#2a9aa0')); m.add(objSofa(53, 16, 3, '#ff8c1a')); m.add(objTable(50, 16, 2, 1, { col: '#e8e4dc' }));
-  m.trig(47, 16, 3, 1, { label: _t('Sofa: Kurz hinsetzen'), act: () => Story.sofa() });
-  m.add(objPlant(57, 18, true)); m.add(objVending(57, 12)); m.trig(57, 12, 1, 1, { label: _t('Snack-Automat'), act: () => Story.shop('automat') });
-  m.set(52, 20, T.TILE, 1); m.set(53, 20, T.TILE, 1); m.decal((c) => { R(c, 52 * TS, 20 * TS, 2 * TS, TS, '#e4e8ec'); R(c, 52 * TS + 2, 20 * TS + 2, 2 * TS - 4, 10, '#8a9098'); });
-  m.spawn('lounge', 52, 19, 3);
-  /* Balkon (oben rechts, über den Aufenthaltsraum erreichbar) */
-  m.fill(56, 21, 3, 4, T.BALCONY); m.fill(56, 21, 3, 1, T.WALL); m.fill(58, 21, 1, 4, T.WALL); m.set(56, 20, T.WALL);
-  m.fill(46, 21, 13, 9, T.TILE, 1);
-  m.fill(55, 21, 1, 9, T.WALL); m.fill(55, 25, 4, 1, T.WALL); m.fill(56, 25, 2, 5, T.TILE, 1);
-  m.set(55, 27, T.TILE, 1); m.decal((c) => { R(c, 55 * TS, 27 * TS, TS, TS, '#e4e8ec'); R(c, 55 * TS + 2, 27 * TS + 2, 8, TS - 4, '#8a9098'); pxText(c, 'BALKON', 56 * TS + 2, 25 * TS + 6, '#2a9aa0'); });
-  m.fill(56, 21, 2, 4, T.BALCONY); m.set(57, 25, T.TILE, 1);
-  m.decal((c) => { R(c, 56 * TS, 21 * TS, 2 * TS, 4 * TS, '#c8b8a0'); for (let k = 0; k < 2 * TS; k += 4) R(c, 56 * TS + k, 21 * TS, 2, 6, '#5a5048'); R(c, 56 * TS, 21 * TS + 6, 2 * TS, 1, '#5a5048'); });
-  m.add(objAshtray(56, 22)); m.trig(56, 22, 1, 1, { label: _t('Balkon: Eine rauchen'), act: () => Story.balcony() });
-  m.add(objPlanter(57, 24, '#e8402e'));
+  m.add(objSofa(47, 14, 3, '#2a9aa0')); m.add(objSofa(53, 14, 3, '#ff8c1a')); m.add(objTable(50, 14, 2, 1, { col: '#e8e4dc' }));
+  m.trig(47, 14, 3, 1, { label: _t('Sofa: Kurz hinsetzen'), act: () => Story.sofa() });
+  m.add(objPlant(57, 15, true)); m.add(objVending(57, 12)); m.trig(57, 12, 1, 1, { label: _t('Snack-Automat'), act: () => Story.shop('automat') });
+  m.set(52, 17, T.TILE, 1); m.set(53, 17, T.TILE, 1); m.decal((c) => { R(c, 52 * TS, 17 * TS, 2 * TS, TS, '#e4e8ec'); R(c, 52 * TS + 2, 17 * TS + 2, 2 * TS - 4, 10, '#8a9098'); });
+  m.spawn('lounge', 52, 16, 3);
+  /* Balkon (rechts, über den E-Bike-Raum erreichbar) */
+  m.fill(56, 18, 3, 4, T.BALCONY); m.fill(56, 18, 3, 1, T.WALL); m.fill(58, 18, 1, 4, T.WALL); m.set(56, 17, T.WALL);
+  m.fill(46, 18, 13, 9, T.TILE, 1);
+  m.fill(55, 18, 1, 9, T.WALL); m.fill(55, 22, 4, 1, T.WALL); m.fill(56, 22, 2, 5, T.TILE, 1);
+  m.set(55, 24, T.TILE, 1); m.decal((c) => { R(c, 55 * TS, 24 * TS, TS, TS, '#e4e8ec'); R(c, 55 * TS + 2, 24 * TS + 2, 8, TS - 4, '#8a9098'); pxText(c, 'BALKON', 56 * TS + 2, 22 * TS + 6, '#2a9aa0'); });
+  m.fill(56, 18, 2, 4, T.BALCONY); m.set(57, 22, T.TILE, 1);
+  m.decal((c) => { R(c, 56 * TS, 18 * TS, 2 * TS, 4 * TS, '#c8b8a0'); for (let k = 0; k < 2 * TS; k += 4) R(c, 56 * TS + k, 18 * TS, 2, 6, '#5a5048'); R(c, 56 * TS, 18 * TS + 6, 2 * TS, 1, '#5a5048'); });
+  m.add(objAshtray(56, 19)); m.trig(56, 19, 1, 1, { label: _t('Balkon: Eine rauchen'), act: () => Story.balcony() });
+  m.add(objPlanter(57, 21, '#e8402e'));
   /* E-Bike-Raum (direkt unter dem Aufenthaltsraum, durch dessen Tür erreichbar): Diagnose-PCs am Kabel, Prüfstand, Test-Bikes */
-  roomBox(46, 20, 10, 10, 2, T.TILE, 0);
-  for (const yy of [20, 21, 22]) { m.set(52, yy, T.TILE, 1); m.set(53, yy, T.TILE, 1); }
-  m.set(46, 26, T.TILE, 1); m.set(46, 27, T.TILE, 1); m.set(55, 27, T.TILE, 1);
+  roomBox(46, 17, 10, 10, 2, T.TILE, 0);
+  for (const yy of [17, 18, 19]) { m.set(52, yy, T.TILE, 1); m.set(53, yy, T.TILE, 1); }
+  m.set(46, 23, T.TILE, 1); m.set(46, 24, T.TILE, 1); m.set(55, 24, T.TILE, 1);
   m.decal((c) => {
-    R(c, 52 * TS, 20 * TS, 2 * TS, 3 * TS, '#e4e8ec'); R(c, 52 * TS + 2, 20 * TS, 2 * TS - 4, 3 * TS, '#8a9098'); R(c, 52 * TS + 4, 20 * TS, 2 * TS - 8, 3 * TS, '#b4bcc4');
-    DECAL.logo(c, 47 * TS, 21 * TS + 8, _t('BIKE LAB'), '#e2554a'); DECAL.poster(c, 51 * TS + 4, 21 * TS + 4, '#2a9aa0', 'CAN'); DECAL.poster(c, 54 * TS + 4, 21 * TS + 4, '#e2554a', 'OTA');
-    R(c, 46 * TS, 26 * TS, TS, 2 * TS, '#e4e8ec'); R(c, 46 * TS + 2, 26 * TS + 2, TS - 4, 2 * TS - 4, '#8a9098');
+    R(c, 52 * TS, 17 * TS, 2 * TS, 3 * TS, '#e4e8ec'); R(c, 52 * TS + 2, 17 * TS, 2 * TS - 4, 3 * TS, '#8a9098'); R(c, 52 * TS + 4, 17 * TS, 2 * TS - 8, 3 * TS, '#b4bcc4');
+    DECAL.logo(c, 47 * TS, 18 * TS + 8, _t('BIKE LAB'), '#e2554a'); DECAL.poster(c, 51 * TS + 4, 18 * TS + 4, '#2a9aa0', 'CAN'); DECAL.poster(c, 54 * TS + 4, 18 * TS + 4, '#e2554a', 'OTA');
+    R(c, 46 * TS, 23 * TS, TS, 2 * TS, '#e4e8ec'); R(c, 46 * TS + 2, 23 * TS + 2, TS - 4, 2 * TS - 4, '#8a9098');
   });
-  m.add(objBikeRig(47, 23, '#e2554a')); m.trig(47, 23, 3, 1, { label: _t('Diagnose-PC · Bike 1'), act: () => Story.bikeComputer(0) });
-  m.add(objBikeRig(51, 23, '#2fa0d8')); m.trig(51, 23, 3, 1, { label: _t('Diagnose-PC · Bike 2'), act: () => Story.bikeComputer(1) });
-  m.add(objBikeStand(49, 26, 3)); m.trig(49, 26, 2, 1, { label: _t('Test-E-Bikes'), act: () => Story.officeBikes() });
-  m.add(objTestBench(53, 26)); m.trig(53, 26, 2, 1, { label: _t('CANopen-Prüfstand'), act: () => Story.testBench() });
-  m.add(objEbike(48, 28, '#f0a23a')); m.add(objEbike(54, 28, '#2a9aa0', true));
-  m.spawn('lab', 50, 25, 0);
+  m.add(objBikeRig(47, 20, '#e2554a')); m.trig(47, 20, 3, 1, { label: _t('Diagnose-PC · Bike 1'), act: () => Story.bikeComputer(0) });
+  m.add(objBikeRig(51, 20, '#2fa0d8')); m.trig(51, 20, 3, 1, { label: _t('Diagnose-PC · Bike 2'), act: () => Story.bikeComputer(1) });
+  m.add(objBikeStand(49, 23, 3)); m.trig(49, 23, 2, 1, { label: _t('Test-E-Bikes'), act: () => Story.officeBikes() });
+  m.add(objTestBench(53, 23)); m.trig(53, 23, 2, 1, { label: _t('CANopen-Prüfstand'), act: () => Story.testBench() });
+  m.add(objEbike(48, 25, '#f0a23a')); m.add(objEbike(54, 25, '#2a9aa0', true));
+  m.spawn('lab', 50, 22, 0);
   /* Backoffice Isabel (unten links beim Lift) */
-  m.add(objDesk(9, 23, 3, { coffee: true })); m.trig(9, 23, 3, 1, { label: _t('Backoffice: Isabel'), act: () => Story.isabellDesk() });
-  m.add(objOfficeChair(10, 24)); m.decal((c) => { DECAL.logo(c, 8 * TS, 21 * TS + 8, 'BACKOFFICE', '#2a9aa0'); DECAL.shelf(c, 12 * TS + 6, 21 * TS + 4, 40); });
-  m.add(objPlant(13, 23)); m.add(objPlant(5, 23));
+  m.add(objDesk(9, 20, 3, { coffee: true })); m.trig(9, 20, 3, 1, { label: _t('Backoffice: Isabel'), act: () => Story.isabellDesk() });
+  m.add(objOfficeChair(10, 21)); m.decal((c) => { DECAL.logo(c, 8 * TS, 18 * TS + 8, 'BACKOFFICE', '#2a9aa0'); DECAL.shelf(c, 12 * TS + 6, 18 * TS + 4, 40); });
+  m.add(objPlant(13, 20)); m.add(objPlant(5, 20));
   /* WC */
-  m.fill(16, 21, 6, 1, T.WALL); m.fill(21, 21, 1, 5, T.WALL); m.fill(16, 25, 6, 1, T.WALL); m.fill(17, 22, 4, 3, T.TILE, 0); m.set(18, 25, T.TILE, 1);
-  m.decal((c) => { R(c, 18 * TS, 25 * TS, TS, TS, '#e4e8ec'); R(c, 18 * TS + 2, 25 * TS + 2, TS - 4, 10, '#8a9098'); pxText(c, 'WC', 18 * TS + 6, 22 * TS - 6, '#2a2a30'); });
-  m.add(mkObj(19, 22, 1, 1, 6, (c, W, H) => { R(c, 4, 0, 14, 8, '#f4f6f8'); E(c, 11, 15, 6, 6, '#f4f6f8'); E(c, 11, 15, 4, 4, '#c9dce6'); }, { solid: true }));
-  m.trig(19, 22, 1, 1, { label: 'WC', act: () => Story.wc() });
+  m.fill(16, 18, 6, 1, T.WALL); m.fill(21, 18, 1, 5, T.WALL); m.fill(16, 22, 6, 1, T.WALL); m.fill(17, 19, 4, 3, T.TILE, 0); m.set(18, 22, T.TILE, 1);
+  m.decal((c) => { R(c, 18 * TS, 22 * TS, TS, TS, '#e4e8ec'); R(c, 18 * TS + 2, 22 * TS + 2, TS - 4, 10, '#8a9098'); pxText(c, 'WC', 18 * TS + 6, 19 * TS - 6, '#2a2a30'); });
+  m.add(mkObj(19, 19, 1, 1, 6, (c, W, H) => { R(c, 4, 0, 14, 8, '#f4f6f8'); E(c, 11, 15, 6, 6, '#f4f6f8'); E(c, 11, 15, 4, 4, '#c9dce6'); }, { solid: true }));
+  m.trig(19, 19, 1, 1, { label: 'WC', act: () => Story.wc() });
   /* Flur-Deko */
-  m.decal((c) => { for (let k = 0; k < 6; k++) DECAL.poster(c, (24 + k * 3) * TS, 21 * TS + 4, ['#2a9aa0', '#e2554a', '#f0a23a', '#2fa0d8', '#3f8e4b', '#6a4a9c'][k], ['SAFE', 'PI', 'OKR', 'CAN', 'BIKE', 'DEV'][k]); });
-  m.add(objPlant(30, 24)); m.add(objPlant(44, 24)); m.add(objWaterCooler(40, 24));
-  m.trig(40, 24, 1, 1, { label: _t('Wasserspender'), act: () => Story.water() });
+  m.decal((c) => { for (let k = 0; k < 6; k++) DECAL.poster(c, (24 + k * 3) * TS, 18 * TS + 4, ['#2a9aa0', '#e2554a', '#f0a23a', '#2fa0d8', '#3f8e4b', '#6a4a9c'][k], ['SAFE', 'PI', 'OKR', 'CAN', 'BIKE', 'DEV'][k]); });
+  m.add(objPlant(30, 21)); m.add(objPlant(44, 21)); m.add(objWaterCooler(40, 21));
+  m.trig(40, 21, 1, 1, { label: _t('Wasserspender'), act: () => Story.water() });
   /* Lift & Treppe unten links */
-  m.decal((c) => { DECAL.lift(c, 2 * TS + 6, 26 * TS - 40, '1'); });
-  m.fill(1, 27, 3, 2, T.TILE, 2); m.warp(2, 28, 'colba_entry', 'lift', { w: 1, label: _t('Lift') });
-  m.fill(6, 27, 3, 2, T.STAIRS, 0); m.warp(6, 28, 'colba_entry', 'stairs', { w: 3, label: _t('Treppe'), opts: { stairs: true } });
-  m.decal((c) => { R(c, 1 * TS, 27 * TS, 3 * TS, 2 * TS, '#c6ccd2'); R(c, 2 * TS + 10, 27 * TS, 4, 2 * TS, '#7a8086'); R(c, 6 * TS, 27 * TS, 3 * TS, 1, '#8a8e94'); });
-  m.add(objSignpost(10, 27, _t('COLBA 1º'), '#2a9aa0'));
-  m.spawn('lift', 2, 26, 3); m.spawn('stairs', 7, 26, 3);
-  m.pedZones.push({ x: 24, y: 22, w: 20, h: 6, n: 0 });
+  m.decal((c) => { DECAL.lift(c, 2 * TS + 6, 23 * TS - 40, '1'); });
+  m.fill(1, 24, 3, 2, T.TILE, 2); m.warp(2, 25, 'colba_entry', 'lift', { w: 1, label: _t('Lift') });
+  m.fill(6, 24, 3, 2, T.STAIRS, 0); m.warp(6, 25, 'colba_entry', 'stairs', { w: 3, label: _t('Treppe'), opts: { stairs: true } });
+  m.decal((c) => { R(c, 1 * TS, 24 * TS, 3 * TS, 2 * TS, '#c6ccd2'); R(c, 2 * TS + 10, 24 * TS, 4, 2 * TS, '#7a8086'); R(c, 6 * TS, 24 * TS, 3 * TS, 1, '#8a8e94'); });
+  m.add(objSignpost(10, 24, _t('COLBA 1º'), '#2a9aa0'));
+  m.spawn('lift', 2, 23, 3); m.spawn('stairs', 7, 23, 3);
+  m.pedZones.push({ x: 24, y: 19, w: 20, h: 6, n: 0 });
   return m;
 };
 
