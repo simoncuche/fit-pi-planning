@@ -150,6 +150,18 @@ with sync_playwright() as p:
     assert pg.evaluate("() => G.mode === 'over' && !!document.querySelector('#endNew')"), "Kein Ende"
     shot("10_end")
     print("Endzustand:", state())
+    # Colba-Spieler: Fran holt die Schweizer am Flughafen ab, kein eigener Koffer, Hotelzimmer von Juanjo gebucht
+    run("const S3 = newState(personLook('fran'), 'Fran'); S3.pid = 'fran'; S3.team = 'indurain'; await startGame(S3, true);", 6.0)
+    assert state()["map"] == "airport" and state()["stage"] == "koffer", state()
+    run("G.busy++; await Story.baggage(); G.busy--;", 1.0)
+    assert state()["stage"] == "sammeln", state()
+    assert pg.evaluate("() => Story.airportGroup().length === 5 && !G.npcs.some((n) => n.id === 'fran')"), "Abholgruppe falsch"
+    run("for (const id of Story.airportGroup()) { const n = G.npcs.find((a) => a.id === id); G.busy++; await Story.meetAtAirport(id, n || { bubble: null }); G.busy--; }", 1.0)
+    assert state()["stage"] == "taxi", state()
+    run("G.busy++; await Story.taxiToHotel(); G.busy--; await warpTo('hotel_lobby', 'entry'); G.busy++; await Story.reception(); G.busy--; await warpTo('hotel_room', 'entry'); G.busy++; await Story.unpack(); G.busy--;", 8.0)
+    assert state()["stage"] == "bar", state()
+    assert pg.evaluate("() => UI.speaker('Fran').name === G.S.name && UI.speaker('fran').look === G.S.look && Story.isHere('fran', 'hotel_room')"), "Spieler spricht nicht selbst"
+    shot("11_colba_player")
     missing = pg.evaluate("() => [...I18N_MISSING]")
     if LANG != "de" and missing:
         errors.append("Fehlende Übersetzungen (" + LANG + "): " + json.dumps(missing, ensure_ascii=False))

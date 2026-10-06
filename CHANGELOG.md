@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.1.0 – 06.10.2026
+- All 21 characters are playable, including the Colba team and Isabell. Colba players pick the Swiss crew up at the airport on Monday and stay at Hotel Kramer for the PI week; on Saturday they see the guests off instead of flying.
+- Character selection shows portraits and names only, grouped into travel group and Colba. Role descriptions are now neutral job titles.
+- Scripted lines of the character you play are spoken by you (your name and portrait).
+
 ## 2.0.0 – 06.10.2026
 - The game is now in English by default. German and Spanish can be selected on the title screen and in the phone's Options tab (the choice is remembered on this device).
 - All texts – dialogues, items, sights, achievements, menus, minigames and scenes – are translated; names and places stay Spanish.

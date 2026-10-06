@@ -129,7 +129,7 @@ def is_text(s):
     if re.match(r'^[\d\s.,:%+\-×/{}]+$', s): return False
     if re.match(r'^M[\d.\-]', s): return False  # SVG-Pfad
     if GER.search(s): return True
-    if re.match(r'^[A-ZÄÖÜ0-9][A-Za-z0-9ÄÖÜäöüß]*(-[A-Za-z0-9ÄÖÜäöüß]+)+$', s) and not re.match(r'^[A-Z0-9-]+$', s): return True  # Bindestrich-Wörter wie E-Bike-Miete
+    if re.match(r'^[A-Za-z0-9ÄÖÜäöü][A-Za-z0-9ÄÖÜäöüß]*(-[A-Za-z0-9ÄÖÜäöüß]+)+$', s) and re.search(r'[A-ZÄÖÜ]', s) and not re.match(r'^[A-Z0-9-]+$', s): return True  # Bindestrich-Wörter wie E-Bike-Miete
     if ' ' in s: return True
     if re.match(r'^[A-ZÄÖÜ][a-zäöüß]+', s): return True
     if s.endswith(('.', '!', '?', '…', ':')): return True

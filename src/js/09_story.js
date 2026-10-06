@@ -59,13 +59,14 @@ const Story = {
   stageAt(s) { return STAGES.indexOf(G.S.stage) >= STAGES.indexOf(s); },
   setStage(s) { G.S.stage = s; UI.hud(); },
   isSwiss() { return SWISS.includes(G.S.pid); },
+  isColba() { return COLBA.includes(G.S.pid) || G.S.pid === 'isabell'; },
   /* Wen muss man am Flughafen einsammeln? */
   airportGroup() { return SWISS.filter((id) => id !== G.S.pid); },
   /* ---------- Ziele ---------- */
   objective() {
     const s = G.S.stage, f = G.S.flags, d = today(), h = hourOf(G.S.time);
     switch (s) {
-      case 'koffer': return _t('Gepäckband 3: Hol deinen Koffer vom Band');
+      case 'koffer': return this.isColba() ? _t('Gepäckband 3: Die Schweizer landen – hol sie dort ab') : _t('Gepäckband 3: Hol deinen Koffer vom Band');
       case 'sammeln': { const miss = this.airportGroup().filter((id) => !f.met[id]); return _t`Finde ${listNames(miss)} in der Ankunftshalle (sie winken mit „!“)`; }
       case 'taxi': return _t('Alle da! Zum Ausgang unten – Taxistand');
       case 'hotel': return _t('Finde das Hotel Kramer – Gasse westlich der Plaza del Ayuntamiento');
@@ -172,6 +173,7 @@ const Story = {
     return { t: e[0], map: e[1], x: e[2] != null ? e[2] : null, y: e[3] };
   },
   isHere(id, mapId) {
+    if (id === G.S.pid) return mapId ? G.map.id === mapId : true;
     const loc = this.schedule(id); const e = this.LOC[loc];
     return !!(e && e[1] === mapId);
   },
@@ -248,11 +250,14 @@ const Story = {
   /* ---------- Intro & Flughafen ---------- */
   async intro() {
     const me = G.S.pid, p = PEOPLE[me];
-    if (this.isSwiss()) await this.say(null, _t`Du bist ${G.S.name}, ${p.role}. ${p.intro} Der Flieger aus Zürich ist gelandet: eine Woche PI Planning bei Colba in Valencia. Zuerst: Koffer vom Band 3 holen. Dann die anderen einsammeln – Robin ist zum ersten Mal dabei und steht garantiert am falschen Band.`);
+    if (this.isColba()) await this.say(null, _t`Du bist ${G.S.name}, ${p.role}. Juanjo hat dich zum Flughafen geschickt: Die Schweizer landen um 12 Uhr, Band 3. Hol sie ab und bring sie ins Hotel Kramer – Juanjo hat für die PI-Woche auch für euch Valencianer Zimmer gebucht, damit nach dem Agua de Valencia niemand Mofa fahren muss.`);
+    else if (this.isSwiss()) await this.say(null, _t`Du bist ${G.S.name}, ${p.role}. ${p.intro} Der Flieger aus Zürich ist gelandet: eine Woche PI Planning bei Colba in Valencia. Zuerst: Koffer vom Band 3 holen. Dann die anderen einsammeln – Robin ist zum ersten Mal dabei und steht garantiert am falschen Band.`);
     else if (me === 'pascal') await this.say(null, _t`Du bist Pascal, iOS-Spezialist aus Leipzig. Allein angereist, Rucksack voll Club Mate. Zufall: Die Zürcher sind gerade gelandet – Band 3. Hol deinen Koffer und such die Truppe, dann teilt ihr euch das Taxi ins Hotel Kramer.`);
     else await this.say(null, _t`Du bist Chris, Surfer und Product Manager aus Fuerteventura. Das Brett blieb zuhause, das Wax ist im Koffer. Die Schweizer sind gerade mit dir gelandet – Band 3. Koffer holen, Truppe finden, Taxi ins Hotel Kramer.`);
   },
   async baggage() {
+    if (this.isColba() && !G.S.flags.koffer) { G.S.flags.koffer = 1; this.setStage('sammeln'); await this.say(null, _t`Kein Koffer für dich – du bist der Abholservice. Die Schweizer stehen irgendwo in der Halle: ${listNames(this.airportGroup())}. Sie winken mit einem „!“ (oder rauchen, oder schauen Autos an).`); return; }
+    if (this.isColba()) { await this.say(null, _t('Band 3 dreht weiter. Deine Gäste warten in der Halle.')); return; }
     if (G.S.flags.koffer) { await this.say(null, _t('Dein Koffer ist schon da. Lukas’ Koffer fährt noch eine Ehrenrunde – er bemerkt es nicht, er liest den Batteriepass-Entwurf.')); return; }
     const res = await Mini.suitcase();
     if (!res) { await this.say(null, _t('Das Band läuft weiter. Dein Koffer kommt schon noch – schau nochmal hin.')); return; }
@@ -325,7 +330,8 @@ const Story = {
   async unpack() {
     if (!G.S.flags.unpacked) {
       G.S.flags.unpacked = 1;
-      await this.say(null, _t`Koffer auf: Laptop, Post-its, ${G.S.pid === 'lukas' ? _t('der Batteriepass-Entwurf (40 Seiten)') : G.S.pid === 'chris' ? _t('Surf-Wax und Flip-Flops') : G.S.pid === 'luigi' ? _t('eine Zeitschrift über Sportwagen') : G.S.pid === 'dominique' ? _t('zwei Stangen Zigaretten') : _t('Hemden für vier Tage')}. Das Zimmer hat Meerblick – wenn man sich weit aus dem Fenster lehnt.`);
+      if (this.isColba()) await this.say(null, _t('Tasche auf: Laptop, Ladegerät, ein Pullover. Juanjo hat gesagt: „Pack für eine Woche Hotel. Teambuilding.“ Das Zimmer hat Meerblick – wenn man sich weit aus dem Fenster lehnt.'));
+      else await this.say(null, _t`Koffer auf: Laptop, Post-its, ${G.S.pid === 'lukas' ? _t('der Batteriepass-Entwurf (40 Seiten)') : G.S.pid === 'chris' ? _t('Surf-Wax und Flip-Flops') : G.S.pid === 'luigi' ? _t('eine Zeitschrift über Sportwagen') : G.S.pid === 'dominique' ? _t('zwei Stangen Zigaretten') : _t('Hemden für vier Tage')}. Das Zimmer hat Meerblick – wenn man sich weit aus dem Fenster lehnt.`);
       addInv('badge'); addInv('postits');
       if (G.S.pid === 'dominique') addInv('zigaretten');
       if (G.S.pid === 'chris') addInv('surfwax');
@@ -847,6 +853,7 @@ const Story = {
   /* ---------- Gespräche ---------- */
   async talkTo(id, n) {
     const f = G.S.flags, d = today(), h = hourOf(G.S.time), s = G.S.stage;
+    if (id === G.S.pid) { await this.say(null, _t('Das ist dein Platz.')); return; }
     if (G.map.id === 'airport' && s === 'sammeln' && !f.met[id]) { await this.meetAtAirport(id, n); return; }
     if (G.map.id === 'airport' && s === 'koffer') { await this.say(id, _t('Hol erst deinen Koffer – Band 3.')); return; }
     const lines = this.lines(id);
@@ -1029,9 +1036,10 @@ const Story = {
     const f = G.S.flags;
     if (f.finished) return;
     G.busy++;
-    if (auto) { await UI.fadeOut(_t('Samstag, 10:00 – Boarding …')); await sleep(800); }
-    await Scene.play('taxi', { ms: 2200, text: _t('Zum Flughafen …'), heads: TRAVELLERS.filter((id) => id !== G.S.pid).slice(0, 4).map((id) => getSheet(personLook(id))) });
-    await Scene.play('flight', { ms: 2800, text: _t('VLC → ZRH') });
+    const colba = this.isColba();
+    if (auto) { await UI.fadeOut(colba ? _t('Samstag, 8:15 – Taxi zum Flughafen …') : _t('Samstag, 10:00 – Boarding …')); await sleep(800); }
+    await Scene.play('taxi', { ms: 2200, text: colba ? _t('Die Schweizer zum Flughafen bringen …') : _t('Zum Flughafen …'), heads: TRAVELLERS.filter((id) => id !== G.S.pid).slice(0, 4).map((id) => getSheet(personLook(id))) });
+    if (!colba) await Scene.play('flight', { ms: 2800, text: _t('VLC → ZRH') });
     f.finished = 1; G.S.finished = 1; achieve('heimflug');
     saveGame(true);
     G.busy--;
@@ -1046,8 +1054,9 @@ const Ending = {
     const depOk = deps.filter(([k]) => G.S.deps[k]).length;
     const score = Math.round(G.S.plan[tm] * 0.6 + (f.finalScore || 0) * 8 + achN * 0.5);
     const grade = score >= 90 ? _t('Legendär – Juanjo will dich einstellen.') : score >= 70 ? _t('Stark – ein Plan, auf den man committen kann.') : score >= 50 ? _t('Okay – das halbe Jahr wird spannend.') : _t('Naja – aber Valencia war schön.');
+    const farewell = Story.isColba() ? _t`${G.S.name} winkt den Schweizern nach ${dayOf(G.S.time) + 1} Tagen am Flughafen nach.` : _t`${G.S.name} fliegt nach ${dayOf(G.S.time) + 1} Tagen zurück.`;
     const html = _t`<div class="panel"><div class="panel-head"><h2>Heimflug · Bilanz</h2></div><div class="panel-body">
-      <p class="note">${G.S.name} fliegt nach ${dayOf(G.S.time) + 1} Tagen zurück. ${grade}</p>
+      <p class="note">${farewell} ${grade}</p>
       <div class="statgrid"><div class="stat"><small>PI-Plan ${TEAMS[tm].n}</small><b>${Math.round(G.S.plan[tm])} %</b></div><div class="stat"><small>Confidence Vote</small><b>${f.finalScore ? f.finalScore.toFixed(1) : '–'}</b></div>
       <div class="stat"><small>Abhängigkeiten</small><b>${depOk}/${deps.length}</b></div><div class="stat"><small>Erlebnisse</small><b>${achN}/${achT}</b></div>
       <div class="stat"><small>Fotos</small><b>${Object.keys(G.S.photos).length}/${Object.keys(SIGHTS).length}</b></div><div class="stat"><small>Biere</small><b>${G.S.beers}</b></div>

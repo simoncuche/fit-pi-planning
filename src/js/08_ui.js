@@ -97,9 +97,11 @@ const UI = {
   },
   speaker(sp) {
     if (!sp) return null;
-    if (sp === 'me') return { name: G.S.name, look: G.S.look };
+    const me = G.S && G.S.pid;
+    if (sp === 'me' || (me && (sp === me || (PEOPLE[me] && sp === PEOPLE[me].name)))) return { name: G.S.name, look: G.S.look };
     if (typeof sp === 'string') {
-      if (PEOPLE[sp]) return { name: PEOPLE[sp].name, look: personLook(sp), bg: PEOPLE[sp].bg };
+      const pid = PEOPLE[sp] ? sp : Object.keys(PEOPLE).find((k) => PEOPLE[k].name === sp);
+      if (pid) return { name: PEOPLE[pid].name, look: personLook(pid), bg: PEOPLE[pid].bg };
       const n = G.npcs.find((a) => a.name && a.name.startsWith(sp));
       if (n) return { name: sp, look: n.look };
       let h = 7; for (const ch of sp) h = (h * 31 + ch.charCodeAt(0)) >>> 0;

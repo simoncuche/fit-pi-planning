@@ -6,18 +6,18 @@ const Editor = {
       const el = document.getElementById('editor');
       const L = Object.assign({}, o.look || (G.S ? G.S.look : defaultLook()));
       const unlocked = (G.S && G.S.unlocked) || {};
-      let pid = o.pid || (mode === 'new' ? pick(TRAVELLERS) : null);
+      let pid = o.pid || (mode === 'new' ? pick(Object.keys(PEOPLE)) : null);
       if (mode === 'new' && pid) Object.assign(L, personLook(pid));
       const keysFor = { clothes: ['hat', 'hatCol', 'top', 'topCol', 'print', 'pants', 'pantsCol', 'shoes', 'shoesCol', 'acc', 'glasses'], hair: ['hair', 'hairCol'], beard: ['beard', 'beardCol'] }[mode];
       const groups = mode === 'new' ? [_t('Wer bist du?'), ...LOOK_GROUPS] : [_t('Auswahl')];
       let tab = groups[0];
       let dir = 0, walk = 0;
-      const title = { new: _t('Wer fliegt nach Valencia?'), clothes: _t('Kleiderschrank'), hair: _t('Frisur'), beard: _t('Bart') }[mode];
+      const title = { new: _t('Wer spielt mit?'), clothes: _t('Kleiderschrank'), hair: _t('Frisur'), beard: _t('Bart') }[mode];
       el.innerHTML = _t`<div class="ed-head"><h1>${title}</h1><div class="cnt">${mode === 'new' ? _t`${LOOK_OPTS.length} Merkmale<br>${LOOK_COUNT} Varianten` : ''}</div></div>
         <div class="ed-main"><div class="ed-preview"><div class="ed-figs"><canvas id="edPortrait" width="96" height="96" aria-label="Porträt"></canvas><div><canvas id="edBody" width="28" height="40" aria-label="Spielfigur"></canvas><div class="ed-rot"><button id="edL" aria-label="Drehen links">◀</button><button id="edR" aria-label="Drehen rechts">▶</button></div></div></div>
         <div class="ed-name"><label>Spieler</label><div id="edWho" style="font-family:var(--f-sign);font-size:20px;font-weight:600">${pid ? PEOPLE[pid].name : _t('<span style="color:var(--ink-dim)">noch niemand gewählt</span>')}</div></div></div>
         <div class="ed-controls"><div class="ed-tabs" role="tablist">${groups.map((g) => `<button class="tab ${g === tab ? 'on' : ''}" data-g="${g}">${g}</button>`).join('')}</div><div class="ed-list" id="edList"></div></div></div>
-        <div class="ed-foot"><span class="grow" id="edHint">${mode === 'new' ? _t`Vorschlag: ${PEOPLE[pid].name}, ${PEOPLE[pid].role}. Tipp auf einen anderen Namen oder gestalte dein Aussehen – dann Boarding!` : _t('Änderungen werden sofort übernommen.')}</span>${mode === 'new' ? _t('<button class="btn" id="edRnd">Zufall</button>') : _t('<button class="btn" id="edCancel">Abbrechen</button>')}<button class="btn primary" id="edOk">${mode === 'new' ? _t('Boarding!') : _t('Fertig')}</button></div>`;
+        <div class="ed-foot"><span class="grow" id="edHint">${mode === 'new' ? _t`Vorschlag: ${PEOPLE[pid].name}. Tipp auf einen anderen Namen oder gestalte dein Aussehen – dann Boarding!` : _t('Änderungen werden sofort übernommen.')}</span>${mode === 'new' ? _t('<button class="btn" id="edRnd">Zufall</button>') : _t('<button class="btn" id="edCancel">Abbrechen</button>')}<button class="btn primary" id="edOk">${mode === 'new' ? _t('Boarding!') : _t('Fertig')}</button></div>`;
       el.hidden = false;
       const pcv = el.querySelector('#edPortrait'), pcx = pcv.getContext('2d');
       const bcv = el.querySelector('#edBody'), bcx = bcv.getContext('2d');
@@ -40,28 +40,32 @@ const Editor = {
         list.innerHTML = '';
         requestAnimationFrame(() => { list.scrollTop = keep; });
         if (tab === _t('Wer bist du?')) {
-          const grid = document.createElement('div');
-          grid.className = 'crew-grid';
-          for (const id of TRAVELLERS) {
-            const c = PEOPLE[id];
-            const b = document.createElement('button');
-            b.className = 'crew-btn' + (pid === id ? ' sel' : '');
-            const look = personLook(id);
-            b.innerHTML = `<canvas width="96" height="96" aria-hidden="true"></canvas><span>${c.name}</span><small>${c.role}</small>`;
-            b.querySelector('canvas').getContext('2d').drawImage(portraitCanvas(look, c.bg || '#2a3a52'), 0, 0);
-            b.onclick = () => {
-              pid = id;
-              Object.assign(L, look);
-              el.querySelector('#edWho').textContent = c.name;
-              el.querySelector('#edHint').textContent = _t`${c.name}, ${c.role}. ${c.intro || ''} Jetzt Aussehen gestalten – oder direkt einsteigen.`;
-              renderList(); draw(); Snd.sfx('blip');
-            };
-            grid.appendChild(b);
+          const groupsOf = [[_t('Reisegruppe'), TRAVELLERS], [_t('Colba'), COLBA.concat(['isabell'])]];
+          for (const [label, ids] of groupsOf) {
+            const h = document.createElement('div'); h.className = 'shop-sec'; h.textContent = label; list.appendChild(h);
+            const grid = document.createElement('div');
+            grid.className = 'crew-grid';
+            for (const id of ids) {
+              const c = PEOPLE[id];
+              const b = document.createElement('button');
+              b.className = 'crew-btn' + (pid === id ? ' sel' : '');
+              const look = personLook(id);
+              b.innerHTML = `<canvas width="96" height="96" aria-hidden="true"></canvas><span>${c.name}</span>`;
+              b.querySelector('canvas').getContext('2d').drawImage(portraitCanvas(look, c.bg || '#2a3a52'), 0, 0);
+              b.onclick = () => {
+                pid = id;
+                Object.assign(L, look);
+                el.querySelector('#edWho').textContent = c.name;
+                el.querySelector('#edHint').textContent = _t`${c.name}. Jetzt Aussehen gestalten – oder direkt einsteigen.`;
+                renderList(); draw(); Snd.sfx('blip');
+              };
+              grid.appendChild(b);
+            }
+            list.appendChild(grid);
           }
-          list.appendChild(grid);
           const n = document.createElement('p');
           n.className = 'note';
-          n.textContent = _t('Die anderen reisen als Kollegen mit. Die POs Simon, Luigi und Dominique führen je ein Team; wer einen PO spielt, plant mit dessen Team. Robin, Lukas, Pascal und Chris helfen überall mit – ihr Team ist Indurain, Rocket, Meeseeks bzw. Meeseeks.');
+          n.textContent = _t('Alle anderen spielen als Kolleginnen und Kollegen mit. Wer einen PO spielt, plant mit dessen Team; alle anderen helfen ihrem Team. Die Reisegruppe landet am Flughafen, die Colba-Leute holen sie dort ab.');
           list.appendChild(n);
           return;
         }
