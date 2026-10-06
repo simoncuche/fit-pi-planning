@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.8.1 – 06.10.2026
+- Monday evening the Colba team is at Bar Pepita from 17:00: Juanjo, Danny, Fran and the others sit at their table, on the bar stools and stand at the counter, and Danny and Fran say hello at the welcome round. Before, only Juanjo came at 17:30.
+
 ## 2.8.0 – 06.10.2026
 - The Colba office is compact now (48×24 tiles instead of 60×27): three team rooms and the lounge along the top corridor, backoffice, WC, lift/stairs and the bike lab along the bottom, so every way is short. The lift and stairs arrive in the middle, the lounge door is right above the bike lab door, and the balcony opens off the lab.
 - The lounge table is a small four-seater with free walkways on both sides and along the door; two more people sit on the sofa and the rest stand by the kitchen, so nobody blocks the way any more.

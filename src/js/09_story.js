@@ -212,7 +212,8 @@ const Story = {
     if (d === 0) {
       if (swiss) { if (!this.stageAt('taxi')) return 'airport'; if (!this.stageAt('bar')) return 'hotel'; if (h >= 17 && h < 24) return 'bar'; return 'hotel'; }
       if (id === 'pascal' || id === 'chris') { if (h >= 17 && h < 24) return 'bar'; return h < 17 ? 'travel' : 'hotel'; }
-      if (id === 'juanjo') return h >= 17.5 && h < 23.5 ? 'bar' : 'home';
+      /* Montagabend: das Colba-Team empfängt die Gäste in der Bar Pepita */
+      if (colba) { if (h >= 17 && h < 23) return 'bar'; return 'home'; }
       return 'home';
     }
     if (d >= 5) { if (swiss || id === 'pascal' || id === 'chris') return h < 9 ? 'hotel' : 'airport'; return 'home'; }
@@ -276,8 +277,11 @@ const Story = {
     }
     if (m.id === 'hotel_lobby') { const SEATS = [[14, 10, 0], [15, 10, 0], [7, 5, 0], [8, 5, 0], [16, 5, 0], [17, 5, 0], [18, 11, 2], [20, 11, 1]]; (byLoc.breakfast || []).forEach((id, i) => { const s = SEATS[i % SEATS.length]; put(id, s[0], s[1], s[2], { pose: 'sit', sitIdle: true, drinkIdle: true, keepDir: true }); }); return; }
     if (m.id === 'bar') {
-      const seats = [[2, 5, 0], [3, 5, 0], [2, 7, 3], [3, 7, 3], [6, 7, 0], [7, 7, 0], [6, 9, 3], [7, 9, 3], [11, 7, 3], [13, 7, 3], [15, 7, 3], [17, 7, 3], [14, 8, 0], [15, 8, 0], [16, 8, 0], [14, 10, 3], [15, 10, 3], [16, 10, 3]];
-      let i = 0; (byLoc.bar || []).forEach((id) => { const s = TRAVELLERS.includes(id) ? seats[i++] : seats[12 + (i++ % 6)]; put(id, s[0], s[1], s[2], { pose: 'sit', drinkIdle: true, sitIdle: true, sortAdd: s[2] === 0 ? 0 : 2 }); });
+      /* Reisende am Stammtisch links, Colba-Leute am Tisch rechts, auf den Barhockern und stehend an der Theke */
+      const tseats = [[2, 5, 0], [3, 5, 0], [2, 7, 3], [3, 7, 3], [6, 7, 0], [7, 7, 0], [6, 9, 3], [7, 9, 3], [4, 6, 1], [5, 8, 2]];
+      const cseats = [[14, 8, 0], [15, 8, 0], [16, 8, 0], [14, 10, 3], [15, 10, 3], [16, 10, 3], [11, 7, 3], [13, 7, 3], [15, 7, 3], [17, 7, 3], [18, 8, 1], [19, 9, 1], [18, 11, 0], [12, 12, 0], [10, 12, 0], [19, 12, 1]];
+      let ti = 0, ci = 0;
+      (byLoc.bar || []).forEach((id) => { const trav = TRAVELLERS.includes(id); const s = trav ? free(tseats, ti++) : free(cseats, ci++); const sit = trav ? ti <= 8 : ci <= 10; put(id, s[0], s[1], s[2], { pose: sit ? 'sit' : 'stand', drinkIdle: true, sitIdle: sit, sortAdd: sit && s[2] === 0 ? 0 : 2 }); });
       return;
     }
     if (m.id === 'jamon') { const seats = [[3, 6, 0], [4, 6, 0], [3, 8, 3], [4, 8, 3], [8, 6, 0], [9, 6, 0], [8, 8, 3], [9, 8, 3], [13, 7, 0], [14, 7, 0], [13, 9, 3], [14, 9, 3]]; (byLoc.jamon || []).forEach((id, i) => { const s = free(seats, i); put(id, s[0], s[1], s[2], { pose: 'sit', drinkIdle: true, sitIdle: true }); }); return; }
@@ -453,7 +457,9 @@ const Story = {
     G.busy++;
     const others = TRAVELLERS.filter((id) => id !== G.S.pid);
     await this.say(_t('Pepita'), _t('¡Hola! Ihr seid die Schweizer von Colba? Juanjo hat den Tisch reserviert. Agua de Valencia?'));
-    await this.say(_t('Juanjo'), _t`¡Bienvenidos! Schön, dass ihr da seid. Morgen 9:30 im Office, erster Stock. Die Klingel … ach, das erklärt euch Isabel morgen. Pascal ist auch schon da – und Chris kommt gerade vom Strand.`);
+    await this.say(_t('Juanjo'), _t`¡Bienvenidos! Schön, dass ihr da seid. Das halbe Office ist mitgekommen – wer hier nicht ist, hat Kinder oder ein Mofa, das nicht anspringt. Morgen 9:30 im Office, erster Stock. Die Klingel … ach, das erklärt euch Isabel morgen. Pascal ist auch schon da – und Chris kommt gerade vom Strand.`);
+    if (G.S.pid !== 'danny') await this.say(_t('Danny'), _t('¡Oye! Indurain, Meeseeks, Rocket – egal, heute Abend ist nur ein Team: Agua de Valencia. Mittwoch seid ihr alle bei mir im Garten.'));
+    if (G.S.pid !== 'fran') await this.say(_t('Fran'), _t('Fran, CANopen. Ich sage nur: 0x6060. Mehr morgen – Juanjo hat mir verboten, heute Indexe aufzusagen.'));
     if (G.S.pid !== 'pascal') await this.say(_t('Pascal'), _t('Von Leipzig über Frankfurt, drei Stunden Verspätung, aber: ich bin da. Erste Erkenntnis: Valencia hat mehr Sonne als Sachsen im ganzen Jahr.'));
     if (G.S.pid !== 'chris') await this.say(_t('Chris'), _t('Fuerte war windstill, also hab ich nichts verpasst. Morgen früh um halb sieben am Strand – wer kommt mit?'));
     await this.say(_t('Luigi'), _t('Ich hab die Kartbahn gesehen. Mittwochabend. Keine Diskussion.'));
