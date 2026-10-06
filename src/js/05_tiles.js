@@ -700,6 +700,13 @@ function objBikeRig(x, y, col = '#2a9aa0', o = {}) {
     if (o.err) { P(c, cx + 5, by - 13, '#ff3a3a'); } else P(c, cx + 5, by - 13, '#3af07a');
   }, { solid: true, emit: (c) => { R(c, 7, 1, 22, 14, 'rgba(60,240,120,0.3)'); } });
 }
+function objBatteryTester(x, y) {
+  return mkObj(x, y, 1, 1, 22, (c, W, H) => {
+    R(c, 2, 6, 20, H - 8, '#4a4e56'); R(c, 2, 6, 20, 1, '#8a8e94'); R(c, 4, 8, 16, 7, '#1a1a1e'); R(c, 5, 9, 14, 5, '#2a3a2a');
+    pxText(c, '97%', 6, 9, '#7aff6a'); for (let k = 0; k < 3; k++) R(c, 5 + k * 5, 17, 3, 2, ['#7aff6a', '#ff5a4a', '#f2c84a'][k]);
+    R(c, 7, 0, 10, 6, '#2a9aa0'); R(c, 9, 1, 6, 4, '#1a3a3a'); line(c, 11, 6, 8, 12, '#c8352d'); line(c, 13, 6, 16, 12, '#1a1a1e');
+  }, { solid: true });
+}
 function objTestBench(x, y) { return mkObj(x, y, 2, 1, 18, (c, W, H) => { R(c, 0, 4, W, H - 8, '#5a5e64'); R(c, 0, 4, W, 2, '#8a8e94'); R(c, 4, 6, 18, 10, '#1a1a1e'); R(c, 5, 7, 16, 8, '#0a2a1a'); for (let k = 0; k < 6; k++) R(c, 6, 8 + k, 4 + (k * 5) % 10, 1, '#3af07a'); R(c, 26, 8, 8, 6, '#2a2a2e'); for (let k = 0; k < 4; k++) P(c, 27 + k * 2, 10, k % 2 ? '#ff3a3a' : '#3af07a'); R(c, 36, 6, 10, 10, '#2a9aa0'); R(c, 37, 7, 8, 3, '#f4f0e6'); line(c, 22, 12, 26, 11, '#e8c23a'); line(c, 34, 11, 36, 10, '#e8c23a'); R(c, 2, H - 4, 3, 4, '#3a3c40'); R(c, W - 5, H - 4, 3, 4, '#3a3c40'); }, { solid: true, emit: (c) => R(c, 5, 7, 16, 8, 'rgba(60,240,120,0.35)') }); }
 function objAshtray(x, y) { return mkObj(x, y, 1, 1, 18, (c, W, H) => { R(c, 8, 6, 8, H - 8, '#8a9096'); R(c, 8, 6, 2, H - 8, '#b0b6bc'); R(c, 7, 4, 10, 3, '#5a6066'); R(c, 8, 4, 8, 1, '#c8ccd0'); P(c, 10, 5, '#ff8a3a'); }, { solid: true }); }
 function objOrangeCart(x, y) { return mkObj(x, y, 2, 1, 20, (c, W, H) => { R(c, 2, 8, W - 4, 10, '#8a5e3a'); R(c, 2, 8, W - 4, 2, '#a87a50'); for (let k = 0; k < 10; k++) E(c, 6 + (k % 5) * 8, 6 + Math.floor(k / 5) * 4, 2.5, 2.5, '#ff8c1a'); ring(c, 8, H - 4, 4, '#2a2a2e'); ring(c, W - 8, H - 4, 4, '#2a2a2e'); R(c, W / 2 - 14, 0, 28, 6, '#3f8e4b'); pxText(c, 'ZUMO', W / 2 - 7, 1, '#ffffff'); }, { solid: true }); }

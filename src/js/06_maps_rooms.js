@@ -199,6 +199,10 @@ MAP_BUILDERS.colba = () => {
   m.add(objBikeStand(49, 23, 3)); m.trig(49, 23, 2, 1, { label: _t('Test-E-Bikes'), act: () => Story.officeBikes() });
   m.add(objTestBench(53, 23)); m.trig(53, 23, 2, 1, { label: _t('CANopen-Prüfstand'), act: () => Story.testBench() });
   m.add(objEbike(48, 25, '#f0a23a')); m.add(objEbike(54, 25, '#2a9aa0', true));
+  m.add(objBatteryTester(51, 25)); m.trig(51, 25, 1, 1, { label: _t('Battery Tester'), act: () => Story.batteryTester() });
+  /* ABUS-Leser an der Wand neben der Labortür: Key Card oder App */
+  m.decal((c) => { R(c, 46 * TS + 7, 22 * TS + 6, 10, 14, '#1a1a1e'); R(c, 46 * TS + 9, 22 * TS + 8, 6, 6, '#2a3a4a'); P(c, 46 * TS + 11, 22 * TS + 16, '#ff5a4a'); pxText(c, 'ABUS', 46 * TS + 1, 22 * TS - 2, '#c8352d'); });
+  m.trig(46, 22, 1, 1, { label: _t('ABUS-Leser: Key Card oder App'), act: () => Story.abus() });
   m.spawn('lab', 50, 22, 0);
   /* Backoffice Isabel (unten links beim Lift) */
   m.add(objDesk(9, 20, 3, { coffee: true })); m.trig(9, 20, 3, 1, { label: _t('Backoffice: Isabel'), act: () => Story.isabellDesk() });

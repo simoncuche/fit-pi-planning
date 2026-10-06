@@ -178,7 +178,7 @@ const Trailer = {
     const y3 = y2 + ts * 0.75 * 5 + 24 * k;
     const dl = _t('2.-6. NOVEMBER 2026') + ' - COLBA - VALENCIA', ds = Math.max(1, Math.min(Math.round(2.5 * k), Math.floor((LW - 30) / (dl.length * 6))));
     if (u > 1.1) this.px(dl, LW / 2, y3, '#cfd6dd', ds, 'c');
-    const stats = [[_t('22 FIGUREN'), '#2a9aa0'], [_t('5 TAGE'), '#f0a23a'], [_t('20 MINISPIELE'), '#e2554a']];
+    const stats = [[_t('22 FIGUREN'), '#2a9aa0'], [_t('5 TAGE'), '#f0a23a'], [_t('21 MINISPIELE'), '#e2554a']];
     const y4 = y3 + 60 * k;
     stats.forEach((st, i) => { const t0 = 1.4 + i * 0.18; if (u < t0) return; const s3 = this.slam(u - t0, 0.14); const cx = port ? LW / 2 : LW / 2 + (i - 1) * LW * 0.26, cy = port ? y4 + i * 54 * k : y4; this.chip(st[0], cx, cy, (i - 1) * 0.05, s3, st[1], Math.round(22 * k)); });
     const cast = ['luigi', 'robin', 'isabell', 'danny', 'daniel', 'carlos'], cs = Math.max(2, Math.round(3 * k)), cw = SPR_W * cs + 10 * k, cy0 = LH - 185 * k;

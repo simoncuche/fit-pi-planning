@@ -88,6 +88,21 @@ function drawFacade(c, t, st, open, lightsOff) {
   return { dx, dy, dw, dh };
 }
 const SCENES = {
+  /* Baden: Himmel, Meer mit Wellen, die Figur bis zur Brust im Wasser, Spritzer – mit Chris, wenn er dabei ist */
+  swim: (c, t, p, st) => {
+    for (let y = 0; y < 50; y++) R(c, 0, y, SCENE_W, 1, mix('#7ec8f0', '#dff0f8', y / 50));
+    E(c, 200, 22, 12, 12, '#ffe9a0');
+    for (let y = 50; y < SCENE_H; y++) R(c, 0, y, SCENE_W, 1, mix('#2f8fd8', '#1a4a8a', (y - 50) / 94));
+    for (let k = 0; k < 7; k++) { const yy = 56 + k * 13; for (let x = -24; x < SCENE_W + 24; x += 24) { const o = Math.sin(t * 2 + k + x * 0.05) * 3; R(c, x + ((t * 18 + k * 9) % 24), yy + o, 12, 2, 'rgba(255,255,255,0.45)'); } }
+    const people = [['me', 120, 0]].concat(st.with ? [[st.with, 165, 1.7]] : []);
+    for (const [id, px, ph] of people) {
+      const bob = Math.sin(t * 2.2 + ph) * 3, wl = 104 + bob, sheet = id === 'me' ? getSheet(G.S.look) : getSheet(personLook(id));
+      inRect(c, 0, 0, SCENE_W, wl, () => sceneSprite(c, sheet, 'stand', 0, px - SPR_W / 2, wl - SPR_H + 14));
+      R(c, px - 20, wl - 1, 40, 3, 'rgba(255,255,255,0.6)');
+      for (let i = 0; i < 6; i++) { const f = (t * 1.5 + i / 6 + ph) % 1; P(c, px - 16 + i * 7 + Math.sin(t * 5 + i) * 2, wl - 4 - f * 14, `rgba(255,255,255,${(1 - f).toFixed(2)})`); }
+    }
+    for (let i = 0; i < 3; i++) { const gx = (t * 25 + i * 90) % (SCENE_W + 40) - 20, gy = 18 + i * 9 + Math.sin(t * 3 + i) * 3; line(c, gx - 5, gy + 2, gx, gy, '#ffffff'); line(c, gx, gy, gx + 5, gy + 2, '#ffffff'); }
+  },
   /* Anflug auf Valencia: Flugzeug über Meer und Stadt */
   plane(c, t, p, st) {
     sceneSky(c, false);

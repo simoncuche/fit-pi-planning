@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.7.0 – 06.10.2026
+- Swimming and surfing are real: "Go for a swim" plays an animated dip in the sea (with Chris if he is there), "Surfing" is a new balance minigame on a rolling wave – stay up for 30 seconds. New achievements "Mediterranean in November" and "On the wave".
+- New one-liners: Fran on parameters, Lukas on the battery tester, Aitor on the ABUS lock (key card or app), Daniel on 3rd level support.
+- Bike lab: a battery tester on the bench and an ABUS reader next to the door, both with their own little stories and achievements.
+
 ## 2.6.3 – 06.10.2026
 - New 5×7 pixel font for every sign, board, poster, flight board, title and caption: letters are twice as detailed as the old 3×5 font, with proper umlauts and accents. Boxes and boards grew to fit.
 - Automated test runs no longer appear in the tracker.

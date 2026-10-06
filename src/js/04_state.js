@@ -169,6 +169,10 @@ const ACH = {
   knipser: [_t('Knipser'), _t('Einen Schnappschuss gemacht')],
   strich: [_t('Strichliste voll'), _t('10 Biere in Valencia')],
   heimflug: [_t('Heimflug'), _t('Nach fünf Tagen Planning wieder im Flieger')],
+  baden: [_t('Mittelmeer im November'), _t('Baden gegangen – bei 18 Grad Wassertemperatur')],
+  surfking: [_t('Auf der Welle'), _t('30 Sekunden auf dem Surfbrett gestanden')],
+  abus: [_t('Karte oder App'), _t('Das ABUS-Schloss am Bike-Raum geöffnet – irgendwie')],
+  battest: [_t('Bitte warten'), _t('Den Battery Tester bis Zyklus 500 begleitet')],
 };
 
 const TEAMS = {

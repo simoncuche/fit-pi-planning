@@ -278,6 +278,48 @@ Object.assign(Mini, {
     });
   },
   /* ---------- E-Bike-Ausfahrt: Hindernisse ausweichen, Akku einteilen ---------- */
+  /* ---------- Surfen: auf der Welle bleiben – ◀ ▶ gegen das Kippen, 30 Sekunden stehen ---------- */
+  surf(withChris) {
+    const W = 240, H = 150, GOAL = 30;
+    return this.run(_t('Surfen'), withChris ? _t('mit Chris · Playa de la Malvarrosa') : _t('Playa de la Malvarrosa'), _t`<canvas aria-label="Surfen"></canvas><div class="mini-bar"><span id="sfInfo">◀ ▶ Gleichgewicht halten – die Welle schiebt dich. 30 Sekunden stehen bleiben!</span><b id="sfT">0.0</b></div><div class="lanes" style="grid-template-columns:1fr 1fr"><button data-b="l">◀</button><button data-b="r">▶</button></div>`, W, H, (api) => {
+      const keys = { l: 0, r: 0 };
+      api.o.querySelectorAll('.lanes button').forEach((bt) => { bt.addEventListener('pointerdown', (e) => { e.preventDefault(); keys[bt.dataset.b] = 1; }); bt.addEventListener('pointerup', () => { keys[bt.dataset.b] = 0; }); bt.addEventListener('pointerleave', () => { keys[bt.dataset.b] = 0; }); });
+      const down = {}; Mini.key = (k) => { down[k] = 1; }; const onUp = (e) => { down[e.code] = 0; }; window.addEventListener('keyup', onUp);
+      const sheet = getSheet(G.S.look), chrisSheet = withChris ? getSheet(personLook('chris')) : null;
+      let t = 0, tilt = 0, push = 0, pushT = 0, falls = 0, up = 0, best = 0, fallT = 0;
+      const wave = (x, wx) => 100 - 26 * Math.exp(-Math.pow((x - wx) / 50, 2)) + Math.sin(x * 0.1 + t * 4) * 2;
+      return (dt) => {
+        t += dt;
+        const c = api.ctx;
+        if (fallT > 0) fallT -= dt;
+        else {
+          const steer = (keys.r || down.ArrowRight || down.KeyD ? 1 : 0) - (keys.l || down.ArrowLeft || down.KeyA ? 1 : 0);
+          pushT -= dt; if (pushT <= 0) { pushT = rnd(0.5, 1.4); push = rnd(-1, 1) * (0.9 + up / 15); }
+          tilt = clamp(tilt + (push * 1.6 - steer * 2.8 + Math.sin(t * 3) * 0.3) * dt, -1.5, 1.5);
+          up += dt; best = Math.max(best, up);
+          if (Math.abs(tilt) > 1.2) { falls++; fallT = 1.4; Snd.sfx('splash'); up = 0; tilt = 0; push = 0; }
+        }
+        for (let y = 0; y < 60; y++) R(c, 0, y, W, 1, mix('#7ec8f0', '#e0f0f8', y / 60));
+        E(c, 200, 22, 12, 12, '#ffe9a0');
+        for (let y = 60; y < H; y++) R(c, 0, y, W, 1, mix('#2f8fd8', '#1a4a8a', (y - 60) / 90));
+        const wx = W + 30 - (t * 70) % (W + 120);
+        c.fillStyle = '#3aa0e0'; c.beginPath(); c.moveTo(0, H); for (let x = 0; x <= W; x += 4) c.lineTo(x, wave(x, wx)); c.lineTo(W, H); c.closePath(); c.fill();
+        c.strokeStyle = 'rgba(255,255,255,0.7)'; c.lineWidth = 2; c.beginPath(); for (let x = 0; x <= W; x += 4) { const y = wave(x, wx); if (x === 0) c.moveTo(x, y); else c.lineTo(x, y); } c.stroke();
+        const bx = 100, by = wave(bx, wx);
+        c.save(); c.translate(bx, by); c.rotate(fallT > 0 ? 1.1 : tilt * 0.5);
+        R(c, -22, -3, 44, 6, '#f2c84a'); R(c, -22, -3, 44, 1, '#fff4c0'); R(c, -6, -1, 12, 2, '#c8352d');
+        if (fallT <= 0) sceneSprite(c, sheet, 'stand', 2, -SPR_W / 2, 5 - SPR_H);
+        c.restore();
+        if (fallT > 0) { const wl = 112; inRect(c, 0, 0, W, wl, () => sceneSprite(c, sheet, 'stand', 0, 60 - SPR_W / 2, wl - SPR_H + 16)); for (let i = 0; i < 8; i++) P(c, 48 + i * 4 + Math.sin(t * 9 + i) * 3, 108 - ((t * 3 + i / 8) % 1) * 22, '#ffffff'); }
+        if (chrisSheet) { const cy = wave(175, wx); c.save(); c.translate(175, cy); c.rotate(Math.sin(t * 2) * 0.15); R(c, -20, -3, 40, 6, '#2a9aa0'); sceneSprite(c, chrisSheet, 'stand', 2, -SPR_W / 2, 5 - SPR_H); c.restore(); }
+        R(c, 70, 8, 100, 8, '#1a1a1e'); R(c, 71, 9, 98, 6, '#3a3c42'); R(c, 119, 8, 2, 8, '#ffffff'); R(c, 118 + tilt / 1.5 * 46, 7, 4, 10, Math.abs(tilt) > 0.9 ? '#ff5a4a' : '#7aff6a');
+        api.o.querySelector('#sfT').textContent = up.toFixed(1) + ' s';
+        api.o.querySelector('#sfInfo').textContent = fallT > 0 ? _t('Platsch! Wieder rauf aufs Brett …') : _t`Stehen: ${Math.floor(up)} s · Stürze: ${falls}`;
+        if (up >= GOAL) { window.removeEventListener('keyup', onUp); Snd.sfx('win'); api.finish({ secs: up, falls, win: true }); }
+        else if (t > 90) { window.removeEventListener('keyup', onUp); api.finish({ secs: best, falls, win: false }); }
+      };
+    });
+  },
   ride(o = {}) {
     const W = 240, H = 150;
     return this.run(_t('Team-Ausfahrt'), _t('Turia-Park → Strand'), _t`<canvas aria-label="E-Bike"></canvas><div class="mini-bar"><span id="rdInfo">▲▼ Spur wechseln, ▶ Turbo (frisst Akku). Komm mit Akku am Strand an!</span><b id="rdB">100 %</b></div><div class="lanes" style="grid-template-columns:1fr 1fr 1fr"><button data-b="u">▲</button><button data-b="d">▼</button><button data-b="t">⚡ Turbo</button></div>`, W, H, (api) => {
