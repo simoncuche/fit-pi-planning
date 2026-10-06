@@ -2238,5 +2238,21 @@
 "<canvas aria-label=\"Surfen\"></canvas><div class=\"mini-bar\"><span id=\"sfInfo\">◀ ▶ Gleichgewicht halten – die Welle schiebt dich. 30 Sekunden stehen bleiben!</span><b id=\"sfT\">0.0</b></div><div class=\"lanes\" style=\"grid-template-columns:1fr 1fr\"><button data-b=\"l\">◀</button><button data-b=\"r\">▶</button></div>": "<canvas aria-label=\"Surf\"></canvas><div class=\"mini-bar\"><span id=\"sfInfo\">◀ ▶ mantén el equilibrio, la ola te empuja. ¡Aguanta 30 segundos de pie!</span><b id=\"sfT\">0.0</b></div><div class=\"lanes\" style=\"grid-template-columns:1fr 1fr\"><button data-b=\"l\">◀</button><button data-b=\"r\">▶</button></div>",
 "Platsch! Wieder rauf aufs Brett …": "¡Plaf! Otra vez a la tabla…",
 "Stehen: {0} s · Stürze: {1}": "De pie: {0} s · caídas: {1}",
-"21 MINISPIELE": "21 MINIJUEGOS"
+"21 MINISPIELE": "21 MINIJUEGOS",
+"<div class=\"panel\"><div class=\"panel-head\"><h2>{0}</h2></div><div class=\"panel-body\"><p class=\"note\">{1}</p><p class=\"note\">{2}</p></div><div class=\"panel-foot\"><button class=\"btn red\" id=\"msEnd\">Spiel beenden</button><button class=\"btn primary\" id=\"msRetry\">Zwei Stunden vorher nochmals starten</button></div></div>": "<div class=\"panel\"><div class=\"panel-head\"><h2>{0}</h2></div><div class=\"panel-body\"><p class=\"note\">{1}</p><p class=\"note\">{2}</p></div><div class=\"panel-foot\"><button class=\"btn red\" id=\"msEnd\">Terminar la partida</button><button class=\"btn primary\" id=\"msRetry\">Volver a empezar dos horas antes</button></div></div>",
+"Treffen in der Bar Pepita": "Encuentro en el Bar Pepita",
+"Bar Pepita, Plaza de la Virgen": "Bar Pepita, Plaza de la Virgen",
+"Kickoff: Business Context": "Kickoff: contexto de negocio",
+"Aufenthaltsraum bei Colba": "la sala común de Colba",
+"E-Bike-Raum bei Colba": "el cuarto de e-bikes de Colba",
+"Final-Präsentation": "Presentación final",
+"In 30 Minuten: {0} – {1}.": "En 30 minutos: {0}, {1}.",
+"Jetzt: {0}! {1}.": "¡Ahora: {0}! {1}.",
+"Letzte Chance: {0} – in 15 Minuten ist es zu spät.": "Última oportunidad: {0}; en 15 minutos será tarde.",
+"Zweite Chance: {0} um {1}. Diesmal pünktlich!": "Segunda oportunidad: {0} a las {1}. ¡Esta vez puntual!",
+"Termin verpasst": "Cita perdida",
+"{0} war um {1} – {2}. Jetzt ist es {3}. Bei Colba wartet niemand länger als eine Stunde.": "{0} era a las {1}, en {2}. Ahora son las {3}. En Colba nadie espera más de una hora.",
+"Du kannst zwei Stunden vor dem Termin nochmals starten und es diesmal rechtzeitig schaffen.": "Puedes volver a empezar dos horas antes de la cita y llegar a tiempo esta vez.",
+"Laden …": "Cargando…",
+"{0} …": "{0} …"
 }

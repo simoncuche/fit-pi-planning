@@ -64,6 +64,52 @@ const Story = {
   airportGroup() { return SWISS.filter((id) => id !== G.S.pid); },
   /* ---------- Workshops im Aufenthaltsraum (Tag, Startstunde, Dauer 1,5 h) ---------- */
   WORKSHOPS: { 1: { id: 'ux', h: 16, who: 'elena', n: _t('UX-Workshop') }, 2: { id: 'arch', h: 11, who: 'carlos', n: _t('Architektur-Workshop') }, 3: { id: 'roadmap', h: 11, who: 'chris', n: _t('Roadmap-Workshop') }, 4: { id: 'retro', h: 11, who: 'simon', n: _t('PI-Retrospektive') } },
+  /* Feste Termine: höchstens eine Stunde zu spät, sonst ist Schluss – mit Neustart zwei Stunden vorher (Checkpoint) */
+  appts() {
+    const f = G.S.flags, W = this.WORKSHOPS;
+    const list = [
+      { id: 'bar', d: 0, h: 17, n: _t('Treffen in der Bar Pepita'), where: _t('Bar Pepita, Plaza de la Virgen'), done: () => this.stageAt('free') },
+      { id: 'kickoff', d: 1, h: 9.5, n: _t('Kickoff: Business Context'), where: _t('Aufenthaltsraum bei Colba'), done: () => !!f.kickoff },
+    ];
+    for (const d of [1, 2, 3, 4]) list.push({ id: 'ws_' + W[d].id, d, h: W[d].h, n: W[d].n, where: _t('Aufenthaltsraum bei Colba'), done: () => !!f['ws_' + W[d].id] });
+    list.push({ id: 'ride', d: 3, h: 15.5, n: _t('Team-Ausfahrt'), where: _t('E-Bike-Raum bei Colba'), done: () => !!f.teamRide });
+    list.push({ id: 'final', d: 4, h: 15, n: _t('Final-Präsentation'), where: _t('Aufenthaltsraum bei Colba'), done: () => !!f.final });
+    return list;
+  },
+  checkAppts() {
+    const f = G.S.flags, now = G.S.time; f.apw = f.apw || {};
+    if (f.noAppts) return; /* Schalter für Tests, die durch die Woche springen */
+    for (const a of this.appts()) {
+      if (a.done()) continue;
+      const at = a.d * 1440 + a.h * 60, lvl = f.apw[a.id] || 0;
+      if (now < at - 120) continue;
+      if (lvl < 1) { f.apw[a.id] = 1; this.checkpoint(a.id); }
+      if (now >= at - 30 && lvl < 2) { f.apw[a.id] = 2; UI.toast(_t`In 30 Minuten: ${a.n} – ${a.where}.`, 'warn'); }
+      if (now >= at && lvl < 3) { f.apw[a.id] = 3; UI.toast(_t`Jetzt: ${a.n}! ${a.where}.`, 'warn'); }
+      if (now >= at + 45 && lvl < 4) { f.apw[a.id] = 4; UI.toast(_t`Letzte Chance: ${a.n} – in 15 Minuten ist es zu spät.`, 'warn'); }
+      if (now > at + 60) { this.missed(a, at); return; }
+    }
+  },
+  checkpoint(id) {
+    if (!G.player || !G.map) return;
+    const snap = Object.assign({}, G.S, { map: G.map.id, x: Math.round(G.player.x), y: Math.round(G.player.y), dir: G.player.dir });
+    try { localStorage.setItem(SAVE_KEY + '-cp', JSON.stringify({ id, state: snap })); } catch (e) {}
+  },
+  async missed(a, at) {
+    G.busy++;
+    Track.event('missed', a.n, true);
+    const retry = () => {
+      let st = null;
+      try { const cp = JSON.parse(localStorage.getItem(SAVE_KEY + '-cp') || 'null'); if (cp && cp.id === a.id && cp.state) st = cp.state; } catch (e) {}
+      if (!st) { st = JSON.parse(JSON.stringify(G.S)); st.map = G.map.id; st.x = Math.round(G.player.x); st.y = Math.round(G.player.y); st.dir = G.player.dir; }
+      st.time = Math.min(st.time, at - 120); st.flags.retries = (st.flags.retries || 0) + 1; if (st.flags.apw) delete st.flags.apw[a.id];
+      st.st.energy = Math.max(st.st.energy, 50);
+      G.busy = 0; Track.event('retry', a.n, true);
+      startGame(st, false);
+      setTimeout(() => UI.toast(_t`Zweite Chance: ${a.n} um ${clockStr(at)}. Diesmal pünktlich!`, 'warn'), 900);
+    };
+    UI.missed(_t('Termin verpasst'), _t`${a.n} war um ${clockStr(at)} – ${a.where}. Jetzt ist es ${clockStr()}. Bei Colba wartet niemand länger als eine Stunde.`, _t('Du kannst zwei Stunden vor dem Termin nochmals starten und es diesmal rechtzeitig schaffen.'), retry);
+  },
   workshopAt(d, h) { const w = this.WORKSHOPS[d]; return w && h >= w.h && h < w.h + 1.5 && !G.S.flags['ws_' + w.id] && G.S.flags.kickoff ? w : null; },
   workshopNow() { return this.workshopAt(today(), hourOf(G.S.time)); },
   async workshop(w) {
@@ -173,9 +219,10 @@ const Story = {
     /* Werktage Di–Fr */
     if (h < 1.5 && d >= 1) { if (['luigi', 'chris', 'guillem', 'pablo', 'estella'].includes(id) && d >= 2) return 'disco'; return colba ? 'home' : 'hotel'; }
     if (h < 8) { if (id === 'chris' && h >= 6.5) return 'beach'; return colba ? 'home' : 'hotel'; }
-    if (h < 9) { if (id === 'aitor') return 'turia'; return colba ? 'commute' : (h < 8.6 ? 'breakfast' : 'commute'); }
+    if (h < 9) { if (id === 'aitor') return 'turia'; if (id === 'isabell') return 'commute'; return colba ? 'commute' : (h < 8.6 ? 'breakfast' : 'commute'); }
     if (h < 9.5 && d === 1 && !f.kickoff) return 'lounge';
-    if (this.workshopAt(d, h) && id !== 'isabell') return 'lounge';
+    { const w = this.WORKSHOPS[d]; if (w && f.kickoff && !f['ws_' + w.id] && h >= w.h - 0.15 && h < w.h + 1.5 && id !== 'isabell') return 'lounge'; }
+    if (d === 1 && !f.kickoff && h >= 9.2 && h < 11) return 'lounge';
     if (h < 13) { if (d === 1 && !f.kickoff) return 'lounge'; if (id === 'dominique' && Math.floor(h * 60) % 60 >= 45) return 'balcony'; if (id === 'isabell') return 'backoffice'; return 'room'; }
     if (h < 14.2) return 'lounge';
     if (h < 18) { if (d === 4 && h >= 14.8) return 'lounge'; if (d === 3 && h >= 15.5 && f.teamRide !== 1 && teamOf(id) === myTeam()) return 'lab'; if (id === 'dominique' && Math.floor(h * 60) % 60 >= 45) return 'balcony'; if (id === 'isabell') return 'backoffice'; if (id === 'robin' && Math.floor(h) % 2 === 1) return 'lost'; return 'room'; }
@@ -227,7 +274,7 @@ const Story = {
       (byLoc.commute || []).forEach((id, i) => put(id, 74 + (i % 6), 30 + Math.floor(i / 6), 3, { wander: { x: 72, y: 28, w: 10, h: 4 } }));
       return;
     }
-    if (m.id === 'hotel_lobby') { (byLoc.breakfast || []).forEach((id, i) => put(id, 15 + (i % 3) * 2, 11 - Math.floor(i / 3), 3, { drinkIdle: true })); return; }
+    if (m.id === 'hotel_lobby') { const SEATS = [[14, 10, 0], [15, 10, 0], [7, 5, 0], [8, 5, 0], [16, 5, 0], [17, 5, 0], [18, 11, 2], [20, 11, 1]]; (byLoc.breakfast || []).forEach((id, i) => { const s = SEATS[i % SEATS.length]; put(id, s[0], s[1], s[2], { pose: 'sit', sitIdle: true, drinkIdle: true, keepDir: true }); }); return; }
     if (m.id === 'bar') {
       const seats = [[2, 5, 0], [3, 5, 0], [2, 7, 3], [3, 7, 3], [6, 7, 0], [7, 7, 0], [6, 9, 3], [7, 9, 3], [11, 7, 3], [13, 7, 3], [15, 7, 3], [17, 7, 3], [14, 8, 0], [15, 8, 0], [16, 8, 0], [14, 10, 3], [15, 10, 3], [16, 10, 3]];
       let i = 0; (byLoc.bar || []).forEach((id) => { const s = TRAVELLERS.includes(id) ? seats[i++] : seats[12 + (i++ % 6)]; put(id, s[0], s[1], s[2], { pose: 'sit', drinkIdle: true, sitIdle: true, sortAdd: s[2] === 0 ? 0 : 2 }); });
@@ -265,7 +312,7 @@ const Story = {
   onEnter(m) {
     const f = G.S.flags;
     if (m.id === 'hotel_lobby' && G.S.stage === 'hotel') this.setStage('checkin');
-    if (m.id === 'colba') { if (!f.colbaVisited) { f.colbaVisited = 1; achieve('lift'); } f.lastOffice = G.S.time; }
+    if (m.id === 'colba') { if (!f.colbaVisited) { f.colbaVisited = 1; achieve('lift'); } f.lastOffice = G.S.time; this._crowdKey = Object.keys(PEOPLE).map((id) => this.schedule(id)).join(','); }
     if (m.id === 'bar' && G.S.stage === 'bar' && hourOf(G.S.time) >= 17) setTimeout(() => this.barMeet(), 400);
     if (m.id === 'danny_house' && !f.asado) setTimeout(() => this.asadoWelcome(), 400);
     if (m.id === 'city' && f.pendingTaxiArrive) { f.pendingTaxiArrive = 0; }
@@ -998,6 +1045,9 @@ const Story = {
     const f = G.S.flags, h = hourOf(G.S.time), d = today(), mn = Math.floor(G.S.time) % 60;
     const hour = Math.floor(h);
     if (hour !== this._lastHour) { this._lastHour = hour; this.hourly(); }
+    this.checkAppts(); if (G.busy) return;
+    /* Im Office: wenn sich der Stundenplan ändert (Kickoff, Workshop, Final, Ausfahrt), kommen die Leute in den richtigen Raum */
+    if (G.map && G.map.id === 'colba') { const key = Object.keys(PEOPLE).map((id) => this.schedule(id)).join(','); if (this._crowdKey && key !== this._crowdKey) { this._crowdKey = key; enterMap('colba', { x: G.player.x, y: G.player.y, dir: G.player.dir }); return; } this._crowdKey = key; }
     /* Montag: wer schon vor 17:00 in der Bar sitzt, bekommt das Treffen trotzdem – die anderen kommen herein */
     if (G.map && G.map.id === 'bar' && G.S.stage === 'bar' && h >= 17 && !G.busy && !f.barMeetWait) { f.barMeetWait = 1; (async () => { await UI.card(_t('17:00 – die Tür geht auf, die anderen kommen herein.'), 1400); if (G.map.id === 'bar' && G.S.stage === 'bar') enterMap('bar', { x: G.player.x, y: G.player.y, dir: G.player.dir }); })(); }
     /* Fremde Teams planen selbst; das eigene Team ohne PO-Spieler auch ein bisschen */

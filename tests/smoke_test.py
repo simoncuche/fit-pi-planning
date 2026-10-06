@@ -46,6 +46,7 @@ with sync_playwright() as p:
 
     shot("01_title")
     run("const S2 = newState(personLook('simon'), 'Simon'); S2.pid = 'simon'; S2.team = 'indurain'; await startGame(S2, true);", 6.0)
+    run("G.S.flags.noAppts = 1;")  # der Test springt durch die Woche; Termine werden am Schluss separat geprüft
     shot("02_airport")
     assert state()["map"] == "airport", state()
     # Koffer: Minispiel direkt lösen
@@ -177,6 +178,13 @@ with sync_playwright() as p:
     assert state()["stage"] == "bar", state()
     assert pg.evaluate("() => UI.speaker('Fran').name === G.S.name && UI.speaker('fran').look === G.S.look && Story.isHere('fran', 'hotel_room')"), "Spieler spricht nicht selbst"
     shot("11_colba_player")
+    # Termine: verpasster Kickoff -> Panel „Termin verpasst“, Neustart zwei Stunden vorher
+    run("G.S.stage = 'free'; G.S.flags.noAppts = 0; G.S.flags.kickoff = 0; G.S.flags.apw = {}; G.busy = 0; G.S.time = 1440 + 8 * 60; Story.checkAppts(); G.S.time = 1440 + 10 * 60 + 40; Story.checkAppts();", 1.0)
+    assert pg.evaluate("() => !!document.querySelector('#msRetry')"), "Panel 'Termin verpasst' fehlt"
+    pg.click('#msRetry'); time.sleep(3.0)
+    tm = pg.evaluate("() => [clockStr(), today(), G.mode, G.busy]")
+    assert tm[0].startswith('07:3') and tm[1] == 1 and tm[2] == 'play', f"Neustart vor dem Termin fehlgeschlagen: {tm}"
+    run("G.S.flags.noAppts = 1;")
     missing = pg.evaluate("() => [...I18N_MISSING]")
     if LANG != "de" and missing:
         errors.append("Fehlende Übersetzungen (" + LANG + "): " + json.dumps(missing, ensure_ascii=False))

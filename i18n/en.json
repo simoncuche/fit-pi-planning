@@ -2238,5 +2238,21 @@
 "<canvas aria-label=\"Surfen\"></canvas><div class=\"mini-bar\"><span id=\"sfInfo\">◀ ▶ Gleichgewicht halten – die Welle schiebt dich. 30 Sekunden stehen bleiben!</span><b id=\"sfT\">0.0</b></div><div class=\"lanes\" style=\"grid-template-columns:1fr 1fr\"><button data-b=\"l\">◀</button><button data-b=\"r\">▶</button></div>": "<canvas aria-label=\"Surfing\"></canvas><div class=\"mini-bar\"><span id=\"sfInfo\">◀ ▶ keep your balance – the wave pushes you. Stay up for 30 seconds!</span><b id=\"sfT\">0.0</b></div><div class=\"lanes\" style=\"grid-template-columns:1fr 1fr\"><button data-b=\"l\">◀</button><button data-b=\"r\">▶</button></div>",
 "Platsch! Wieder rauf aufs Brett …": "Splash! Back onto the board …",
 "Stehen: {0} s · Stürze: {1}": "Standing: {0} s · falls: {1}",
-"21 MINISPIELE": "21 MINIGAMES"
+"21 MINISPIELE": "21 MINIGAMES",
+"<div class=\"panel\"><div class=\"panel-head\"><h2>{0}</h2></div><div class=\"panel-body\"><p class=\"note\">{1}</p><p class=\"note\">{2}</p></div><div class=\"panel-foot\"><button class=\"btn red\" id=\"msEnd\">Spiel beenden</button><button class=\"btn primary\" id=\"msRetry\">Zwei Stunden vorher nochmals starten</button></div></div>": "<div class=\"panel\"><div class=\"panel-head\"><h2>{0}</h2></div><div class=\"panel-body\"><p class=\"note\">{1}</p><p class=\"note\">{2}</p></div><div class=\"panel-foot\"><button class=\"btn red\" id=\"msEnd\">End game</button><button class=\"btn primary\" id=\"msRetry\">Restart two hours earlier</button></div></div>",
+"Treffen in der Bar Pepita": "Meeting at Bar Pepita",
+"Bar Pepita, Plaza de la Virgen": "Bar Pepita, Plaza de la Virgen",
+"Kickoff: Business Context": "Kickoff: business context",
+"Aufenthaltsraum bei Colba": "the lounge at Colba",
+"E-Bike-Raum bei Colba": "the e-bike room at Colba",
+"Final-Präsentation": "Final presentation",
+"In 30 Minuten: {0} – {1}.": "In 30 minutes: {0} – {1}.",
+"Jetzt: {0}! {1}.": "Now: {0}! {1}.",
+"Letzte Chance: {0} – in 15 Minuten ist es zu spät.": "Last chance: {0} – in 15 minutes it is too late.",
+"Zweite Chance: {0} um {1}. Diesmal pünktlich!": "Second chance: {0} at {1}. On time this time!",
+"Termin verpasst": "Appointment missed",
+"{0} war um {1} – {2}. Jetzt ist es {3}. Bei Colba wartet niemand länger als eine Stunde.": "{0} was at {1} – {2}. It is now {3}. At Colba nobody waits longer than an hour.",
+"Du kannst zwei Stunden vor dem Termin nochmals starten und es diesmal rechtzeitig schaffen.": "You can restart two hours before the appointment and make it on time this time.",
+"Laden …": "Loading …",
+"{0} …": "{0} …"
 }

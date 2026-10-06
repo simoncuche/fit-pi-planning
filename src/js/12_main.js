@@ -105,8 +105,11 @@ async function startGame(state, fresh) {
   document.getElementById('hud').hidden = false;
   document.getElementById('touch').hidden = false;
   G.player = null;
-  if (fresh) enterMap('airport', 'start');
-  else enterMap(G.S.map, { x: G.S.x, y: G.S.y, dir: G.S.dir });
+  const first = fresh ? 'airport' : G.S.map;
+  if (!BUILT[first]) { UI.loading(true); await sleep(60); }
+  try { if (fresh) enterMap('airport', 'start'); else enterMap(G.S.map, { x: G.S.x, y: G.S.y, dir: G.S.dir }); } finally { UI.loading(false); }
+  /* Die Stadt im Hintergrund vorbauen, während die erste Szene läuft – spart später die Wartezeit */
+  if (fresh) setTimeout(() => { if (!BUILT.city && G.busy) { try { getMap('city'); } catch (e) {} } }, 1500);
   Story._lastHour = Math.floor(hourOf(G.S.time));
   G.mode = 'play';
   Story.ready = true;

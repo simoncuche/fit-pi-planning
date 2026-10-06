@@ -196,9 +196,18 @@ const UI = {
     if (['Enter', 'Space', 'KeyE', 'Escape'].includes(code)) this.dlgAdvance();
     return true;
   },
+  /* Ladeanzeige, während eine Karte zum ersten Mal gebaut wird */
+  loading(on, text) { const el = document.getElementById('spinner'); if (!el) return; el.hidden = !on; const t = el.querySelector('#spinnerText'); if (t) t.textContent = text || _t('Laden …'); },
   fadeOut(text = '') { this.els.fade.classList.remove('scene'); this.els.fadeText.textContent = text; this.els.fade.classList.add('on'); return sleep(380); },
   async fadeIn() { this.els.fade.classList.remove('on'); await sleep(300); this.els.fade.classList.remove('scene'); },
   async card(text, ms = 1600) { await this.fadeOut(text); await sleep(ms); await this.fadeIn(); },
+  missed(title, text, note, onRetry) {
+    const html = _t`<div class="panel"><div class="panel-head"><h2>${title}</h2></div><div class="panel-body"><p class="note">${text}</p><p class="note">${note}</p></div><div class="panel-foot"><button class="btn red" id="msEnd">Spiel beenden</button><button class="btn primary" id="msRetry">Zwei Stunden vorher nochmals starten</button></div></div>`;
+    const o = this.overlay(html, null);
+    o.querySelector('#msRetry').addEventListener('click', () => { this.closeOverlay && this.closeOverlay(); o.hidden = true; o.innerHTML = ''; onRetry(); });
+    o.querySelector('#msEnd').addEventListener('click', () => { if (confirm(_t('Spielstand wirklich löschen?'))) { clearSave(); try { localStorage.removeItem(SAVE_KEY + '-img'); localStorage.removeItem(SAVE_KEY + '-cp'); } catch (e) {} location.reload(); } });
+    G.mode = 'over';
+  },
   gameOver(title, text, note) {
     const html = _t`<div class="panel"><div class="panel-head"><h2>${title}</h2></div><div class="panel-body"><p class="note">${text}</p><p class="note">${note || _t('Der Spielstand wird gelöscht – versuch es nochmal.')}</p></div><div class="panel-foot"><span>Game Over</span><button class="btn primary" id="goRestart">Von vorne anfangen</button></div></div>`;
     const o = this.overlay(html, null);

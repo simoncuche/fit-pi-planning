@@ -83,7 +83,9 @@ MAP_BUILDERS.hotel_lobby = () => {
   m.add(objPlant(1, 5, true)); m.add(objPlant(22, 5, true)); m.add(objPlant(7, 12)); m.add(objLuggage(19, 5));
   m.add(objCoffee(21, 8)); m.trig(21, 8, 1, 1, { label: _t('Kaffee für Gäste'), act: () => Story.hotelCoffee() });
   m.add(objKiosk(16, 9, _t('FRÜHSTÜCK'), '#2a4a3a')); m.trig(16, 9, 2, 1, { label: _t('Frühstücksbuffet'), act: () => Story.shop('breakfast') });
-  m.add(objUmbrellaTable(19, 11, '#2a4a3a'));
+  m.add(objUmbrellaTable(19, 11, '#2a4a3a')); m.add(objChair(18, 11, 2, '#2a4a3a')); m.add(objChair(20, 11, 1, '#2a4a3a'));
+  /* Frühstückstische: die Reisegruppe sitzt morgens hier zusammen (Story.populate) */
+  for (const [x, y] of [[14, 11], [7, 6], [16, 6]]) { m.add(objTable(x, y, 2, 1, { col: '#8a5e3a', cloth: '#f4f0e6' })); m.add(objChair(x, y - 1, 0, '#2a4a3a')); m.add(objChair(x + 1, y - 1, 0, '#2a4a3a')); }
   doorBottom(m, 11, 2, 'city', 'hotel', _t('Auf die Strasse'));
   m.spawn('entry', 12, 12, 3); m.spawn('lift', 4, 4, 0); m.spawn('stairs', 20, 3, 0);
   return m;

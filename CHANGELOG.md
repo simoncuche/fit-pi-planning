@@ -1,6 +1,11 @@
 # Changelog
 
 ## 2.7.0 – 06.10.2026
+- Appointments count: Bar Pepita on Monday, the kickoff, the four workshops, the team ride and the final presentation must be reached at most one hour late. Reminders come 30 minutes before, at the time and 15 minutes before the deadline. Miss one and the game stops with "Appointment missed": restart two hours before the appointment (a checkpoint) or end the game.
+- At the office the people move to the right room when the schedule changes: when the kickoff, a workshop, the team ride or the final starts, everyone gathers there even if you were already in the building.
+- A spinner shows while a map is built for the first time, and the city is pre-built in the background during the airport intro.
+- Breakfast at the Hotel Kramer: three breakfast tables with chairs; the travel group sits together at them, facing you, instead of standing in a cluster.
+- The pixel font is a 4×6 face now: as small as the original 3×5 signs, but with finer letters.
 - Swimming and surfing are real: "Go for a swim" plays an animated dip in the sea (with Chris if he is there), "Surfing" is a new balance minigame on a rolling wave – stay up for 30 seconds. New achievements "Mediterranean in November" and "On the wave".
 - New one-liners: Fran on parameters, Lukas on the battery tester, Aitor on the ABUS lock (key card or app), Daniel on 3rd level support.
 - Bike lab: a battery tester on the bench and an ABUS reader next to the door, both with their own little stories and achievements.

@@ -398,8 +398,7 @@ function paintAwning(c, px, py, col) {
 }
 function paintSign(c, W, H, o, night) {
   const s = o.sign;
-  /* Doppelt so gross, wenn das Schild aufs Gebäude passt – sonst klein */
-  const sc = s.scale || (pxTextW(s.text, 2) + 6 <= W - 4 ? 2 : 1);
+  const sc = s.scale || 1;
   const tw = pxTextW(s.text, sc) + 6;
   const sx = s.x !== undefined ? s.x : Math.round(W / 2 - tw / 2), sy = s.y !== undefined ? s.y : H - 32;
   if (night && !s.lit) return;
@@ -501,7 +500,7 @@ function objVending(x, y) { return mkObj(x, y, 1, 1, 30, (c, W, H) => { R(c, 3, 
 function objLuggage(x, y) { return mkObj(x, y, 1, 1, 26, (c, W, H) => { R(c, 3, H - 5, 18, 3, '#c9a65a'); R(c, 3, 5, 2, H - 8, '#c9a65a'); R(c, 19, 5, 2, H - 8, '#c9a65a'); R(c, 3, 5, 18, 2, '#e8c870'); R(c, 6, H - 20, 12, 15, '#2f5fb8'); R(c, 7, H - 30, 9, 9, '#8a3a2a'); E(c, 6, H - 1, 1, 1, '#1a1a1a'); E(c, 18, H - 1, 1, 1, '#1a1a1a'); }); }
 function objSuitcase(x, y, col = '#2f5fb8') { return mkObj(x, y, 1, 1, 6, (c, W, H) => { R(c, 3, H - 20, 18, 17, col); R(c, 3, H - 20, 18, 1, shade(col, 0.25)); R(c, 9, H - 23, 6, 3, '#2a2a2e'); R(c, 3, H - 13, 18, 1, shade(col, -0.3)); R(c, 5, H - 3, 3, 2, '#1a1a1a'); R(c, 16, H - 3, 3, 2, '#1a1a1a'); }, { solid: false }); }
 function objSeats(x, y, w = 3, col = '#2a4a7a') { return mkObj(x, y, w, 1, 8, (c, W, H) => { R(c, 1, H - 14, W - 2, 8, col); R(c, 1, H - 22, W - 2, 8, shade(col, -0.15)); R(c, 1, H - 22, W - 2, 1, shade(col, 0.2)); for (let k = 0; k < W; k += 24) R(c, k, H - 22, 1, 16, '#5a5e64'); R(c, 2, H - 6, 2, 6, '#5a5e64'); R(c, W - 4, H - 6, 2, 6, '#5a5e64'); }, { solid: true }); }
-function objSignpost(x, y, text, col = '#1e3a6a') { const sc = text.length <= 9 ? 2 : 1; const tw = pxTextW(text, sc) + 8; return mkObj(x, y, 1, 1, 36, (c, W, H) => { R(c, W / 2 - 1, 14, 2, H - 15, '#5a5e64'); R(c, W / 2 - tw / 2, 0, tw, 7 * sc + 4, col); R(c, W / 2 - tw / 2, 7 * sc + 3, tw, 1, shade(col, -0.3)); pxText(c, text, W / 2 - tw / 2 + 4, 2, '#ffffff', sc); }, { solid: false, padX: Math.max(0, Math.ceil((tw - 24) / 2)) }); }
+function objSignpost(x, y, text, col = '#1e3a6a') { const sc = 1; const tw = pxTextW(text, sc) + 8; return mkObj(x, y, 1, 1, 36, (c, W, H) => { R(c, W / 2 - 1, 14, 2, H - 15, '#5a5e64'); R(c, W / 2 - tw / 2, 0, tw, 7 * sc + 4, col); R(c, W / 2 - tw / 2, 7 * sc + 3, tw, 1, shade(col, -0.3)); pxText(c, text, W / 2 - tw / 2 + 4, 2, '#ffffff', sc); }, { solid: false, padX: Math.max(0, Math.ceil((tw - 24) / 2)) }); }
 function objFountain(x, y) {
   return mkObj(x, y, 3, 2, 22, (c, W, H) => {
     E(c, W / 2, H - 6, W / 2 - 2, 10, '#9a948a'); E(c, W / 2, H - 7, W / 2 - 4, 8, '#3a9ac8'); E(c, W / 2, H - 7, W / 2 - 6, 6, '#5ab8e0');

@@ -179,7 +179,9 @@ async function warpTo(id, spawn, opts = {}) {
   const tr = !opts.plain && G.map && typeof transitionFor === 'function' ? transitionFor(G.map.id, id, spawn, opts) : null;
   if (!tr || typeof Scene === 'undefined') { Snd.sfx('door'); await UI.fadeOut(); }
   else await Scene.play(tr.kind, Object.assign({ keep: true, label: opts.label || '' }, tr));
-  enterMap(id, spawn, opts);
+  const fresh = !BUILT[id];
+  if (fresh) { UI.loading(true, opts.label ? _t`${opts.label} …` : ''); await sleep(60); }
+  try { enterMap(id, spawn, opts); } finally { if (fresh) UI.loading(false); }
   await sleep(100);
   await UI.fadeIn();
   G.busy--;

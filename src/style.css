@@ -321,6 +321,12 @@ body.stick-on #stickHint { opacity: .2; }
 #cine.flash .cflash { animation: cflash .5s ease-out; }
 @keyframes cflash { from { opacity: .7; } to { opacity: 0; } }
 
+#spinner { position: absolute; inset: 0; z-index: 36; display: grid; place-items: center; pointer-events: none; }
+#spinner[hidden] { display: none; }
+#spinner > div, #spinner i { display: block; }
+#spinner i { width: 40px; height: 40px; border: 4px solid rgba(255,255,255,.22); border-top-color: var(--sun); border-radius: 50%; animation: spin .8s linear infinite; margin: 0 auto 10px; }
+#spinner span { display: block; font-family: var(--f-sign); font-size: 14px; letter-spacing: .12em; text-transform: uppercase; color: #f4f0e6; text-align: center; }
+@keyframes spin { to { transform: rotate(360deg); } }
 #fade { position: absolute; inset: 0; background: #000; opacity: 0; pointer-events: none; transition: opacity .35s; z-index: 35; display: grid; place-items: center; }
 #fade.on { opacity: 1; pointer-events: auto; }
 #fade canvas { display: none; width: min(92vw, 640px); image-rendering: pixelated; border: 2px solid var(--paper-line); border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,.6); margin-bottom: 14px; }
