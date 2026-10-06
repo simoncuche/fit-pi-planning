@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.6.1 – 06.10.2026
+- Signs in the city are twice as big where they fit on the building, signposts are bigger too, and the phone map is larger with outlined, staggered labels and opens near the hotel.
+
 ## 2.6.0 – 06.10.2026
 - The shops are walkable: Moda Valencia, Supermercado, Farmacia, Estanco, Souvenirs València and the Veles e Vents bar are rooms you enter from the street, each furnished for its trade (clothes racks, mannequins and a fitting room; drinks fridge and grocery shelves; pharmacy counter with green cross; tobacco and lottery shelves; souvenir shelves and postcard stands; a sea-view bar) with their own shopkeepers.
 - Kart track: a proper circuit with red-and-white curbs, start/finish checkers and grid boxes, skid marks, tyre barriers, five parked karts in the pit lane and one kart lapping the track.

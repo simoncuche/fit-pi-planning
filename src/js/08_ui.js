@@ -340,17 +340,25 @@ const Phone = {
   karte(b) {
     const showCity = G.map.indoor && BUILT.city && G.map.id !== 'airport' && G.map.id !== 'danny_house';
     const m = showCity ? BUILT.city : G.map;
-    const sc = m.w > 60 ? 5 : 8;
+    const sc = m.w > 60 ? 7 : 9;
     const [c, x] = canvas(m.w * sc, m.h * sc);
     const col = { [T.WATER]: '#3a9ac8', [T.GRASS]: '#7aa84c', [T.PARK]: '#6f9c44', [T.PALMS]: '#4a7a3a', [T.ASPH]: '#5c5f66', [T.TARMAC]: '#4a4d54', [T.ZEBRA]: '#8a8d92', [T.PLAZA]: '#dccfb8', [T.COBBLE]: '#a49a8a', [T.PAVE]: '#d8cfbf', [T.CURB]: '#b8b2a6', [T.HEDGE]: '#2f5a2a', [T.GRAVEL]: '#c2b59a', [T.WALL]: '#3a3430', [T.WALLF]: '#5a5048', [T.SAND]: '#efe0b8', [T.WETSAND]: '#d4c094', [T.BIKE]: '#b35a4a', [T.DECK]: '#a8865a', [T.TRACK]: '#3a3c42', [T.FLOWER]: '#8a5a3a' };
     for (let y = 0; y < m.h; y++) for (let xx = 0; xx < m.w; xx++) { const t = m.at(xx, y); R(x, xx * sc, y * sc, sc, sc, col[t] || '#c8c0b0'); }
     for (const o of m.objs) { if (!o.bld && o.w < 2) continue; R(x, o.x * sc, o.y * sc, o.w * sc, o.h * sc, o.bld ? shade(o.bld.roof, -0.1) : '#6a6058'); if (o.bld) R(x, o.x * sc, (o.y + o.h) * sc - 2, o.w * sc, 2, shade(o.bld.wall, -0.1)); }
     const pois = Story.mapPois(m.id);
-    x.font = 'bold 12px Oswald, sans-serif';
-    pois.forEach((p) => { E(x, p.x * sc + sc / 2, p.y * sc + sc / 2, 5, 5, '#1f2430'); E(x, p.x * sc + sc / 2, p.y * sc + sc / 2, 4, 4, p.c); x.fillStyle = '#1f2430'; x.fillText(p.n, p.x * sc + sc / 2 + 7, p.y * sc + sc / 2 + 4); x.fillStyle = '#ffffff'; x.fillText(p.n, p.x * sc + sc / 2 + 6, p.y * sc + sc / 2 + 3); });
+    x.font = 'bold 15px Oswald, "Arial Narrow", sans-serif'; x.lineJoin = 'round'; x.lineWidth = 4; x.strokeStyle = '#1f2430';
+    /* Beschriftungen staffeln, damit sie sich an dichten Stellen nicht überdecken */
+    const boxes = pois.map((p) => ({ x: p.x * sc + sc / 2 - 7, y: p.y * sc + sc / 2 - 7, w: 14, h: 14 }));
+    pois.forEach((p) => { const px = p.x * sc + sc / 2, py = p.y * sc + sc / 2; E(x, px, py, 6, 6, '#1f2430'); E(x, px, py, 5, 5, p.c); const tw = x.measureText(p.n).width + 4; let lx = px + 9, ly = py + 5;
+      for (const dy of [0, -17, 17, -34, 34]) { const cand = { x: lx, y: py + 5 + dy - 13, w: tw, h: 17 }; if (!boxes.some((b2) => cand.x < b2.x + b2.w && cand.x + cand.w > b2.x && cand.y < b2.y + b2.h && cand.y + cand.h > b2.y)) { ly = py + 5 + dy; boxes.push(cand); break; } }
+      if (ly !== py + 5) { x.beginPath(); x.moveTo(px, py); x.lineTo(lx, ly - 5); x.stroke(); }
+      x.strokeText(p.n, lx, ly); x.fillStyle = '#ffffff'; x.fillText(p.n, lx, ly); });
     if (!showCity) { const px = G.player.x / TS * sc, py = G.player.y / TS * sc; E(x, px, py, 6, 6, '#ff8c1a'); E(x, px, py, 3, 3, '#ffffff'); }
     for (const id of Object.keys(PEOPLE)) { if (id === G.S.pid) continue; const w = Story.whereIs(id); if (w.x != null && w.map === m.id) { E(x, w.x * sc + sc / 2 + (hash(id.length, 1) * 8 - 4), w.y * sc + sc / 2, 3, 3, PEOPLE[id].bg || '#444'); } }
     const wrap = document.createElement('div'); wrap.className = 'mapwrap'; wrap.appendChild(c);
+    /* Ausschnitt dorthin rollen, wo man ist (in der Stadt), sonst zum Hotel */
+    const fx = showCity ? (Story.LOC && Story.LOC.hotel ? Story.LOC.hotel[2] : 13) * sc : G.player.x / TS * sc, fy = showCity ? (Story.LOC && Story.LOC.hotel ? Story.LOC.hotel[3] : 30) * sc : G.player.y / TS * sc;
+    requestAnimationFrame(() => { wrap.scrollLeft = Math.max(0, fx - wrap.clientWidth / 2); wrap.scrollTop = Math.max(0, fy - wrap.clientHeight / 2); });
     b.innerHTML = _t`<div class="legend"><span><i style="background:#ff8c1a"></i>Du</span><span><i style="background:#2a9aa0"></i>Colba</span><span><i style="background:#1f7fb8"></i>Sehenswürdigkeit</span><span><i style="background:#3f9a4b"></i>Läden & Freizeit</span><span><i style="background:#e85af0"></i>Nachtleben</span></div>`;
     b.appendChild(wrap);
     const note = document.createElement('p'); note.className = 'note'; note.textContent = showCity ? _t('Karte von Valencia. Kleine Punkte: wo die Kollegen gerade sind.') : _t`Karte: ${m.name}`; b.appendChild(note);

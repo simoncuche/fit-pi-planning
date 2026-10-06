@@ -30,11 +30,11 @@ const Trailer = {
     window.addEventListener('keydown', esc); document.body.appendChild(o);
     Snd.init(); const v = o.querySelector('video'); v.play && v.play().catch(() => {});
   },
-  stop() {
+  stop(reason) {
     if (!this.done) return;
     cancelAnimationFrame(this.raf); window.removeEventListener('resize', this.resize); window.removeEventListener('keydown', this.onTap);
     if (this.el) this.el.remove(); this.el = null;
-    const d = this.done; this.done = null; d.resolve();
+    const d = this.done; this.done = null; d.resolve(reason || 'tap');
   },
   tap() {
     Snd.init();

@@ -15,7 +15,7 @@ function boot() {
   wireInput();
   i18nDom();
   let skipIntro = false; try { skipIntro = sessionStorage.getItem('pi-skip-intro') === '1'; sessionStorage.removeItem('pi-skip-intro'); } catch (e) {}
-  if (skipIntro || location.hash === '#nointro') showTitle(); else Trailer.play().then(showTitle);
+  if (skipIntro || location.hash === '#nointro') showTitle(); else Trailer.play().then((r) => { if (r !== 'game') showTitle(); });
   let last = performance.now(), hudT = 0;
   const loop = (now) => {
     const dt = Math.min(0.05, (now - last) / 1000);
@@ -94,7 +94,7 @@ function showTitle() {
 }
 
 async function startGame(state, fresh) {
-  Trailer.stop();
+  Trailer.stop('game');
   G.S = state;
   if (!G.S.flags.met) G.S.flags.met = {};
   buildFriends();
