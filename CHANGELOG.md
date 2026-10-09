@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.8.4 – 09.10.2026
+- Scene transitions in full device resolution: the little animated scenes (door, lift, taxi, stairs, ride, sleep …) are now drawn pixel-exact at the same whole-number scale as the game world instead of being stretched by the browser. Your avatar and everyone else in the scenes are as sharp as in the game – also in the homescreen app on iPhone, where the scenes used to look blurry.
+
 ## 2.8.3 – 06.10.2026
 - Homescreen app: when a newer version exists while the title screen is showing, the game reloads itself once with the version in the address, so the app on the home screen updates on its own.
 - Update check: the "new version available" hint now also appears every five minutes and when you return to the game, and tapping it reloads with the version in the address so no browser or CDN cache can serve the old page.

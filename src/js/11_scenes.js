@@ -281,7 +281,7 @@ const Scene = {
     const fn = SCENES[kind];
     if (!fn) { await UI.fadeOut(o.text || ''); if (!o.keep) await UI.fadeIn(); return; }
     const cv = UI.els.fadeCv, x = cv.getContext('2d');
-    x.imageSmoothingEnabled = false;
+    sceneFit(cv, x);
     const st = Object.assign({ night: isNight(), t0: G.S.time }, o);
     UI.els.fade.classList.add('scene');
     /* Der Text erscheint erst, wenn die Szene sichtbar ist – nicht schon über dem alten Ort */
@@ -303,4 +303,17 @@ const Scene = {
     if (!o.keep) await UI.fadeIn();
   },
 };
+/* Szene in Geräteauflösung: der Canvas hat k Gerätepixel pro Szenenpixel (ganzzahlig, wie die Spielwelt), gezeichnet wird
+   mit setTransform(k) – der Browser skaliert nichts mehr, die Figur ist so scharf wie im Spiel, auch wo image-rendering fehlt. */
+function sceneFit(cv, x) {
+  const dpr = window.devicePixelRatio || 1, box = UI.els.fade.getBoundingClientRect();
+  const sp = Math.max(1, Math.round((View.scale || 1) * dpr));
+  const maxK = Math.max(1, Math.floor(Math.min((box.width || innerWidth) * 0.94 * dpr / SCENE_W, (box.height || innerHeight) * 0.62 * dpr / SCENE_H)));
+  const k = Math.max(1, Math.min(maxK, Math.max(sp, 2)));
+  if (cv.width !== SCENE_W * k || cv.height !== SCENE_H * k) { cv.width = SCENE_W * k; cv.height = SCENE_H * k; }
+  cv.style.width = (SCENE_W * k / dpr) + 'px'; cv.style.height = (SCENE_H * k / dpr) + 'px';
+  x.setTransform(k, 0, 0, k, 0, 0);
+  x.imageSmoothingEnabled = false;
+  return k;
+}
 function sceneHead(c, sheet, x, y, s = 1, dir = 0) { c.drawImage(sheet, 0, dir * SPR_H + SPR_TOP, SPR_W, 16, Math.round(x), Math.round(y), SPR_W * s, 16 * s); }

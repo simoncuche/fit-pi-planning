@@ -329,7 +329,7 @@ body.stick-on #stickHint { opacity: .2; }
 @keyframes spin { to { transform: rotate(360deg); } }
 #fade { position: absolute; inset: 0; background: #000; opacity: 0; pointer-events: none; transition: opacity .35s; z-index: 35; display: grid; place-items: center; }
 #fade.on { opacity: 1; pointer-events: auto; }
-#fade canvas { display: none; width: min(92vw, 640px); image-rendering: pixelated; border: 2px solid var(--paper-line); border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,.6); margin-bottom: 14px; }
+#fade canvas { display: none; width: min(92vw, 640px); image-rendering: pixelated; image-rendering: crisp-edges; border: 2px solid var(--paper-line); border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,.6); margin-bottom: 14px; }
 #fade.scene canvas { display: block; }
 #fade p { font-family: var(--f-pixel); font-size: 16px; color: var(--sun); text-align: center; padding: 0 20px; max-width: 34ch; line-height: 1.5; }
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
