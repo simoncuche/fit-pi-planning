@@ -1,7 +1,7 @@
 /* ============ Trailer: Startbildschirm vor der Bordkarte (schnell geschnitten, Comic-Stil) ============ */
 if (!CanvasRenderingContext2D.prototype.roundRect) CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) { this.moveTo(x + r, y); this.arcTo(x + w, y, x + w, y + h, r); this.arcTo(x + w, y + h, x, y + h, r); this.arcTo(x, y + h, x, y, r); this.arcTo(x, y, x + w, y, r); this.closePath(); };
 const Trailer = {
-  el: null, cv: null, x: null, raf: 0, t0: null, done: null, skipTo: null, LW: 540, LH: 960, k: 1, port: true,
+  el: null, cv: null, x: null, raf: 0, t0: null, done: null, skipTo: null, LW: 540, LH: 960, k: 1, port: true, video: false,
   play() {
     if (this.done) return this.done.promise;
     let resolve; const promise = new Promise((r) => { resolve = r; }); this.done = { promise, resolve };
@@ -62,7 +62,7 @@ const Trailer = {
     x.textBaseline = 'middle'; x.textAlign = 'center';
     S[i][1].call(this, t);
     if (t < 0.07 && i > 0) this.R(0, 0, this.LW, this.LH, `rgba(255,255,255,${(1 - t / 0.07).toFixed(2)})`);
-    if (i < S.length - 1) { x.font = `${Math.round(13 * this.k)}px ${TR_FONT_SIGN}`; x.fillStyle = 'rgba(255,255,255,0.75)'; x.textAlign = 'right'; x.fillText(_t('Überspringen') + ' ▸', this.LW - 14, 18 * this.k); }
+    if (i < S.length - 1 && !this.video) { x.font = `${Math.round(13 * this.k)}px ${TR_FONT_SIGN}`; x.fillStyle = 'rgba(255,255,255,0.75)'; x.textAlign = 'right'; x.fillText(_t('Überspringen') + ' ▸', this.LW - 14, 18 * this.k); }
   },
   /* ---------- Zeichenhelfer ---------- */
   R(X, Y, w, h, c) { this.x.fillStyle = c; this.x.fillRect(X, Y, w, h); },
@@ -107,10 +107,9 @@ const Trailer = {
   /* ---------- Szenen ---------- */
   intro(u) {
     const { LW, LH, k } = this; this.R(0, 0, LW, LH, '#141a2e');
-    const a = 'COLBA - VALENCIA', n = Math.min(a.length, Math.floor(u / 1.1 * a.length)), ps = Math.max(2, Math.round(7 * k));
-    this.px(a.slice(0, n) + ((Math.floor(u * 4) % 2 && n < a.length) ? '-' : ''), LW / 2, LH * 0.4, '#2a9aa0', ps, 'c');
-    if (u > 1.1) this.px(_t('2.-6. NOVEMBER 2026'), LW / 2, LH * 0.4 + ps * 10, '#f4f0e6', Math.max(2, Math.round(4 * k)), 'c');
-    if (u > 1.6) this.px(_t('EINE PI PLANNING WOCHE'), LW / 2, LH * 0.4 + ps * 15, '#cfd6dd', Math.max(2, Math.round(3 * k)), 'c');
+    const a = 'COLBA - VALENCIA', n = Math.min(a.length, Math.floor(u / 0.7 * a.length)), ps = Math.max(2, Math.round(7 * k));
+    this.px(a.slice(0, n) + ((Math.floor(u * 6) % 2 && n < a.length) ? '-' : ''), LW / 2, LH * 0.4, '#2a9aa0', ps, 'c');
+    if (u > 0.8) { const s = this.slam(u - 0.8, 0.14), x = this.x; x.save(); x.translate(LW / 2, LH * 0.4 + ps * 11); x.scale(s, s); this.px3(_t('5 TAGE. 3 TEAMS. 1 PLAN.'), 0, 0, '#f4f0e6', '#e2554a', Math.max(2, Math.round(4 * k)), 'c'); x.restore(); }
   },
   panel(id, q, bg, dot, bu, col, u) {
     const { LW, LH, k, port, x } = this; this.halftone(bg, dot, u); this.lines(LW * (port ? 0.5 : 0.3), LH * (port ? 0.3 : 0.5), 'rgba(0,0,0,0.12)');
@@ -150,19 +149,6 @@ const Trailer = {
     if (u > 1.9) { const s = this.slam(u - 1.9, 0.15); this.burst(LW * 0.68, LH * 0.74, 'COMMIT!', '#f2c84a', 0.15, s * 1.1 * k); }
     this.caption(_t('Poker, CANopen, ROAM, Board, Konfidenz – jeden Tag eine Runde'), LH - 60 * k);
   },
-  hunger(u) {
-    const { LW, LH, k, port } = this; this.halftone('#2a3a6a', '#223058', u);
-    const sc = Math.max(3, Math.round(6 * k)), X = LW / 2 - SPR_W * sc / 2, Y = LH * (port ? 0.36 : 0.3);
-    this.spr('simon', X, Y, sc, POSE_I[Math.floor(u * 3) % 2 ? 'rub' : 'rubB']);
-    if (u > 0.4) {
-      const x = this.x, s = this.slam(u - 0.4, 0.15), ps = Math.max(3, Math.round(5 * k)), bw = pxTextW(_t('MMH, ESSEN')) * ps + 50, bh = ps * 5 + 44, bx = LW / 2 - bw / 2 + 30 * k, by = Y - bh - 30 * k;
-      x.save(); x.translate(bx + bw / 2, by + bh / 2); x.scale(s, s); x.translate(-(bx + bw / 2), -(by + bh / 2));
-      x.lineWidth = 4; x.strokeStyle = '#1a1a1e'; x.fillStyle = '#fbfbf4'; x.beginPath(); x.roundRect(bx, by, bw, bh, 16); x.fill(); x.stroke();
-      x.beginPath(); x.moveTo(bx + 30, by + bh - 2); x.lineTo(bx + 10, by + bh + 26); x.lineTo(bx + 70, by + bh - 2); x.closePath(); x.fill(); x.stroke(); this.R(bx + 32, by + bh - 6, 36, 6, '#fbfbf4');
-      this.px(_t('MMH, ESSEN'), bx + 25, by + 22, '#1a1a1e', ps); x.restore();
-    }
-    if (u > 0.9) this.caption(_t('Hungrig? Dann wird gestoppt, geseufzt und über den Bauch gestrichen.'), LH - 60 * k);
-  },
   final(u) {
     const { LW, LH, k, port, x } = this;
     const g = x.createRadialGradient(LW / 2, LH * 1.1, 40, LW / 2, LH * 1.1, LH * 1.2); g.addColorStop(0, '#b8481c'); g.addColorStop(0.5, '#2a3a6a'); g.addColorStop(1, '#0e1116');
@@ -183,9 +169,25 @@ const Trailer = {
     stats.forEach((st, i) => { const t0 = 1.4 + i * 0.18; if (u < t0) return; const s3 = this.slam(u - t0, 0.14); const cx = port ? LW / 2 : LW / 2 + (i - 1) * LW * 0.26, cy = port ? y4 + i * 54 * k : y4; this.chip(st[0], cx, cy, (i - 1) * 0.05, s3, st[1], Math.round(22 * k)); });
     const cast = ['luigi', 'robin', 'isabell', 'danny', 'daniel', 'carlos'], cs = Math.max(2, Math.round(3 * k)), cw = SPR_W * cs + 10 * k, cy0 = LH - 185 * k;
     cast.forEach((id, i) => { const t0 = 2 + i * 0.12; if (u < t0) return; const b = Math.abs(Math.sin((u - t0) * 6)) * (u - t0 < 1.2 ? 24 : 7) * k; this.spr(id, LW / 2 - cast.length * cw / 2 + i * cw, cy0 - b, cs); });
-    if (u > 3 && Math.floor(u * 2) % 2) this.px(Input.touch ? _t('TIPPEN ZUM STARTEN') : _t('TASTE DRÜCKEN'), LW / 2, LH - 40 * k, '#f2c84a', Math.max(2, Math.round(3 * k)), 'c');
+    if (!this.video && u > 3 && Math.floor(u * 2) % 2) this.px(Input.touch ? _t('TIPPEN ZUM STARTEN') : _t('TASTE DRÜCKEN'), LW / 2, LH - 40 * k, '#f2c84a', Math.max(2, Math.round(3 * k)), 'c');
   },
 };
 const TR_FONT_SIGN = "'Oswald', 'Arial Narrow', Impact, sans-serif", TR_FONT_BODY = "'Nunito', 'Helvetica Neue', Arial, sans-serif";
+/* Ganzer Trailer fürs Video (media/trailer.mp4): kurzer Vorspann, sechs Figuren mit Sprüchen aus dem Scrum-Alltag,
+   Buzzword-Bingo, PI-Plan mit COMMIT, dann die Titelkarte. Das dritte Feld sagt tools/trailer_video.py, welche Geräusche
+   die Szene bekommt. Video neu erzeugen: python3 build.py && python3 tools/trailer_video.py */
+Trailer.quip = function (id, q, bg, bu, col) { return function (u) { this.panel(id, q, bg, shade(bg, -0.12), bu, col, u); }; };
+Trailer.FULL = [
+  [1.6, Trailer.intro, 'intro'],
+  [1.9, Trailer.quip('juanjo', _t('Die Deadline steht. Den Scope klären wir unterwegs.'), '#2a9aa0', '¡VAMOS!', '#f2c84a'), 'panel'],
+  [1.9, Trailer.quip('luigi', _t('Priorität eins: Kartbahn. Priorität zwei: Backlog.'), '#e2554a', 'VROOM!', '#f2c84a'), 'panel'],
+  [1.8, function (u) { this.words('BUZZWORD BINGO', [['STORY POINTS', [0.32, 0.34, -0.1], [0.25, 0.42, -0.1]], ['VELOCITY', [0.65, 0.42, 0.06], [0.5, 0.4, 0.06]], ['SCOPE CREEP', [0.4, 0.52, -0.08], [0.75, 0.46, -0.08]], ['ROAM', [0.68, 0.6, 0.12], [0.3, 0.68, 0.12]], ['DEPENDENCIES', [0.35, 0.7, -0.06], [0.52, 0.72, -0.06]], ['FIST OF FIVE', [0.62, 0.78, 0.1], [0.76, 0.7, 0.1]]], '#2fa0d8', '#2889b8', u, '#fbfbf4'); }, 'words:6'],
+  [1.9, Trailer.quip('elena', _t('Der Button ist zwei Pixel zu weit links. Das ist ein Blocker.'), '#9a5ae0', 'BLOCKER!', '#fbfbf4'), 'panel'],
+  [1.9, Trailer.quip('fran', _t('Das ist kein Bug. Das ist ein undokumentierter CANopen-Index.'), '#3f8e4b', 'BEEP!', '#f2c84a'), 'panel'],
+  [1.9, Trailer.quip('carlos', _t('Technische Schulden? Ich nenne das Vintage-Code.'), '#2a2e36', 'LEGACY!', '#7ad0d8'), 'panel'],
+  [1.9, Trailer.quip('danny', _t('Definition of Done? Wenn die Chorizo schwarz ist.'), '#f0a23a', 'DONE!', '#fbfbf4'), 'panel'],
+  [2.3, Trailer.plan, 'plan'],
+  [600, Trailer.final, 'final'],
+];
 /* Im Spiel läuft nur die Schlussszene (Titelkarte); die ganze Sequenz gibt es als Video. */
 Trailer.S = [[600, Trailer.final]];

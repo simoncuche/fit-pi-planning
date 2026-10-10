@@ -39,6 +39,7 @@ zugreifen – sonst TDZ-Fehler bei `const`. Darum heisst die Ereignis-Datei `09_
 | `10_planning.js` | `Mini.run` (Rahmen) und Planning-Minispiele: `poker`, `canopen`, `roam`, `board`, `deps`, `confidence` |
 | `10_workshops.js` | Workshops als Minispiele (`Mini.ux`, `Mini.arch`, `Mini.roadmap`, `Mini.retro`) mit den Rahmen `quizCards`, `sortCards`, `placeBoard`; Zeitplan in `Story.WORKSHOPS` |
 | `11_minigames.js` | Freizeit: `suitcase`, `bell`, `kart`, `sail`, `paella`, `bbq` (Grill bei Danny, danach `Story.bbqDinner` am Gartentisch), `wine`, `soccer`, `dance`, `padel`, `ride` |
+| `11_trailer.js` | `Trailer`: Startbildschirm (im Spiel nur die Titelkarte `final`) und die ganze Sequenz `Trailer.FULL` (`[Dauer, Szene, Geräusch]`) fürs Video `media/trailer.mp4`; neu erzeugen mit `python3 build.py && python3 tools/trailer_video.py && python3 build.py` |
 | `11_scenes.js` | `Scene.play(kind, opts)`: 240×144-Szenen (`plane`, `taxi`, `door`, `lift`, `stairs`, `roomdoor`, `sleep`, `shower`, `ride`, `boat`, `mascleta`, `crema`, `flight`), Fassaden `FACADES`, `transitionFor` |
 | `12_main.js` | Titel (Bordkarte), Start, Eingabe (Tastatur + Touch-Joystick), Hauptschleife |
 

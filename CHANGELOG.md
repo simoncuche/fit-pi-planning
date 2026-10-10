@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.9.0 – 10.10.2026
+- New trailer video: a shorter opening (17 instead of 25 seconds before the title card) with sharper jokes from PI Planning, Scrum and software development – Juanjo fixes the deadline and keeps the scope open, Luigi prioritises the kart track over the backlog, Elena calls two pixels a blocker, Fran explains that it is not a bug but an undocumented CANopen index, Carlos calls technical debt vintage code and Danny's Definition of Done is a black chorizo. Plus a round of buzzword bingo and the PI plan with COMMIT.
+- The trailer video no longer shows "Skip" or "Press any key".
+
 ## 2.8.4 – 09.10.2026
 - Scene transitions in full device resolution: the little animated scenes (door, lift, taxi, stairs, ride, sleep …) are now drawn pixel-exact at the same whole-number scale as the game world instead of being stretched by the browser. Your avatar and everyone else in the scenes are as sharp as in the game – also in the homescreen app on iPhone, where the scenes used to look blurry.
 
