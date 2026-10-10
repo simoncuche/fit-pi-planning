@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.9.1 – 10.10.2026
+- Trailer video: the closing title card shows the same six characters as the opening (Juanjo, Luigi, Elena, Fran, Carlos, Danny). The start screen in the game is unchanged.
+
 ## 2.9.0 – 10.10.2026
 - New trailer video: a shorter opening (17 instead of 25 seconds before the title card) with sharper jokes from PI Planning, Scrum and software development – Juanjo fixes the deadline and keeps the scope open, Luigi prioritises the kart track over the backlog, Elena calls two pixels a blocker, Fran explains that it is not a bug but an undocumented CANopen index, Carlos calls technical debt vintage code and Danny's Definition of Done is a black chorizo. Plus a round of buzzword bingo and the PI plan with COMMIT.
 - The trailer video no longer shows "Skip" or "Press any key".
