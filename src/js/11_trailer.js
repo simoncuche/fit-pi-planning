@@ -167,8 +167,8 @@ const Trailer = {
     const stats = [[_t('22 FIGUREN'), '#2a9aa0'], [_t('5 TAGE'), '#f0a23a'], [_t('21 MINISPIELE'), '#e2554a']];
     const y4 = y3 + 60 * k;
     stats.forEach((st, i) => { const t0 = 1.4 + i * 0.18; if (u < t0) return; const s3 = this.slam(u - t0, 0.14); const cx = port ? LW / 2 : LW / 2 + (i - 1) * LW * 0.26, cy = port ? y4 + i * 54 * k : y4; this.chip(st[0], cx, cy, (i - 1) * 0.05, s3, st[1], Math.round(22 * k)); });
-    /* Im Video dieselben sechs Figuren wie im Vorspann, auf dem Startbildschirm im Spiel unverändert */
-    const cast = this.video ? ['juanjo', 'luigi', 'elena', 'fran', 'carlos', 'danny'] : ['luigi', 'robin', 'isabell', 'danny', 'daniel', 'carlos'], cs = Math.max(2, Math.round(3 * k)), cw = SPR_W * cs + 10 * k, cy0 = LH - 185 * k;
+    /* Dieselben sechs Figuren wie im Vorspann des Trailers – im Video und auf dem Startbildschirm */
+    const cast = ['juanjo', 'luigi', 'elena', 'fran', 'carlos', 'danny'], cs = Math.max(2, Math.round(3 * k)), cw = SPR_W * cs + 10 * k, cy0 = LH - 185 * k;
     cast.forEach((id, i) => { const t0 = 2 + i * 0.12; if (u < t0) return; const b = Math.abs(Math.sin((u - t0) * 6)) * (u - t0 < 1.2 ? 24 : 7) * k; this.spr(id, LW / 2 - cast.length * cw / 2 + i * cw, cy0 - b, cs); });
     if (!this.video && u > 3 && Math.floor(u * 2) % 2) this.px(Input.touch ? _t('TIPPEN ZUM STARTEN') : _t('TASTE DRÜCKEN'), LW / 2, LH - 40 * k, '#f2c84a', Math.max(2, Math.round(3 * k)), 'c');
   },

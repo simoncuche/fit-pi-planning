@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.9.2 – 10.10.2026
+- Start screen: the title card shows the six characters from the trailer – Juanjo, Luigi, Elena, Fran, Carlos and Danny.
+
 ## 2.9.1 – 10.10.2026
 - Trailer video: the closing title card shows the same six characters as the opening (Juanjo, Luigi, Elena, Fran, Carlos, Danny). The start screen in the game is unchanged.
 
