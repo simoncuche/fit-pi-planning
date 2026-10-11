@@ -29,6 +29,10 @@ body { font-family: var(--f-body); font-size: 15px; -webkit-user-select: none; u
 button { font-family: var(--f-sign); color: inherit; cursor: pointer; }
 button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--sun); outline-offset: 2px; }
 #app { position: fixed; inset: 0; overflow: hidden; }
+/* Homescreen-App (iPhone): dort ist innerHeight bzw. inset: 0 um die Statusleiste zu kurz und unten bleibt ein Streifen frei –
+   in der App gibt es keine Browserleiste, also volle Bildschirmhöhe */
+@media (display-mode: standalone) { html, body { height: 100vh; } #app { bottom: auto; height: 100vh; } }
+body.standalone #app { bottom: auto; height: 100vh; }
 /* PC: Spiel im Rahmen (Grösse setzt frameSize() in 07_engine.js) */
 body.framed { background: radial-gradient(1200px 700px at 50% 40%, #243052 0%, #0e1116 70%) fixed; }
 body.framed #app { inset: auto; left: 50%; top: 50%; transform: translate(-50%, -50%); border-radius: 22px; border: 12px solid #2a2e36; box-shadow: 0 0 0 2px #4a5060, 0 30px 80px rgba(0,0,0,.6), inset 0 0 0 1px rgba(255,255,255,.08); background: #0e1116; }

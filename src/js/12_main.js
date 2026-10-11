@@ -9,6 +9,7 @@ function boot() {
   [View.lcv, View.lctx] = canvas(480, 270);
   Input.touch = isTouch();
   document.body.classList.toggle('touch', Input.touch);
+  try { if (navigator.standalone || matchMedia('(display-mode: standalone)').matches) document.body.classList.add('standalone'); } catch (e) {}
   resizeView();
   window.addEventListener('resize', resizeView);
   UI.init();

@@ -112,7 +112,8 @@ function frameSize() {
   const framed = !document.body.classList.contains('touch') && W >= 860 && H >= 560;
   document.body.classList.toggle('framed', framed);
   const app = document.getElementById('app');
-  if (!framed) { if (app) { app.style.width = ''; app.style.height = ''; } return [W, H]; }
+  /* Ohne Rahmen zählt die tatsächliche Grösse von #app (in der iPhone-Homescreen-App höher als innerHeight) */
+  if (!framed) { if (app) { app.style.width = ''; app.style.height = ''; const r = app.getBoundingClientRect(); if (r.width > 0 && r.height > 0) return [Math.round(r.width), Math.round(r.height)]; } return [W, H]; }
   const fw = Math.min(W - 56, Math.round((H - 56) * 4 / 3), 1180), fh = Math.round(fw * 3 / 4);
   if (app) { app.style.width = fw + 'px'; app.style.height = fh + 'px'; }
   return [fw, fh];
