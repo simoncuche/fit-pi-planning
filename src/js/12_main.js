@@ -188,6 +188,46 @@ function wireInput() {
   document.addEventListener('visibilitychange', () => { if (!document.hidden) Snd.init(); });
 }
 window.addEventListener('load', boot);
+/* Safari färbt Statusleiste und Tableiste mit der Seitenfarbe bzw. der Farbe fixierter Elemente am Rand. Statt dunkelblauer
+   Balken nehmen diese Bereiche laufend die Farbe des oberen und unteren Bildrands an (Spiel, Startbildschirm, Bordkarte, Szene). */
+const Edges = {
+  el: {}, cur: ['', ''],
+  init() {
+    for (const k of ['top', 'bot']) { const d = document.createElement('div'); d.className = 'edge-tint ' + k; d.setAttribute('aria-hidden', 'true'); document.body.appendChild(d); this.el[k] = d; }
+    this.meta = document.querySelector('meta[name="theme-color"]');
+    setInterval(() => this.update(), 400); this.update();
+  },
+  /* Durchschnittsfarbe einer Bildzeile, auf 8er-Stufen gerundet, damit die Leisten nicht flackern */
+  sample(cv, y) {
+    try {
+      const w = cv.width; if (!w || !cv.height) return null;
+      const d = cv.getContext('2d').getImageData(0, Math.max(0, Math.min(cv.height - 1, y)), w, 1).data;
+      let r = 0, g = 0, b = 0, n = 0;
+      for (let i = 0; i < w; i += 4) { const o = i * 4; if (d[o + 3] < 200) continue; r += d[o]; g += d[o + 1]; b += d[o + 2]; n++; }
+      if (!n) return null;
+      const q = (v) => Math.min(255, Math.round(v / n / 8) * 8);
+      return `rgb(${q(r)}, ${q(g)}, ${q(b)})`;
+    } catch (e) { return null; }
+  },
+  update() {
+    if (document.hidden) return;
+    const html = document.documentElement, body = document.body;
+    if (body.classList.contains('framed')) { if (this.cur[0]) { html.style.backgroundColor = ''; body.style.backgroundColor = ''; this.cur = ['', '']; } return; }
+    const fade = document.getElementById('fade'), title = document.getElementById('title');
+    let t = null, b = null;
+    if (fade && fade.classList.contains('on')) { t = b = 'rgb(0, 0, 0)'; }
+    else if (Trailer.done && Trailer.cv) { t = this.sample(Trailer.cv, 0); b = this.sample(Trailer.cv, Trailer.cv.height - 1); }
+    else if (title && !title.hidden) { t = '#2a5fa8'; b = '#155f8c'; }
+    else if (G.mode === 'play' && View.cv) { t = this.sample(View.cv, 0); b = this.sample(View.cv, View.cv.height - 1); }
+    t = t || this.cur[0]; b = b || this.cur[1];
+    if (!t || !b || (t === this.cur[0] && b === this.cur[1])) return;
+    this.cur = [t, b];
+    this.el.top.style.backgroundColor = t; this.el.bot.style.backgroundColor = b;
+    html.style.backgroundColor = b; body.style.backgroundColor = b;
+    if (this.meta) this.meta.setAttribute('content', t);
+  },
+};
+window.addEventListener('load', () => Edges.init());
 /* Homescreen-Apps halten gern eine alte Version im Cache: version.json ohne Cache lesen und zum Neuladen auffordern */
 async function checkUpdate() {
   if (!/^https?:/.test(location.protocol)) return;

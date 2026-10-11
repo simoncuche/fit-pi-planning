@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.10.2 – 11.10.2026
+- In the browser on the iPhone, Safari colours the status bar at the top and the tab bar at the bottom with the page colour – that was dark blue. These areas now take on the colour of the top and bottom edge of the picture (game, start screen, boarding pass, scene transitions), so the game seems to continue under the bars.
+
 ## 2.10.1 – 11.10.2026
 - iPhone home screen app: the game now fills the whole display down to the bottom edge. iOS reports a window that is too short by the height of the status bar, which left a blue strip at the bottom; the game now measures its own area instead.
 

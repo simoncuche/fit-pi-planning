@@ -33,6 +33,11 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
    in der App gibt es keine Browserleiste, also volle Bildschirmhöhe */
 @media (display-mode: standalone) { html, body { height: 100vh; } #app { bottom: auto; height: 100vh; } }
 body.standalone #app { bottom: auto; height: 100vh; }
+/* Hauchdünne Randstreifen in der Farbe des Bildrands (siehe Edges in 12_main.js): Safari übernimmt sie für seine Leisten */
+.edge-tint { position: fixed; left: 0; right: 0; height: 1px; z-index: 1; pointer-events: none; transition: background-color .3s; }
+.edge-tint.top { top: 0; } .edge-tint.bot { bottom: 0; }
+body.framed .edge-tint { display: none; }
+html, body { transition: background-color .3s; }
 /* PC: Spiel im Rahmen (Grösse setzt frameSize() in 07_engine.js) */
 body.framed { background: radial-gradient(1200px 700px at 50% 40%, #243052 0%, #0e1116 70%) fixed; }
 body.framed #app { inset: auto; left: 50%; top: 50%; transform: translate(-50%, -50%); border-radius: 22px; border: 12px solid #2a2e36; box-shadow: 0 0 0 2px #4a5060, 0 30px 80px rgba(0,0,0,.6), inset 0 0 0 1px rgba(255,255,255,.08); background: #0e1116; }
