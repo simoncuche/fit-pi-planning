@@ -2374,5 +2374,7 @@
 "Der Button ist zwei Pixel zu weit links. Das ist ein Blocker.": "That button is two pixels too far left. That's a blocker.",
 "Das ist kein Bug. Das ist ein undokumentierter CANopen-Index.": "That's not a bug. It's an undocumented CANopen index.",
 "Technische Schulden? Ich nenne das Vintage-Code.": "Technical debt? I call it vintage code.",
-"Definition of Done? Wenn die Chorizo schwarz ist.": "Definition of Done? When the chorizo is black."
+"Definition of Done? Wenn die Chorizo schwarz ist.": "Definition of Done? When the chorizo is black.",
+"Ton an/aus": "Sound on/off",
+"Ton": "Sound"
 }

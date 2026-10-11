@@ -15,6 +15,7 @@ function boot() {
   wireInput();
   i18nDom();
   let skipIntro = false; try { skipIntro = sessionStorage.getItem('pi-skip-intro') === '1'; sessionStorage.removeItem('pi-skip-intro'); } catch (e) {}
+  Snd.title();
   if (skipIntro || location.hash === '#nointro') showTitle(); else Trailer.play().then((r) => { if (r !== 'game') showTitle(); });
   let last = performance.now(), hudT = 0;
   const loop = (now) => {
@@ -48,6 +49,7 @@ function changelogHtml() {
 const SKYLINE_SVG = `<svg viewBox="0 0 1200 70" preserveAspectRatio="none" aria-hidden="true"><g fill="#0e2a44"><rect x="0" y="40" width="1200" height="30"/><rect x="40" y="22" width="30" height="20"/><rect x="90" y="30" width="60" height="12"/><rect x="170" y="8" width="14" height="34"/><rect x="167" y="4" width="20" height="5"/><rect x="200" y="26" width="50" height="16"/><path d="M280 42 Q330 -10 380 42 Z"/><path d="M300 42 Q330 14 360 42 Z" fill="#1f4a6a"/><rect x="400" y="18" width="22" height="24"/><rect x="430" y="28" width="40" height="14"/><rect x="500" y="12" width="60" height="30"/><rect x="505" y="6" width="50" height="7"/><rect x="590" y="24" width="30" height="18"/><rect x="640" y="30" width="80" height="12"/><path d="M740 42 Q770 0 800 42 Z"/><rect x="820" y="20" width="18" height="22"/><rect x="850" y="30" width="46" height="12"/><rect x="920" y="2" width="16" height="40"/><rect x="950" y="26" width="60" height="16"/><rect x="1030" y="14" width="30" height="28"/><rect x="1080" y="30" width="80" height="12"/></g><g fill="#0e2a44"><path d="M60 42 l-2 -14 l-6 -2 l8 -2 l-2 -8 l6 6 l6 -6 l-2 8 l8 2 l-6 2 l-2 14 Z"/><path d="M1130 42 l-2 -14 l-6 -2 l8 -2 l-2 -8 l6 6 l6 -6 l-2 8 l8 2 l-6 2 l-2 14 Z"/></g></svg>`;
 function showTitle() {
   const t = document.getElementById('title');
+  Snd.title();
   const save = loadSave();
   t.hidden = false;
   t.innerHTML = _t`<div class="sunball" aria-hidden="true"></div><div class="skyline" aria-hidden="true">${SKYLINE_SVG}</div><div class="waves" aria-hidden="true"></div>
@@ -95,6 +97,7 @@ function showTitle() {
 
 async function startGame(state, fresh) {
   Trailer.stop('game');
+  Snd.title(false);
   G.S = state;
   if (!G.S.flags.met) G.S.flags.met = {};
   buildFriends();

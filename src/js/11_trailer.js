@@ -9,6 +9,11 @@ const Trailer = {
     this.cv = document.createElement('canvas'); el.appendChild(this.cv);
     const vb = document.createElement('button'); vb.className = 'btn intro-trailer'; vb.type = 'button'; vb.textContent = '▶ ' + _t('Trailer'); vb.setAttribute('aria-label', _t('Trailer ansehen'));
     vb.addEventListener('pointerdown', (e) => e.stopPropagation()); vb.addEventListener('click', (e) => { e.stopPropagation(); Trailer.showVideo(); }); el.appendChild(vb);
+    /* Ton an/aus: Browser spielen erst nach einer Berührung – der Knopf schaltet die Titelmusik ein, ohne den Startbildschirm zu verlassen */
+    const sb = document.createElement('button'); sb.className = 'btn intro-sound'; sb.type = 'button'; sb.setAttribute('aria-label', _t('Ton an/aus')); this.soundBtn = sb;
+    sb.addEventListener('pointerdown', (e) => e.stopPropagation());
+    sb.addEventListener('click', (e) => { e.stopPropagation(); if (Snd.playing()) Snd.musicOn = false; else { Snd.musicOn = true; Snd.init(); Snd.title(); } this.soundLabel(); });
+    el.appendChild(sb); this.soundLabel();
     (document.getElementById('app') || document.body).appendChild(el); this.el = el;
     this.x = this.cv.getContext('2d');
     this.resize = () => this._resize(); this._resize(); window.addEventListener('resize', this.resize);
@@ -19,16 +24,17 @@ const Trailer = {
     this.raf = requestAnimationFrame(loop);
     return promise;
   },
+  soundLabel() { const b = this.soundBtn; if (!b) return; const on = Snd.playing(), t = on ? '🔊' : '🔇 ' + _t('Ton'); if (b.textContent !== t) b.textContent = t; },
   /* Trailer-Video (dist/trailer.mp4) im Overlay abspielen; auch von der Bordkarte aus */
   showVideo() {
     if (document.getElementById('trailerVid')) return;
     const o = document.createElement('div'); o.id = 'trailerVid'; o.setAttribute('role', 'dialog'); o.setAttribute('aria-label', _t('Trailer'));
     o.innerHTML = `<video src="trailer.mp4" controls autoplay playsinline preload="metadata"></video><button class="btn vid-close" type="button" aria-label="${_t('Schliessen')}">✕</button>`;
-    const close = () => { const v = o.querySelector('video'); try { v.pause(); } catch (e) {} o.remove(); window.removeEventListener('keydown', esc); };
+    const close = () => { const v = o.querySelector('video'); try { v.pause(); } catch (e) {} o.remove(); window.removeEventListener('keydown', esc); if (Snd._wantTitle) Snd.title(); };
     const esc = (e) => { if (e.key === 'Escape') close(); };
     o.querySelector('.vid-close').onclick = close; o.addEventListener('click', (e) => { if (e.target === o) close(); }); o.addEventListener('pointerdown', (e) => e.stopPropagation());
     window.addEventListener('keydown', esc); document.body.appendChild(o);
-    Snd.init(); const v = o.querySelector('video'); v.play && v.play().catch(() => {});
+    Snd.init(); if (Snd._mus && Snd._mus.kind === 'title') Snd.stopMusic(); const v = o.querySelector('video'); v.play && v.play().catch(() => {});
   },
   stop(reason) {
     if (!this.done) return;
@@ -53,6 +59,7 @@ const Trailer = {
   before(i) { let t = 0; for (let j = 0; j < i; j++) t += this.S[j][0]; return t; },
   frame(ts) {
     if (this.t0 === null) this.t0 = ts;
+    if (!this.video) this.soundLabel();
     const S = this.S, TOT = this.before(S.length);
     let t = (ts - this.t0) / 1000 + this.jump, i = 0;
     if (t >= TOT) { t = TOT - 0.001; }

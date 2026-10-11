@@ -3,13 +3,28 @@ const Snd = {
   ctx: null, master: null, musicGain: null, on: true, musicOn: true,
   init() {
     this.unlock();
-    if (this.ctx) { if (this.ctx.state !== 'running') this.ctx.resume().catch(() => {}); return; }
+    if (this.ctx) { if (this.ctx.state !== 'running') this.ctx.resume().then(() => this._titleGo()).catch(() => {}); this._titleGo(); return; }
+    this._make(); this._titleGo();
+  },
+  _make() {
+    if (this.ctx) return;
     try {
       this.ctx = new (window.AudioContext || window.webkitAudioContext)();
       this.master = this.ctx.createGain(); this.master.gain.value = 0.45; this.master.connect(this.ctx.destination);
       this.musicGain = this.ctx.createGain(); this.musicGain.gain.value = 0.3; this.musicGain.connect(this.master);
     } catch (e) { this.ctx = null; }
   },
+  /* Startbildschirm, Bordkarte und Figurenwahl: Titelmusik, sobald der Browser Ton erlaubt (meist nach der ersten Berührung) */
+  _wantTitle: false,
+  title(on = true) {
+    this._wantTitle = on;
+    if (!on) { if (this._mus && this._mus.kind === 'title') this.stopMusic(); return; }
+    this._make();
+    if (this.ctx && this.ctx.state !== 'running') this.ctx.resume().then(() => this._titleGo()).catch(() => {});
+    this._titleGo();
+  },
+  _titleGo() { if (this._wantTitle && this.ctx && this.ctx.state === 'running') this.music('title'); },
+  playing() { return !!(this.ctx && this.ctx.state === 'running' && this.on && this.musicOn && this._mus); },
   _unlocked: false,
   unlock() {
     if (this._unlocked) return;
@@ -95,6 +110,39 @@ const Snd = {
     const self = this;
     const st = { kind, step: 0, next: this.ctx.currentTime + 0.05, timer: null };
     const songs = {
+      /* Startbildschirm: Oompah-Bass, Holzblock, Kazoo-Melodie, Lotusflöte, Boing und Hupe (eigene Komposition) */
+      title: { bpm: 132, steps: 16, play(i, t) {
+        const g = self.musicGain, bar = Math.floor(st.step / 16) % 8, dt = t - self.ctx.currentTime;
+        /* lauter als die Ortsmusik: auf dem Startbildschirm ist sie die Hauptsache */
+        const T = (f, d, ty, v, w, sl) => self.tone(f, d, ty, Math.min(0.5, v * 2.6), w, sl, g), N = (d, v, fr, w, ty) => self.noise(d, v * 2.6, fr, w, ty, g);
+        const root = [131, 98, 131, 98, 87, 131, 98, 131][bar];
+        const chord = [[262, 330, 392], [247, 294, 392], [262, 330, 392], [247, 294, 349], [220, 262, 349], [262, 330, 392], [247, 294, 392], [262, 330, 392]][bar];
+        if (i === 0 || i === 8) T(i === 0 ? root : root * 1.5, 0.16, 'triangle', 0.2, dt, 0, g);
+        if (i === 4 || i === 12) chord.forEach((f) => T(f, 0.07, 'square', 0.022, dt, 0, g));
+        if (i % 4 === 2) N(0.025, 0.12, 3200, dt, 'bandpass', g);
+        if (i === 14 && bar % 2 === 1) N(0.025, 0.1, 4200, dt, 'bandpass', g);
+        const mel = [
+          [523, 0, 392, 0, 330, 0, 392, 0, 523, 0, 0, 0, 659, 0, 587, 0],
+          [494, 0, 392, 0, 294, 0, 392, 0, 494, 0, 0, 0, 587, 0, 494, 0],
+          [523, 0, 659, 0, 784, 0, 659, 0, 523, 0, 392, 0, 330, 0, 392, 0],
+          [349, 0, 0, 0, 330, 0, 0, 0, 294, 0, 0, 0, 0, 0, 0, 0],
+          [440, 0, 349, 0, 440, 0, 523, 0, 587, 0, 523, 0, 440, 0, 349, 0],
+          [392, 0, 330, 0, 392, 0, 523, 0, 659, 0, 523, 0, 392, 0, 330, 0],
+          [294, 0, 392, 0, 494, 0, 587, 0, 494, 0, 392, 0, 294, 0, 247, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        ][bar][i];
+        /* Kazoo: leicht von unten angeschliffen */
+        if (mel) T(mel * 0.96, 0.12, 'square', 0.045, dt, mel * 0.04, g);
+        if (bar === 3 && i === 10) T(520, 0.34, 'sine', 0.09, dt, 900, g);
+        if (bar === 1 && i === 14) T(330, 0.2, 'sine', 0.12, dt, -220, g);
+        if (bar === 5 && i === 14) { T(233, 0.07, 'square', 0.05, dt, 0, g); T(233, 0.1, 'square', 0.05, dt + 0.1, 0, g); }
+        if (bar === 7) {
+          if (i === 0) [523, 659, 784].forEach((f) => T(f, 0.18, 'square', 0.035, dt, 0, g));
+          if (i === 4) T(300, 0.26, 'sine', 0.14, dt, -200, g);
+          if (i === 8) T(1400, 0.36, 'sine', 0.08, dt, -900, g);
+          if (i === 12 || i === 13) N(0.025, 0.12, 3200, dt, 'bandpass', g);
+        }
+      } },
       /* Rumba valenciana: Gitarre und Palmas */
       city: { bpm: 112, steps: 16, play(i, t) {
         const g = self.musicGain, bar = Math.floor(st.step / 16) % 4, dt = t - self.ctx.currentTime;

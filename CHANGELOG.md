@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.10.0 – 11.10.2026
+- The start screen has its own cheerful tune: an oompah bass, woodblock, a kazoo melody, a slide whistle, a boing and a little horn. It plays on the start screen, the boarding pass and the character choice, pauses while the trailer video runs and makes way for the city music when the game starts.
+- Browsers only allow sound after a first touch or key press: the new 🔇/🔊 button at the top right of the start screen switches the tune on and off without leaving the screen; any first tap also starts it.
+
 ## 2.9.2 – 10.10.2026
 - Start screen: the title card shows the six characters from the trailer – Juanjo, Luigi, Elena, Fran, Carlos and Danny.
 
