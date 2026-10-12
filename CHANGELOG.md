@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.11.1 – 12.10.2026
+- Scoreboard: every row shows the player's own name with an initial badge in the team colour and the team below – no longer the character they play.
+
 ## 2.11.0 – 12.10.2026
 - Scoreboard in the Colba office: a big screen in the lift lobby on the first floor shows the leaderboard of everyone playing – PI plan, achievements, furthest along, fastest kart lap and beers. Medals for the top three, your own game is highlighted (and always shown, even below the top ten), the list loads live and can be refreshed. Without a connection it shows just your own game. Daniel put it up, of course.
 - Danny's asado: guests who have not reached their chair when dinner starts now simply sit down instead of standing around the table.

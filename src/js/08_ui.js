@@ -259,8 +259,6 @@ const UI = {
       ['kart', _t('Kart-Runde'), (s) => (s.rec && s.rec.kart ? Math.round(100000 - s.rec.kart * 100) : 0), (v, s) => `${numSep(s.rec.kart.toFixed(1))} s`],
       ['beer', _t('Biere'), (s) => s.beers || 0, (v) => `${v} 🍺`],
     ];
-    const pics = {};
-    const pic = (s) => { const k = JSON.stringify(s.look || {}); if (!(k in pics)) { try { pics[k] = s.look ? portraitCanvas(s.look, (PEOPLE[s.pid] || {}).bg || '#2a3a52').toDataURL() : ''; } catch (e) { pics[k] = ''; } } return pics[k]; };
     const esc = (t) => String(t == null ? '' : t).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
     let tab = 'plan', res = null;
     return new Promise((resolve) => {
@@ -274,10 +272,11 @@ const UI = {
         const list = res.rows.filter((r) => T[2](r.s) > 0).sort((a, b) => T[2](b.s) - T[2](a.s));
         const mi = list.findIndex((r) => r.me);
         const shown = list.slice(0, 10);
+        /* Nur der Spielername, nicht die gespielte Figur: Abzeichen mit Anfangsbuchstabe in der Teamfarbe, darunter das Team */
         const row = (r, i) => {
-          const s = r.s, medal = ['🥇', '🥈', '🥉'][i] || String(i + 1), who = PEOPLE[s.pid] ? PEOPLE[s.pid].name : (s.who || '');
-          const flag = s.finished ? ' 🏁' : s.over ? ' 💀' : '';
-          return `<div class="sb-row${r.me ? ' me' : ''}"><span class="sb-rank">${medal}</span>${pic(s) ? `<img src="${pic(s)}" alt="">` : '<i></i>'}<span class="sb-name"><b>${esc(s.name)}${r.me ? _t(' (du)') : ''}${flag}</b><small>${esc(who)}${s.teamName ? ' · ' + esc(s.teamName) : ''}</small></span><span class="sb-val">${T[3](T[2](s), s)}</span></div>`;
+          const s = r.s, medal = ['🥇', '🥈', '🥉'][i] || String(i + 1), name = String(s.name || '?').trim() || '?';
+          const flag = s.finished ? ' 🏁' : s.over ? ' 💀' : '', col = (TEAMS[s.team] || {}).col || '#5a6070';
+          return `<div class="sb-row${r.me ? ' me' : ''}"><span class="sb-rank">${medal}</span><span class="sb-init" style="background:${col}">${esc(Array.from(name)[0].toUpperCase())}</span><span class="sb-name"><b>${esc(name)}${r.me ? _t(' (du)') : ''}${flag}</b><small>${esc(s.teamName || '')}</small></span><span class="sb-val">${T[3](T[2](s), s)}</span></div>`;
         };
         let html = shown.map(row).join('');
         if (mi >= 10) html += `<div class="sb-gap">…</div>` + row(list[mi], mi);

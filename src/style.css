@@ -175,7 +175,7 @@ body.stick-on #stickHint { opacity: .2; }
 .sb-panel { height: min(680px, 100%); }
 .sb-row { display: grid; grid-template-columns: 30px 36px minmax(0, 1fr) auto; gap: 8px; align-items: center; padding: 5px 8px; background: #fff; border: 1px solid var(--paper-line); border-radius: 8px; }
 .sb-row.me { background: #fff3e0; border-color: var(--sun); box-shadow: 0 0 0 1px var(--sun) inset; }
-.sb-row img, .sb-row i { width: 36px; height: 36px; border-radius: 6px; image-rendering: pixelated; display: block; background: #2a3a52; }
+.sb-init { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; color: #fff; font-family: var(--f-sign); font-size: 18px; font-weight: 700; box-shadow: 0 2px 0 rgba(0,0,0,.2); }
 .sb-rank { font-family: var(--f-sign); font-size: 18px; text-align: center; color: var(--ink-2, #555); }
 .sb-name { display: grid; min-width: 0; } .sb-name b, .sb-name small { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .sb-name small { color: #6a6e76; font-size: 12px; }
