@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.11.0 – 12.10.2026
+- Scoreboard in the Colba office: a big screen in the lift lobby on the first floor shows the leaderboard of everyone playing – PI plan, achievements, furthest along, fastest kart lap and beers. Medals for the top three, your own game is highlighted (and always shown, even below the top ten), the list loads live and can be refreshed. Without a connection it shows just your own game. Daniel put it up, of course.
+- Danny's asado: guests who have not reached their chair when dinner starts now simply sit down instead of standing around the table.
+
 ## 2.10.2 – 11.10.2026
 - In the browser on the iPhone, Safari colours the status bar at the top and the tab bar at the bottom with the page colour – that was dark blue. These areas now take on the colour of the top and bottom edge of the picture (game, start screen, boarding pass, scene transitions), so the game seems to continue under the bars.
 

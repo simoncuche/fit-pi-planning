@@ -206,7 +206,7 @@ MAP_BUILDERS.colba = () => {
   /* Lift und Treppe unten in der Mitte, Plakatwand */
   roomBox(16, 14, 18, 10, 2, T.TILE, 1);
   door(24, 14, 2, 3);
-  m.decal((c) => { for (let k = 0; k < 6; k++) DECAL.poster(c, [17, 19.4, 21.8, 26.2, 28.6, 31][k] * TS + 2, 15 * TS + 4, ['#2a9aa0', '#e2554a', '#f0a23a', '#2fa0d8', '#3f8e4b', '#6a4a9c'][k], ['SAFE', 'PI', 'OKR', 'CAN', 'BIKE', 'DEV'][k]); });
+  m.decal((c) => { for (let k = 0; k < 4; k++) DECAL.poster(c, [17, 26.2, 28.6, 31][k] * TS + 2, 15 * TS + 4, ['#2a9aa0', '#2fa0d8', '#3f8e4b', '#6a4a9c'][k], ['SAFE', 'CAN', 'BIKE', 'DEV'][k]); });
   m.add(objLift(17, 22, '1')); m.warp(18, 21, 'colba_entry', 'lift', { w: 1, dir: 0, label: _t('Lift') });
   m.fill(21, 21, 3, 2, T.STAIRS, 0); m.warp(21, 22, 'colba_entry', 'stairs', { w: 3, label: _t('Treppe'), opts: { stairs: true } });
   m.decal((c) => { R(c, 21 * TS, 21 * TS, 3 * TS, 1, '#8a8e94'); R(c, 21 * TS - 2, 21 * TS - 8, 2, 2 * TS + 8, '#5a6066'); R(c, 24 * TS, 21 * TS - 8, 2, 2 * TS + 8, '#5a6066'); R(c, 21 * TS - 2, 21 * TS - 8, 3 * TS + 4, 2, '#8a9096'); });
@@ -214,6 +214,8 @@ MAP_BUILDERS.colba = () => {
   m.add(objWaterCooler(29, 21)); m.trig(29, 21, 1, 1, { label: _t('Wasserspender'), act: () => Story.water() });
   m.add(objPlant(32, 21, true)); m.add(objPlant(32, 17)); m.add(objPlant(17, 17));
   m.add(objSeats(27, 17, 3, '#2a9aa0'));
+  /* Scoreboard gleich beim Lift: Rangliste aller Spielerinnen und Spieler */
+  m.add(objScoreboard(19, 17, 4)); m.trig(19, 17, 4, 1, { label: _t('Scoreboard: Rangliste aller Spieler'), act: () => Story.scoreboard() });
   m.spawn('lift', 18, 20, 3); m.spawn('stairs', 22, 20, 3);
   /* Bike-Lab unten rechts: Diagnose-PCs am Kabel, Prüfstand, Test-Bikes, Battery Tester, ABUS-Leser; Balkon durch die Tür rechts */
   roomBox(34, 14, 11, 10, 2, T.TILE, 0);

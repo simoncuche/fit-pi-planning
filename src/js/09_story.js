@@ -787,15 +787,19 @@ const Story = {
     const npcs = G.npcs.filter((a) => a.id && PEOPLE[a.id]);
     const order = ['danny', 'bea', 'vicente'].concat(npcs.map((a) => a.id).filter((id) => !['danny', 'bea', 'vicente'].includes(id)));
     let si = 0, ki = 0;
-    const moves = [];
+    const moves = [], placed = [];
     for (const id of order) {
       const a = npcs.find((n) => n.id === id); if (!a) continue;
       const seat = si < seats.length ? seats[si++] : stands[ki++ % stands.length];
       a.wander = null; a.danceIdle = false; a.sitIdle = false; a.pose = 'stand'; a.bubble = null;
-      moves.push(walk(a, [[seat[0], seat[1]]], 70).then(() => { a.dir = seat[2]; a.pose = si <= seats.length && seats.includes(seat) ? 'sit' : 'stand'; a.sitIdle = a.pose === 'sit'; a.drinkIdle = true; a.sortAdd = seat[2] === 0 ? 0 : 3; }));
+      const arrive = () => { if (a._seated) return; a._seated = true; a.dir = seat[2]; a.pose = seats.includes(seat) ? 'sit' : 'stand'; a.sitIdle = a.pose === 'sit'; a.drinkIdle = true; a.sortAdd = seat[2] === 0 ? 0 : 3; };
+      a._seated = false; placed.push([a, seat, arrive]);
+      moves.push(walk(a, [[seat[0], seat[1]]], 70).then(arrive));
     }
     const me = T2P(16, 9); G.player.path = null;
     await Promise.race([Promise.all(moves), sleep(3500)]);
+    /* Wer noch unterwegs ist, setzt sich jetzt einfach hin */
+    for (const [a, seat, arrive] of placed) if (!a._seated) { const p = T2P(seat[0], seat[1]); a.path = null; a.onArrive = null; a.x = p.x; a.y = p.y; a.moving = false; arrive(); }
     G.player.x = me.x; G.player.y = me.y; G.player.dir = 1; G.player.pose = 'sit';
     await sleep(400);
     const eat = res.items.pollo ? 'pollo' : res.items.chorizo ? 'chorizo' : 'maiz';
@@ -810,6 +814,11 @@ const Story = {
     G.player.pose = 'stand';
     G.busy--;
     await this.say(null, _t('Sobremesa: Der Tisch bleibt voll, die Gläser leeren sich, niemand steht auf. Das ist in Spanien der wichtigste Gang.'));
+  },
+  async scoreboard() {
+    const f = G.S.flags;
+    if (!f.scoreboardSeen) { f.scoreboardSeen = 1; await this.say(this.isHere('daniel', 'colba') ? 'daniel' : null, this.isHere('daniel', 'colba') ? _t('Das Scoreboard habe ich aufgehängt. Alle Spiele, live. Und ja: Ich habe einen Screenshot davon dokumentiert.') : _t('Ein grosser Bildschirm beim Lift: das Scoreboard. Daniel hat es aufgehängt – live, mit allen, die gerade spielen.')); }
+    await UI.scoreboard();
   },
   async gardenTable() {
     const f = G.S.flags;

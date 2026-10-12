@@ -21,7 +21,7 @@ with sync_playwright() as p:
     pg = browser.new_page(viewport={"width": 390, "height": 844}, has_touch=True, is_mobile=True, device_scale_factor=3)
     pg.on("pageerror", lambda e: errors.append(str(e)))
     pg.on("console", lambda m: errors.append("console: " + m.text) if m.type == "error" and "Failed to load resource" not in m.text else None)
-    pg.route("**/firebasedatabase.app/**", lambda r: r.abort())  # kein Tracking aus Tests
+    pg.route("**firebasedatabase.app**", lambda r: r.abort())  # kein Tracking und keine echten Daten in Tests (Subdomain, darum ohne Schrägstrich)
     pg.route("**/fonts.googleapis.com/**", lambda r: r.abort())
     pg.route("**/fonts.gstatic.com/**", lambda r: r.abort())
     LANG = os.environ.get("GAME_LANG", "en")
@@ -39,7 +39,7 @@ with sync_playwright() as p:
         if q is not None:
             pg.evaluate(f"window.__q = {json.dumps(q)}")
         pg.evaluate(f"async () => {{ {js} }}")
-        time.sleep(wait)
+        pg.wait_for_timeout(int(wait * 1000))  # statt time.sleep: Playwright bearbeitet dabei Netzwerk-Umleitungen weiter
 
     def state():
         return pg.evaluate("() => ({stage: G.S.stage, map: G.map.id, time: clockStr(), day: today(), plan: Math.round(G.S.plan[myTeam()]), busy: G.busy})")
@@ -116,6 +116,11 @@ with sync_playwright() as p:
     print("Plan nach Dienstag:", state())
     # E-Bike-Raum neben der Lounge: Diagnose-PC (Telemetrie lesen)
     run("enterMap('colba', 'lab'); G.busy++; await Story.bikeComputer(0); G.busy--;", 1.5, q=[0])
+    # Scoreboard im Office: öffnet sich (ohne Datenbank nur mit dem eigenen Spiel) und gibt das Spiel beim Schliessen wieder frei
+    run("enterMap('colba', 'lift'); window.__sb = 0; G.busy++; Story.scoreboard().then(() => { G.busy--; window.__sb = 1; });", 3.0)
+    assert pg.evaluate("() => !!document.querySelector('.sb-row.me')"), "Scoreboard ohne eigenes Spiel"
+    run("UI.closeOverlay();", 0.4)
+    assert pg.evaluate("() => window.__sb === 1 && !UI.ovOpen"), "Scoreboard schliesst nicht"
     assert pg.evaluate("() => !!G.S.ach.telemetrie"), "Telemetrie fehlt"
     shot("07b_lab")
     # Mittagessen

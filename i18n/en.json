@@ -2376,5 +2376,21 @@
 "Technische Schulden? Ich nenne das Vintage-Code.": "Technical debt? I call it vintage code.",
 "Definition of Done? Wenn die Chorizo schwarz ist.": "Definition of Done? When the chorizo is black.",
 "Ton an/aus": "Sound on/off",
-"Ton": "Sound"
+"Ton": "Sound",
+"<div class=\"panel sb-panel\"><div class=\"panel-head\"><h2>🏆 Scoreboard</h2><span class=\"sub\" id=\"sbSub\">Lade Rangliste …</span><button class=\"x-btn\" id=\"sbRe\" aria-label=\"Neu laden\" title=\"Neu laden\">↻</button><button class=\"x-btn\" data-close aria-label=\"Schliessen\">×</button></div>\n        <div class=\"tabs\" id=\"sbTabs\">{0}</div>\n        <div class=\"panel-body\" id=\"sbBody\"><p class=\"note\">Lade Rangliste …</p></div></div>": "<div class=\"panel sb-panel\"><div class=\"panel-head\"><h2>🏆 Scoreboard</h2><span class=\"sub\" id=\"sbSub\">Loading leaderboard …</span><button class=\"x-btn\" id=\"sbRe\" aria-label=\"Reload\" title=\"Reload\">↻</button><button class=\"x-btn\" data-close aria-label=\"Close\">×</button></div>\n        <div class=\"tabs\" id=\"sbTabs\">{0}</div>\n        <div class=\"panel-body\" id=\"sbBody\"><p class=\"note\">Loading leaderboard …</p></div></div>",
+"Am weitesten": "Furthest along",
+"Biere": "Beers",
+"Erlebnisse": "Achievements",
+"Kart-Runde": "Kart lap",
+"Das Scoreboard habe ich aufgehängt. Alle Spiele, live. Und ja: Ich habe einen Screenshot davon dokumentiert.": "I put up the scoreboard. Every game, live. And yes: I documented it with a screenshot.",
+"Ein grosser Bildschirm beim Lift: das Scoreboard. Daniel hat es aufgehängt – live, mit allen, die gerade spielen.": "A big screen by the lift: the scoreboard. Daniel put it up – live, with everyone who is playing right now.",
+"Hier steht noch niemand. Sei die oder der Erste!": "Nobody here yet. Be the first!",
+"Keine Verbindung zur Rangliste – hier steht nur dein eigenes Spiel.": "No connection to the leaderboard – only your own game is shown.",
+"Lade Rangliste …": "Loading leaderboard …",
+"Live · {0}": "Live · {0}",
+"Offline": "Offline",
+"Scoreboard: Rangliste aller Spieler": "Scoreboard: leaderboard of all players",
+"auf der Anreise": "still travelling",
+"{0} Spiele · pro Gerät das aktuelle Spiel": "{0} games · the current game on each device",
+"🏁 Heimflug": "🏁 Flown home"
 }

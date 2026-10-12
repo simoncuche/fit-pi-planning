@@ -2398,5 +2398,21 @@
 "Technische Schulden? Ich nenne das Vintage-Code.": "¿Deuda técnica? Yo lo llamo código vintage.",
 "Definition of Done? Wenn die Chorizo schwarz ist.": "¿Definition of Done? Cuando el chorizo está negro.",
 "Ton an/aus": "Sonido sí/no",
-"Ton": "Sonido"
+"Ton": "Sonido",
+"<div class=\"panel sb-panel\"><div class=\"panel-head\"><h2>🏆 Scoreboard</h2><span class=\"sub\" id=\"sbSub\">Lade Rangliste …</span><button class=\"x-btn\" id=\"sbRe\" aria-label=\"Neu laden\" title=\"Neu laden\">↻</button><button class=\"x-btn\" data-close aria-label=\"Schliessen\">×</button></div>\n        <div class=\"tabs\" id=\"sbTabs\">{0}</div>\n        <div class=\"panel-body\" id=\"sbBody\"><p class=\"note\">Lade Rangliste …</p></div></div>": "<div class=\"panel sb-panel\"><div class=\"panel-head\"><h2>🏆 Scoreboard</h2><span class=\"sub\" id=\"sbSub\">Cargando clasificación…</span><button class=\"x-btn\" id=\"sbRe\" aria-label=\"Recargar\" title=\"Recargar\">↻</button><button class=\"x-btn\" data-close aria-label=\"Cerrar\">×</button></div>\n        <div class=\"tabs\" id=\"sbTabs\">{0}</div>\n        <div class=\"panel-body\" id=\"sbBody\"><p class=\"note\">Cargando clasificación…</p></div></div>",
+"Am weitesten": "Más avanzados",
+"Biere": "Cervezas",
+"Erlebnisse": "Logros",
+"Kart-Runde": "Vuelta de kart",
+"Das Scoreboard habe ich aufgehängt. Alle Spiele, live. Und ja: Ich habe einen Screenshot davon dokumentiert.": "El scoreboard lo he colgado yo. Todas las partidas, en directo. Y sí: lo he documentado con una captura.",
+"Ein grosser Bildschirm beim Lift: das Scoreboard. Daniel hat es aufgehängt – live, mit allen, die gerade spielen.": "Una gran pantalla junto al ascensor: el scoreboard. Lo colgó Daniel, en directo, con todos los que están jugando.",
+"Hier steht noch niemand. Sei die oder der Erste!": "Aún no hay nadie. ¡Sé el primero!",
+"Keine Verbindung zur Rangliste – hier steht nur dein eigenes Spiel.": "Sin conexión con la clasificación: solo aparece tu propia partida.",
+"Lade Rangliste …": "Cargando clasificación…",
+"Live · {0}": "En directo · {0}",
+"Offline": "Sin conexión",
+"Scoreboard: Rangliste aller Spieler": "Scoreboard: clasificación de todos",
+"auf der Anreise": "aún de viaje",
+"{0} Spiele · pro Gerät das aktuelle Spiel": "{0} partidas · la partida actual de cada dispositivo",
+"🏁 Heimflug": "🏁 Vuelo a casa"
 }

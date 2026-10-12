@@ -490,6 +490,18 @@ function objWhiteboard(x, y, w = 3, o = {}) {
   }, { solid: true });
 }
 function objFlipchart(x, y) { return mkObj(x, y, 1, 1, 30, (c, W, H) => { R(c, 3, 2, 18, 22, '#f8f8f4'); R(c, 2, 0, 20, 3, '#8a8e94'); for (let k = 0; k < 5; k++) R(c, 6, 7 + k * 3, 8 + (k * 3) % 6, 1, '#2a4a8a'); E(c, 14, 16, 3, 3, '#c8352d'); R(c, 11, 24, 2, 8, '#5a5e64'); line(c, 11, 32, 6, H - 1, '#5a5e64'); line(c, 13, 32, 18, H - 1, '#5a5e64'); }); }
+/* Scoreboard im Colba-Foyer: grosser Bildschirm mit Pokal und Ranglisten-Balken */
+function objScoreboard(x, y, w = 4) {
+  return mkObj(x, y, w, 1, 40, (c, W, H) => {
+    E(c, W / 2, H - 2, W / 2 - 4, 3, 'rgba(0,0,0,0.25)');
+    R(c, 10, H - 14, 3, 13, '#4a4e56'); R(c, W - 13, H - 14, 3, 13, '#4a4e56'); R(c, 6, H - 3, 11, 3, '#3a3c40'); R(c, W - 17, H - 3, 11, 3, '#3a3c40');
+    R(c, 0, 0, W, H - 12, '#1a1a1e'); R(c, 2, 2, W - 4, H - 16, '#0e2236'); R(c, 2, 2, W - 4, 1, '#2a4a6a');
+    const t = 'SCOREBOARD'; R(c, 2, 2, W - 4, 10, '#f2c84a'); pxText(c, t, Math.round(W / 2 - pxTextW(t) / 2), 4, '#1a1a1e');
+    const cols = ['#f2c84a', '#c6ccd2', '#d08a4a', '#2a9aa0'];
+    for (let k = 0; k < 4; k++) { const yy = 16 + k * 8; pxText(c, String(k + 1), 6, yy, cols[k]); R(c, 13, yy + 1, 6, 4, ['#e2554a', '#2fa0d8', '#3f8e4b', '#f0a23a'][k]); R(c, 22, yy + 1, Math.round((W - 50) * (1 - k * 0.2)), 4, cols[k]); }
+    const tx = W - 20, ty = 16; R(c, tx, ty, 12, 9, '#f2c84a'); R(c, tx - 3, ty + 1, 3, 4, '#f2c84a'); R(c, tx + 12, ty + 1, 3, 4, '#f2c84a'); R(c, tx + 4, ty + 9, 4, 4, '#d8a830'); R(c, tx + 1, ty + 13, 10, 3, '#d8a830'); R(c, tx + 2, ty + 2, 2, 5, '#fff2b0');
+  }, { solid: true, emit: (c, W, H) => R(c, 2, 2, W - 4, H - 16, 'rgba(120,200,255,0.25)') });
+}
 function objScreen(x, y, w = 3) { return mkObj(x, y, w, 1, 30, (c, W, H) => { R(c, 2, 0, W - 4, H - 8, '#1a1a1e'); R(c, 4, 2, W - 8, H - 12, '#1e3a5a'); pxText(c, _t('PI PLANNING'), W / 2 - pxTextW(_t('PI PLANNING')) / 2, 6, '#7ad0d8'); for (let k = 0; k < 3; k++) { R(c, 8 + k * ((W - 16) / 3), 16, (W - 16) / 3 - 4, 6, ['#e2554a', '#2fa0d8', '#f0a23a'][k]); } R(c, W / 2 - 2, H - 8, 4, 6, '#5a5e64'); R(c, W / 2 - 8, H - 3, 16, 3, '#5a5e64'); }, { solid: true, emit: (c, W, H) => R(c, 4, 2, W - 8, H - 12, 'rgba(120,200,255,0.5)') }); }
 function objCoffee(x, y) { return mkObj(x, y, 1, 1, 14, (c, W, H) => { R(c, 3, 0, 18, H - 4, '#e8e4dc'); R(c, 3, 0, 18, 3, '#2a2a2e'); R(c, 5, 4, 14, 8, '#2a2a2e'); R(c, 7, 6, 10, 3, '#7ad0f0'); R(c, 9, 13, 6, 6, '#5a5e64'); R(c, 10, H - 7, 4, 3, '#f4f0e6'); R(c, 4, H - 4, 16, 4, '#8a8e94'); }, { solid: true, anim: (c, t, px, py) => { for (let k = 0; k < 2; k++) { const ph = (t * 0.5 + k * 0.5) % 1; c.fillStyle = `rgba(255,255,255,${0.4 * (1 - ph)})`; c.fillRect(px + 11 + k * 3 + Math.sin(t * 3 + k) * 1.5, py + 4 - ph * 8, 2, 2); } } }); }
 function objFridge(x, y) { return mkObj(x, y, 1, 1, 30, (c, W, H) => { R(c, 3, 0, 18, H - 2, '#d8dce0'); R(c, 3, 0, 18, 1, '#f4f6f8'); R(c, 3, 14, 18, 1, '#8a8e94'); R(c, 17, 4, 2, 7, '#5a5e64'); R(c, 17, 18, 2, 9, '#5a5e64'); R(c, 6, 3, 5, 4, '#e8c23a'); R(c, 7, 19, 4, 5, '#2f5fb8'); }, { solid: true }); }

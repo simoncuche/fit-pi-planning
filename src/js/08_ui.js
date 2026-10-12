@@ -226,6 +226,72 @@ const UI = {
     o.querySelectorAll('[data-close]').forEach((b) => b.addEventListener('click', () => this.closeOverlay()));
     return o;
   },
+  /* ---------- Scoreboard im Colba-Office: Rangliste aller Spieler (dieselben Daten wie die Tracker-Seite) ---------- */
+  async scoreboardData() {
+    const me = typeof Track !== 'undefined' ? Track.device() : '';
+    const rows = {};
+    let ok = false, err = '';
+    if (typeof TRACK_DB === 'string' && TRACK_DB) {
+      try {
+        const ctl = new AbortController(), to = setTimeout(() => ctl.abort(), 8000);
+        const r = await fetch(`${TRACK_DB.replace(/\/+$/, '')}/${TRACK_ROOT}/devices.json`, { signal: ctl.signal, cache: 'no-store' });
+        clearTimeout(to);
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        const data = (await r.json()) || {};
+        for (const [id, d] of Object.entries(data)) {
+          if (!d || typeof d !== 'object' || !d.games) continue;
+          const games = Object.entries(d.games).filter(([, g]) => g && g.s && g.s.name).sort((a, b) => (b[1].s.at || 0) - (a[1].s.at || 0));
+          const cur = games.find(([gid]) => gid === d.current) || games[0];
+          if (cur) rows[id] = { id, s: cur[1].s, me: id === me };
+        }
+        ok = true;
+      } catch (e) { err = e && e.name === 'AbortError' ? 'timeout' : String((e && e.message) || e); }
+    }
+    /* Das eigene Spiel immer frisch aus dem Spielstand */
+    if (G.S && typeof Track !== 'undefined') { try { rows[me || 'me'] = { id: me || 'me', s: Track.snapshot(), me: true }; } catch (e) {} }
+    return { ok, err, rows: Object.values(rows) };
+  },
+  scoreboard() {
+    const TABS = [
+      ['plan', _t('PI-Plan'), (s) => Math.round((s.plan && s.team && s.plan[s.team]) || 0), (v) => `${v} %`],
+      ['ach', _t('Erlebnisse'), (s) => (s.ach || []).length, (v, s) => `${v} / ${s.achTotal || Object.keys(ACH).length}`],
+      ['far', _t('Am weitesten'), (s) => (s.finished ? 9e6 : 0) + (s.stage === 'free' ? 1e6 : 0) + (s.stageIdx || 0) * 1e4 + Math.round(s.time || 0), (v, s) => s.finished ? _t('🏁 Heimflug') : s.stage === 'free' ? `${DAY_NAMES[Math.min(5, s.day || 0)]} ${clockStr(s.time || 0)}` : _t('auf der Anreise')],
+      ['kart', _t('Kart-Runde'), (s) => (s.rec && s.rec.kart ? Math.round(100000 - s.rec.kart * 100) : 0), (v, s) => `${numSep(s.rec.kart.toFixed(1))} s`],
+      ['beer', _t('Biere'), (s) => s.beers || 0, (v) => `${v} 🍺`],
+    ];
+    const pics = {};
+    const pic = (s) => { const k = JSON.stringify(s.look || {}); if (!(k in pics)) { try { pics[k] = s.look ? portraitCanvas(s.look, (PEOPLE[s.pid] || {}).bg || '#2a3a52').toDataURL() : ''; } catch (e) { pics[k] = ''; } } return pics[k]; };
+    const esc = (t) => String(t == null ? '' : t).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    let tab = 'plan', res = null;
+    return new Promise((resolve) => {
+      const o = this.overlay(_t`<div class="panel sb-panel"><div class="panel-head"><h2>🏆 Scoreboard</h2><span class="sub" id="sbSub">Lade Rangliste …</span><button class="x-btn" id="sbRe" aria-label="Neu laden" title="Neu laden">↻</button><button class="x-btn" data-close aria-label="Schliessen">×</button></div>
+        <div class="tabs" id="sbTabs">${TABS.map((t) => `<button class="tab" data-t="${t[0]}">${t[1]}</button>`).join('')}</div>
+        <div class="panel-body" id="sbBody"><p class="note">Lade Rangliste …</p></div></div>`, () => resolve());
+      const render = () => {
+        o.querySelectorAll('#sbTabs .tab').forEach((b) => b.classList.toggle('on', b.dataset.t === tab));
+        if (!res) return;
+        const T = TABS.find((t) => t[0] === tab);
+        const list = res.rows.filter((r) => T[2](r.s) > 0).sort((a, b) => T[2](b.s) - T[2](a.s));
+        const mi = list.findIndex((r) => r.me);
+        const shown = list.slice(0, 10);
+        const row = (r, i) => {
+          const s = r.s, medal = ['🥇', '🥈', '🥉'][i] || String(i + 1), who = PEOPLE[s.pid] ? PEOPLE[s.pid].name : (s.who || '');
+          const flag = s.finished ? ' 🏁' : s.over ? ' 💀' : '';
+          return `<div class="sb-row${r.me ? ' me' : ''}"><span class="sb-rank">${medal}</span>${pic(s) ? `<img src="${pic(s)}" alt="">` : '<i></i>'}<span class="sb-name"><b>${esc(s.name)}${r.me ? _t(' (du)') : ''}${flag}</b><small>${esc(who)}${s.teamName ? ' · ' + esc(s.teamName) : ''}</small></span><span class="sb-val">${T[3](T[2](s), s)}</span></div>`;
+        };
+        let html = shown.map(row).join('');
+        if (mi >= 10) html += `<div class="sb-gap">…</div>` + row(list[mi], mi);
+        if (!list.length) html = `<p class="note">${_t('Hier steht noch niemand. Sei die oder der Erste!')}</p>`;
+        const n = res.rows.length;
+        o.querySelector('#sbBody').innerHTML = html + `<p class="note sb-foot">${res.ok ? _t`${n} Spiele · pro Gerät das aktuelle Spiel` : _t('Keine Verbindung zur Rangliste – hier steht nur dein eigenes Spiel.')}</p>`;
+        o.querySelector('#sbSub').textContent = res.ok ? _t`Live · ${new Date().toLocaleTimeString(LANG === 'en' ? 'en-GB' : LANG, { hour: '2-digit', minute: '2-digit' })}` : _t('Offline');
+      };
+      const load = async () => { o.querySelector('#sbSub').textContent = _t('Lade Rangliste …'); res = await this.scoreboardData(); if (this.ovOpen) render(); };
+      o.querySelectorAll('#sbTabs .tab').forEach((b) => b.addEventListener('click', () => { tab = b.dataset.t; Snd.sfx('blip'); render(); }));
+      o.querySelector('#sbRe').addEventListener('click', () => { Snd.sfx('blip'); load(); });
+      render(); load();
+    });
+  },
   closeOverlay() {
     if (!this.ovOpen) return;
     const o = this.els.overlay;
