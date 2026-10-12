@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.12.0 – 12.10.2026
+- Scoreboard with one overall score instead of five lists: 2 points per percent of your team's PI plan, 10 per achievement, 5 per sight and per event, 20 per day in Valencia and 50 for the flight home. Under each name a short breakdown (plan, achievements), the badge shows the team colour; the formula is shown below the list. Beers do not count.
+
 ## 2.11.1 – 12.10.2026
 - Scoreboard: every row shows the player's own name with an initial badge in the team colour and the team below – no longer the character they play.
 

@@ -2399,7 +2399,6 @@
 "Definition of Done? Wenn die Chorizo schwarz ist.": "¿Definition of Done? Cuando el chorizo está negro.",
 "Ton an/aus": "Sonido sí/no",
 "Ton": "Sonido",
-"<div class=\"panel sb-panel\"><div class=\"panel-head\"><h2>🏆 Scoreboard</h2><span class=\"sub\" id=\"sbSub\">Lade Rangliste …</span><button class=\"x-btn\" id=\"sbRe\" aria-label=\"Neu laden\" title=\"Neu laden\">↻</button><button class=\"x-btn\" data-close aria-label=\"Schliessen\">×</button></div>\n        <div class=\"tabs\" id=\"sbTabs\">{0}</div>\n        <div class=\"panel-body\" id=\"sbBody\"><p class=\"note\">Lade Rangliste …</p></div></div>": "<div class=\"panel sb-panel\"><div class=\"panel-head\"><h2>🏆 Scoreboard</h2><span class=\"sub\" id=\"sbSub\">Cargando clasificación…</span><button class=\"x-btn\" id=\"sbRe\" aria-label=\"Recargar\" title=\"Recargar\">↻</button><button class=\"x-btn\" data-close aria-label=\"Cerrar\">×</button></div>\n        <div class=\"tabs\" id=\"sbTabs\">{0}</div>\n        <div class=\"panel-body\" id=\"sbBody\"><p class=\"note\">Cargando clasificación…</p></div></div>",
 "Am weitesten": "Más avanzados",
 "Biere": "Cervezas",
 "Erlebnisse": "Logros",
@@ -2414,5 +2413,11 @@
 "Scoreboard: Rangliste aller Spieler": "Scoreboard: clasificación de todos",
 "auf der Anreise": "aún de viaje",
 "{0} Spiele · pro Gerät das aktuelle Spiel": "{0} partidas · la partida actual de cada dispositivo",
-"🏁 Heimflug": "🏁 Vuelo a casa"
+"🏁 Heimflug": "🏁 Vuelo a casa",
+"<div class=\"panel sb-panel\"><div class=\"panel-head\"><h2>🏆 Scoreboard</h2><span class=\"sub\" id=\"sbSub\">Lade Rangliste …</span><button class=\"x-btn\" id=\"sbRe\" aria-label=\"Neu laden\" title=\"Neu laden\">↻</button><button class=\"x-btn\" data-close aria-label=\"Schliessen\">×</button></div>\n        <div class=\"panel-body\" id=\"sbBody\"><p class=\"note\">Lade Rangliste …</p></div></div>": "<div class=\"panel sb-panel\"><div class=\"panel-head\"><h2>🏆 Scoreboard</h2><span class=\"sub\" id=\"sbSub\">Cargando clasificación…</span><button class=\"x-btn\" id=\"sbRe\" aria-label=\"Recargar\" title=\"Recargar\">↻</button><button class=\"x-btn\" data-close aria-label=\"Cerrar\">×</button></div>\n        <div class=\"panel-body\" id=\"sbBody\"><p class=\"note\">Cargando clasificación…</p></div></div>",
+"Pkt.": "pts",
+"Plan {0} %": "Plan {0} %",
+"{0} Erlebnisse": "{0} logros",
+"Punkte: 2 pro Prozent PI-Plan deines Teams, 10 pro Erlebnis, 5 pro Sehenswürdigkeit und pro Ereignis, 20 pro Tag in Valencia, 50 für den Heimflug.": "Puntos: 2 por cada porcentaje del plan PI de tu equipo, 10 por logro, 5 por monumento y por evento, 20 por día en Valencia, 50 por el vuelo de vuelta.",
+"1 Erlebnis": "1 logro"
 }

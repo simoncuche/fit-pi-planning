@@ -2377,7 +2377,6 @@
 "Definition of Done? Wenn die Chorizo schwarz ist.": "Definition of Done? When the chorizo is black.",
 "Ton an/aus": "Sound on/off",
 "Ton": "Sound",
-"<div class=\"panel sb-panel\"><div class=\"panel-head\"><h2>🏆 Scoreboard</h2><span class=\"sub\" id=\"sbSub\">Lade Rangliste …</span><button class=\"x-btn\" id=\"sbRe\" aria-label=\"Neu laden\" title=\"Neu laden\">↻</button><button class=\"x-btn\" data-close aria-label=\"Schliessen\">×</button></div>\n        <div class=\"tabs\" id=\"sbTabs\">{0}</div>\n        <div class=\"panel-body\" id=\"sbBody\"><p class=\"note\">Lade Rangliste …</p></div></div>": "<div class=\"panel sb-panel\"><div class=\"panel-head\"><h2>🏆 Scoreboard</h2><span class=\"sub\" id=\"sbSub\">Loading leaderboard …</span><button class=\"x-btn\" id=\"sbRe\" aria-label=\"Reload\" title=\"Reload\">↻</button><button class=\"x-btn\" data-close aria-label=\"Close\">×</button></div>\n        <div class=\"tabs\" id=\"sbTabs\">{0}</div>\n        <div class=\"panel-body\" id=\"sbBody\"><p class=\"note\">Loading leaderboard …</p></div></div>",
 "Am weitesten": "Furthest along",
 "Biere": "Beers",
 "Erlebnisse": "Achievements",
@@ -2392,5 +2391,11 @@
 "Scoreboard: Rangliste aller Spieler": "Scoreboard: leaderboard of all players",
 "auf der Anreise": "still travelling",
 "{0} Spiele · pro Gerät das aktuelle Spiel": "{0} games · the current game on each device",
-"🏁 Heimflug": "🏁 Flown home"
+"🏁 Heimflug": "🏁 Flown home",
+"<div class=\"panel sb-panel\"><div class=\"panel-head\"><h2>🏆 Scoreboard</h2><span class=\"sub\" id=\"sbSub\">Lade Rangliste …</span><button class=\"x-btn\" id=\"sbRe\" aria-label=\"Neu laden\" title=\"Neu laden\">↻</button><button class=\"x-btn\" data-close aria-label=\"Schliessen\">×</button></div>\n        <div class=\"panel-body\" id=\"sbBody\"><p class=\"note\">Lade Rangliste …</p></div></div>": "<div class=\"panel sb-panel\"><div class=\"panel-head\"><h2>🏆 Scoreboard</h2><span class=\"sub\" id=\"sbSub\">Loading leaderboard …</span><button class=\"x-btn\" id=\"sbRe\" aria-label=\"Reload\" title=\"Reload\">↻</button><button class=\"x-btn\" data-close aria-label=\"Close\">×</button></div>\n        <div class=\"panel-body\" id=\"sbBody\"><p class=\"note\">Loading leaderboard …</p></div></div>",
+"Pkt.": "pts",
+"Plan {0} %": "Plan {0} %",
+"{0} Erlebnisse": "{0} achievements",
+"Punkte: 2 pro Prozent PI-Plan deines Teams, 10 pro Erlebnis, 5 pro Sehenswürdigkeit und pro Ereignis, 20 pro Tag in Valencia, 50 für den Heimflug.": "Points: 2 per percent of your team's PI plan, 10 per achievement, 5 per sight and per event, 20 per day in Valencia, 50 for the flight home.",
+"1 Erlebnis": "1 achievement"
 }
